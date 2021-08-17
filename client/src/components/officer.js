@@ -44,7 +44,8 @@ const Personnel = (props) => {
           <h6>{personnel.serial}</h6>
           <p>
             <strong>Date of Birth: </strong>
-            {personnel.dob}
+            {personnel.dob.slice(0, 10)}
+            <br />
             <strong>Date of Death: </strong>
             {personnel.dod}
             <br />

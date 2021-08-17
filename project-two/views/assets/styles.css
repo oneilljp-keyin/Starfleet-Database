@@ -1,0 +1,7 @@
+.main {
+  max-width: 600px;
+}
+
+.card-shadow {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 12px 30px 0 rgba(0, 0, 0, 0.19);
+}

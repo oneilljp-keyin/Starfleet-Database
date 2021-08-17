@@ -25,7 +25,7 @@ module.exports = class PersonnelDAO {
     let cursor;
 
     try {
-      cursor = await personnel.find(query);
+      cursor = await personnel.find(query).sort({ surname: 1 });
     } catch (e) {
       console.error(`Unable to issue find command, ${e}`);
       return { personnelList: [], totalNumPersonnel: 0 };

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { loginUser } from "../actions/authActions";
+// import PropTypes from "prop-types";
+// import { connect } from "react-redux";
+// import { loginUser } from "../actions/authActions";
 
 const PORT = 8000;
 
@@ -82,15 +82,4 @@ function Login({ setAuth, setUserId }) {
   );
 }
 
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, { loginUser })(Login);
+export default Login;
