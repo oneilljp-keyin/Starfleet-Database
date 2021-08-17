@@ -1,37 +1,71 @@
 import React from "react";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-function Navbar({ user, logout }) {
+function Navbar({ user, isAuth, setAuth, setAdmin }) {
+  const logout = (e) => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      setAuth(false);
+      toast.success("Logout Succesful");
+      setAdmin(false);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <>
-      <nav className="navbar navbar-expand navbar-dark bg-dark nav-justified">
-        <a href="/personnel" className="navbar-brand">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+        <Link to={"/"} className="navbar-brand">
           Starfleet Database
-        </a>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={"/personnel"} className="nav-link">
-              Personnel
-            </Link>
-          </li>
-          <li className="nav-item">
-            {user ? (
-              <button onClick={logout} className="nav-link" style={{ cursor: "pointer" }}>
-                Logout {user.name}
-              </button>
-            ) : (
-              <Link to={"/login"} className="nav-link">
-                Sign In
+        </Link>
+        <button
+          className="navbar-toggler navbar-toggler-right"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navb"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navb">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <Link to={"/personnel"} className="nav-link">
+                Personnel
               </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/starships"} className="nav-link">
+                Starships
+              </Link>
+            </li>
+            <li className="nav-item">
+              {isAuth ? (
+                <button
+                  onClick={logout}
+                  className="btn btn-primary text-white font-weight-bold"
+                  style={{ cursor: "pointer" }}
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to={"/signin"} className="btn btn-dark text-white font-weight-bold">
+                  Sign In
+                </Link>
+              )}
+            </li>
+            {!isAuth ? (
+              <li className="nav-item">
+                <Link to={"/signup"} className="btn btn-dark font-weight-bold">
+                  Sign Up
+                </Link>
+              </li>
+            ) : (
+              " "
             )}
-          </li>
-        </div>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={"/register"} className="nav-link">
-              Sign Up
-            </Link>
-          </li>
+          </ul>
         </div>
       </nav>
     </>

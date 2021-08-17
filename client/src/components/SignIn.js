@@ -7,7 +7,7 @@ import { loginUser } from "../actions/authActions";
 
 const PORT = 8000;
 
-function Login({ setAuth }) {
+function Login({ setAuth, setUserId }) {
   const history = useHistory();
 
   const [user, setUser] = useState({
@@ -38,8 +38,9 @@ function Login({ setAuth }) {
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token);
         setAuth(true);
+        setUserId(parseRes.user_id);
         toast.success("Login Successful");
-        history.push("/personnel");
+        history.push("/");
       } else {
         setAuth(false);
         toast.dark(parseRes);

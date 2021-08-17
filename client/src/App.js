@@ -5,9 +5,10 @@ import { Provider } from "react-redux";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 import Navbar from "./components/Navbar";
-import Personnel from "./components/personnel";
+import Officer from "./components/officer";
 import PersonnelList from "./components/personnel-list";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
@@ -17,32 +18,42 @@ toast.configure();
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminRole, setAdminRole] = useState(false);
+  const [name, setName] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  console.log(adminRole, name, userId);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
 
-  const [user, setUser] = useState(null);
-
-  async function login(user = null) {
-    setUser(user);
-    console.log(user);
-  }
-
-  async function logout() {
-    setUser(null);
-  }
-
   return (
     <>
       <Provider store={store}>
-        <Navbar user={user} logout={logout} />
+        <Navbar isAuth={isAuthenticated} setAuth={setAuth} setAdmin={setAdminRole} />
+        <div className="nav-buffer"></div>
         <div className="container mt-3">
           <Switch>
-            <Route exact path={["/", "/personnel"]} component={PersonnelList} />
-            <Route path="/personnel/:id" render={(props) => <Personnel {...props} user={user} />} />
-            <Route path="/signin" render={(props) => <SignIn {...props} setAuth={setAuth} />} />
-            <Route path="/signup" render={(props) => <SignUp {...props} login={login} />} />
+            <Route
+              exact
+              path={["/", "/personnel"]}
+              render={(props) => (
+                <PersonnelList
+                  {...props}
+                  isAuth={isAuthenticated}
+                  setName={setName}
+                  setAdmin={setAdminRole}
+                  userId={userId}
+                />
+              )}
+            />
+            <Route path="/personnel/:id" render={(props) => <Officer {...props} />} />
+            <Route
+              path="/signin"
+              render={(props) => <SignIn {...props} setAuth={setAuth} setUserId={setUserId} />}
+            />
+            <Route path="/signup" render={(props) => <SignUp {...props} />} />
           </Switch>
         </div>
         <ToastContainer

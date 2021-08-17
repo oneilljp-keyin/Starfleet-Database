@@ -17,8 +17,8 @@ module.exports = class PersonnelDAO {
   static async getPersonnel({ filters = null, page = 0, personnelPerPage = 20 } = {}) {
     let query;
     if (filters) {
-      if ("surname" in filters) {
-        query = { $text: { $search: filters["surname"] } };
+      if ("name" in filters) {
+        query = { $text: { $search: filters["name"] } };
       }
     }
 

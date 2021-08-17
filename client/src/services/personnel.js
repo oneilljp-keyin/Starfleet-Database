@@ -2,15 +2,15 @@ import http from "../http-common";
 
 class PersonnelDataService {
   getAll(page = 0) {
-    return http.get(`personnel?page=${page}`);
+    return http.get(`/personnel?page=${page}`);
   }
 
   get(id) {
-    return http.get(`/personnel?id=${id}`);
+    return http.get(`/personnel/id/${id}`);
   }
 
   find(query, by = "name", page = 0) {
-    return http.get(`personnel?${by}=${query}&page=${page}`);
+    return http.get(`/personnel?${by}=${query}&page=${page}`);
   }
 
   createPersonnel(data) {
@@ -22,7 +22,7 @@ class PersonnelDataService {
   }
 
   deletePersonnel(id, userID) {
-    return http.delete(`review-delete?id=${id}`, { data: { user_id: userID } });
+    return http.delete(`/review-delete?id=${id}`, { data: { user_id: userID } });
   }
 }
 

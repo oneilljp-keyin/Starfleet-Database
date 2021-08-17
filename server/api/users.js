@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authorization = require("../validation/authorization");
+const ObjectId = require("mongodb").ObjectId;
 
 // Load input validation
 const validateRegisterInput = require("../validation/register");
@@ -8,6 +10,14 @@ const validateLoginInput = require("../validation/login");
 
 // Load user model
 const User = require("../models/Users");
+
+router.get("/:id", authorization, (req, res) => {
+  o_id = new ObjectId(req.params.id);
+  console.log(o_id);
+  User.findOne({ _id: o_id }).then((user) => {
+    res.json(user);
+  });
+});
 
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -51,7 +61,7 @@ router.post("/login", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
 
   // Find user by email
@@ -83,6 +93,7 @@ router.post("/login", (req, res) => {
             res.json({
               success: true,
               token: token,
+              user_id: payload.id,
             });
           }
         );
