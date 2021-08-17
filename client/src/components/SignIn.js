@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { useHistory } from "react-router";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../actions/authActions";
 
 const PORT = 8000;
 
-const Login = (props) => {
+function Login({ setAuth }) {
+  const history = useHistory();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -19,7 +25,7 @@ const Login = (props) => {
     e.preventDefault();
     try {
       const body = { email, password };
-      const response = await fetch(`http://localhost:${PORT}/api/auth/register_login`, {
+      const response = await fetch(`http://localhost:${PORT}/api/users/login`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(body),
@@ -27,9 +33,15 @@ const Login = (props) => {
 
       const parseRes = await response.json();
 
+      console.log(parseRes);
+
       if (parseRes.token) {
+        localStorage.setItem("token", parseRes.token);
+        setAuth(true);
         toast.success("Login Successful");
+        history.push("/personnel");
       } else {
+        setAuth(false);
         toast.dark(parseRes);
       }
     } catch (err) {
@@ -67,6 +79,17 @@ const Login = (props) => {
       </div>
     </div>
   );
+}
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, { loginUser })(Login);

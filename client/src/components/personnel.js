@@ -6,9 +6,9 @@ const Personnel = (props) => {
   const initialPersonnelState = {
     id: null,
     name: "",
-    address: {},
-    cuisine: "",
-    reviews: [],
+    assignments: [],
+    promotions: [],
+    events: [],
   };
 
   const [personnel, setPersonnel] = useState(initialPersonnelState);
@@ -49,7 +49,7 @@ const Personnel = (props) => {
     <>
       {personnel ? (
         <div>
-          <h5>{personnel.name}</h5>
+          <h5>Officer Name:{personnel.surname}</h5>
           <p>
             <strong>Cuisine: </strong>
             {personnel.cuisine}

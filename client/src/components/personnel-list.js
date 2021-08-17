@@ -70,7 +70,9 @@ const PersonnelList = (props) => {
             <div className="col-lg-4 pb-1" key={uuidv4()}>
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">{officer.name}</h5>
+                  <h5 className="card-title">
+                    {officer.surname}, {officer.first} {officer.middle}
+                  </h5>
                   <div className="row">
                     <Link
                       to={"/personnel/" + officer._id}
