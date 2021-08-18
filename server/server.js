@@ -21,14 +21,6 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
-// Body-Parser middleware
-// app.use(
-//   bodyParser.urlencoded({
-//     extended: false,
-//   })
-// );
-// app.use(bodyParser.json());
-
 // Passport config
 require("./validation/passport")(passport);
 

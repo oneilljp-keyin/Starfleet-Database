@@ -11,6 +11,7 @@ const validateLoginInput = require("../validation/login");
 // Load user model
 const User = require("../models/Users");
 
+// Name and privilege retrieval
 router.get("/:id", authorization, (req, res) => {
   o_id = new ObjectId(req.params.id);
   console.log(o_id);
@@ -19,6 +20,7 @@ router.get("/:id", authorization, (req, res) => {
   });
 });
 
+// Registration
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
@@ -29,7 +31,7 @@ router.post("/register", (req, res) => {
 
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
-      return res.status(400).json({ email: "Email already exists" });
+      return res.status(400).json({ message: "Email already exists" });
     } else {
       const newUser = new User({
         name: req.body.name,
@@ -37,14 +39,14 @@ router.post("/register", (req, res) => {
         password: req.body.password,
       });
 
-      // Hass password before saving in database
+      // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
           newUser.password = hash;
           newUser
             .save()
-            .then((user) => res.json(user))
+            .then((user) => res.json({ message: "Registration Successful" }))
             .catch((err) => console.error(err.message));
         });
       });
@@ -52,6 +54,7 @@ router.post("/register", (req, res) => {
   });
 });
 
+// Login
 router.post("/login", (req, res) => {
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
@@ -69,7 +72,7 @@ router.post("/login", (req, res) => {
     console.log(user);
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email Not Found" });
+      return res.status(404).json({ message: "Email and/or Password Incorrect" });
     }
 
     // Check password
@@ -98,7 +101,7 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ logininfoincorrect: "Email and/or Password Incorrect" });
+        return res.status(400).json({ message: "Email and/or Password Incorrect" });
       }
     });
   });

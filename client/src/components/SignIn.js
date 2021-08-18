@@ -43,7 +43,7 @@ function Login({ setAuth, setUserId }) {
         history.push("/");
       } else {
         setAuth(false);
-        toast.dark(parseRes);
+        toast.dark(parseRes.message);
       }
     } catch (err) {
       console.error(err.message);

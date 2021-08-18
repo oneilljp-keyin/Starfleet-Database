@@ -13,6 +13,7 @@
     "nodemon": "^2.0.12"
   },
   "dependencies": {
+    "@datastructures-js/binary-search-tree": "^4.3.0",
     "binary-search-tree": "^0.2.6",
     "connect-flash": "^0.1.1",
     "cors": "^2.8.5",

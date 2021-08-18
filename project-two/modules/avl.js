@@ -1,5 +1,13 @@
 "use strict";
 
+class Node {
+  constructor(data, left = null, right = null) {
+    this.data = data;
+    this.left = left;
+    this.right = right;
+  }
+}
+
 class AVLTree {
   constructor() {
     // Initialize a root element to null.
@@ -21,7 +29,7 @@ class AVLTree {
   }
 
   insert(data) {
-    let node = new this.Node(data);
+    let node = new Node(data);
     // Check if the tree is empty
     if (this.root === null) {
       // Insert as the first element this.root = node;
@@ -33,14 +41,6 @@ class AVLTree {
     inOrderHelper(this.root);
   }
 }
-
-AVLTree.prototype.Node = class {
-  constructor(data, left = null, right = null) {
-    this.data = data;
-    this.left = left;
-    this.right = right;
-  }
-};
 
 function insertHelper(self, root, node) {
   if (root === null) {
@@ -103,4 +103,18 @@ function rotationRL(node) {
   return rotationRR(node);
 }
 
-module.exports = AVLTree;
+// module.exports = AVLTree;
+
+const AVL = new AVLTree();
+
+AVL.insert(10);
+AVL.insert(15);
+AVL.insert(5);
+AVL.insert(50);
+AVL.insert(3);
+AVL.insert(7);
+AVL.insert(12);
+
+console.log(AVL);
+
+AVL.inOrder();

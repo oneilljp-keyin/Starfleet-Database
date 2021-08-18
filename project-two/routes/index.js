@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const AVLTree = require("../modules/avl");
+const BTS = require("../modules/bst");
 
 // Start Page
 router.get("/", (req, res) => {
@@ -9,18 +9,19 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   res.render("results");
   let numbers = req.body.numbers.split(",");
+
+  let avl = new BTS();
   for (let i = 0; i < numbers.length; i++) {
     numbers[i] = parseInt(numbers[i]);
+    avl.add(numbers[i]);
   }
-  console.log(numbers);
+  // console.log(numbers);
 
-  let avl = new AVLTree();
+  // numbers.forEach((number) => {
+  //   avl.insert(number);
+  // });
 
-  numbers.forEach((number) => {
-    avl.insert(number);
-  });
-
-  console.log(avl);
+  console.log("levelOrder: " + avl.levelOrder());
 });
 
 module.exports = router;

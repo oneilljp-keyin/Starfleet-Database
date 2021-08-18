@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 function PersonnelList({ isAuth, setName, setAdmin, userId }) {
   const [personnel, setPersonnel] = useState([]);
   const [searchName, setSearchName] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(userId);
 
   let PORT = 8000;
 
@@ -28,7 +29,7 @@ function PersonnelList({ isAuth, setName, setAdmin, userId }) {
 
   useEffect(() => {
     getProfile();
-  }, [userId]);
+  }, [currentUserId]);
 
   useEffect(() => {
     retrievePersonnel();

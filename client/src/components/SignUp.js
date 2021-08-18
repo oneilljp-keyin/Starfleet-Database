@@ -13,10 +13,10 @@ function Register() {
     name: "",
     email: "",
     password: "",
-    password_check: "",
+    password2: "",
   });
 
-  const { email, password, password_check, name } = inputs;
+  const { name, email, password, password2 } = inputs;
 
   const onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -25,16 +25,18 @@ function Register() {
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = { email, password, name };
-      if (!email || !password || !name || !password_check) {
-        toast.warning("Fields Incomplete");
-        return;
-      }
+      const body = { name, email, password, password2 };
+      // if (!email || !password || !name || !password2) {
+      //   toast.warning("Fields Incomplete");
+      //   return;
+      // }
 
-      if (password !== password_check) {
-        toast.warning("Password fields do not match");
-        return;
-      }
+      // if (password !== password2) {
+      //   toast.warning("Password fields do not match");
+      //   return;
+      // }
+
+      console.log(body);
 
       const response = await fetch("http://localhost:8000/api/users/register", {
         method: "POST",
@@ -46,13 +48,13 @@ function Register() {
 
       const parseRes = await response.json();
 
-      if (parseRes.includes("Congratulations")) {
-        toast.success(parseRes);
+      if (parseRes.message) {
+        toast.success(parseRes.message);
         setTimeout(() => {
           history.push("/login");
         }, 3500);
       } else {
-        toast.error(parseRes);
+        toast.error(parseRes.message);
       }
     } catch (err) {
       console.error(err.message);
@@ -95,9 +97,9 @@ function Register() {
           <input
             className="col-6 form-control my-2"
             type="password"
-            name="password_check"
+            name="password2"
             placeholder="Re-Enter Password"
-            value={password_check}
+            value={password2}
             onChange={(e) => onChange(e)}
           />
         </div>
@@ -112,15 +114,16 @@ function Register() {
   );
 }
 
-Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
+// Register.propTypes = {
+//   registerUser: PropTypes.func.isRequired,
+//   auth: PropTypes.object.isRequired,
+//   errors: PropTypes.object.isRequired,
+// };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
+// const mapStateToProps = (state) => ({
+//   auth: state.auth,
+//   errors: state.errors,
+// });
 
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+// export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+export default Register;
