@@ -20,6 +20,25 @@ router.get("/:id", authorization, (req, res) => {
   });
 });
 
+// get search history
+router.get("/history/:id", authorization, async (req, res) => {
+  let history;
+  o_id = new ObjectId(req.params.id);
+  const client = new MongoClient(process.env.MONGO_DB_CONNECTION_STRING);
+
+  try {
+    await client.connect();
+    history = await client
+      .db(process.env.MONDO_DB_NAME)
+      .collection("history")
+      .find({ user_id: o_id })
+      .sort({ date: -1 });
+    return res.json(history);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // Registration
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);

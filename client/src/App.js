@@ -48,7 +48,12 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <Navbar isAuth={isAuthenticated} setAuth={setAuth} setAdmin={setAdminRole} />
+        <Navbar
+          isAuth={isAuthenticated}
+          setAuth={setAuth}
+          setAdmin={setAdminRole}
+          setName={setName}
+        />
         <div className="nav-buffer"></div>
         <div className="container mt-3">
           <Switch>

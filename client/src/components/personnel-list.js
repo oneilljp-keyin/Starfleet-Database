@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PersonnelDataService from "../services/personnel";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
@@ -26,16 +26,16 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
     setDatabase(searchDatabase);
   };
 
-  const retrievePersonnel = () => {
-    PersonnelDataService.getAll()
-      .then((response) => {
-        // console.log(response.data);
-        setPersonnel(response.data.personnel);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  // const retrievePersonnel = () => {
+  //   PersonnelDataService.getAll()
+  //     .then((response) => {
+  //       // console.log(response.data);
+  //       setPersonnel(response.data.personnel);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
 
   // const refreshList = () => {
   //   retrievePersonnel();

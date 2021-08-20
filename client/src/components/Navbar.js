@@ -1,8 +1,11 @@
 import React from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
-function Navbar({ user, isAuth, setAuth, setAdmin }) {
+function Navbar({ user, isAuth, setAuth, setAdmin, setName }) {
+  const history = useHistory();
+
   const logout = (e) => {
     e.preventDefault();
     try {
@@ -10,6 +13,8 @@ function Navbar({ user, isAuth, setAuth, setAdmin }) {
       setAuth(false);
       toast.success("Logout Succesful");
       setAdmin(false);
+      setName("");
+      history.push("/");
     } catch (err) {
       console.log(err.message);
     }
