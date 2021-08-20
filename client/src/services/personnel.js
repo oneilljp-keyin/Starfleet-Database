@@ -1,16 +1,16 @@
 import http from "../http-common";
 
 class PersonnelDataService {
-  getAll(page = 0) {
-    return http.get(`/personnel?page=${page}`);
+  getAll(page = 0, db = "mongo") {
+    return http.get(`/personnel?page=${page}&db=${db}`);
   }
 
-  get(id) {
-    return http.get(`/personnel/id/${id}`);
+  get(id, db = "mongo") {
+    return http.get(`/personnel/id?id=${id}&db=${db}`);
   }
 
-  find(query, by = "name", page = 0) {
-    return http.get(`/personnel?${by}=${query}&page=${page}`);
+  find(query, by = "name", page = 0, db = "mongo") {
+    return http.get(`/personnel?${by}=${query}&page=${page}&db=${db}`);
   }
 
   createPersonnel(data) {

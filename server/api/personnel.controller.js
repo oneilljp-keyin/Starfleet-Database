@@ -6,16 +6,18 @@ module.exports = class PersonnelController {
       ? parseInt(req.query.personnelPerPage, 10)
       : 20;
     const page = req.query.page ? parseInt(req.query.page, 10) : 0;
+    const db = req.query.db ? req.query.db : "mongo";
 
     let filters = {};
     if (req.query.name) {
-      filters.name = req.query.name;
+      filters.name = req.query.name.toLowerCase();
     }
 
     const { personnelList, totalNumPersonnel } = await PersonnelDAO.getPersonnel({
       filters,
       page,
       personnelPerPage,
+      db,
     });
 
     let response = {
@@ -30,8 +32,10 @@ module.exports = class PersonnelController {
 
   static async apiGetPersonnelById(req, res, next) {
     try {
-      let id = req.params.id || {};
-      let personnel = await PersonnelDAO.getPersonnelById(id);
+      const id = req.query.id || {};
+      const db = req.query.db ? req.query.db : "mongo";
+
+      let personnel = await PersonnelDAO.getPersonnelById(id, db);
       if (!personnel) {
         res.status(404).json({ error: "Not Found" });
         return;

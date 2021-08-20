@@ -17,9 +17,9 @@ function Navbar({ user, isAuth, setAuth, setAdmin }) {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top px-2">
         <Link to={"/"} className="navbar-brand">
-          Starfleet Database
+          Starfleet Database at Sector 709
         </Link>
         <button
           className="navbar-toggler navbar-toggler-right"

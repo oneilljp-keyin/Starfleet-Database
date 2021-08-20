@@ -1,6 +1,6 @@
 import http from "../http-common";
 
-class PersonnelDataService {
+class StarshipsDataService {
   getAll(page = 0) {
     return http.get(`starships?page=${page}`);
   }
@@ -30,4 +30,4 @@ class PersonnelDataService {
   }
 }
 
-export default new PersonnelDataService();
+export default new StarshipsDataService();

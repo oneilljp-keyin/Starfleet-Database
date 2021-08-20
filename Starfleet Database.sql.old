@@ -68,16 +68,67 @@ CREATE TABLE rank (
   enlisted boolean,
   commissioned boolean
 );
+CREATE TABLE promotions (
+  promotion_id SERIAL PRIMARY KEY,
+  personnel_id int,
+  rank_id int,
+  date date,
+  date_note varchar,
+  notes text,
+  FOREIGN KEY (personnel_id) REFERENCES personnel (personnel_id),
+  FOREIGN KEY (rank_id) REFERENCES rank (rank_id)
+);
+CREATE TABLE assignments (
+  assignment_id SERIAL PRIMARY KEY,
+  personnel_id int,
+  starship_id int,
+  location_id int,
+  position varchar,
+  date date,
+  date_note varchar,
+  notes text,
+  FOREIGN KEY (personnel_id) REFERENCES personnel (personnel_id),
+  FOREIGN KEY (starship_id) REFERENCES starships (starship_id),
+  FOREIGN KEY (location_id) REFERENCES locations (location_id)
+);
+CREATE TABLE events (
+  event_id SERIAL PRIMARY KEY,
+  personnel_id int,
+  starship_id int,
+  location_id int,
+  date date,
+  date_note varchar,
+  notes text,
+  FOREIGN KEY (personnel_id) REFERENCES personnel (personnel_id),
+  FOREIGN KEY (starship_id) REFERENCES starships (starship_id),
+  FOREIGN KEY (location_id) REFERENCES locations (location_id)
+);
+-- view which will retrieve all information about officer from
+-- promotions, assignments events tables
+CREATE OR REPLACE VIEW officer_history AS
+SELECT pe.personnel_id,
+  am.*,
+  pr.*,
+  ev.*
+FROM personnel pe
+  CROSS JOIN assignments am USING
+  CROSS JOIN personnel pe USING (personnel_id)
+  JOIN starships ss USING (starship_id)
+  JOIN locations loc USING (location_id)
+  JOIN promotions pr USING (personnel_id)
+  JOIN rank ra USING (rank_id)
+  JOIN events ev USING (personnel_id);
+ALTER TABLE officer_history OWNER TO dabvggdydcesys;
 -- possible replacement for promotions, assignments and events
 CREATE TABLE events (
   event_id SERIAL PRIMARY KEY,
   event_type varchar NOT NULL,
-  personnel_id int NOT NULL,
+  personnel_id int,
   rank_id int,
   starship_id int,
   location_id int,
   position varchar,
-  event_date DATE NOT NULL,
+  event_date DATE,
   event_date_note VARCHAR,
   stardate decimal(16, 6),
   notes text,
@@ -85,22 +136,4 @@ CREATE TABLE events (
   FOREIGN KEY (starship_id) REFERENCES starships (starship_id),
   FOREIGN KEY (location_id) REFERENCES locations (location_id),
   FOREIGN KEY (rank_id) REFERENCES rank (rank_id)
-);
--- view to replace all foreign keys with proper text
-CREATE OR REPLACE VIEW officer_history AS
-SELECT ev.event_id,
-  ev.event_type,
-  ra.label,
-  ss.name as ss_name,
-  ss.registry,
-  ss.prototype,
-  loc.name as loc_name,
-  ev.position,
-  ev.event_date,
-  ev.event_date_note,
-  ev.stardate,
-  ev.notes
-FROM events ev
-  JOIN starships ss USING (starship_id)
-  JOIN locations loc USING (location_id)
-  JOIN rank ra USING (rank_id);
+)

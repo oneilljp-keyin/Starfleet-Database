@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { connect } from "react-redux";
-import { Link, useHistory, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { registerUser } from "../actions/authActions";
+// import PropTypes from "prop-types";
+// import { connect } from "react-redux";
+// import { registerUser } from "../actions/authActions";
 
 function Register() {
   let history = useHistory();
@@ -51,7 +51,7 @@ function Register() {
       if (parseRes.message) {
         toast.success(parseRes.message);
         setTimeout(() => {
-          history.push("/login");
+          history.push("/signin");
         }, 3500);
       } else {
         toast.error(parseRes.message);

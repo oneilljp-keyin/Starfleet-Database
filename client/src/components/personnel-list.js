@@ -3,41 +3,27 @@ import PersonnelDataService from "../services/personnel";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
-function PersonnelList({ isAuth, setName, setAdmin, userId }) {
+function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   const [personnel, setPersonnel] = useState([]);
   const [searchName, setSearchName] = useState("");
-  const [currentUserId, setCurrentUserId] = useState(userId);
+  // const [currentUserId, setCurrentUserId] = useState(userId);
 
-  let PORT = 8000;
+  // let PORT = 8000;
 
-  // ---- Get Name and Admin Privileges ---- \\
-  async function getProfile() {
-    try {
-      const response = await fetch(`http://localhost:${PORT}/api/users/${userId}`, {
-        method: "GET",
-        headers: { token: localStorage.token },
-      });
+  // console.log("IsAuth [personnel-list.js]: " + isAuth);
 
-      const parseData = await response.json();
-
-      setName(parseData.name);
-      setAdmin(parseData.admin);
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
-
-  useEffect(() => {
-    getProfile();
-  }, [currentUserId]);
-
-  useEffect(() => {
-    retrievePersonnel();
-  }, []);
+  // useEffect(() => {
+  //   retrievePersonnel();
+  // }, []);
 
   const onChangeSearchName = (e) => {
     const searchName = e.target.value;
     setSearchName(searchName);
+  };
+
+  const onChangeDatabase = (e) => {
+    const searchDatabase = e.target.value;
+    setDatabase(searchDatabase);
   };
 
   const retrievePersonnel = () => {
@@ -55,9 +41,8 @@ function PersonnelList({ isAuth, setName, setAdmin, userId }) {
   //   retrievePersonnel();
   // };
 
-  const find = (query, by) => {
-    console.log("Sector find");
-    PersonnelDataService.find(query, by)
+  const find = (query, by, db, page) => {
+    PersonnelDataService.find(query, by, page, db)
       .then((response) => {
         console.log(response.data);
         setPersonnel(response.data.personnel);
@@ -68,15 +53,15 @@ function PersonnelList({ isAuth, setName, setAdmin, userId }) {
   };
 
   const findByName = () => {
-    console.log("Sector findByName");
-    find(searchName, "name");
+    find(searchName, "name", database);
   };
 
   return (
     <>
-      <div className="row pb-1">
-        {isAuth && (
-          <div className="input-group col-lg-4">
+      {/* <div>{database}</div> */}
+      {isAuth && (
+        <div className="rows d-flex align-content-center">
+          <div className="input-group">
             <input
               type="text"
               className="form-control"
@@ -84,18 +69,29 @@ function PersonnelList({ isAuth, setName, setAdmin, userId }) {
               value={searchName}
               onChange={onChangeSearchName}
             />
-            <div className="input-group-append">
-              <button className="btn btn-outline-secondary" type="button" onClick={findByName}>
-                Search
-              </button>
-            </div>
           </div>
-        )}
-      </div>
+          <select
+            className="form-control"
+            name="database"
+            value={database}
+            onChange={(e) => onChangeDatabase(e)}
+          >
+            <option>Database</option>
+            <option value="mongo">MongoDB</option>
+            <option value="post">PostGreSQL</option>
+          </select>
+          <div className="input-group-append">
+            <button className="btn btn-outline-secondary" type="button" onClick={findByName}>
+              Search
+            </button>
+          </div>
+        </div>
+      )}
       <div className="row">
         {personnel.map((officer) => {
           let officerName;
-          if (officer.surname) {
+          let officerId = officer.personnel_id ? officer.personnel_id : officer._id;
+          if (officer.surname !== "undefined") {
             officerName = officer.surname;
           }
           if (officer.first) {
@@ -112,7 +108,7 @@ function PersonnelList({ isAuth, setName, setAdmin, userId }) {
                   <h5 className="card-title">{officerName}</h5>
                   <div className="row">
                     <Link
-                      to={"/personnel/" + officer._id}
+                      to={"/personnel/" + officerId}
                       className="btn btn-primary col-lg-5 mx-1 mb-1"
                     >
                       View Officer Profile

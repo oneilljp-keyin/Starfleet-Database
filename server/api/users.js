@@ -14,7 +14,7 @@ const User = require("../models/Users");
 // Name and privilege retrieval
 router.get("/:id", authorization, (req, res) => {
   o_id = new ObjectId(req.params.id);
-  console.log(o_id);
+  // console.log(o_id);
   User.findOne({ _id: o_id }).then((user) => {
     res.json(user);
   });
@@ -69,7 +69,7 @@ router.post("/login", (req, res) => {
 
   // Find user by email
   User.findOne({ email }).then((user) => {
-    console.log(user);
+    // console.log(user);
     // Check if user exists
     if (!user) {
       return res.status(404).json({ message: "Email and/or Password Incorrect" });

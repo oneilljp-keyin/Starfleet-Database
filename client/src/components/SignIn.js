@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 const PORT = 8000;
 
-function Login({ setAuth, setUserId }) {
+function Login({ setAuth, setUserId, getProfile }) {
   const history = useHistory();
 
   const [user, setUser] = useState({
@@ -37,8 +37,9 @@ function Login({ setAuth, setUserId }) {
 
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token);
-        setAuth(true);
         setUserId(parseRes.user_id);
+        setAuth(true);
+        getProfile(parseRes.user_id);
         toast.success("Login Successful");
         history.push("/");
       } else {
@@ -54,7 +55,6 @@ function Login({ setAuth, setUserId }) {
     <div className="submit-form">
       <div>
         <form className="text-center my-5 mx-5" onSubmit={onSubmitForm}>
-          <label htmlFor="user">Username</label>
           <input
             type="text"
             className="form-control"

@@ -28,42 +28,18 @@ module.exports = class StarshipsController {
     res.json(response);
   }
 
-  static async apiUpdateReview(req, res, next) {
+  static async apiGetStarshipById(req, res, next) {
     try {
-      const reviewId = req.body.review_id;
-      const text = req.body.text;
-      const date = new Date();
-
-      const reviewResponse = await StarshipsDAO.updateReview(
-        reviewId,
-        req.body.user_id,
-        text,
-        date
-      );
-
-      var { error } = reviewResponse;
-      if (error) {
-        res.status(400).json({ error });
+      let id = req.params.id || {};
+      let starship = await starshipDAO.getStarshipById(id);
+      if (!starship) {
+        res.status(404).json({ error: "Not Found" });
+        return;
       }
-
-      if (reviewResponse.modifiedCount === 0) {
-        throw new Error("Unable to update review - user may not be original poster");
-      }
-
-      res.json({ status: "success" });
+      res.json(starship);
     } catch (e) {
-      res.status(500).json({ error: e.message });
-    }
-  }
-
-  static async apiDeleteReview(req, res, next) {
-    try {
-      const reviewId = req.query.id;
-      const userId = req.body.user_id;
-      const reviewResponse = await StarshipsDAO.deleteReview(reviewId, userId);
-      res.json({ status: "success" });
-    } catch (e) {
-      res.status(500).json({ error: e.message });
+      console.error(`api, ${e}`);
+      res.status(500).json({ error: e });
     }
   }
 
