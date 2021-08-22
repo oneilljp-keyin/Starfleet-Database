@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const pool = require("../db");
+const pool = require("../db/postGresSQL");
 
 const ObjectId = mongoose.mongo.ObjectID;
 let personnel;

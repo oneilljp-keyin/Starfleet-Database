@@ -4,14 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "dev": "nodemon index.js",
-    "start": "node server.js"
+    "test": "env-cmd test.env jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "John O'Neill <john.oneill@keyin.com> (http://johnoneill.tech/)",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "env-cmd": "^10.1.0",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.6"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,120 +1,86 @@
-"use strict";
+const checkForDuplicates = (array) => {
+  return new Set(array).size !== array.length;
+};
 
 class Node {
-  constructor(data, left = null, right = null) {
-    this.data = data;
+  constructor(value, left = null, right = null) {
+    this.value = value;
     this.left = left;
     this.right = right;
   }
 }
-
+// binary search tree
 class AVLTree {
-  constructor() {
-    // Initialize a root element to null.
-    this.root = null;
+  constructor(root = null) {
+    this.root = root;
   }
-
-  getBalanceFactor(root) {
-    return this.getHeight(root.left) - this.getHeight(root.right);
-  }
-
-  getHeight(root) {
-    let height = 0;
-    if (root === null || typeof root === "undefined") {
-      height = -1;
-    } else {
-      height = Math.max(this.getHeight(root.left), this.getHeight(root.right)) + 1;
-    }
-    return height;
-  }
-
-  insert(data) {
-    let node = new Node(data);
-    // Check if the tree is empty
-    if (this.root === null) {
-      // Insert as the first element this.root = node;
-    } else {
-      insertHelper(this, this.root, node);
-    }
-  }
-  inOrder() {
-    inOrderHelper(this.root);
-  }
-}
-
-function insertHelper(self, root, node) {
-  if (root === null) {
-    root = node;
-  } else if (node.data < root.data) {
-    // Go left!
-    root.left = insertHelper(self, root.left, node);
-    // Check for balance factor and perform appropriate rotation
-    if (root.left !== null && self.getBalanceFactor(root) > 1) {
-      if (node.data > root.left.data) {
-        root = rotationLL(root);
+  add(value) {
+    const recurse = (node) => {
+      if (node === null) {
+        return new Node(value);
+      } else if (value < node.value) {
+        node.left = recurse(node.left);
       } else {
-        root = rotationLR(root);
+        node.right = recurse(node.right);
       }
-    }
-  } else if (node.data > root.data) {
-    // Go Right! root.
-    right = insertHelper(self, root.right, node);
-    // Check for balance factor and perform appropriate rotation
-    if (root.right !== null && self.getBalanceFactor(root) < -1) {
-      if (node.data > root.right.data) {
-        root = rotationRR(root);
+
+      if (nodeBalance(node) > 1) {
+        return nodeRotateLeft(node);
+      } else if (nodeBalance < -1) {
+        return nodeRotateRight(node);
       } else {
-        root = rotationRL(root);
+        return node;
       }
-    }
+    };
+    this.root = recurse(this.root);
   }
-  return root;
-}
-
-function inOrderHelper(root) {
-  if (root !== null) {
-    inOrderHelper(root.left);
-    console.log(root.data);
-    inOrderHelper(root.right);
+  search(value) {
+    const recurse = (node) => {
+      if (node === null) {
+        return false;
+      } else if (value < node.value) {
+        return recurse(node.left);
+      } else if (value > node.value) {
+        return recurse(node.right);
+      } else {
+        return true;
+      }
+    };
+    return recurse(this.root);
   }
 }
-
-function rotationLL(node) {
-  let tmp = node.left;
-  node.left = tmp.right;
-  tmp.right = node;
-  return tmp;
+function nodeHeight(node) {
+  if (node === null) {
+    return -1;
+  } else if (node.left === null && node.right === null) {
+    return 0;
+  } else {
+    return 1 + Math.max(nodeHeight(node.left), nodeHeight(node.right));
+  }
 }
-
-function rotationRR(node) {
-  let tmp = node.right;
-  node.right = tmp.left;
-  tmp.left = node;
-  return tmp;
+function nodeBalance(node) {
+  return nodeHeight(node.right) - nodeHeight(node.left);
 }
-
-function rotationLR(node) {
-  node.left = rotationRR(node.left);
-  return rotationLL(node);
+function nodeRotateLeft(node) {
+  if (node === null || node.right === null) {
+    return node;
+  }
+  const newRoot = node.right;
+  node.right = newRoot.left;
+  newRoot.left = node;
+  return newRoot;
 }
-
-function rotationRL(node) {
-  node.right = rotationLL(node.right);
-  return rotationRR(node);
+function nodeRotateRight(node) {
+  if (node === null || node.left === null) {
+    return node;
+  }
+  const newRoot = node.left;
+  node.left = newRoot.right;
+  newRoot.right = node;
+  return newRoot;
 }
-
-// module.exports = AVLTree;
-
-const AVL = new AVLTree();
-
-AVL.insert(10);
-AVL.insert(15);
-AVL.insert(5);
-AVL.insert(50);
-AVL.insert(3);
-AVL.insert(7);
-AVL.insert(12);
-
-console.log(AVL);
-
-AVL.inOrder();
+module.exports = {
+  checkForDuplicates,
+  Node,
+  AVLTree,
+};
