@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.route("/personnel").get(PersonnelCtrl.apiGetPersonnel);
 router.route("/personnel/id/").get(PersonnelCtrl.apiGetPersonnelById);
+router.route("/personnel/history/:id").get(PersonnelCtrl.apiGetSearchHistory);
 
 router.route("/starships").get(StarshipsCtrl.apiGetStarships);
 router.route("/starships/id/:id").get(StarshipsCtrl.apiGetStarshipById);

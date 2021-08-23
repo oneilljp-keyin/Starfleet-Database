@@ -41,8 +41,8 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   //   retrievePersonnel();
   // };
 
-  const find = (query, by, db, page) => {
-    PersonnelDataService.find(query, by, page, db)
+  const find = (query, by, db, userId) => {
+    PersonnelDataService.find(query, by, db, userId)
       .then((response) => {
         console.log(response.data);
         setPersonnel(response.data.personnel);
@@ -53,7 +53,7 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   };
 
   const findByName = () => {
-    find(searchName, "name", database);
+    find(searchName, "name", database, userId);
   };
 
   return (

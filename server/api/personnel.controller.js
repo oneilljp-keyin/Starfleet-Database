@@ -1,4 +1,7 @@
 const PersonnelDAO = require("../dao/personnelDAO.js");
+const searchHistory = require("../models/SearchHistory");
+
+const ObjectId = require("mongodb").ObjectId;
 
 module.exports = class PersonnelController {
   static async apiGetPersonnel(req, res, next) {
@@ -7,6 +10,7 @@ module.exports = class PersonnelController {
       : 20;
     const page = req.query.page ? parseInt(req.query.page, 10) : 0;
     const db = req.query.db ? req.query.db : "mongo";
+    const userId = req.query.userId;
 
     let filters = {};
     if (req.query.name) {
@@ -18,6 +22,7 @@ module.exports = class PersonnelController {
       page,
       personnelPerPage,
       db,
+      userId,
     });
 
     let response = {
@@ -44,6 +49,18 @@ module.exports = class PersonnelController {
     } catch (e) {
       console.error(`api, ${e}`);
       res.status(500).json({ error: e });
+    }
+  }
+
+  static async apiGetSearchHistory(req, res, next) {
+    let o_id = new ObjectId(req.param.id);
+    console.log(o_id);
+    try {
+      const history = await searchHistory.find({ userId: o_id });
+      console.log(history);
+      res.send(history);
+    } catch (err) {
+      res.json(err.message);
     }
   }
 };

@@ -8,13 +8,9 @@ const SearchHistorySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    cateogory: {
+    category: {
       type: String,
       required: true,
-      validate(value) {
-        if (value.toLowerCase() !== "starship" || value.toLowerCase() !== "personnel")
-          throw new Error("category must be Personnel or Starship");
-      },
     },
     userId: {
       type: mongoose.Types.ObjectId,
