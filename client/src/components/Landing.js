@@ -5,7 +5,7 @@ import PersonnelDataService from "../services/personnel";
 function Login({ setAuth, userId, getProfile, userName }) {
   const [history, setHistory] = useState({});
 
-  const searchHistory = (userId) => {
+  const searchHistory = async (userId) => {
     try {
       const response = await fetch(`http://localhost:8000/api/v1/personnel/history/${userId}`, {
         method: "GET",
@@ -37,7 +37,24 @@ function Login({ setAuth, userId, getProfile, userName }) {
         <h3>
           Welcome to Sector 709 {userName && ","} {userName}
         </h3>
-        <p></p>
+        <p>
+          These are some recommended searches for the database
+          <ul>
+            <li>
+              {" "}
+              Kirk will bring up muliple results, namely the famous James T. Kirk, his father George
+              and Mother Winona.
+            </li>
+            <li>
+              Crusher will result in Dr. Beverly Crusher from the Enterprise-D, and her son Wesley,
+              and husband Jack.
+            </li>
+            <li>
+              The are numerous entries in the database, so any name you may have heard related to
+              Star Trek will be listed (if they served in Starfleet). Enjoy
+            </li>
+          </ul>
+        </p>
       </div>
     </>
   );
