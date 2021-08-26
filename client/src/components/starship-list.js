@@ -1,66 +1,27 @@
-import { useState, useEffect } from "react";
-import PersonnelDataService from "../services/personnel";
+import { useState } from "react";
+import StarshipsDataService from "../services/starships";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
-const PersonnelsList = (props) => {
-  const [personnel, setPersonnel] = useState([]);
+function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
+  const [starships, setStarships] = useState([]);
   const [searchName, setSearchName] = useState("");
-  const [searchZip, setSearchZip] = useState("");
-  const [searchCuisine, setSearchCuisine] = useState("");
-  const [classes, setClasses] = useState(["All Classes"]);
-
-  useEffect(() => {
-    retrievePersonnel();
-    retrieveClasses();
-  }, []);
 
   const onChangeSearchName = (e) => {
     const searchName = e.target.value;
     setSearchName(searchName);
   };
 
-  const onChangeSearchZip = (e) => {
-    const searchZip = e.target.value;
-    setSearchZip(searchZip);
+  const onChangeDatabase = (e) => {
+    const searchDatabase = e.target.value;
+    setDatabase(searchDatabase);
   };
 
-  const onChangeSearchCuisine = (e) => {
-    const searchCuisine = e.target.value;
-    setSearchCuisine(searchCuisine);
-  };
-
-  const retrievePersonnels = () => {
-    PersonnelDataService.getAll()
+  const find = (query, by, db, userId) => {
+    StarshipsDataService.find(query, by, db, userId)
       .then((response) => {
-        // console.log(response.data);
-        setPersonnels(response.data.Personnels);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  const retrieveCuisines = () => {
-    PersonnelDataService.getCuisines()
-      .then((response) => {
-        // console.log(response.data);
-        setCuisines(["All Cuisines"].concat(response.data));
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  const refreshList = () => {
-    retrievePersonnels();
-  };
-
-  const find = (query, by) => {
-    PersonnelDataService.find(query, by)
-      .then((response) => {
-        // console.log(response.data);
-        setPersonnels(response.data.Personnels);
+        console.log(response.data);
+        setStarships(response.data.starships);
       })
       .catch((e) => {
         console.log(e);
@@ -68,100 +29,51 @@ const PersonnelsList = (props) => {
   };
 
   const findByName = () => {
-    find(searchName, "name");
-  };
-
-  const findByZip = () => {
-    find(searchZip, "zipcode");
-  };
-
-  const findByCuisine = () => {
-    if (searchCuisine === "All Cuisines") {
-      refreshList();
-    } else {
-      find(searchCuisine, "cuisine");
-    }
+    find(searchName, "name", database, userId);
   };
 
   return (
     <>
-      <div className="row pb-1">
-        <div className="input-group col-lg-4">
-          <input
-            type="text"
+      {isAuth && (
+        <div className="rows d-flex align-content-center">
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search By Name"
+              value={searchName}
+              onChange={onChangeSearchName}
+            />
+          </div>
+          <select
             className="form-control"
-            placeholder="Search By Name"
-            value={searchName}
-            onChange={onChangeSearchName}
-          />
+            name="database"
+            value={database}
+            onChange={(e) => onChangeDatabase(e)}
+          >
+            <option>Database</option>
+            <option value="mongo">MongoDB</option>
+            <option value="post">PostGreSQL</option>
+          </select>
           <div className="input-group-append">
             <button className="btn btn-outline-secondary" type="button" onClick={findByName}>
               Search
             </button>
           </div>
         </div>
-        <div className="input-group col-lg-4">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search By ZipCode"
-            value={searchZip}
-            onChange={onChangeSearchZip}
-          />
-          <div className="input-group-append">
-            <button className="btn btn-outline-secondary" type="button" onClick={findByZip}>
-              Search
-            </button>
-          </div>
-        </div>
-        <div className="input-group col-lg-4">
-          <select onChange={onChangeSearchCuisine}>
-            {cuisines.map((cuisine) => {
-              return (
-                <option value={cuisine} key={uuidv4()}>
-                  {" "}
-                  {cuisine.substr(0, 20)}{" "}
-                </option>
-              );
-            })}
-          </select>
-          <div className="input-group-append">
-            <button className="btn btn-outline-secondary" type="button" onClick={findByCuisine}>
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
+      )}
       <div className="row">
-        {Personnels.map((Personnel) => {
-          const address = `${Personnel.address.building} ${Personnel.address.street}, ${Personnel.address.zipcode}`;
+        {starships.map((starship) => {
+          let starshipId = starship.starship_id ? starship.personnel_id : starship._id;
           return (
-            <div className="col-lg-4 pb-1" key={uuidv4()}>
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">{Personnel.name}</h5>
-                  <p className="card-text">
-                    <strong>Cuisine: </strong>
-                    {Personnel.cuisine}
-                    <br />
-                    <strong>Address: </strong>
-                    {address}
-                  </p>
+            <div className="col-lg-4 p-1" key={uuidv4()}>
+              <div className="card text-center bg-dark">
+                <div className="card-body m-1">
+                  <h5 className="card-title">{starshipName}</h5>
                   <div className="row">
-                    <Link
-                      to={"/Personnels/" + Personnel._id}
-                      className="btn btn-primary col-lg-5 mx-1 mb-1"
-                    >
-                      View Reviews
+                    <Link to={"/personnel/" + starshipId} className="btn btn-primary m-1">
+                      View Starship Profile
                     </Link>
-                    <a
-                      target="_blank"
-                      href={"https://www.google.com/maps/place/" + address}
-                      className="btn btn-primary col-lg-5 mx-1 mb-1"
-                      rel="noreferrer"
-                    >
-                      View Map
-                    </a>
                   </div>
                 </div>
               </div>
@@ -171,6 +83,6 @@ const PersonnelsList = (props) => {
       </div>
     </>
   );
-};
+}
 
-export default PersonnelsList;
+export default StarshipList;
