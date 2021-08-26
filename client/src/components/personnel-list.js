@@ -102,15 +102,12 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
             officerName += " " + middleI + ".";
           }
           return (
-            <div className="col-lg-4 pb-1" key={uuidv4()}>
-              <div className="card">
-                <div className="card-body">
+            <div className="col-lg-4 p-1" key={uuidv4()}>
+              <div className="card text-center bg-dark">
+                <div className="card-body m-1">
                   <h5 className="card-title">{officerName}</h5>
                   <div className="row">
-                    <Link
-                      to={"/personnel/" + officerId}
-                      className="btn btn-primary col-lg-5 mx-1 mb-1"
-                    >
+                    <Link to={"/personnel/" + officerId} className="btn btn-primary m-1">
                       View Officer Profile
                     </Link>
                   </div>

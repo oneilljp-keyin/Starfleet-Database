@@ -5,6 +5,7 @@ import PersonnelDataService from "../services/personnel";
 const Personnel = (props) => {
   // console.log("isAuth [officer.js]: " + props.isAuth);
   // console.log("database: " + props.database);
+  const database = props.database;
 
   const initialPersonnelState = {
     id: null,
@@ -22,20 +23,20 @@ const Personnel = (props) => {
   const [personnel, setPersonnel] = useState(initialPersonnelState);
   console.log(personnel);
 
-  const getPersonnel = (id) => {
-    PersonnelDataService.get(id, props.database)
-      .then((response) => {
-        setPersonnel(response.data);
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   useEffect(() => {
+    const getPersonnel = (id) => {
+      PersonnelDataService.get(id, database)
+        .then((response) => {
+          setPersonnel(response.data);
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+
     getPersonnel(props.match.params.id);
-  }, [props.match.params.id]);
+  }, [props.match.params.id, database]);
 
   return (
     <>

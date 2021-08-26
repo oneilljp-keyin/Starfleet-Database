@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Oswald:400,300,700' />
+  <link rel="stylesheet" href='https://fonts.googleapis.com/icon?family=Material+Icons' />
+  <title>Document</title>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="topbar">
+      <div class="time_wrapper">
+        <span></span>
+        <time>22:16</time>
+      </div>
+    </div>
+    <header id="main_header">
+      <div class="header_inner">
+        <hgroup>
+          <h1>LCARS UI</h1>
+          <h2>HTML <span>|</span> CSS <span>|</span> JS</h2>
+        </hgroup>
+
+        <div class="menu-btn_wrapper">
+          <button id="menu-btn" class="material-icons">menu</button>
+        </div>
+
+        <nav id="main_nav">
+          <ul>
+            <li><a href="#"><span>Link 1</span></a></li>
+            <li><a href="#"><span>Nav Link II</span></a></li>
+            <li><a href="#"><span>Another Link</span></a></li>
+            <li><a href="#"><span>Link Four</span></a></li>
+          </ul>
+        </nav>
+      </div> <!-- END header_inner -->
+    </header>
+    <main>
+      <div class="content_wrapper">
+        <div class="content_container">
+          <article>
+            <header>
+              <h2>An Article Heading 2</h2>
+            </header>
+
+            <div class="article_content">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio voluptate delectus ipsum eveniet illo
+                reiciendis vitae quia quibusdam dignissimos sapiente.</p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis nobis est asperiores? Explicabo
+                debitis suscipit aut ex quia quos rem eaque? Omnis alias ea deserunt necessitatibus at fuga laborum
+                exercitationem.</p>
+            </div>
+
+            <footer>
+              <p>Lorem ipsum dolor sit amet.</p>
+              <p>Lorem, ipsum dolor.</p>
+              <div class="footer_bar"></div>
+            </footer>
+          </article>
+          <article>
+            <header>
+              <h3>An Article Heading 3</h3>
+            </header>
+
+            <div class="article_content">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio voluptate delectus ipsum eveniet illo
+                reiciendis vitae quia quibusdam dignissimos sapiente.</p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis nobis est asperiores? Explicabo
+                debitis suscipit aut ex quia quos rem eaque? Omnis alias ea deserunt necessitatibus at fuga laborum
+                exercitationem.</p>
+            </div>
+
+            <footer>
+              <p>Lorem ipsum dolor sit amet.</p>
+              <div class="footer_bar"></div>
+            </footer>
+          </article>
+        </div>
+        <!--END .content_container -->
+      </div> <!-- END .content_wrapper -->
+    </main>
+    <!-- <footer id="main_footer">
+      <div class="main_footer_content">
+        <p>It's a work in progress . . . </p>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente, soluta!</p>
+        <p><small>CC-BY-SA Space animation video: <a
+              href="https://audiosoundclips.com/space-animation-video-background/" target="_blank"
+              title="Opens in a new tab">Source</a></small></p>
+      </div>
+    </footer> -->
+  </div>
+
+  <!-- <script type="text/javascript" href="/scripts.js"></script> -->
+  <script>
+    let nav = document.getElementById("main_nav");
+    let menuBtn = document.getElementById("menu-btn");
+
+    menuBtn.addEventListener('click', toggleNav);
+
+    function toggleNav() {
+      nav.classList.toggle("active");
+      if (menuBtn.innerText == "menu") {
+        menuBtn.innerText = "close";
+      } else {
+        menuBtn.innerText = "menu";
+      }
+    }
+
+    function printTime() {
+      var d = new Date(),
+        ui_time = document.querySelector(".time_wrapper time"),
+        hour = d.getHours(),
+        minutes = d.getMinutes();
+
+      if (hour < 10 && minutes >= 10) {
+        ui_time.innerText = "0" + hour.toString() + ":" + minutes.toString();
+      } else if (hour >= 10 && minutes < 10) {
+        ui_time.innerText = hour.toString() + ":0" + minutes.toString();
+      } else if (hour < 10 && minutes < 10) {
+        ui_time.innerText = "0" + hour.toString() + ":0" + minutes.toString();
+      } else {
+        ui_time.innerText = hour.toString() + ":" + minutes.toString();
+      }
+    }
+    printTime();
+
+    setInterval(printTime, 60000);
+  </script>
+</body>
+
+</html>

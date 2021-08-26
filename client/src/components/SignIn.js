@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
-// import PropTypes from "prop-types";
-// import { connect } from "react-redux";
-// import { loginUser } from "../actions/authActions";
 
 const PORT = 8000;
 
@@ -52,12 +49,13 @@ function Login({ setAuth, setUserId, getProfile }) {
   };
 
   return (
-    <div className="submit-form">
-      <div>
-        <form className="text-center my-5 mx-5" onSubmit={onSubmitForm}>
+    <>
+      <h1 className="text-center">Sign-In</h1>
+      <form className="text-center m-5" onSubmit={onSubmitForm}>
+        <div className="row my-2 justify-content-center">
           <input
             type="text"
-            className="form-control"
+            className="form-control m-2 input-size"
             id="email"
             name="email"
             placeholder="Email"
@@ -67,7 +65,7 @@ function Login({ setAuth, setUserId, getProfile }) {
           />
           <input
             type="password"
-            className="form-control"
+            className="form-control m-2 input-size"
             id="password"
             name="password"
             placeholder="Password"
@@ -75,10 +73,10 @@ function Login({ setAuth, setUserId, getProfile }) {
             value={user.password}
             onChange={(e) => onChange(e)}
           />
-          <button className="btn btn-success">Login</button>
-        </form>
-      </div>
-    </div>
+        </div>
+        <button className="btn btn-success px-5">Login</button>
+      </form>
+    </>
   );
 }
 
