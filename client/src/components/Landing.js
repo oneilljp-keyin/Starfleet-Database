@@ -60,7 +60,7 @@ function Login({ setAuth, userId, getProfile, userName }) {
           </p>
         </div>
         <footer>
-          <a href="http://johnoneill.tech" target="_blank">
+          <a href="http://johnoneill.tech" target="_blank" rel="noreferrer">
             johnoneill.tech
           </a>
           <div className="footer_bar"></div>

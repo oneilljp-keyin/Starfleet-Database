@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const pool = require("../db/postGresSQL");
 
 const ObjectId = mongoose.mongo.ObjectID;
-
 let starships;
 
 module.exports = class StarshipsDAO {
@@ -12,81 +12,116 @@ module.exports = class StarshipsDAO {
     try {
       starships = await conn.db(process.env.MONDO_DB_NAME).collection("starships");
     } catch (e) {
-      console.error(`Unable to establish connection handles in starshipsDAO: ${e}`);
+      console.error(`Unable to establish a collection handle in starshipsDAO: ${e}`);
     }
   }
 
-  static async getStarships({ filters = null, page = 0, starshipsPerPage = 20 } = {}) {
+  static async getStarships({ filters = null, page = 0, starshipsPerPage = 20, db, userId } = {}) {
     let query;
-    if (filters) {
-      if ("surname" in filters) {
-        query = { $text: { $search: filters["surname"] } };
+    if (userId !== "null" && userId !== "undefined") {
+      let searchString = filters["name"] ? filters["name"] : filters["class"];
+      const history = new SearchHistory({
+        searchString: searchString,
+        category: "Starships",
+        userId: userId,
+      });
+      try {
+        history.save();
+      } catch (error) {
+        return error.message;
       }
     }
+    if (db === "post") {
+      try {
+        // PostGreSQL query
+        // console.log("PostGreSQL Query");
+        query = "SELECT * FROM starships";
+        if (filters["name"]) {
+          query += " WHERE LOWER(name) LIKE '%" + filters["name"] + "%'";
+        }
+        query += " OFFSET " + page * starshipsPerPage;
 
-    let cursor;
+        const response = await pool.query(query);
 
-    try {
-      cursor = await starships.find(query);
-    } catch (e) {
-      console.error(`Unable to issue find command, ${e}`);
+        return { starshipsList: response.rows, totalNumStarships: response.rowCount };
+      } catch (err) {
+        console.error(`Unable to issue find command, ${err}`);
+        return { starshipsList: [], totalNumStarships: 0 };
+      }
+    } else {
+      // MongoDB query
+      console.log(filters);
+      if (filters) {
+        if ("name" in filters) {
+          query = { $text: { $search: filters["name"] } };
+        } else if ("class" in filters) {
+          query = { class: { $eq: filters["class"] } };
+        }
+      }
+
+      console.log(query);
+      let cursor;
+
+      try {
+        cursor = await starships.find(query).sort({ ship_id: 1 });
+      } catch (e) {
+        console.error(`Unable to issue find command, ${e}`);
+        return { starshipsList: [], totalNumStarships: 0 };
+      }
+
+      const displayCursor = cursor.limit(starshipsPerPage).skip(starshipsPerPage * page);
+
+      try {
+        const starshipsList = await displayCursor.toArray();
+        const totalNumStarships = await starships.countDocuments(query);
+
+        return { starshipsList, totalNumStarships };
+      } catch (err) {
+        console.error(`Unable to convert cursor to array or problem counting documents, ${err}`);
+      }
       return { starshipsList: [], totalNumStarships: 0 };
     }
-
-    const displayCursor = cursor.limit(starshipsPerPage).skip(starshipsPerPage * page);
-
-    try {
-      const starshipsList = await displayCursor.toArray();
-      const totalNumStarships = await starships.countDocuments(query);
-
-      return { starshipsList, totalNumStarships };
-    } catch (e) {
-      console.error(`Unable to convert cursor to array or problem counting documents, ${e}`);
-    }
-    return { starshipsList: [], totalNumStarships: 0 };
   }
 
-  // static async addReview(restaurantId, user, review, date) {
-  //   try {
-  //     const reviewDoc = {
-  //       name: user.name,
-  //       user_id: user._id,
-  //       date: date,
-  //       text: review,
-  //       restaurant_id: restaurantId,
-  //     };
-  //     return await starships.insertOne(reviewDoc);
-  //   } catch (e) {
-  //     console.error(`StarshipsDAO.js 31: Unable to post review: ${e}`);
-  //     return { error: e };
-  //   }
-  // }
+  static async getStarshipById(id, db = "mongo") {
+    // console.log(id, db);
+    if (db === "post") {
+      try {
+        let query = `SELECT * FROM starships WHERE starships_id = ${id}`;
 
-  // static async updateReview(reviewId, userId, text, date) {
-  //   try {
-  //     const updateResponse = await starships.updateOne(
-  //       { user_id: userId, _id: ObjectId(reviewId) },
-  //       { $set: { text: text, date: date } }
-  //     );
-  //     return updateResponse;
-  //   } catch (e) {
-  //     console.error(`Unable to update review: ${e}`);
-  //     return { error: e };
-  //   }
-  // }
+        const response = await pool.query(query);
 
-  // static async deleteReview(reviewId, userId) {
-  //   try {
-  //     const deleteResponse = await reviews.deleteOne({
-  //       _id: ObjectId(reviewId),
-  //       user_id: userId,
-  //     });
-  //     return deleteResponse;
-  //   } catch (e) {
-  //     console.error(`Unable to delete review: ${e}`);
-  //     return { error: e };
-  //   }
-  // }
+        return response.rows[0];
+      } catch (err) {
+        console.error(`Something went wrong in getstarshipsByID: ${err}`);
+      }
+    } else {
+      try {
+        const pipeline = [
+          { $match: { _id: new ObjectId(id) } },
+          {
+            $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $expr: { $eq: ["$starship_id", "$$id"] } } },
+                { $sort: { date: -1 } },
+              ],
+              as: "events",
+            },
+          },
+          {
+            $addFields: {
+              events: "$events",
+            },
+          },
+        ];
+        return await starships.aggregate(pipeline).next();
+      } catch (err) {
+        console.error(`Something went wrong in getstarshipsByID: ${err}`);
+      }
+    }
+  }
 
   static async getClasses() {
     let classes = [];
@@ -94,7 +129,7 @@ module.exports = class StarshipsDAO {
       classes = await starships.distinct("class");
       return classes;
     } catch (e) {
-      console.error(`Unable to get starship classes, ${e}`);
+      console.error(`Unable to get classes, ${e}`);
       return classes;
     }
   }

@@ -6,39 +6,15 @@ import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   const [personnel, setPersonnel] = useState([]);
   const [searchName, setSearchName] = useState("");
-  // const [currentUserId, setCurrentUserId] = useState(userId);
-
-  // let PORT = 8000;
-
-  // console.log("IsAuth [personnel-list.js]: " + isAuth);
-
-  // useEffect(() => {
-  //   retrievePersonnel();
-  // }, []);
 
   const onChangeSearchName = (e) => {
     const searchName = e.target.value;
     setSearchName(searchName);
   };
 
-  const onChangeDatabase = (e) => {
-    const searchDatabase = e.target.value;
-    setDatabase(searchDatabase);
-  };
-
-  // const retrievePersonnel = () => {
-  //   PersonnelDataService.getAll()
-  //     .then((response) => {
-  //       // console.log(response.data);
-  //       setPersonnel(response.data.personnel);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
-
-  // const refreshList = () => {
-  //   retrievePersonnel();
+  // const onChangeDatabase = (e) => {
+  //   const searchDatabase = e.target.value;
+  //   setDatabase(searchDatabase);
   // };
 
   const find = (query, by, db, userId) => {
@@ -59,34 +35,34 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   return (
     <>
       {/* <div>{database}</div> */}
-      {isAuth && (
-        <div className="rows d-flex align-content-center">
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search By Name"
-              value={searchName}
-              onChange={onChangeSearchName}
-            />
-          </div>
-          <select
+      {/* {isAuth && ( */}
+      <div className="rows d-flex align-content-center">
+        <div className="input-group input-size">
+          <input
+            type="text"
             className="form-control"
-            name="database"
-            value={database}
-            onChange={(e) => onChangeDatabase(e)}
-          >
-            <option>Database</option>
-            <option value="mongo">MongoDB</option>
-            <option value="post">PostGreSQL</option>
-          </select>
-          <div className="input-group-append">
-            <button className="btn btn-outline-secondary" type="button" onClick={findByName}>
-              Search
-            </button>
-          </div>
+            placeholder="Search By Name"
+            value={searchName}
+            onChange={onChangeSearchName}
+          />
         </div>
-      )}
+        {/* <select
+          className="form-control"
+          name="database"
+          value={database}
+          onChange={(e) => onChangeDatabase(e)}
+        >
+          <option>Database</option>
+          <option value="mongo">MongoDB</option>
+          <option value="post">PostGreSQL</option>
+        </select> */}
+        <div className="input-group-append">
+          <button className="btn btn-outline-secondary" type="button" onClick={findByName}>
+            Search
+          </button>
+        </div>
+      </div>
+      {/* )} */}
       <div className="row">
         {personnel.map((officer) => {
           let officerName;

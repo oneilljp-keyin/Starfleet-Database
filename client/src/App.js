@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,11 +7,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
-import Landing from "./components/Landing";
-import Officer from "./components/officer";
-import PersonnelList from "./components/personnel-list";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import Landing from "./components/Landing";
+import PersonnelList from "./components/personnel-list";
+import Officer from "./components/officer";
+import StarshipList from "./components/starship-list";
+import Starship from "./components/starship";
 
 toast.configure();
 
@@ -45,11 +47,11 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div className="container p-0">
       <div className="topbar">
         <div className="time_wrapper">
-          <span></span>
-          <time>{time}</time>
+          <span className="topbar-title">Starfleet Database at Sector 709</span>
+          {/* <time> {time}</time> */}
         </div>
       </div>
       {/* <Provider store={store}> */}
@@ -62,7 +64,7 @@ function App() {
       />
       <main className="main_body">
         <div className="content_wrapper">
-          <div className="content_container">
+          <div className="content_container align-content-center">
             <Switch>
               <Route
                 exact
@@ -79,8 +81,11 @@ function App() {
               />
               <Route
                 exact
-                path={["/", "/personnel"]}
+                path={["/personnel"]}
                 render={(props) => (
+                  // !isAuthenticated ? (
+                  //   <Redirect to="/signin" />
+                  // ) :
                   <PersonnelList
                     {...props}
                     isAuth={isAuthenticated}
@@ -95,6 +100,35 @@ function App() {
                 path="/personnel/:id"
                 render={(props) => (
                   <Officer
+                    {...props}
+                    isAuth={isAuthenticated}
+                    admin={adminRole}
+                    userId={userId}
+                    database={database}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path={["/starships"]}
+                render={(props) => (
+                  // !isAuthenticated ? (
+                  //   <Redirect to="/signin" />
+                  // ) :
+                  <StarshipList
+                    {...props}
+                    isAuth={isAuthenticated}
+                    userId={userId}
+                    admin={adminRole}
+                    setDatabase={setDatabase}
+                    database={database}
+                  />
+                )}
+              />
+              <Route
+                path="/starships/:id"
+                render={(props) => (
+                  <Starship
                     {...props}
                     isAuth={isAuthenticated}
                     admin={adminRole}

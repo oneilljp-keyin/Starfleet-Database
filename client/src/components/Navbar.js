@@ -5,8 +5,9 @@ import { useHistory } from "react-router";
 
 function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
   const history = useHistory();
-  const [btnText, setBtnText] = useState("menu");
-  const [isActive, setIsActive] = useState(false);
+  // const [btnText, setBtnText] = useState("menu");
+  const [isStarshipSearchActive, setIsStarshipSearchActive] = useState(false);
+  const [isPersonnelSearchActive, setIsPersonnelSearchActive] = useState(false);
   const [refreshClock, setRefreshClock] = useState(false);
 
   const logout = (e) => {
@@ -44,35 +45,44 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
     setRefreshClock(true);
   }, 60000);
 
-  const toggleNav = () => {
-    setIsActive(!isActive);
-    if (btnText === "menu") {
-      setBtnText("close");
-    } else {
-      setBtnText("menu");
-    }
+  // const toggleNav = () => {
+  //   setIsActive(!isActive);
+  //   if (btnText === "menu") {
+  //     setBtnText("close");
+  //   } else {
+  //     setBtnText("menu");
+  //   }
+  // };
+
+  const toggleStarshipSearch = () => {
+    setIsStarshipSearchActive(!isStarshipSearchActive);
+  };
+
+  const togglePersonnelSearch = () => {
+    setIsPersonnelSearchActive(!isPersonnelSearchActive);
   };
 
   return (
     <>
       <header id="main_header" className="header">
         <div className="header_inner">
-          <hgroup>
+          {/* <hgroup className="p-2">
             <Link to={"/"} className="navbar-brand">
-              <h1>Starfleet Database at Sector 709</h1>
+              <h2 className="text-right">Starfleet Database at Sector 709</h2>
             </Link>
-          </hgroup>
+          </hgroup> */}
 
-          <div className="menu-btn_wrapper">
+          {/* <div className="menu-btn_wrapper">
             <button id="menu-btn" className="material-icons" onClick={toggleNav}>
               {btnText}
             </button>
-          </div>
+          </div> */}
 
-          <nav id="main_nav" className={isActive ? "active" : null}>
+          {/* <nav id="main_nav" className={isActive ? "active" : null}> */}
+          <nav id="main_nav" className="active">
             <ul>
               <li>
-                <span>
+                <span onClick={togglePersonnelSearch}>
                   {" "}
                   <Link to={"/personnel"} className="nav-link">
                     Personnel
@@ -80,7 +90,7 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
                 </span>
               </li>
               <li>
-                <span>
+                <span onClick={toggleStarshipSearch}>
                   {" "}
                   <Link to={"/starships"} className="nav-link">
                     Starships
@@ -105,7 +115,7 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
                   )}
                 </span>
               </li>
-              {!isAuth ? (
+              {/* {!isAuth ? (
                 <li className="nav-item">
                   <Link to={"/signup"} className="nav-link">
                     Sign Up
@@ -113,7 +123,7 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
                 </li>
               ) : (
                 " "
-              )}
+              )} */}
             </ul>
           </nav>
         </div>

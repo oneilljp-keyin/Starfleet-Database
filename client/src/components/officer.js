@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import PersonnelDataService from "../services/personnel";
-// import { Link } from "react-router-dom";
 
 const Personnel = (props) => {
-  // console.log("isAuth [officer.js]: " + props.isAuth);
-  // console.log("database: " + props.database);
   const database = props.database;
 
   const initialPersonnelState = {
@@ -12,11 +9,10 @@ const Personnel = (props) => {
     surname: null,
     first: null,
     middle: null,
+    postNom: null,
     dob: null,
     dod: null,
     serial: null,
-    assignments: [],
-    promotions: [],
     events: [],
   };
 
@@ -42,10 +38,13 @@ const Personnel = (props) => {
     <>
       {personnel ? (
         <div>
-          {personnel.surname && <h5>{personnel.surname}</h5>}
-          {personnel.first && <h6>{personnel.first}</h6>}
-          {personnel.middle && <h6>{personnel.middle}</h6>}
-          <h6>{personnel.serial}</h6>
+          <h1>
+            {personnel.surname && <>{personnel.surname}</>}
+            {personnel.first && <>, {personnel.first}</>}
+            {personnel.middle && <> {personnel.middle}</>}
+            {personnel.postNom && <>, {personnel.postNom}</>}
+          </h1>
+          <h2>{personnel.serial}</h2>
           <p>
             {personnel.dob && (
               <>

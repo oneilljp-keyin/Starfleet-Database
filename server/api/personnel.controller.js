@@ -7,7 +7,7 @@ module.exports = class PersonnelController {
   static async apiGetPersonnel(req, res, next) {
     const personnelPerPage = req.query.personnelPerPage
       ? parseInt(req.query.personnelPerPage, 10)
-      : 20;
+      : 21;
     const page = req.query.page ? parseInt(req.query.page, 10) : 0;
     const db = req.query.db ? req.query.db : "mongo";
     const userId = req.query.userId;
