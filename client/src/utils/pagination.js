@@ -1,5 +1,4 @@
 import React, { Link } from "react";
-import ()
 
 function Pagination({ total, currentPage, resultsPerPage, findByName, findByClass, searchType }) {
   let totalPages = Math.cell(total / resultsPerPage);

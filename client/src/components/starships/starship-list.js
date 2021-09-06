@@ -74,7 +74,7 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
 
   return (
     <>
-      {totalResults > 21 && (
+      {/* {totalResults > 21 && (
         <Pagination
           total={totalResults}
           currentPage={currentPage}
@@ -82,7 +82,7 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
           findByClass={findByClass}
           searchType={"personnel"}
         />
-      )}
+      )} */}
       <div className="d-flex flex-row">
         <div className="input-group">
           <input
