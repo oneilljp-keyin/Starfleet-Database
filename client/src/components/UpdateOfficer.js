@@ -2,7 +2,7 @@ import { useState } from "react";
 import PersonnelDataService from "../services/personnel";
 import { Link } from "react-router-dom";
 
-const AddEvent = (props) => {
+const UpdateOfficer = (props) => {
   let initialReviewState = "";
 
   let editing = false;
@@ -87,4 +87,4 @@ const AddEvent = (props) => {
   );
 };
 
-export default AddReview;
+export default UpdateOfficer;

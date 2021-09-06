@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // import PropTypes from "prop-types";
@@ -63,53 +63,48 @@ function Register() {
 
   return (
     <>
-      <h1 className="text-center">Register</h1>
-      <form className="text-center my-3 mx-3" onSubmit={onSubmitForm}>
-        <div className="row my-1">
+      <h1 className="text-center">Sign Up</h1>
+      <form className="text-center m-2" onSubmit={onSubmitForm}>
+        <div className="row my-2 justify-content-center">
           <input
-            className="form-control my-2"
+            className="form-control m-2 input-size"
             type="text"
             name="name"
             placeholder="Name"
+            required
             value={name}
             onChange={(e) => onChange(e)}
           />
-        </div>
-        <div className="row my-1">
           <input
-            className="form-control my-2"
+            className="form-control m-2 input-size"
             type="email"
             name="email"
             placeholder="E-mail"
+            required
             value={email}
             onChange={(e) => onChange(e)}
           />
-        </div>
-        <div className="row my-1 justify-content-between">
           <input
-            className="col-6 form-control my-2"
+            className="form-control m-2 input-size"
             type="password"
             name="password"
             placeholder="Password"
+            required
             value={password}
             onChange={(e) => onChange(e)}
           />
           <input
-            className="col-6 form-control my-2"
+            className="form-control m-2 input-size"
             type="password"
             name="password2"
             placeholder="Re-Enter Password"
+            required
             value={password2}
             onChange={(e) => onChange(e)}
           />
         </div>
         <button className="btn btn-success px-5">Register</button>
       </form>
-      <div className="text-center">
-        <Link to="/" className="text-center">
-          Login
-        </Link>
-      </div>
     </>
   );
 }

@@ -1,50 +1,50 @@
 import { useState, useEffect } from "react";
-import PersonnelDataService from "../services/personnel";
-// import { Link } from "react-router-dom";
+import PersonnelDataService from "../../services/personnel";
 
 const Personnel = (props) => {
-  // console.log("isAuth [officer.js]: " + props.isAuth);
-  // console.log("database: " + props.database);
+  const database = props.database;
 
   const initialPersonnelState = {
     id: null,
     surname: null,
     first: null,
     middle: null,
+    postNom: null,
     dob: null,
     dod: null,
     serial: null,
-    assignments: [],
-    promotions: [],
     events: [],
   };
 
   const [personnel, setPersonnel] = useState(initialPersonnelState);
   console.log(personnel);
 
-  const getPersonnel = (id) => {
-    PersonnelDataService.get(id, props.database)
-      .then((response) => {
-        setPersonnel(response.data);
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   useEffect(() => {
+    const getPersonnel = (id) => {
+      PersonnelDataService.get(id, database)
+        .then((response) => {
+          setPersonnel(response.data);
+          console.log(response.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+
     getPersonnel(props.match.params.id);
-  }, [props.match.params.id]);
+  }, [props.match.params.id, database]);
 
   return (
     <>
       {personnel ? (
         <div>
-          {personnel.surname && <h5>{personnel.surname}</h5>}
-          {personnel.first && <h6>{personnel.first}</h6>}
-          {personnel.middle && <h6>{personnel.middle}</h6>}
-          <h6>{personnel.serial}</h6>
+          <h1>
+            {personnel.surname && <>{personnel.surname}</>}
+            {personnel.first && <>, {personnel.first}</>}
+            {personnel.middle && <> {personnel.middle}</>}
+            {personnel.postNom && <>, {personnel.postNom}</>}
+          </h1>
+          <h2>{personnel.serial}</h2>
           <p>
             {personnel.dob && (
               <>

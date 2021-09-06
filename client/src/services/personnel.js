@@ -9,12 +9,12 @@ class PersonnelDataService {
     return http.get(`/personnel/id?id=${id}&db=${db}`);
   }
 
-  find(query, by = "name", page = 0, db = "mongo") {
-    return http.get(`/personnel?${by}=${query}&page=${page}&db=${db}`);
+  find(query, by = "name", db = "mongo", userId) {
+    return http.get(`/personnel?${by}=${query}&db=${db}&userId=${userId}`);
   }
 
-  createPersonnel(data) {
-    return http.post("/review-new", data);
+  searchHistory(id) {
+    return http.get("/personnel/history/", id);
   }
 
   updatePersonnel(data) {

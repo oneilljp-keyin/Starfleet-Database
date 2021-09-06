@@ -1,11 +1,3 @@
-.nav-buffer {
-  height: 64px;
-}
-
-.input-size {
-  max-width: 400px;
-}
-
 * {
   padding: 0;
   margin: 0;
@@ -16,34 +8,23 @@ body {
   min-width: 360px;
 }
 
-main {
-  height: 100%;
-}
 .container {
-  margin: 1rem auto;
-  height: 96%;
-  width: 96%;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr;
-  grid-template-areas:
-    "clock"
-    "header"
-    "main";
   color: #eee;
   font-family: oswald, helvetica, serif;
   font-weight: 300;
+  width: 96%;
+  margin: 1rem auto;
 }
 
-.header {
-  grid-area: header;
+.viewscreen {
+  max-height: 0;
+  position: relative;
+  overflow: hidden;
+  transition: 600ms ease-in-out;
 }
 
-.main_body {
-  grid-area: main;
-  overflow-x: hidden;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+.viewscreen.active {
+  max-height: 1080px;
 }
 
 button:hover,
@@ -60,13 +41,67 @@ a:focus {
   color: #99bbff;
 }
 
-time {
-  height: 1.81rem;
-  font-weight: 400;
+#close-viewscreen-btn {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #0f0f0f;
+  border-radius: 0 0 0 1rem;
+  color: rgba(153, 153, 255, 0.62);
+  border: none;
+  padding: 0.25rem 0.25rem 1rem 1rem;
+}
+
+#close-viewscreen-btn:hover,
+#close-viewscreen-btn:focus {
+  color: rgba(153, 153, 255, 1);
+}
+
+.video_wrapper {
+  max-height: 0;
+  max-width: 720px;
+  margin: 0 auto 1rem;
+  overflow: hidden;
+  position: relative;
+  transition: 600ms ease-in-out;
+}
+
+.video_wrapper::before,
+.video_wrapper::after {
+  content: "";
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+  bottom: 2rem;
+  width: 2rem;
+  border-radius: 1.66rem 0 0 1.66rem;
+  border-top: 1rem solid rgba(153, 153, 255, 0.38);
+  border-left: 1rem solid rgba(153, 153, 255, 0.38);
+  border-bottom: 1rem solid rgba(153, 153, 255, 0.38);
+}
+
+.video_wrapper::after {
+  left: auto;
+  right: 2rem;
+  border-right: 1rem solid rgba(153, 153, 255, 0.38);
+  border-left: none;
+  border-radius: 0 1.66rem 1.66rem 0;
+}
+
+.viewscreen.active .video_wrapper {
+  max-height: 1280px;
+}
+
+.video_wrapper video {
+  width: 100%;
+  display: block;
+  border-radius: 2rem;
+  box-sizing: border-box;
+  border: 0.25rem solid rgba(0, 0, 0, 0.2);
 }
 
 .topbar {
-  grid-area: clock;
   text-transform: uppercase;
   background: rgba(153, 153, 255, 0.62);
   display: flex;
@@ -83,8 +118,6 @@ time {
   background-color: #0f0f0f;
   margin-right: 3rem;
   padding: 0 1rem;
-  grid: flex;
-  align-items: center;
 }
 
 .time_wrapper::before,
@@ -196,8 +229,7 @@ time {
   transition: 500ms ease-in-out;
 }
 
-#main_nav.active,
-#search_nav.active {
+#main_nav.active {
   max-height: 1000px;
 }
 
@@ -206,8 +238,7 @@ time {
   list-style: none;
 }
 
-#main_nav a,
-button.logout {
+#main_nav a {
   color: #0f0f0f;
   background-color: rgba(153, 153, 255, 0.9);
   display: block;
@@ -251,10 +282,9 @@ button.logout {
   font-size: 1.38rem;
 }
 
-h2,
-.topbar-title {
+h2 {
   color: rgba(255, 221, 34, 0.9);
-  font-size: 1.24rem;
+  font-size: 1.81rem;
   text-transform: uppercase;
 }
 
@@ -272,6 +302,7 @@ h4 {
 /* Main Content */
 
 .content_wrapper {
+  z-index: -1;
   position: relative;
   margin: 0.5rem 0 0 0;
   background-color: rgba(153, 153, 255, 0.62);
@@ -287,7 +318,7 @@ h4 {
   top: 0;
   left: 50%;
   height: 1.1rem;
-  /* width: 24%; */
+  width: 24%;
   width: calc(24% - 1rem);
   background: rgba(204, 102, 204, 0.25);
   border-left: 0.5rem solid #0f0f0f;
@@ -319,7 +350,6 @@ h4 {
   min-height: 300px;
   box-sizing: border-box;
   overflow: hidden;
-  text-align: center;
 }
 
 .article_content p {
@@ -444,19 +474,19 @@ article footer p {
   #main_nav ul {
     display: flex;
     justify-content: flex-end;
-    padding-top: 0.5rem;
+    padding-top: 0;
   }
 
   #main_nav li {
-    width: 20%;
+    width: 25%;
   }
 
   #main_nav a {
     position: relative;
     box-sizing: border-box;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    margin: 0 0 0 1rem;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    margin: 0 0 1rem 1rem;
   }
 
   #main_nav.active a {
