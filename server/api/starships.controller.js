@@ -10,7 +10,7 @@ module.exports = class Controller {
       : 21;
     const page = req.query.page ? parseInt(req.query.page, 10) : 0;
     const db = req.query.db ? req.query.db : "mongo";
-    const userId = req.query.userId;
+    const userId = req.query.userId ? req.query.userId : "null";
 
     let filters = {};
     if (req.query.name) {
@@ -56,10 +56,10 @@ module.exports = class Controller {
 
   static async apiGetSearchHistory(req, res, next) {
     let o_id = new ObjectId(req.param.id);
-    console.log(o_id);
+    // console.log(o_id);
     try {
       const history = await searchHistory.find({ userId: o_id });
-      console.log(history);
+      // console.log(history);
       res.send(history);
     } catch (err) {
       res.json(err.message);

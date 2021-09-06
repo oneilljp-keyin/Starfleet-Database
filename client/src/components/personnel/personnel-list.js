@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PersonnelDataService from "../services/personnel";
+import PersonnelDataService from "../../services/personnel";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 

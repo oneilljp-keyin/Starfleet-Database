@@ -43,7 +43,7 @@ router.get("/:id", authorization, (req, res) => {
 // insert search history
 router.post("/history/", async (req, res) => {
   const history = new SearchHistory(req.body);
-  console.log(history);
+  // console.log(history);
   try {
     history.save();
     res.send("Search History Saved");

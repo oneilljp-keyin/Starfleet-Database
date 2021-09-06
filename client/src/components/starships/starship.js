@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import StarshipsDataService from "../services/starships";
+import StarshipsDataService from "../../services/starships";
 
 const Starships = (props) => {
   const database = props.database;

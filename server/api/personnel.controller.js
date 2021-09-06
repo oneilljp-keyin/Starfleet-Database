@@ -54,10 +54,10 @@ module.exports = class PersonnelController {
 
   static async apiGetSearchHistory(req, res, next) {
     let o_id = new ObjectId(req.param.id);
-    console.log(o_id);
+    // console.log(o_id);
     try {
       const history = await searchHistory.find({ userId: o_id });
-      console.log(history);
+      // console.log(history);
       res.send(history);
     } catch (err) {
       res.json(err.message);

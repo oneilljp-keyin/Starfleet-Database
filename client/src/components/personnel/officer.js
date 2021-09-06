@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import PersonnelDataService from "../services/personnel";
+import PersonnelDataService from "../../services/personnel";
 
 const Personnel = (props) => {
   const database = props.database;

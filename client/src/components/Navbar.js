@@ -24,26 +24,26 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
     }
   };
 
-  useEffect(() => {
-    const d = new Date();
-    const hour = d.getHours();
-    const minutes = d.getMinutes();
+  // useEffect(() => {
+  //   const d = new Date();
+  //   const hour = d.getHours();
+  //   const minutes = d.getMinutes();
 
-    if (hour < 10 && minutes >= 10) {
-      setTime("0" + hour.toString() + ":" + minutes.toString());
-    } else if (hour >= 10 && minutes < 10) {
-      setTime(hour.toString() + ":0" + minutes.toString());
-    } else if (hour < 10 && minutes < 10) {
-      setTime("0" + hour.toString() + ":0" + minutes.toString());
-    } else {
-      setTime(hour.toString() + ":" + minutes.toString());
-    }
-    setRefreshClock(false);
-  }, [refreshClock, setTime]);
+  //   if (hour < 10 && minutes >= 10) {
+  //     setTime("0" + hour.toString() + ":" + minutes.toString());
+  //   } else if (hour >= 10 && minutes < 10) {
+  //     setTime(hour.toString() + ":0" + minutes.toString());
+  //   } else if (hour < 10 && minutes < 10) {
+  //     setTime("0" + hour.toString() + ":0" + minutes.toString());
+  //   } else {
+  //     setTime(hour.toString() + ":" + minutes.toString());
+  //   }
+  //   setRefreshClock(false);
+  // }, [refreshClock, setTime]);
 
-  setInterval(() => {
-    setRefreshClock(true);
-  }, 60000);
+  // setInterval(() => {
+  //   setRefreshClock(true);
+  // }, 60000);
 
   // const toggleNav = () => {
   //   setIsActive(!isActive);

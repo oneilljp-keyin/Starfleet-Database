@@ -16,7 +16,7 @@ module.exports = class StarshipsDAO {
     }
   }
 
-  static async getStarships({ filters = null, page = 0, starshipsPerPage = 20, db, userId } = {}) {
+  static async getStarships({ filters = null, page = 1, starshipsPerPage = 20, db, userId } = {}) {
     let query;
     if (userId !== "null" && userId !== "undefined") {
       let searchString = filters["name"] ? filters["name"] : filters["class"];
@@ -50,16 +50,20 @@ module.exports = class StarshipsDAO {
       }
     } else {
       // MongoDB query
-      console.log(filters);
+      // console.log(filters);
       if (filters) {
         if ("name" in filters) {
           query = { $text: { $search: filters["name"] } };
         } else if ("class" in filters) {
-          query = { class: { $eq: filters["class"] } };
+          if (filters["class"] === "Unknown Class") {
+            query = { class: { $exists: false } };
+          } else {
+            query = { class: { $eq: filters["class"] } };
+          }
         }
       }
 
-      console.log(query);
+      // console.log(query);
       let cursor;
 
       try {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,12 +8,12 @@ import "./App.css";
 
 import Navbar from "./components/Navbar";
 import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
+// import SignUp from "./components/SignUp";
 import Landing from "./components/Landing";
-import PersonnelList from "./components/personnel-list";
-import Officer from "./components/officer";
-import StarshipList from "./components/starship-list";
-import Starship from "./components/starship";
+import PersonnelList from "./components/personnel/personnel-list";
+import Officer from "./components/personnel/officer";
+import StarshipList from "./components/starships/starship-list";
+import Starship from "./components/starships/starship";
 
 toast.configure();
 
@@ -23,7 +23,7 @@ function App() {
   const [database, setDatabase] = useState("mongo");
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [time, setTime] = useState(null);
+  // const [time, setTime] = useState(null);
 
   // ---- Get Name and Admin Privileges ---- \\
   async function getProfile(userId) {
@@ -60,7 +60,7 @@ function App() {
         setAuth={setAuth}
         setAdmin={setAdminRole}
         setName={setName}
-        setTime={setTime}
+        // setTime={setTime}
       />
       <main className="main_body">
         <div className="content_wrapper">
@@ -148,7 +148,7 @@ function App() {
                   />
                 )}
               />
-              <Route path="/signup" render={(props) => <SignUp {...props} />} />
+              {/* <Route path="/signup" render={(props) => <SignUp {...props} />} /> */}
             </Switch>
           </div>
         </div>
