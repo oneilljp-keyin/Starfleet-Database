@@ -219,6 +219,25 @@ button.logout {
   transition: 50ms ease-in-out;
 }
 
+#edit_btn {
+  color: #0f0f0f;
+  background-color: #fa9013e6;
+  text-align: right;
+  text-decoration: none;
+  padding: 0.5rem;
+  font-weight: 400;
+}
+
+.left_btn {
+  border-radius: 1rem 0 0 1rem;
+  margin: 0.5rem 0 1rem 1rem;
+}
+
+.right_btn {
+  border-radius: 0 1rem 1rem 0;
+  margin: 0.5rem 0 1rem 2px;
+}
+
 #main_nav a:hover,
 #main_nav a:focus {
   background-color: rgba(204, 204, 255, 1);
@@ -319,7 +338,7 @@ h4 {
   min-height: 300px;
   box-sizing: border-box;
   overflow: hidden;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .article_content p {

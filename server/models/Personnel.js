@@ -12,21 +12,38 @@ const PersonnelSchema = new mongoose.Schema(
     middle: {
       type: String,
     },
-    dob: {
-      type: Date,
-    },
-    dob_note: {
-      type: String,
-    },
-    dod: {
-      type: Date,
-    },
-    dod_note: {
-      type: String,
-    },
-    dod: {
-      type: Date,
-    },
+    birth: [
+      {
+        date: {
+          type: Date,
+        },
+        stardate: {
+          type: String,
+        },
+        place: {
+          type: String,
+        },
+        note: {
+          type: String,
+        },
+      },
+    ],
+    death: [
+      {
+        date: {
+          type: Date,
+        },
+        stardate: {
+          type: String,
+        },
+        place: {
+          type: String,
+        },
+        note: {
+          type: String,
+        },
+      },
+    ],
     serial: {
       type: String,
     },

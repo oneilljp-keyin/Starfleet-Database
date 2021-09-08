@@ -1,30 +1,36 @@
 import { useState, useEffect } from "react";
 import PersonnelDataService from "../../services/personnel";
+import { Link } from "react-router-dom";
 
 const Personnel = (props) => {
   const database = props.database;
 
+  // console.log(props.isAuth);
+
   const initialPersonnelState = {
-    id: null,
+    _id: null,
     surname: null,
     first: null,
     middle: null,
     postNom: null,
-    dob: null,
-    dod: null,
+    birthDate: null,
+    birthStardate: null,
+    birthPlace: null,
+    deathDate: null,
+    deathStardate: null,
+    deathPlace: null,
     serial: null,
     events: [],
   };
 
   const [personnel, setPersonnel] = useState(initialPersonnelState);
-  console.log(personnel);
 
   useEffect(() => {
     const getPersonnel = (id) => {
       PersonnelDataService.get(id, database)
         .then((response) => {
           setPersonnel(response.data);
-          console.log(response.data);
+          console.log(response);
         })
         .catch((err) => {
           console.error(err);
@@ -36,6 +42,16 @@ const Personnel = (props) => {
 
   return (
     <>
+      <div className="menu-btn_wrapper flex-row d-flex">
+        <Link to={"/personnel"} id="edit_btn" className="left_btn">
+          Back To Search
+        </Link>
+        {props.isAuth && (
+          <Link to={"/personnel/edit/" + personnel._id} id="edit_btn" className="right_btn">
+            Edit Officer Profile
+          </Link>
+        )}
+      </div>
       {personnel ? (
         <div>
           <h1>
@@ -46,17 +62,32 @@ const Personnel = (props) => {
           </h1>
           <h2>{personnel.serial}</h2>
           <p>
-            {personnel.dob && (
+            {personnel.birthDate && (
               <>
                 <strong>Date of Birth: </strong>
-                {personnel.dob.slice(0, 10)}
+                {personnel.birthDate.slice(0, 10)}
                 <br />
               </>
             )}
-            {personnel.dod && (
+            {personnel.birthPlace && (
+              <>
+                <strong>Place of Birth: </strong>
+                {personnel.birthPlace}
+                <br />
+              </>
+            )}
+            {personnel.deathDate && (
               <>
                 <strong>Date of Death: </strong>
-                {personnel.dod.slice(0, 10)}
+                {personnel.deathDate.slice(0, 10)}
+                {personnel.deathStardate && <> &#40;SD: {personnel.deathStardate}&#41;</>}
+                <br />
+              </>
+            )}
+            {personnel.deathPlace && (
+              <>
+                <strong>Place of Death: </strong>
+                {personnel.deathPlace}
                 <br />
               </>
             )}

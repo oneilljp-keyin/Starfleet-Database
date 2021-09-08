@@ -1,31 +1,82 @@
+const { Decimal128 } = require("mongodb");
 const mongoose = require("mongoose");
 
-// Create Schema for user
+// Create Schema for starship
 const UserSchema = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-    },
-    lastName: {
-      type: String,
-    },
-    email: {
-      type: String,
+    ship_id: {
+      type: Number,
       required: true,
       unique: true,
     },
-    email_is_verified: {
-      type: Boolean,
-      default: false,
+    name: {
+      type: String,
+      required: true,
     },
-    password: {
+    registry: {
+      type: String,
+      unique: true,
+    },
+    class: {
       type: String,
     },
-    date: {
-      type: Date,
-      default: Date.now,
+    launch: [
+      {
+        date: {
+          type: Date,
+        },
+        stardate: {
+          type: String,
+        },
+        note: {
+          type: String,
+        },
+      },
+    ],
+    commission: [
+      {
+        date: {
+          type: Date,
+        },
+        stardate: {
+          type: String,
+        },
+        note: {
+          type: String,
+        },
+      },
+    ],
+    decommission: [
+      {
+        date: {
+          type: Date,
+        },
+        stardate: {
+          type: String,
+        },
+        note: {
+          type: String,
+        },
+      },
+    ],
+    destruction: [
+      {
+        date: {
+          type: Date,
+        },
+        stardate: {
+          type: String,
+        },
+        note: {
+          type: String,
+        },
+      },
+    ],
+    photo: {
+      type: Buffer,
     },
   },
+
   { strict: false }
 );
 

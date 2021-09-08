@@ -70,7 +70,7 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
       });
   };
 
-  console.log("Total Results: ", starships);
+  console.log("Total Results: ", totalResults);
 
   return (
     <>

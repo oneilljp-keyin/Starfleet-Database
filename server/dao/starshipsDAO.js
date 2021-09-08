@@ -32,9 +32,8 @@ module.exports = class StarshipsDAO {
       }
     }
     if (db === "post") {
+      // PostGreSQL query
       try {
-        // PostGreSQL query
-        // console.log("PostGreSQL Query");
         query = "SELECT * FROM starships";
         if (filters["name"]) {
           query += " WHERE LOWER(name) LIKE '%" + filters["name"] + "%'";
@@ -50,7 +49,6 @@ module.exports = class StarshipsDAO {
       }
     } else {
       // MongoDB query
-      // console.log(filters);
       if (filters) {
         if ("name" in filters) {
           query = { $text: { $search: filters["name"] } };
@@ -63,7 +61,6 @@ module.exports = class StarshipsDAO {
         }
       }
 
-      // console.log(query);
       let cursor;
 
       try {

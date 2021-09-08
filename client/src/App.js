@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,6 +12,7 @@ import SignIn from "./components/SignIn";
 import Landing from "./components/Landing";
 import PersonnelList from "./components/personnel/personnel-list";
 import Officer from "./components/personnel/officer";
+import COUOfficer from "./components/personnel/COUOfficer";
 import StarshipList from "./components/starships/starship-list";
 import Starship from "./components/starships/starship";
 
@@ -107,6 +108,22 @@ function App() {
                     database={database}
                   />
                 )}
+              />
+              <Route
+                path="/personnel/edit/:id/"
+                render={(props) =>
+                  !isAuthenticated ? (
+                    <Redirect to="/" />
+                  ) : (
+                    <COUOfficer
+                      {...props}
+                      isAuth={isAuthenticated}
+                      admin={adminRole}
+                      userId={userId}
+                      database={database}
+                    />
+                  )
+                }
               />
               <Route
                 exact

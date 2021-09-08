@@ -18,7 +18,6 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
       toast.success("Logout Succesful");
       setAdmin(false);
       setName("");
-      history.push("/");
     } catch (err) {
       console.log(err.message);
     }

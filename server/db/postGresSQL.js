@@ -3,11 +3,11 @@
 const Pool = require("pg").Pool;
 
 const pool = new Pool({
-  user: "dabvggdydcesys",
-  password: "a5c2f47518fab233ca4d353b0147e28e7e3362fdbe36a26e4d4fc3b1c42b4c9f",
-  host: "ec2-18-235-4-83.compute-1.amazonaws.com",
+  user: process.env.POSTGRES_HEROKU_USER,
+  password: process.env.POSTGRES_HEROKU_PASSWORD,
+  host: process.env.POSTGRES_HEROKU_HOST,
   port: 5432,
-  database: "dd7gfm3vgtkv3t",
+  database: process.env.POSTGRES_HEROKU_DATABASE,
   ssl: { rejectUnauthorized: false },
 });
 
