@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+// import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 
 function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
-  const history = useHistory();
+  // const history = useHistory();
   // const [btnText, setBtnText] = useState("menu");
-  const [isStarshipSearchActive, setIsStarshipSearchActive] = useState(false);
-  const [isPersonnelSearchActive, setIsPersonnelSearchActive] = useState(false);
-  const [refreshClock, setRefreshClock] = useState(false);
+  // const [isStarshipSearchActive, setIsStarshipSearchActive] = useState(false);
+  // const [isPersonnelSearchActive, setIsPersonnelSearchActive] = useState(false);
+  // const [refreshClock, setRefreshClock] = useState(false);
 
   const logout = (e) => {
     e.preventDefault();
@@ -53,13 +53,13 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
   //   }
   // };
 
-  const toggleStarshipSearch = () => {
-    setIsStarshipSearchActive(!isStarshipSearchActive);
-  };
+  // const toggleStarshipSearch = () => {
+  //   setIsStarshipSearchActive(!isStarshipSearchActive);
+  // };
 
-  const togglePersonnelSearch = () => {
-    setIsPersonnelSearchActive(!isPersonnelSearchActive);
-  };
+  // const togglePersonnelSearch = () => {
+  //   setIsPersonnelSearchActive(!isPersonnelSearchActive);
+  // };
 
   return (
     <>
@@ -81,7 +81,7 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
           <nav id="main_nav" className="active">
             <ul>
               <li>
-                <span onClick={togglePersonnelSearch}>
+                <span>
                   {" "}
                   <Link to={"/personnel"} className="nav-link">
                     Personnel
@@ -89,7 +89,7 @@ function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
                 </span>
               </li>
               <li>
-                <span onClick={toggleStarshipSearch}>
+                <span>
                   {" "}
                   <Link to={"/starships"} className="nav-link">
                     Starships

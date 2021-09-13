@@ -1,9 +1,42 @@
+/* Code for Autocomplete Fields */
+.searchContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.results {
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  width: 100%;
+  background-color: #f9f9f9;
+  color: #121212;
+  text-align: center;
+}
+.suggestion {
+  cursor: pointer;
+  border: 0, 1px, 1px, 1px;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  background-color: #f9f9f9;
+}
+
+.suggestion:hover {
+  background-color: grey;
+}
+
+/* ------------------------------------------------------ */
+
 .nav-buffer {
   height: 64px;
 }
 
 .input-size {
   max-width: 400px;
+}
+
+input {
+  text-align: center;
 }
 
 * {
@@ -199,6 +232,7 @@ time {
 #main_nav.active,
 #search_nav.active {
   max-height: 1000px;
+  padding-right: 24px;
 }
 
 #main_nav ul {
@@ -219,23 +253,39 @@ button.logout {
   transition: 50ms ease-in-out;
 }
 
-#edit_btn {
+.orange_btn {
+  background-color: #ff9400e6;
+}
+.beige_btn {
+  background-color: #ffca92e6;
+}
+.red_btn {
+  background-color: #dc5e64e6;
+}
+.lcars_btn {
   color: #0f0f0f;
-  background-color: #fa9013e6;
   text-align: right;
+  display: inline-block;
+  border: none;
   text-decoration: none;
   padding: 0.5rem;
   font-weight: 400;
 }
 
-.left_btn {
+.left_round {
   border-radius: 1rem 0 0 1rem;
   margin: 0.5rem 0 1rem 1rem;
 }
 
-.right_btn {
+.right_round {
   border-radius: 0 1rem 1rem 0;
   margin: 0.5rem 0 1rem 2px;
+}
+
+.all_round {
+  border-radius: 1rem;
+  margin: 0.5rem 0 1rem 1rem;
+  padding: 0.5rem 2rem 0.5rem 2rem;
 }
 
 #main_nav a:hover,

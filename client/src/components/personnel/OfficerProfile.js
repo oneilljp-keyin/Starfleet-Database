@@ -43,13 +43,26 @@ const Personnel = (props) => {
   return (
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
-        <Link to={"/personnel"} id="edit_btn" className="left_btn">
+        <Link to={"/personnel"} id="edit_btn" className="lcars_btn orange_btn left_round">
           Back To Search
         </Link>
         {props.isAuth && (
-          <Link to={"/personnel/edit/" + personnel._id} id="edit_btn" className="right_btn">
-            Edit Officer Profile
-          </Link>
+          <>
+            <Link
+              to={"/personnel/" + personnel._id + "/edit"}
+              id="edit_btn"
+              className="lcars_btn orange_btn right_round"
+            >
+              Edit Officer Profile
+            </Link>
+            <Link
+              to={"/personnel/" + personnel._id + "/edit"}
+              id="edit_btn"
+              className="lcars_btn orange_btn right_round"
+            >
+              Edit Officer Profile
+            </Link>
+          </>
         )}
       </div>
       {personnel ? (

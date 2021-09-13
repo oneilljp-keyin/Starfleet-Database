@@ -17,12 +17,8 @@ class PersonnelDataService {
     return http.get("/personnel/history/", id);
   }
 
-  updatePersonnel(data) {
-    return http.put("/review-edit", data);
-  }
-
-  deletePersonnel(id, userID) {
-    return http.delete(`/review-delete?id=${id}`, { data: { user_id: userID } });
+  getRankLabels() {
+    return http.get("/personnel/ranks/");
   }
 }
 

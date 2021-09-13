@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,17 +10,18 @@ import Navbar from "./components/Navbar";
 import SignIn from "./components/SignIn";
 // import SignUp from "./components/SignUp";
 import Landing from "./components/Landing";
-import PersonnelList from "./components/personnel/personnel-list";
-import Officer from "./components/personnel/officer";
-import COUOfficer from "./components/personnel/COUOfficer";
-import StarshipList from "./components/starships/starship-list";
-import Starship from "./components/starships/starship";
+import PersonnelList from "./components/personnel/PersonnelList";
+import Officer from "./components/personnel/OfficerProfile";
+import EditOfficer from "./components/personnel/EditOfficer";
+import EditEvent from "./components/personnel/EditEvent";
+import StarshipList from "./components/starships/StarshipList";
+import Starship from "./components/starships/Starship";
 
 toast.configure();
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [adminRole, setAdminRole] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [adminRole, setAdminRole] = useState(true);
   const [database, setDatabase] = useState("mongo");
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -98,6 +99,7 @@ function App() {
                 )}
               />
               <Route
+                exact
                 path="/personnel/:id"
                 render={(props) => (
                   <Officer
@@ -110,20 +112,36 @@ function App() {
                 )}
               />
               <Route
-                path="/personnel/edit/:id/"
-                render={(props) =>
-                  !isAuthenticated ? (
-                    <Redirect to="/" />
-                  ) : (
-                    <COUOfficer
-                      {...props}
-                      isAuth={isAuthenticated}
-                      admin={adminRole}
-                      userId={userId}
-                      database={database}
-                    />
-                  )
-                }
+                exact
+                path="/personnel/:id/edit"
+                render={(props) => (
+                  // !isAuthenticated ? (
+                  //   <Redirect to="/" />
+                  // ) :
+                  <EditOfficer
+                    {...props}
+                    isAuth={isAuthenticated}
+                    admin={adminRole}
+                    userId={userId}
+                    database={database}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path="/personnel/:id/:event?"
+                render={(props) => (
+                  // !isAuthenticated ? (
+                  //   <Redirect to="/" />
+                  // ) :
+                  <EditEvent
+                    {...props}
+                    isAuth={isAuthenticated}
+                    admin={adminRole}
+                    userId={userId}
+                    database={database}
+                  />
+                )}
               />
               <Route
                 exact
