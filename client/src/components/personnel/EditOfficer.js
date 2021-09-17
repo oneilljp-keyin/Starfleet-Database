@@ -4,7 +4,7 @@ import PersonnelDataService from "../../services/personnel";
 
 const EditOfficer = (props) => {
   const [edit, setEdit] = useState(false);
-  const [officerId, setOfficerId] = useState(props.match.params.id);
+  // const [officerId, setOfficerId] = useState(props.match.params.id);
 
   const [officerInfo, setOfficerInfo] = useState({
     _id: "",
@@ -31,19 +31,21 @@ const EditOfficer = (props) => {
   };
 
   useEffect(() => {
+    let db = props.database;
+    let officerId = props.match.params.id;
     const getPersonnel = async (id) => {
       try {
-        let response = await PersonnelDataService.get(id, props.database);
+        let response = await PersonnelDataService.get(id, db);
         setOfficerInfo(response.data);
         // console.log(response.data);
       } catch (err) {
         console.error(err);
       }
     };
-    getPersonnel(props.match.params.id);
+    getPersonnel(officerId);
     setEdit(true);
     setBtnLabel("Update");
-  }, [edit]);
+  }, [edit, props.database, props.match.params.id]);
 
   const saveOfficerInfo = (e) => {
     e.preventDefault();
@@ -72,22 +74,12 @@ const EditOfficer = (props) => {
     }
   };
 
-  const addEvent = (e) => {
-    e.preventDefault();
-  };
-
   return (
     <>
       <form className="d-flex row my-1 mx-2 form-group" onSubmit={saveOfficerInfo}>
         <h3 className="col text-center">{btnLabel} Officer Profile</h3>
         <div class="w-100"></div>
         <div className="col"></div>
-        {/* <label
-          className="col-auto my-1 text-right form-control-lg align-content-end"
-          htmlFor="serial"
-        >
-          Serial #:
-        </label> */}
         <input
           className="col form-control form-control-lg my-1"
           type="text"

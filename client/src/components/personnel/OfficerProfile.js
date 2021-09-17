@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import PersonnelDataService from "../../services/personnel";
 import { Link } from "react-router-dom";
 
-const Personnel = (props) => {
+const Officer = (props) => {
   const database = props.database;
 
   // console.log(props.isAuth);
 
-  const initialPersonnelState = {
+  const initialOfficerState = {
     _id: null,
     surname: null,
     first: null,
@@ -23,21 +23,21 @@ const Personnel = (props) => {
     events: [],
   };
 
-  const [personnel, setPersonnel] = useState(initialPersonnelState);
+  const [officer, setOfficer] = useState(initialOfficerState);
 
   useEffect(() => {
-    const getPersonnel = (id) => {
+    const getOfficer = (id) => {
       PersonnelDataService.get(id, database)
         .then((response) => {
-          setPersonnel(response.data);
-          console.log(response);
+          setOfficer(response.data);
+          // console.log(response.data);
         })
         .catch((err) => {
           console.error(err);
         });
     };
 
-    getPersonnel(props.match.params.id);
+    getOfficer(props.match.params.id);
   }, [props.match.params.id, database]);
 
   return (
@@ -49,71 +49,99 @@ const Personnel = (props) => {
         {props.isAuth && (
           <>
             <Link
-              to={"/personnel/" + personnel._id + "/edit"}
+              to={"/personnel/" + officer._id + "/edit"}
               id="edit_btn"
-              className="lcars_btn orange_btn right_round"
+              className="lcars_btn orange_btn all_square"
             >
               Edit Officer Profile
             </Link>
             <Link
-              to={"/personnel/" + personnel._id + "/edit"}
+              to={"/personnel/" + officer._id + "/event"}
               id="edit_btn"
               className="lcars_btn orange_btn right_round"
             >
-              Edit Officer Profile
+              Add Life Event
             </Link>
           </>
         )}
       </div>
-      {personnel ? (
+      {officer ? (
         <div>
           <h1>
-            {personnel.surname && <>{personnel.surname}</>}
-            {personnel.first && <>, {personnel.first}</>}
-            {personnel.middle && <> {personnel.middle}</>}
-            {personnel.postNom && <>, {personnel.postNom}</>}
+            {officer.surname && <>{officer.surname}</>}
+            {officer.first && <>, {officer.first}</>}
+            {officer.middle && <> {officer.middle}</>}
+            {officer.postNom && <>, {officer.postNom}</>}
           </h1>
-          <h2>{personnel.serial}</h2>
+          <h2>{officer.serial}</h2>
           <p>
-            {personnel.birthDate && (
+            {officer.birthDate && (
               <>
                 <strong>Date of Birth: </strong>
-                {personnel.birthDate.slice(0, 10)}
+                {officer.birthDate.slice(0, 10)}
                 <br />
               </>
             )}
-            {personnel.birthPlace && (
+            {officer.birthPlace && (
               <>
                 <strong>Place of Birth: </strong>
-                {personnel.birthPlace}
+                {officer.birthPlace}
                 <br />
               </>
             )}
-            {personnel.deathDate && (
+            {officer.deathDate && (
               <>
                 <strong>Date of Death: </strong>
-                {personnel.deathDate.slice(0, 10)}
-                {personnel.deathStardate && <> &#40;SD: {personnel.deathStardate}&#41;</>}
+                {officer.deathDate.slice(0, 10)}
+                {officer.deathStardate && <> &#40;SD: {officer.deathStardate}&#41;</>}
                 <br />
               </>
             )}
-            {personnel.deathPlace && (
+            {officer.deathPlace && (
               <>
                 <strong>Place of Death: </strong>
-                {personnel.deathPlace}
+                {officer.deathPlace}
                 <br />
               </>
             )}
           </p>
+          <div className="list-group">
+            {officer.events.length > 0 ? (
+              officer.events.map((event, index) => {
+                return (
+                  <div key={index} className="d-flex flex-column align-items-baseline">
+                    <h5 className="row mx-1 my-0">
+                      {event.stardate && <>{event.stardate}</>}{" "}
+                      {event.date && <>({event.date.slice(0, 10)})</>}{" "}
+                      {event.starshipName && event.location && <> - </>}{" "}
+                      {event.starshipName && <>Onboard U.S.S. {event.starshipName}</>}{" "}
+                      {event.starshipRegistry && <> - {event.starshipRegistry}</>}{" "}
+                      {event.location && <>at/near {event.location}</>}
+                    </h5>
+                    <div className="rows d-flex flex-row">
+                      <h4 className="mx-1 col-auto">
+                        {event.rankLabel && <>Rank of {event.rankLabel} - </>}
+                      </h4>
+                      <h4 className="mx-1 col">{event.notes}</h4>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="col-sm-4">
+                <p>No Events Yet</p>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <div>
           <br />
-          <p>No Personnel Selected</p>
+          <p>No Officer Selected</p>
         </div>
       )}
     </>
   );
 };
 
-export default Personnel;
+export default Officer;

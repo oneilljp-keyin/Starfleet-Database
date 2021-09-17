@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Create Schema for Officer Profile
-const PersonnelSchema = new mongoose.Schema(
+const OfficerSchema = new mongoose.Schema(
   {
     surname: {
       type: String,
@@ -12,38 +12,30 @@ const PersonnelSchema = new mongoose.Schema(
     middle: {
       type: String,
     },
-    birth: [
-      {
-        date: {
-          type: Date,
-        },
-        stardate: {
-          type: String,
-        },
-        place: {
-          type: String,
-        },
-        note: {
-          type: String,
-        },
-      },
-    ],
-    death: [
-      {
-        date: {
-          type: Date,
-        },
-        stardate: {
-          type: String,
-        },
-        place: {
-          type: String,
-        },
-        note: {
-          type: String,
-        },
-      },
-    ],
+    birthDate: {
+      type: Date,
+    },
+    birthStardate: {
+      type: String,
+    },
+    birthPlace: {
+      type: String,
+    },
+    birthDateNote: {
+      type: String,
+    },
+    deathDate: {
+      type: Date,
+    },
+    deathStardate: {
+      type: String,
+    },
+    deathPlace: {
+      type: String,
+    },
+    birthDateNote: {
+      type: String,
+    },
     serial: {
       type: String,
     },
@@ -51,4 +43,4 @@ const PersonnelSchema = new mongoose.Schema(
   { strict: false }
 );
 
-module.exports = Officer = mongoose.model("personnel", PersonnelSchema);
+module.exports = Officer = mongoose.model("personnel", OfficerSchema);

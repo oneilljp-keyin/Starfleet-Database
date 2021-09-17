@@ -1,73 +1,114 @@
 import { useState, useEffect } from "react";
 import PersonnelDataService from "../../services/personnel";
-// import { Link } from "react-router-dom";
+import StarshipsDataService from "../../services/starships";
+import { toast } from "react-toastify";
 
 const EditEvent = (props) => {
   const [edit, setEdit] = useState(false);
-  const [officerId, setOfficerId] = useState(props.match.params.id);
-  const [eventId, setEventId] = useState(props.match.params.event);
+  // const [officerId, setOfficerId] = useState(props.match.params.id);
+  // const [eventId, setEventId] = useState(null);
   const [rankLabels, setRankLabels] = useState([]);
-  const [searchParam, setSearchParam] = "";
-
-  console.log(eventId);
+  const [shipSearchResults, setShipSearchResults] = useState([]);
+  const [btnLabel, setBtnLabel] = useState("Create");
 
   const [eventInfo, setEventInfo] = useState({
-    eventType: "",
-    rankLabel: "",
+    type: "Other",
+    officerId: props.match.params.id,
+    starshipId: "",
     starshipName: "",
+    starshipRegistry: "",
     location: "",
+    rankLabel: "",
     position: "",
-    eventDate: "",
-    eventDateNote: "",
-    eventStardate: "",
+    date: "",
+    dateNote: "",
     stardate: "",
     notes: "",
   });
 
-  let [btnLabel, setBtnLabel] = useState("Create");
+  if (props.match.params.eventid) {
+    const getEvent = async (id) => {
+      try {
+        let response = await PersonnelDataService.getEvents(id, props.database);
+        setEventInfo(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getEvent(props.match.params.eventid);
+    setEdit(true);
+    setBtnLabel("Update");
+  }
 
   const onChangeEventInfo = (e) => {
     setEventInfo({ ...eventInfo, [e.target.name]: e.target.value });
   };
 
-  const retrieveRankLabels = () => {
-    PersonnelDataService.getRankLabels()
-      .then((response) => {
-        setRankLabels(response.data);
-        console.log(response.data);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+  const onClickStarship = (id, name, registry) => {
+    setEventInfo({
+      ...eventInfo,
+      starshipId: id,
+      starshipName: name,
+      starshipRegistry: registry,
+    });
+    setShipSearchResults([]);
   };
 
   useEffect(() => {
-    retrieveRankLabels();
-  }, []);
-
-  const saveOfficerEvent = (e) => {
-    e.preventDefault();
-
-    let data = eventInfo;
-
-    if (edit) {
-      data._id = props.match.params.id;
-      PersonnelDataService.updateEvent(data)
+    const retrieveRankLabels = () => {
+      PersonnelDataService.getRankLabels()
         .then((response) => {
-          // setSubmitted(true);
-          console.log(response.data);
+          setRankLabels(response.data);
         })
         .catch((e) => {
           console.error(e);
         });
-    } else {
-      PersonnelDataService.createEvent(data)
+    };
+
+    retrieveRankLabels();
+  }, []);
+
+  useEffect(() => {
+    const retrieveStarship = () => {
+      if (eventInfo.starshipName.length > 2) {
+        StarshipsDataService.find(eventInfo.starshipName, "name", "mongo", "null", "0", "10")
+          .then((response) => {
+            setShipSearchResults(response.data.starships);
+          })
+          .catch((err) => {
+            console.error(err.message);
+          });
+      }
+    };
+    retrieveStarship();
+  }, [eventInfo.starshipName]);
+
+  const saveOfficerEvent = (e) => {
+    e.preventDefault();
+
+    const asArray = Object.entries(eventInfo);
+    const filtered = asArray.filter(([key, value]) => value !== "");
+    const data = Object.fromEntries(filtered);
+
+    if (edit) {
+      data._id = props.match.params.eventid;
+      PersonnelDataService.updateEvent(data)
         .then((response) => {
           // setSubmitted(true);
-          console.log(response.data);
+          toast.success(response.data.message);
         })
         .catch((e) => {
+          toast.warning(e.message);
           console.error(e);
+        });
+    } else {
+      PersonnelDataService.insertEvent(data)
+        .then((response) => {
+          // setSubmitted(true);
+          toast.success(response.data.message);
+        })
+        .catch((e) => {
+          toast.warning(e.message);
         });
     }
   };
@@ -75,24 +116,37 @@ const EditEvent = (props) => {
   return (
     <>
       {/* // Form to insert events in officer's life */}
-      <form className="d-flex row my-1 mx-2 form-group" onSubmit={saveOfficerEvent}>
-        <h3 className="col text-center">{btnLabel} Officer Events</h3>
-        <div class="w-100"></div>
+      <form
+        autoComplete="off"
+        className="d-flex row my-1 mx-2 form-group"
+        onSubmit={saveOfficerEvent}
+      >
+        <h3 className="col text-center">{btnLabel} Officer Event</h3>
+        <div className="w-100"></div>
         <label className="col-auto my-1 text-right form-control-lg" htmlFor="eventDate">
           Date Of Event:
         </label>
         <input
           className="col form-control form-control-lg my-1"
           type="date"
-          name="eventDate"
-          value={eventInfo.eventDate ? eventInfo.eventDate.slice(0, 10) : ""}
+          name="date"
+          value={eventInfo.date ? eventInfo.date.slice(0, 10) : ""}
+          onChange={(e) => onChangeEventInfo(e)}
+        />
+        {/* Stardate */}
+        <input
+          className="col form-control form-control-lg my-1"
+          type="text"
+          name="stardate"
+          placeholder="Stardate"
+          value={eventInfo.stardate}
           onChange={(e) => onChangeEventInfo(e)}
         />
         {/* Note about event date (exact, approx, before or after) */}
         <select
           className="col form-control my-1"
-          name="birthNote"
-          value={eventInfo.eventDateNote}
+          name="dateNote"
+          value={eventInfo.dateNote}
           onChange={(e) => onChangeEventInfo(e)}
         >
           <option value="">Exact Date</option>
@@ -100,25 +154,16 @@ const EditEvent = (props) => {
           <option value="before">Before This Date</option>
           <option value="after">After This Date</option>
         </select>
-        {/* Stardate */}
-        <input
-          className="col form-control form-control-lg my-1"
-          type="text"
-          name="eventStardate"
-          placeholder="Stardate"
-          value={eventInfo.eventStardate}
-          onChange={(e) => onChangeEventInfo(e)}
-        />
         <div className="w-100"></div>
         <select
           className="col form-control my-1"
-          name="eventType"
-          value={eventInfo.eventType}
+          name="type"
+          value={eventInfo.type}
           onChange={(e) => onChangeEventInfo(e)}
         >
-          <option value="">Other Event</option>
-          <option value="promotion">Promotion</option>
-          <option value="assignment">Assignment</option>
+          <option value="Other">Other Event</option>
+          <option value="Promotion">Promotion</option>
+          <option value="Assignment">Assignment</option>
         </select>
         {/* ID of starship if applicable */}
         <div className="col searchContainer my-1 p-0">
@@ -131,19 +176,25 @@ const EditEvent = (props) => {
             onChange={(e) => onChangeEventInfo(e)}
           />
           <div id="searchResults" className="results">
-            <div className="suggestion">{eventInfo.starshipName}</div>
-            <div className="suggestion">{eventInfo.starshipName}</div>
-            <div className="suggestion">{eventInfo.starshipName}</div>
+            {shipSearchResults.length > 0 &&
+              shipSearchResults.map((ship) => {
+                let shipId = ship._id;
+                let shipName = ship.name;
+                let shipRegistry = ship.registry ? ship.registry : "";
+                return (
+                  <div
+                    key={shipId}
+                    className="suggestion"
+                    onClick={() => {
+                      onClickStarship(shipId, shipName, shipRegistry);
+                    }}
+                  >
+                    {shipName} {shipRegistry}
+                  </div>
+                );
+              })}
           </div>
         </div>
-        {/* <select
-          className="col form-control my-1"
-          name="starshipId"
-          value={eventInfo.starshipId}
-          onChange={(e) => onChangeEventInfo(e)}
-        >
-          <option>Unknown Vessel / N/A</option>
-        </select> */}
         <input
           className="col form-control form-control-lg my-1"
           type="text"
@@ -153,17 +204,6 @@ const EditEvent = (props) => {
           onChange={(e) => onChangeEventInfo(e)}
         />
         {/* ID of rank */}
-        {/* <div className="col container">
-          <input
-            className="form-control form-control-lg my-1"
-            type="text"
-            name="rankId"
-            placeholder="Current Rank"
-            value={eventInfo.rankLabel}
-            onChange={(e) => onChangeEventInfo(e)}
-          />
-          <div id="searchResults" class="results"></div>
-        </div> */}
         <select
           className="col form-control my-1"
           name="rankLabel"
@@ -172,7 +212,11 @@ const EditEvent = (props) => {
         >
           <option value="">Unknown Rank / N/A</option>
           {rankLabels.length > 0 &&
-            rankLabels.map((rank) => <option value={rank.label}>{rank.label}</option>)}
+            rankLabels.map((rank) => (
+              <option key={rank.rank_id} value={rank.label}>
+                {rank.label}
+              </option>
+            ))}
         </select>
         <div className="w-100"></div>
         <input
@@ -183,9 +227,6 @@ const EditEvent = (props) => {
           value={eventInfo.position}
           onChange={(e) => onChangeEventInfo(e)}
         />
-        {/* <label className="col-auto my-1 text-right form-control-lg" htmlFor="eventDate">
-          Brief Description:
-        </label> */}
         <input
           className="col form-control form-control-lg my-1"
           type="text"
@@ -197,7 +238,9 @@ const EditEvent = (props) => {
         <div className="text-center">
           <button className="lcars_btn red_btn all_round">Add Event</button>
         </div>
+        <div>{eventInfo.stardate}</div>
       </form>
+      {eventInfo.starshipId} {eventInfo.starshipName} {eventInfo.starshipRegistry}
     </>
   );
 };

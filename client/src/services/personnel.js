@@ -20,6 +20,22 @@ class PersonnelDataService {
   getRankLabels() {
     return http.get("/personnel/ranks/");
   }
+
+  getAllEvent(officerId, db = "mongo") {
+    return http.get(`/personnel/events?officer_id=${officerId}&db=${db}`);
+  }
+
+  getEvent(eventId, db = "mongo") {
+    return http.get(`/personnel/event?event_id=${eventId}&db=${db}`);
+  }
+
+  insertEvent(eventInfo) {
+    return http.post("/personnel/event/", eventInfo);
+  }
+
+  updateEvent(eventInfo) {
+    return http.patch("/personnel/event/", eventInfo);
+  }
 }
 
 export default new PersonnelDataService();

@@ -2,7 +2,7 @@ const { Decimal128 } = require("mongodb");
 const mongoose = require("mongoose");
 
 // Create Schema for starship
-const UserSchema = new mongoose.Schema(
+const StarshipSchema = new mongoose.Schema(
   {
     ship_id: {
       type: Number,
@@ -20,58 +20,42 @@ const UserSchema = new mongoose.Schema(
     class: {
       type: String,
     },
-    launch: [
-      {
-        date: {
-          type: Date,
-        },
-        stardate: {
-          type: String,
-        },
-        note: {
-          type: String,
-        },
-      },
-    ],
-    commission: [
-      {
-        date: {
-          type: Date,
-        },
-        stardate: {
-          type: String,
-        },
-        note: {
-          type: String,
-        },
-      },
-    ],
-    decommission: [
-      {
-        date: {
-          type: Date,
-        },
-        stardate: {
-          type: String,
-        },
-        note: {
-          type: String,
-        },
-      },
-    ],
-    destruction: [
-      {
-        date: {
-          type: Date,
-        },
-        stardate: {
-          type: String,
-        },
-        note: {
-          type: String,
-        },
-      },
-    ],
+    launch_date: {
+      type: Date,
+    },
+    lauch_stardate: {
+      type: String,
+    },
+    launch_note: {
+      type: String,
+    },
+    commission_date: {
+      type: Date,
+    },
+    commission_stardate: {
+      type: String,
+    },
+    commission_note: {
+      type: String,
+    },
+    decommission_date: {
+      type: Date,
+    },
+    decommission_stardate: {
+      type: String,
+    },
+    decommission_note: {
+      type: String,
+    },
+    destruction_date: {
+      type: Date,
+    },
+    destruction_stardate: {
+      type: String,
+    },
+    destruction_note: {
+      type: String,
+    },
     photo: {
       type: Buffer,
     },
@@ -80,4 +64,4 @@ const UserSchema = new mongoose.Schema(
   { strict: false }
 );
 
-module.exports = User = mongoose.model("users", UserSchema);
+module.exports = Starship = mongoose.model("starships", StarshipSchema);

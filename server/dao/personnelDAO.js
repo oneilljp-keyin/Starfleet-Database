@@ -17,18 +17,18 @@ module.exports = class PersonnelDAO {
 
   static async getPersonnel({ filters = null, page = 0, personnelPerPage = 20, db, userId } = {}) {
     let query;
-    if (userId !== "null" && userId !== "undefined") {
-      const history = new SearchHistory({
-        searchString: filters["name"],
-        category: "Personnel",
-        userId: userId,
-      });
-      try {
-        history.save();
-      } catch (error) {
-        return error.message;
-      }
-    }
+    // if (userId !== "null" && userId !== "undefined") {
+    //   const history = new SearchHistory({
+    //     searchString: filters["name"],
+    //     category: "Personnel",
+    //     userId: userId,
+    //   });
+    //   try {
+    //     history.save();
+    //   } catch (error) {
+    //     return error.message;
+    //   }
+    // }
     if (db === "post") {
       try {
         // PostGreSQL query
@@ -99,8 +99,8 @@ module.exports = class PersonnelDAO {
               from: "events",
               let: { id: "$_id" },
               pipeline: [
-                { $match: { $expr: { $eq: ["$personnel_id", "$$id"] } } },
-                { $sort: { date: -1 } },
+                { $match: { $expr: { $eq: ["$officerId", "$$id"] } } },
+                { $sort: { date: 1 } },
               ],
               as: "events",
             },

@@ -129,7 +129,7 @@ function App() {
               />
               <Route
                 exact
-                path="/personnel/:id/:event?"
+                path="/personnel/:id/event/:eventid?"
                 render={(props) => (
                   // !isAuthenticated ? (
                   //   <Redirect to="/" />

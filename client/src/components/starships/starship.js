@@ -3,7 +3,6 @@ import StarshipsDataService from "../../services/starships";
 
 const Starships = (props) => {
   const database = props.database;
-  console.log(props.match.params.id);
 
   const initialStarshipsState = {
     id: null,
@@ -18,14 +17,12 @@ const Starships = (props) => {
   };
 
   const [starship, setStarship] = useState(initialStarshipsState);
-  console.log(starship);
 
   useEffect(() => {
     const getStarship = (id) => {
       StarshipsDataService.get(id, database)
         .then((response) => {
           setStarship(response.data);
-          console.log(response.data);
         })
         .catch((err) => {
           console.error(err);

@@ -16,21 +16,21 @@ module.exports = class StarshipsDAO {
     }
   }
 
-  static async getStarships({ filters = null, page = 1, starshipsPerPage = 20, db, userId } = {}) {
+  static async getStarships({ filters = null, page = 1, starshipsPerPage = 21, db, userId } = {}) {
     let query;
-    if (userId !== "null" && userId !== "undefined") {
-      let searchString = filters["name"] ? filters["name"] : filters["class"];
-      const history = new SearchHistory({
-        searchString: searchString,
-        category: "Starships",
-        userId: userId,
-      });
-      try {
-        history.save();
-      } catch (error) {
-        return error.message;
-      }
-    }
+    // if (userId !== "null" && userId !== "undefined") {
+    //   let searchString = filters["name"] ? filters["name"] : filters["class"];
+    //   const history = new SearchHistory({
+    //     searchString: searchString,
+    //     category: "Starships",
+    //     userId: userId,
+    //   });
+    //   try {
+    //     history.save();
+    //   } catch (error) {
+    //     return error.message;
+    //   }
+    // }
     if (db === "post") {
       // PostGreSQL query
       try {
@@ -51,7 +51,8 @@ module.exports = class StarshipsDAO {
       // MongoDB query
       if (filters) {
         if ("name" in filters) {
-          query = { $text: { $search: filters["name"] } };
+          query = { name: { $regex: new RegExp("^" + filters["name"] + ".*", "i") } };
+          // query = { $text: { $search: filters["name"] } };
         } else if ("class" in filters) {
           if (filters["class"] === "Unknown Class") {
             query = { class: { $exists: false } };
