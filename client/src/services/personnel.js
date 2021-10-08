@@ -13,16 +13,28 @@ class PersonnelDataService {
     return http.get(`/personnel?${by}=${query}&db=${db}&userId=${userId}`);
   }
 
-  searchHistory(id) {
-    return http.get("/personnel/history/", id);
+  getRankLabels() {
+    return http.get("/personnel/ranks/");
   }
 
-  updatePersonnel(data) {
-    return http.put("/review-edit", data);
+  getAllEvent(officerId, db = "mongo") {
+    return http.get(`/personnel/events?officer_id=${officerId}&db=${db}`);
   }
 
-  deletePersonnel(id, userID) {
-    return http.delete(`/review-delete?id=${id}`, { data: { user_id: userID } });
+  getEvent(eventId, db = "mongo") {
+    return http.get(`/personnel/event?event_id=${eventId}&db=${db}`);
+  }
+
+  insertEvent(eventInfo) {
+    return http.post("/personnel/event/", eventInfo);
+  }
+
+  updateEvent(eventInfo) {
+    return http.patch("/personnel/event/", eventInfo);
+  }
+
+  insertPhoto(photoInfo) {
+    return http.post("/personnel/photos", photoInfo);
   }
 }
 

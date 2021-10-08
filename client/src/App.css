@@ -1,3 +1,39 @@
+/* Code for Autocomplete Fields */
+.searchContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-pic {
+  height: 250px;
+  width: inherit;
+  margin: 0 8px 8px 0;
+}
+
+.results {
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+  width: 100%;
+  background-color: #f9f9f9;
+  color: #121212;
+  text-align: center;
+}
+.suggestion {
+  cursor: pointer;
+  border: 0, 1px, 1px, 1px;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  background-color: #f9f9f9;
+  z-index: 5;
+}
+
+.suggestion:hover {
+  background-color: grey;
+}
+
+/* ------------------------------------------------------ */
+
 .nav-buffer {
   height: 64px;
 }
@@ -6,13 +42,17 @@
   max-width: 400px;
 }
 
+input {
+  text-align: center;
+}
+
 * {
   padding: 0;
   margin: 0;
 }
 
 body {
-  background-color: #0f0f0f;
+  background-color: #121212;
   min-width: 360px;
 }
 
@@ -57,7 +97,7 @@ a {
 
 a:hover,
 a:focus {
-  color: #99bbff;
+  color: #121212;
 }
 
 time {
@@ -107,7 +147,7 @@ time {
   position: relative;
   z-index: 1;
   margin: 0.5rem 0 0 0;
-  background-color: rgba(153, 153, 255, 0.62);
+  background-color: #9999ff9e;
   border-radius: 0 0 0 1.62rem;
   padding-bottom: 0.5rem;
   animation: fromTop 1000ms, fadeIn 500ms;
@@ -134,7 +174,7 @@ time {
   height: 1.1rem;
   width: 12%;
   width: calc(12% - 1rem);
-  background: rgba(204, 102, 204, 0.5);
+  background: #cc66cc80;
   border-left: 0.5rem solid #0f0f0f;
   border-right: 0.5rem solid #0f0f0f;
   transform: translateX(-100%);
@@ -182,7 +222,7 @@ time {
 #menu-btn:focus,
 #viewport-btn:hover,
 #viewport-btn:focus {
-  background-color: rgba(204, 204, 255, 1);
+  background-color: #ccccff;
 }
 
 #main_nav {
@@ -199,6 +239,7 @@ time {
 #main_nav.active,
 #search_nav.active {
   max-height: 1000px;
+  padding-right: 24px;
 }
 
 #main_nav ul {
@@ -217,6 +258,58 @@ button.logout {
   text-align: right;
   border-radius: 1rem 0 0 1rem;
   transition: 50ms ease-in-out;
+}
+
+/* Generic Button features */
+.lcars_btn {
+  color: #0f0f0f;
+  text-align: right;
+  display: inline-block;
+  border: none;
+  text-decoration: none;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  font-weight: 400;
+}
+
+/* Button Colours */
+.orange_btn {
+  background-color: #ff9400e6;
+}
+.orange_btn:hover {
+  background-color: #ffcc89;
+}
+.beige_btn {
+  background-color: #ffca92e6;
+}
+.beige_btn:hover {
+  background-color: #ffddb9;
+}
+.red_btn {
+  background-color: #dc5e64e6;
+}
+.red_btn:hover {
+  background-color: #dda5a7;
+}
+
+/* Button Shapes */
+
+.left_round {
+  border-radius: 1rem 0 0 1rem;
+  margin: 0.5rem 0 1rem 1rem;
+}
+
+.right_round {
+  border-radius: 0 1rem 1rem 0;
+  margin: 0.5rem 0 1rem 2px;
+}
+
+.all_round {
+  border-radius: 1rem;
+  margin: 0.5rem 0 1rem 1rem;
+}
+
+.all_square {
+  margin: 0.5rem 0 1rem 2px;
 }
 
 #main_nav a:hover,
@@ -253,7 +346,7 @@ button.logout {
 
 h2,
 .topbar-title {
-  color: rgba(255, 221, 34, 0.9);
+  color: #ffdd22e6;
   font-size: 1.24rem;
   text-transform: uppercase;
 }
@@ -266,7 +359,13 @@ h3 {
 
 h4 {
   font-size: 1.18rem;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
+  margin-bottom: 12px;
+}
+h5 {
+  font-size: 1.28rem;
+  /* text-transform: uppercase; */
+  color: #dd8100;
 }
 
 /* Main Content */
@@ -274,7 +373,7 @@ h4 {
 .content_wrapper {
   position: relative;
   margin: 0.5rem 0 0 0;
-  background-color: rgba(153, 153, 255, 0.62);
+  background-color: #9999ff9e;
   border-radius: 1.62rem 0 0 1.62rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -289,7 +388,7 @@ h4 {
   height: 1.1rem;
   /* width: 24%; */
   width: calc(24% - 1rem);
-  background: rgba(204, 102, 204, 0.25);
+  background: #cc66cc40;
   border-left: 0.5rem solid #0f0f0f;
   border-right: 0.5rem solid #0f0f0f;
   transform: translateX(-100%);
@@ -319,7 +418,7 @@ h4 {
   min-height: 300px;
   box-sizing: border-box;
   overflow: hidden;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .article_content p {
@@ -492,6 +591,7 @@ article footer p {
 
   h1 {
     font-size: 3rem;
+    color: #ffffffde;
   }
 
   h2,
@@ -505,6 +605,7 @@ article footer p {
 
   h4 {
     font-size: 1.18rem;
+    color: #ffffffde;
   }
 
   .footer_bar {

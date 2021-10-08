@@ -1,32 +1,67 @@
+const { Decimal128 } = require("mongodb");
 const mongoose = require("mongoose");
 
-// Create Schema for user
-const UserSchema = new mongoose.Schema(
+// Create Schema for starship
+const StarshipSchema = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-    },
-    lastName: {
-      type: String,
-    },
-    email: {
-      type: String,
+    ship_id: {
+      type: Number,
       required: true,
       unique: true,
     },
-    email_is_verified: {
-      type: Boolean,
-      default: false,
+    name: {
+      type: String,
+      required: true,
     },
-    password: {
+    registry: {
+      type: String,
+      unique: true,
+    },
+    class: {
       type: String,
     },
-    date: {
+    launch_date: {
       type: Date,
-      default: Date.now,
+    },
+    lauch_stardate: {
+      type: String,
+    },
+    launch_note: {
+      type: String,
+    },
+    commission_date: {
+      type: Date,
+    },
+    commission_stardate: {
+      type: String,
+    },
+    commission_note: {
+      type: String,
+    },
+    decommission_date: {
+      type: Date,
+    },
+    decommission_stardate: {
+      type: String,
+    },
+    decommission_note: {
+      type: String,
+    },
+    destruction_date: {
+      type: Date,
+    },
+    destruction_stardate: {
+      type: String,
+    },
+    destruction_note: {
+      type: String,
+    },
+    photo: {
+      type: Buffer,
     },
   },
+
   { strict: false }
 );
 
-module.exports = User = mongoose.model("users", UserSchema);
+module.exports = Starship = mongoose.model("starships", StarshipSchema);

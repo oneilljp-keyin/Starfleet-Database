@@ -63,4 +63,24 @@ module.exports = class PersonnelController {
       res.json(err.message);
     }
   }
+
+  static async apiGetRankLabels(req, res, next) {
+    try {
+      let rankLabels = await PersonnelDAO.getRankLabels();
+      res.json(rankLabels);
+    } catch (e) {
+      console.error(`api, ${e}`);
+      res.status(500).json({ error: e });
+    }
+  }
+
+  static async apiOfficerPhotos(req, res, next) {
+    try {
+      let rankLabels = await PersonnelDAO.getRankLabels();
+      res.json(rankLabels);
+    } catch (e) {
+      console.error(`api, ${e}`);
+      res.status(500).json({ error: e });
+    }
+  }
 };

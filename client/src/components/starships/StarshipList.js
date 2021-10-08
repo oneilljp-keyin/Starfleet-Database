@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import StarshipsDataService from "../../services/starships";
-import Pagination from "../../utils/pagination";
+// import Pagination from "../../utils/pagination";
 
 function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
   const [starships, setStarships] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [searchClass, setSearchClass] = useState("");
-  const [totalResults, setTotalResults] = useState("");
-  const [currentPage, setCurrentPage] = useState("");
-  const [queryBy, setQueryBy] = useState("");
+  // const [totalResults, setTotalResults] = useState("");
+  // const [currentPage, setCurrentPage] = useState("");
+  // const [queryBy, setQueryBy] = useState("");
   const [classes, setClasses] = useState(["Unknown Class"]);
 
   useEffect(() => {
@@ -36,10 +36,9 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
   const find = (query, by, db, userId) => {
     StarshipsDataService.find(query, by, db, userId)
       .then((response) => {
-        console.log(response.data);
         setStarships(response.data.starships);
-        setCurrentPage(response.data.page);
-        setTotalResults(response.data.total_results);
+        // setCurrentPage(response.data.page);
+        // setTotalResults(response.data.total_results);
       })
       .catch((e) => {
         console.log(e);
@@ -47,16 +46,13 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
   };
 
   const findByName = () => {
-    setQueryBy("name");
+    // setQueryBy("name");
     find(searchName, "name", database, userId);
   };
 
   const findByClass = () => {
-    // if (searchClass === "Unknown Class") {
-    // } else {
-    setQueryBy("class");
+    // setQueryBy("class");
     find(searchClass, "class");
-    // }
   };
 
   const retrieveClasses = () => {
@@ -69,8 +65,6 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
         console.log(e);
       });
   };
-
-  console.log("Total Results: ", starships);
 
   return (
     <>

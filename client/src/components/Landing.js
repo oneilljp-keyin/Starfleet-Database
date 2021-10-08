@@ -35,7 +35,7 @@ function Login({ setAuth, userId, getProfile, userName }) {
     <>
       <article>
         <header>
-          <h3>
+          <h3 className="text-center">
             Welcome to Sector 709{userName && ","} {userName}
           </h3>
         </header>
