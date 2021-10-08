@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PersonnelDataService from "../../services/personnel";
 import StarshipsDataService from "../../services/starships";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const EditEvent = (props) => {
   const [edit, setEdit] = useState(false);
@@ -115,6 +116,15 @@ const EditEvent = (props) => {
 
   return (
     <>
+      <div className="menu-btn_wrapper flex-row d-flex">
+        <Link
+          to={"/personnel/" + props.match.params.id}
+          id="edit_btn"
+          className="lcars_btn orange_btn all_round"
+        >
+          Back To Profile
+        </Link>
+      </div>
       {/* // Form to insert events in officer's life */}
       <form
         autoComplete="off"

@@ -39,6 +39,22 @@ const OfficerSchema = new mongoose.Schema(
     serial: {
       type: String,
     },
+    images: [
+      {
+        image: {
+          type: Buffer,
+          required: true,
+        },
+        description: {
+          type: String,
+          required: true,
+        },
+        mimetype: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   { strict: false }
 );

@@ -37,7 +37,8 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
       {/* <div>{database}</div> */}
       {/* {isAuth && ( */}
       <div className="rows d-flex align-content-center">
-        <div className="input-group input-size">
+        <div className="col-4"></div>
+        <div className="input-group input-group-lg">
           <input
             type="text"
             className="form-control"
@@ -45,7 +46,13 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
             value={searchName}
             onChange={onChangeSearchName}
           />
+          <div className="input-group-append input-group-lg">
+            <button className="btn btn-outline-secondary" type="button" onClick={findByName}>
+              Search
+            </button>
+          </div>
         </div>
+        <div className="col-4"></div>
         {/* <select
           className="form-control"
           name="database"
@@ -56,11 +63,6 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
           <option value="mongo">MongoDB</option>
           <option value="post">PostGreSQL</option>
         </select> */}
-        <div className="input-group-append">
-          <button className="btn btn-outline-secondary" type="button" onClick={findByName}>
-            Search
-          </button>
-        </div>
       </div>
       {/* )} */}
       <div className="row">

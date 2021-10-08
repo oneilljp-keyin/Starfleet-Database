@@ -13,10 +13,6 @@ class PersonnelDataService {
     return http.get(`/personnel?${by}=${query}&db=${db}&userId=${userId}`);
   }
 
-  searchHistory(id) {
-    return http.get("/personnel/history/", id);
-  }
-
   getRankLabels() {
     return http.get("/personnel/ranks/");
   }
@@ -35,6 +31,10 @@ class PersonnelDataService {
 
   updateEvent(eventInfo) {
     return http.patch("/personnel/event/", eventInfo);
+  }
+
+  insertPhoto(photoInfo) {
+    return http.post("/personnel/photos", photoInfo);
   }
 }
 

@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import PersonnelDataService from "../../services/personnel";
 import { Link } from "react-router-dom";
 
+import { BINARY_TEST } from "../../utils/constants";
+import PhotoUpload from "./PhotoUpload";
+
 const Officer = (props) => {
   const database = props.database;
 
@@ -67,44 +70,50 @@ const Officer = (props) => {
       </div>
       {officer ? (
         <div>
-          <h1>
-            {officer.surname && <>{officer.surname}</>}
-            {officer.first && <>, {officer.first}</>}
-            {officer.middle && <> {officer.middle}</>}
-            {officer.postNom && <>, {officer.postNom}</>}
-          </h1>
-          <h2>{officer.serial}</h2>
-          <p>
-            {officer.birthDate && (
-              <>
-                <strong>Date of Birth: </strong>
-                {officer.birthDate.slice(0, 10)}
-                <br />
-              </>
-            )}
-            {officer.birthPlace && (
-              <>
-                <strong>Place of Birth: </strong>
-                {officer.birthPlace}
-                <br />
-              </>
-            )}
-            {officer.deathDate && (
-              <>
-                <strong>Date of Death: </strong>
-                {officer.deathDate.slice(0, 10)}
-                {officer.deathStardate && <> &#40;SD: {officer.deathStardate}&#41;</>}
-                <br />
-              </>
-            )}
-            {officer.deathPlace && (
-              <>
-                <strong>Place of Death: </strong>
-                {officer.deathPlace}
-                <br />
-              </>
-            )}
-          </p>
+          <div className="rows d-flex">
+            <img className="profile-pic" alt="James T. Kirk" src={BINARY_TEST} />
+            <div>
+              <h1>
+                {officer.surname && <>{officer.surname}</>}
+                {officer.first && <>, {officer.first}</>}
+                {officer.middle && <> {officer.middle}</>}
+                {officer.postNom && <>, {officer.postNom}</>}
+              </h1>
+              <h2>{officer.serial}</h2>
+              <PhotoUpload officerId={props.match.params.id} />
+              {/* <p>
+                {officer.birthDate && (
+                  <>
+                    <strong>Date of Birth: </strong>
+                    {officer.birthDate.slice(0, 10)}
+                    <br />
+                  </>
+                )}
+                {officer.birthPlace && (
+                  <>
+                    <strong>Place of Birth: </strong>
+                    {officer.birthPlace}
+                    <br />
+                  </>
+                )}
+                {officer.deathDate && (
+                  <>
+                    <strong>Date of Death: </strong>
+                    {officer.deathDate.slice(0, 10)}
+                    {officer.deathStardate && <> &#40;SD: {officer.deathStardate}&#41;</>}
+                    <br />
+                  </>
+                )}
+                {officer.deathPlace && (
+                  <>
+                    <strong>Place of Death: </strong>
+                    {officer.deathPlace}
+                    <br />
+                  </>
+                )}
+              </p> */}
+            </div>
+          </div>
           <div className="list-group">
             {officer.events.length > 0 ? (
               officer.events.map((event, index) => {
