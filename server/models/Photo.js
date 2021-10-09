@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const PhotoSchema = mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     description: {
       type: String,
       required: true,
@@ -13,6 +18,10 @@ const PhotoSchema = mongoose.Schema(
     },
     file_mimetype: {
       type: String,
+      required: true,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
   },

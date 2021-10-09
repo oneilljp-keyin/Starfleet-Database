@@ -1,6 +1,6 @@
 const EventsDAO = require("../dao/eventsDAO");
 const LifeEvent = require("../models/Event");
-const Officer = require("../models/personnel");
+const Officer = require("../models/Personnel");
 
 module.exports = class EventsController {
   static async apiGetAllEvents(req, res, next) {

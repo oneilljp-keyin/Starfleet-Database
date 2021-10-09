@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import PersonnelDataService from "../../services/personnel";
 import { Link } from "react-router-dom";
 
-import { BINARY_TEST } from "../../utils/constants";
-import PhotoUpload from "./PhotoUpload";
+// import { BINARY_TEST } from "../../utils/constants";
+import OfficerProfilePics from "./OfficerProfilePics";
 
 const Officer = (props) => {
   const database = props.database;
@@ -71,7 +71,7 @@ const Officer = (props) => {
       {officer ? (
         <div>
           <div className="rows d-flex">
-            <img className="profile-pic" alt="James T. Kirk" src={BINARY_TEST} />
+            <OfficerProfilePics officerId={props.match.params.id} isAuth={props.isAuth} />
             <div>
               <h1>
                 {officer.surname && <>{officer.surname}</>}
@@ -80,7 +80,6 @@ const Officer = (props) => {
                 {officer.postNom && <>, {officer.postNom}</>}
               </h1>
               <h2>{officer.serial}</h2>
-              <PhotoUpload officerId={props.match.params.id} />
               {/* <p>
                 {officer.birthDate && (
                   <>
@@ -120,7 +119,7 @@ const Officer = (props) => {
                 return (
                   <div key={index} className="d-flex flex-column align-items-baseline">
                     <h5 className="row mx-1 my-0">
-                      {event.stardate && <>{event.stardate}</>}{" "}
+                      {event.stardate && <>{event.stardate} </>}
                       {event.date && <>({event.date.slice(0, 10)})</>}{" "}
                       {event.starshipName && event.location && <> - </>}{" "}
                       {event.starshipName && <>Onboard U.S.S. {event.starshipName}</>}{" "}
@@ -128,9 +127,9 @@ const Officer = (props) => {
                       {event.location && <>at/near {event.location}</>}
                     </h5>
                     <div className="rows d-flex flex-row">
-                      <h4 className="mx-1 col-auto">
-                        {event.rankLabel && <>Rank of {event.rankLabel} - </>}
-                      </h4>
+                      {event.rankLabel && (
+                        <h4 className="mx-1 col-auto">Rank of {event.rankLabel} - </h4>
+                      )}
                       <h4 className="mx-1 col">{event.notes}</h4>
                     </div>
                   </div>

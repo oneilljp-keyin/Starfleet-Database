@@ -1,5 +1,9 @@
+const sharp = require("sharp");
+
 const PersonnelDAO = require("../dao/personnelDAO.js");
+
 const searchHistory = require("../models/SearchHistory");
+const Photo = require("../models/Photo");
 
 const ObjectId = require("mongodb").ObjectId;
 
@@ -74,13 +78,13 @@ module.exports = class PersonnelController {
     }
   }
 
-  static async apiOfficerPhotos(req, res, next) {
+  static async apiGetOfficerPhotos(req, res, next) {
+    let o_id = new ObjectId(req.query.id);
     try {
-      let rankLabels = await PersonnelDAO.getRankLabels();
-      res.json(rankLabels);
-    } catch (e) {
-      console.error(`api, ${e}`);
-      res.status(500).json({ error: e });
+      const photos = await Photo.find({ owner: o_id });
+      res.send(photos);
+    } catch (err) {
+      res.json(err.message);
     }
   }
 };

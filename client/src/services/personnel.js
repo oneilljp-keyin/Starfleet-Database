@@ -34,7 +34,14 @@ class PersonnelDataService {
   }
 
   insertPhoto(photoInfo) {
-    return http.post("/personnel/photos", photoInfo);
+    return http.post("/personnel/photos/", photoInfo, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+  getAllPhotos(id) {
+    return http.get(`/personnel/photos?id=${id}`);
   }
 }
 

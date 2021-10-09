@@ -3,3 +3,5 @@ server/test.env
 server/dev.env
 README.md
 LCARS-Graphic.png
+.gitignore
+project-two

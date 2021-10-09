@@ -5,9 +5,23 @@
 }
 
 .profile-pic {
-  height: 250px;
+  max-height: 250px;
   width: inherit;
   margin: 0 8px 8px 0;
+}
+
+.officer-pics {
+  height: 300px;
+  width: 300px;
+}
+
+.preview-image {
+  height: 100%;
+}
+
+.cc-bg {
+  background-color: #55555588;
+  border-radius: 1em;
 }
 
 .results {
@@ -263,12 +277,19 @@ button.logout {
 /* Generic Button features */
 .lcars_btn {
   color: #0f0f0f;
-  text-align: right;
+  text-align: center;
   display: inline-block;
   border: none;
   text-decoration: none;
   padding: 0.5rem 2rem 0.5rem 2rem;
   font-weight: 400;
+}
+
+/* Button sizes */
+.small_btn {
+  max-width: 124px;
+  margin: 0;
+  z-index: 100;
 }
 
 /* Button Colours */
