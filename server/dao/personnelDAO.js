@@ -9,7 +9,7 @@ module.exports = class PersonnelDAO {
       return;
     }
     try {
-      personnel = await conn.db(process.env.MONDO_DB_NAME).collection("personnel");
+      personnel = await conn.db(process.env.MONDO_DB_NAME).collection("officers");
     } catch (e) {
       console.error(`Unable to establish a collection handle in personnelDAO: ${e}`);
     }
@@ -115,6 +115,15 @@ module.exports = class PersonnelDAO {
       } catch (err) {
         console.error(`Something went wrong in getpersonnelByID: ${err}`);
       }
+    }
+  }
+
+  static async updatePersonnelRecord(officer_id, updatedInfo) {
+    try {
+      await personnel.updateOne({ _id: ObjectId(officer_id) }, { $set: updatedInfo });
+      return { message: "Record Updated Successfully" };
+    } catch (err) {
+      console.error(`Record Update Failed ${err.message}`);
     }
   }
 };

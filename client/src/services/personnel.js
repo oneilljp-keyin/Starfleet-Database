@@ -33,6 +33,10 @@ class PersonnelDataService {
     return http.patch("/personnel/event/", eventInfo);
   }
 
+  updateOfficer(officerInfo) {
+    return http.patch("/personnel/id/", officerInfo);
+  }
+
   insertPhoto(photoInfo) {
     return http.post("/personnel/photos/", photoInfo, {
       headers: {

@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+
 import PersonnelDataService from "../../services/personnel";
-// import { Link } from "react-router-dom";
 
 const EditOfficer = (props) => {
   const [edit, setEdit] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   // const [officerId, setOfficerId] = useState(props.match.params.id);
 
   const [officerInfo, setOfficerInfo] = useState({
@@ -15,11 +18,11 @@ const EditOfficer = (props) => {
     birthDate: "",
     birthStardate: "",
     birthPlace: "",
-    birthNote: "",
+    birthDateNote: "",
     deathDate: "",
     deathStardate: "",
     deathPlace: "",
-    deathNote: "",
+    deathDateNote: "",
     serial: "",
     events: [],
   });
@@ -31,11 +34,10 @@ const EditOfficer = (props) => {
   };
 
   useEffect(() => {
-    let db = props.database;
     let officerId = props.match.params.id;
     const getPersonnel = async (id) => {
       try {
-        let response = await PersonnelDataService.get(id, db);
+        let response = await PersonnelDataService.get(id);
         setOfficerInfo(response.data);
         // console.log(response.data);
       } catch (err) {
@@ -44,20 +46,24 @@ const EditOfficer = (props) => {
     };
     getPersonnel(officerId);
     setEdit(true);
+    setSubmitted(false);
     setBtnLabel("Update");
-  }, [edit, props.database, props.match.params.id]);
+  }, [edit, submitted, props.match.params.id]);
 
   const saveOfficerInfo = (e) => {
     e.preventDefault();
 
     let data = officerInfo;
+    delete data["events"];
+    console.log(data);
 
     if (edit) {
       data._id = props.match.params.id;
       PersonnelDataService.updateOfficer(data)
         .then((response) => {
-          // setSubmitted(true);
+          setSubmitted(true);
           console.log(response.data);
+          toast.success(response.data);
         })
         .catch((e) => {
           console.error(e);
@@ -76,9 +82,17 @@ const EditOfficer = (props) => {
 
   return (
     <>
-      <form className="d-flex row my-1 mx-2 form-group" onSubmit={saveOfficerInfo}>
+      <div className="menu-btn_wrapper flex-row d-flex">
         <h3 className="col text-center">{btnLabel} Officer Profile</h3>
-        <div class="w-100"></div>
+        <Link
+          to={"/personnel/" + props.match.params.id}
+          id="edit_btn"
+          className="lcars_btn orange_btn all_round"
+        >
+          Back To Profile
+        </Link>
+      </div>
+      <form className="d-flex row my-1 mx-2 form-group" onSubmit={saveOfficerInfo}>
         <div className="col"></div>
         <input
           className="col form-control form-control-lg my-1"
@@ -136,8 +150,8 @@ const EditOfficer = (props) => {
         />
         <select
           className="col form-control my-1"
-          name="birthNote"
-          value={officerInfo.birthNote}
+          name="birthDateNote"
+          value={officerInfo.birthDateNote}
           onChange={(e) => onChangeOfficerInfo(e)}
         >
           <option>Exact Date</option>
@@ -157,8 +171,8 @@ const EditOfficer = (props) => {
         />
         <select
           className="col form-control my-1"
-          name="deathNote"
-          value={officerInfo.deathNote}
+          name="deathDateNote"
+          value={officerInfo.deathDateNote}
           onChange={(e) => onChangeOfficerInfo(e)}
         >
           <option>Exact Date</option>

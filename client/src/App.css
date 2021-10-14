@@ -5,7 +5,7 @@
 }
 
 .profile-pic {
-  max-height: 250px;
+  max-height: 300px;
   width: inherit;
   margin: 0 8px 8px 0;
 }
@@ -24,9 +24,19 @@
   border-radius: 1em;
 }
 
+.middle {
+  transition: 0.5s ease;
+  opacity: 0;
+  text-align: center;
+}
+
+.carousel-item:hover .middle {
+  opacity: 1;
+}
+
 .results {
   position: absolute;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 8px 16px 0px #12121233;
   z-index: 5;
   width: 100%;
   background-color: #f9f9f9;
@@ -36,14 +46,14 @@
 .suggestion {
   cursor: pointer;
   border: 0, 1px, 1px, 1px;
-  border-right: 1px solid black;
-  border-left: 1px solid black;
+  border-right: 1px solid #121212;
+  border-left: 1px solid #121212;
   background-color: #f9f9f9;
   z-index: 5;
 }
 
 .suggestion:hover {
-  background-color: grey;
+  background-color: #808080;
 }
 
 /* ------------------------------------------------------ */
@@ -84,7 +94,7 @@ main {
     "clock"
     "header"
     "main";
-  color: #eee;
+  color: #eeeeee;
   font-family: oswald, helvetica, serif;
   font-weight: 300;
 }
@@ -122,7 +132,7 @@ time {
 .topbar {
   grid-area: clock;
   text-transform: uppercase;
-  background: rgba(153, 153, 255, 0.62);
+  background: #9999ff9e;
   display: flex;
   justify-content: flex-end;
   border-radius: 0 1rem 1rem 0;
@@ -132,9 +142,9 @@ time {
 
 .time_wrapper {
   position: relative;
-  color: rgba(153, 153, 255, 0.9);
+  color: #9999ffe6;
   display: inline-block;
-  background-color: #0f0f0f;
+  background-color: #121212;
   margin-right: 3rem;
   padding: 0 1rem;
   grid: flex;
@@ -149,7 +159,7 @@ time {
   top: 0;
   bottom: 0;
   width: 0.5rem;
-  background-color: #0f0f0f;
+  background-color: #121212;
 }
 
 .time_wrapper::after {
@@ -177,7 +187,7 @@ time {
   height: 33.3%;
   height: calc(33.3% - 0.5rem);
   width: 10%;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: #12121254;
   border-bottom: 0.5rem solid #0f0f0f;
 }
 
@@ -189,8 +199,8 @@ time {
   width: 12%;
   width: calc(12% - 1rem);
   background: #cc66cc80;
-  border-left: 0.5rem solid #0f0f0f;
-  border-right: 0.5rem solid #0f0f0f;
+  border-left: 0.5rem solid #121212;
+  border-right: 0.5rem solid #121212;
   transform: translateX(-100%);
 }
 
@@ -218,7 +228,7 @@ time {
 
 #menu-btn,
 #viewport-btn {
-  background-color: rgba(153, 153, 255, 0.9);
+  background-color: #9999ffe6;
   margin-bottom: 0.5rem;
   font-size: 2rem;
   padding: 1rem 2rem 1rem 1rem;
@@ -263,8 +273,8 @@ time {
 
 #main_nav a,
 button.logout {
-  color: #0f0f0f;
-  background-color: rgba(153, 153, 255, 0.9);
+  color: #121212;
+  background-color: #9999ffe6;
   display: block;
   margin: 0.5rem 0 1rem 1rem;
   padding: 1rem;
@@ -276,7 +286,7 @@ button.logout {
 
 /* Generic Button features */
 .lcars_btn {
-  color: #0f0f0f;
+  color: #121212;
   text-align: center;
   display: inline-block;
   border: none;
@@ -335,7 +345,7 @@ button.logout {
 
 #main_nav a:hover,
 #main_nav a:focus {
-  background-color: rgba(204, 204, 255, 1);
+  background-color: #ccccff;
 }
 
 #main_header hgroup {
@@ -348,7 +358,7 @@ button.logout {
 }
 
 #main_header hgroup span {
-  color: #555;
+  color: #555555;
 }
 
 #main_header hgroup h1 {
@@ -374,7 +384,7 @@ h2,
 
 h3 {
   font-size: 1.38rem;
-  color: rgb(204, 153, 102);
+  color: #cc9966;
   text-transform: uppercase;
 }
 
@@ -410,8 +420,8 @@ h5 {
   /* width: 24%; */
   width: calc(24% - 1rem);
   background: #cc66cc40;
-  border-left: 0.5rem solid #0f0f0f;
-  border-right: 0.5rem solid #0f0f0f;
+  border-left: 0.5rem solid #121212;
+  border-right: 0.5rem solid #121212;
   transform: translateX(-100%);
 }
 
@@ -423,15 +433,15 @@ h5 {
   width: 10%;
   height: 28.5%;
   height: calc(28.5% - 1rem);
-  background: rgba(204, 102, 204, 0.25);
-  border-top: 0.5rem solid #0f0f0f;
-  border-bottom: 0.5rem solid #0f0f0f;
+  background: #cc66cc40;
+  border-top: 0.5rem solid #121212;
+  border-bottom: 0.5rem solid #121212;
 }
 
 .content_container {
   position: relative;
   z-index: 1;
-  background-color: #0f0f0f;
+  background-color: #121212;
   width: 91%;
   border-radius: 1rem 0 0 1rem;
   margin: 0 0 0 auto;
@@ -444,7 +454,7 @@ h5 {
 
 .article_content p {
   display: block;
-  color: rgba(238, 238, 238, 0.9);
+  color: #eeeeeee6;
   margin: 0.5rem 0;
   max-width: 720px;
 }
@@ -453,7 +463,7 @@ article footer {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
-  color: rgba(238, 238, 238, 0.5);
+  color: #eeeeee80;
   font-size: 0.8rem;
   font-weight: 300;
 }
@@ -468,7 +478,7 @@ article footer p {
   display: block;
   width: 100%;
   margin: 0.25rem 0 1rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #ffffff1a;
   border-radius: 0.31rem;
 }
 
@@ -480,8 +490,8 @@ article footer p {
   right: 9.5%;
   width: 5%;
   box-sizing: border-box;
-  border-left: 0.5rem solid #0f0f0f;
-  border-right: 0.5rem solid #0f0f0f;
+  border-left: 0.5rem solid #121212;
+  border-right: 0.5rem solid #121212;
   background-color: rgba(102, 136, 153, 0.2);
 }
 
@@ -493,15 +503,15 @@ article footer p {
   left: 18%;
   width: 50%;
   box-sizing: border-box;
-  border-left: 0.5rem solid #0f0f0f;
-  border-right: 0.5rem solid #0f0f0f;
+  border-left: 0.5rem solid #121212;
+  border-right: 0.5rem solid #121212;
   background-color: rgba(0, 0, 0, 0.3);
 }
 
 #main_footer {
   margin: 0.5rem 0 0 0;
-  background-color: rgba(153, 153, 255, 0.62);
-  color: rgba(238, 238, 238, 0.62);
+  background-color: #9999ff9e;
+  color: #eeeeee9e;
   border-radius: 1.62rem 0 0 0;
   padding-top: 0.5rem;
   position: relative;
@@ -516,14 +526,14 @@ article footer p {
   height: 1rem;
   width: 24%;
   width: calc(24% - 1rem);
-  background: rgba(204, 102, 204, 0.25);
-  border-left: 0.5rem solid #0f0f0f;
-  border-right: 0.5rem solid #0f0f0f;
+  background: #cc66cc40;
+  border-left: 0.5rem solid #121212;
+  border-right: 0.5rem solid #121212;
   transform: translateX(-100%);
 }
 
 .main_footer_content {
-  background-color: #0f0f0f;
+  background-color: #121212;
   width: 91%;
   margin-left: auto;
   padding: 1rem;

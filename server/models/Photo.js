@@ -12,6 +12,11 @@ const PhotoSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    year: {
+      type: String,
+      trim: true,
+    },
+
     image: {
       type: Buffer,
       required: true,

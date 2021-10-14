@@ -1,65 +1,26 @@
 // import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-// import { useHistory } from "react-router";
 
-function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
+function Navbar({ isAuth, setAuth, setAdmin, setName }) {
   // const history = useHistory();
   // const [btnText, setBtnText] = useState("menu");
   // const [isStarshipSearchActive, setIsStarshipSearchActive] = useState(false);
   // const [isPersonnelSearchActive, setIsPersonnelSearchActive] = useState(false);
-  // const [refreshClock, setRefreshClock] = useState(false);
 
   const logout = (e) => {
     e.preventDefault();
     try {
       localStorage.removeItem("token");
       setAuth(false);
-      toast.success("Logout Succesful");
+      toast.success("Logout Successful");
       setAdmin(false);
       setName("");
     } catch (err) {
+      toast.success(err.message);
       console.log(err.message);
     }
   };
-
-  // useEffect(() => {
-  //   const d = new Date();
-  //   const hour = d.getHours();
-  //   const minutes = d.getMinutes();
-
-  //   if (hour < 10 && minutes >= 10) {
-  //     setTime("0" + hour.toString() + ":" + minutes.toString());
-  //   } else if (hour >= 10 && minutes < 10) {
-  //     setTime(hour.toString() + ":0" + minutes.toString());
-  //   } else if (hour < 10 && minutes < 10) {
-  //     setTime("0" + hour.toString() + ":0" + minutes.toString());
-  //   } else {
-  //     setTime(hour.toString() + ":" + minutes.toString());
-  //   }
-  //   setRefreshClock(false);
-  // }, [refreshClock, setTime]);
-
-  // setInterval(() => {
-  //   setRefreshClock(true);
-  // }, 60000);
-
-  // const toggleNav = () => {
-  //   setIsActive(!isActive);
-  //   if (btnText === "menu") {
-  //     setBtnText("close");
-  //   } else {
-  //     setBtnText("menu");
-  //   }
-  // };
-
-  // const toggleStarshipSearch = () => {
-  //   setIsStarshipSearchActive(!isStarshipSearchActive);
-  // };
-
-  // const togglePersonnelSearch = () => {
-  //   setIsPersonnelSearchActive(!isPersonnelSearchActive);
-  // };
 
   return (
     <>

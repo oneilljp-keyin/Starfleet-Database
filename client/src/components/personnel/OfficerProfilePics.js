@@ -15,6 +15,7 @@ function OfficerProfilePics({ officerId, isAuth }) {
   const dropRef = useRef(); // React ref for managing the hover state of droppable area
   const [photoInfo, setPhotoInfo] = useState({
     title: "",
+    year: "",
     description: "",
   });
 
@@ -32,7 +33,7 @@ function OfficerProfilePics({ officerId, isAuth }) {
           }
           setArrayPlusOne(array);
           setIsPreviewAvailable(false);
-          setPhotoInfo({ title: "", description: "" });
+          setPhotoInfo({ title: "", year: "", description: "" });
           setFile(null);
           updateBorder("over");
         })
@@ -42,7 +43,7 @@ function OfficerProfilePics({ officerId, isAuth }) {
       setPhotoRefresh(false);
     };
     getOfficerPics(officerId);
-  }, [officerId, photoRefresh]);
+  }, [officerId, photoRefresh, isAuth]);
 
   const onDrop = (files) => {
     const [uploadedFile] = files;
@@ -73,16 +74,16 @@ function OfficerProfilePics({ officerId, isAuth }) {
     e.preventDefault();
 
     try {
-      const { title, description } = photoInfo;
-      if (title.trim() !== "" && description.trim() !== "") {
+      const { title, year, description } = photoInfo;
+      if (title.trim() !== "" && description.trim() !== "" && year.trim() !== "") {
         if (file) {
           const formData = new FormData();
           formData.append("file", file);
           formData.append("title", title);
+          formData.append("year", year);
           formData.append("description", description);
           formData.append("_id", officerId);
 
-          //let response = await PersonnelDataService.insertPhoto(formData);
           let response = await axios.post(
             "http://localhost:8000/api/v1/sfdatabase/personnel/photos/",
             formData,
@@ -148,8 +149,10 @@ function OfficerProfilePics({ officerId, isAuth }) {
                 key={index}
               >
                 <img src={url} className="d-block w-100" alt={photo.title} />
-                <div className="carousel-caption cc-bg d-none d-sm-block p-0">
-                  <h5 className="m-0">{photo.title}</h5>
+                <div className="carousel-caption cc-bg d-none d-sm-block p-0 middle">
+                  <h5 className="m-0">
+                    {photo.title} [<small>{photo.year}</small>]
+                  </h5>
                   <p className="m-0">{photo.description}</p>
                 </div>
               </div>
@@ -172,25 +175,34 @@ function OfficerProfilePics({ officerId, isAuth }) {
                   <div {...getRootProps({ className: "drop-zone h-50" })} ref={dropRef}>
                     <input {...getInputProps()} />
                     <p className="text-center m-0">
-                      Drag &amp; drop OR
-                      <br /> click here to select
+                      Drag &amp; drop OR click <strong>HERE</strong> to select
                     </p>
                     {isPreviewAvailable && (
-                      <div className="image-preview h-50">
+                      <div className="image-preview h-75">
                         <img className="preview-image" src={previewSrc} alt="Preview" />
                       </div>
                     )}
                   </div>
                 )}
               </Dropzone>
-              <input
-                className="col form-control form-control-sm my-1"
-                type="text"
-                name="title"
-                placeholder="Image Title"
-                value={photoInfo.title}
-                onChange={(e) => onChangeEvent(e)}
-              />
+              <div className="d-flex row">
+                <input
+                  className="col form-control form-control-sm my-1"
+                  type="text"
+                  name="title"
+                  placeholder="Image Title"
+                  value={photoInfo.title}
+                  onChange={(e) => onChangeEvent(e)}
+                />
+                <input
+                  className="col form-control form-control-sm my-1"
+                  type="text"
+                  name="year"
+                  placeholder="Year"
+                  value={photoInfo.year}
+                  onChange={(e) => onChangeEvent(e)}
+                />
+              </div>
               <input
                 className="col form-control form-control-sm my-1"
                 type="text"
@@ -206,7 +218,7 @@ function OfficerProfilePics({ officerId, isAuth }) {
         {officerPics.length > 0 && (
           <>
             <button
-              className="carousel-control-prev"
+              className="carousel-control-prev h-75"
               type="button"
               data-bs-target="#photoCarousel"
               data-bs-slide="prev"
@@ -215,7 +227,7 @@ function OfficerProfilePics({ officerId, isAuth }) {
               <span className="visually-hidden">Previous</span>
             </button>
             <button
-              className="carousel-control-next"
+              className="carousel-control-next h-75"
               type="button"
               data-bs-target="#photoCarousel"
               data-bs-slide="next"

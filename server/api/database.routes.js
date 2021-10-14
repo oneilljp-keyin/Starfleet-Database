@@ -24,8 +24,10 @@ const upload = multer({
 });
 
 router.route("/personnel").get(PersonnelCtrl.apiGetPersonnel);
-router.route("/personnel/id/").get(PersonnelCtrl.apiGetPersonnelById);
-router.route("/personnel/history/:id").get(PersonnelCtrl.apiGetSearchHistory);
+router
+  .route("/personnel/id/")
+  .get(PersonnelCtrl.apiGetPersonnelById)
+  .patch(PersonnelCtrl.apiUpdatePersonnel);
 router.route("/personnel/ranks").get(RankCtrl.apiGetRankLabels);
 router.route("/personnel/events").get(EventsCtrl.apiGetAllEvents);
 router.route("/personnel/photos").get(PersonnelCtrl.apiGetOfficerPhotos);
@@ -44,13 +46,14 @@ router.post(
   upload.single("file"),
   async (req, res) => {
     try {
-      const { title, description, _id } = req.body;
+      const { title, year, description, _id } = req.body;
       const buffer = await sharp(req.file.buffer)
         .resize({ width: 400, height: 400 })
         .png()
         .toBuffer();
       const file = new Photo({
         title,
+        year,
         description,
         image: buffer,
         file_mimetype: "png",

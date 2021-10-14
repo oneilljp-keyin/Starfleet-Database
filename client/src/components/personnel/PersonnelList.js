@@ -37,7 +37,7 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
       {/* <div>{database}</div> */}
       {/* {isAuth && ( */}
       <div className="rows d-flex align-content-center">
-        <div className="col-4"></div>
+        <div className="col-3"></div>
         <div className="input-group input-group-lg">
           <input
             type="text"
@@ -52,7 +52,7 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
             </button>
           </div>
         </div>
-        <div className="col-4"></div>
+        <div className="col-3"></div>
         {/* <select
           className="form-control"
           name="database"

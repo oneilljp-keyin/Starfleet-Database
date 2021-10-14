@@ -12,6 +12,9 @@ const OfficerSchema = new mongoose.Schema(
     middle: {
       type: String,
     },
+    postNom: {
+      type: String,
+    },
     birthDate: {
       type: Date,
     },
@@ -39,24 +42,8 @@ const OfficerSchema = new mongoose.Schema(
     serial: {
       type: String,
     },
-    images: [
-      {
-        image: {
-          type: Buffer,
-          required: true,
-        },
-        description: {
-          type: String,
-          required: true,
-        },
-        mimetype: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
   },
   { strict: false }
 );
 
-module.exports = Officer = mongoose.model("personnel", OfficerSchema);
+module.exports = Officer = mongoose.model("officer", OfficerSchema);

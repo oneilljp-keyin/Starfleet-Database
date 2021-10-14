@@ -1,9 +1,8 @@
-const sharp = require("sharp");
-
 const PersonnelDAO = require("../dao/personnelDAO.js");
 
 const searchHistory = require("../models/SearchHistory");
 const Photo = require("../models/Photo");
+const Officer = require("../models/Officer");
 
 const ObjectId = require("mongodb").ObjectId;
 
@@ -56,15 +55,17 @@ module.exports = class PersonnelController {
     }
   }
 
-  static async apiGetSearchHistory(req, res, next) {
-    let o_id = new ObjectId(req.param.id);
-    // console.log(o_id);
+  static async apiUpdatePersonnel(req, res, next) {
+    let officer_id = req.body._id;
+    let updatedInfo = req.body;
+    delete updatedInfo["_id"];
+    console.log(req.body);
     try {
-      const history = await searchHistory.find({ userId: o_id });
-      // console.log(history);
-      res.send(history);
-    } catch (err) {
-      res.json(err.message);
+      let officer = await PersonnelDAO.updatePersonnelRecord(officer_id, updatedInfo);
+      res.json(officer.message);
+    } catch (e) {
+      console.error(`Update Officer Error: ${e.message}`);
+      res.status(500).json({ error: e.message });
     }
   }
 
@@ -81,7 +82,7 @@ module.exports = class PersonnelController {
   static async apiGetOfficerPhotos(req, res, next) {
     let o_id = new ObjectId(req.query.id);
     try {
-      const photos = await Photo.find({ owner: o_id });
+      const photos = await Photo.find({ owner: o_id }).sort({ year: 1 });
       res.send(photos);
     } catch (err) {
       res.json(err.message);

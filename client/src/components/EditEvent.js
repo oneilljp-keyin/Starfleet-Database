@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import PersonnelDataService from "../../services/personnel";
-import StarshipsDataService from "../../services/starships";
+import PersonnelDataService from "../services/personnel";
+import StarshipsDataService from "../services/starships";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
