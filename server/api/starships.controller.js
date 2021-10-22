@@ -7,7 +7,7 @@ module.exports = class Controller {
   static async apiGetStarships(req, res, next) {
     const starshipsPerPage = req.query.starshipsPerPage
       ? parseInt(req.query.starshipsPerPage, 10)
-      : 21;
+      : 30;
     const page = req.query.page ? parseInt(req.query.page, 10) : 0;
     const db = req.query.db ? req.query.db : "mongo";
     const userId = req.query.userId ? req.query.userId : "null";

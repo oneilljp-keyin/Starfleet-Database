@@ -1,14 +1,26 @@
 import { useState, useEffect } from "react";
-import PersonnelDataService from "../../services/personnel";
 import { Link } from "react-router-dom";
 
 // import { BINARY_TEST } from "../../utils/constants";
+import PersonnelDataService from "../../services/personnel";
 import OfficerProfilePics from "./OfficerProfilePics";
+
+import UseModalUpdate from "../modals/UseModalUpdate";
+import ModalUpdate from "../modals/ModalUpdate";
+import UseModalUpload from "../modals/UseModalUpload";
+import ModalUpload from "../modals/ModalUpload";
+import UseModalEvent from "../modals/UseModalEvent";
+import ModalEvent from "../modals/ModalEvent";
 
 const Officer = (props) => {
   const database = props.database;
+  const [photoRefresh, setPhotoRefresh] = useState(false);
+  const [profileRefresh, setProfileRefresh] = useState(false);
+  const [officerName, setOfficerName] = useState("");
 
-  // console.log(props.isAuth);
+  const { isShowingModalUpdate, toggleModalUpdate } = UseModalUpdate();
+  const { isShowingModalUpload, toggleModalUpload } = UseModalUpload();
+  const { isShowingModalEvent, toggleModalEvent } = UseModalEvent();
 
   const initialOfficerState = {
     _id: null,
@@ -33,7 +45,12 @@ const Officer = (props) => {
       PersonnelDataService.get(id, database)
         .then((response) => {
           setOfficer(response.data);
-          // console.log(response.data);
+          setProfileRefresh(false);
+          if (response.data.first) {
+            setOfficerName(response.data.first + " " + response.data.surname);
+          } else {
+            setOfficerName(response.data.surname);
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -41,37 +58,37 @@ const Officer = (props) => {
     };
 
     getOfficer(props.match.params.id);
-  }, [props.match.params.id, database]);
+  }, [props.match.params.id, profileRefresh, database]);
 
   return (
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
-        <Link to={"/personnel"} id="edit_btn" className="lcars_btn orange_btn left_round">
+        <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
           Back To Search
         </Link>
         {props.isAuth && (
           <>
-            <Link
-              to={"/personnel/" + officer._id + "/edit"}
-              id="edit_btn"
-              className="lcars_btn orange_btn all_square"
-            >
-              Edit Officer Profile
-            </Link>
-            <Link
-              to={"/personnel/" + officer._id + "/event"}
-              id="edit_btn"
-              className="lcars_btn orange_btn right_round"
-            >
-              Add Life Event
-            </Link>
+            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpdate}>
+              Edit Profile
+            </button>
+            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpload}>
+              Upload Photo
+            </button>
+            <button className="lcars_btn orange_btn right_round" onClick={toggleModalEvent}>
+              Add Event
+            </button>
           </>
         )}
       </div>
       {officer ? (
         <div>
           <div className="rows d-flex">
-            <OfficerProfilePics officerId={props.match.params.id} isAuth={props.isAuth} />
+            <OfficerProfilePics
+              officerId={props.match.params.id}
+              isAuth={props.isAuth}
+              photoRefresh={photoRefresh}
+              setPhotoRefresh={setPhotoRefresh}
+            />
             <div>
               <h1>
                 {officer.surname && <>{officer.surname}</>}
@@ -80,57 +97,43 @@ const Officer = (props) => {
                 {officer.postNom && <>, {officer.postNom}</>}
               </h1>
               <h2>{officer.serial}</h2>
-              {/* <p>
-                {officer.birthDate && (
-                  <>
-                    <strong>Date of Birth: </strong>
-                    {officer.birthDate.slice(0, 10)}
-                    <br />
-                  </>
-                )}
-                {officer.birthPlace && (
-                  <>
-                    <strong>Place of Birth: </strong>
-                    {officer.birthPlace}
-                    <br />
-                  </>
-                )}
-                {officer.deathDate && (
-                  <>
-                    <strong>Date of Death: </strong>
-                    {officer.deathDate.slice(0, 10)}
-                    {officer.deathStardate && <> &#40;SD: {officer.deathStardate}&#41;</>}
-                    <br />
-                  </>
-                )}
-                {officer.deathPlace && (
-                  <>
-                    <strong>Place of Death: </strong>
-                    {officer.deathPlace}
-                    <br />
-                  </>
-                )}
-              </p> */}
             </div>
           </div>
           <div className="list-group">
             {officer.events.length > 0 ? (
               officer.events.map((event, index) => {
+                let eventDate;
+                if (event.date) {
+                  if (event.dateNote) {
+                    eventDate = event.date.slice(0, 4).toString();
+                    if (event.dateNote === "before") {
+                      eventDate = "Before " + eventDate;
+                    } else if (event.dateNote === "after") {
+                      eventDate = "After " + eventDate;
+                    }
+                  } else {
+                    eventDate = event.date.slice(0, 10);
+                  }
+                }
                 return (
                   <div key={index} className="d-flex flex-column align-items-baseline">
-                    <h5 className="row mx-1 my-0">
-                      {event.stardate && <>{event.stardate} </>}
-                      {event.date && <>({event.date.slice(0, 10)})</>}{" "}
-                      {event.starshipName && event.location && <> - </>}{" "}
-                      {event.starshipName && <>Onboard U.S.S. {event.starshipName}</>}{" "}
-                      {event.starshipRegistry && <> - {event.starshipRegistry}</>}{" "}
-                      {event.location && <>at/near {event.location}</>}
-                    </h5>
                     <div className="rows d-flex flex-row">
-                      {event.rankLabel && (
-                        <h4 className="mx-1 col-auto">Rank of {event.rankLabel} - </h4>
-                      )}
-                      <h4 className="mx-1 col">{event.notes}</h4>
+                      <h3 className="row mx-1 my-0">
+                        {event.date && <>{eventDate}</>}
+                        {event.date && event.stardate && <>{" - "}</>}
+                        {event.stardate && <>{event.stardate}</>}
+                        {/* {event.starshipName && event.location && <> - </>}{" "} */}
+                      </h3>
+                      <h4 className="row mx-1 my-0">
+                        {event.starshipName && <>{event.starshipName}</>}{" "}
+                        {event.starshipRegistry && <> - {event.starshipRegistry}</>}{" "}
+                        {event.location && <>at/near {event.location}</>}
+                      </h4>
+                    </div>
+                    <div className="rows d-flex flex-row">
+                      {event.rankLabel && <h5 className="mx-1 col-auto">{event.rankLabel} - </h5>}
+                      {event.position && <h5 className="mx-1 col-auto">{event.position} - </h5>}
+                      <h6 className="mx-1 col">{event.notes}</h6>
                     </div>
                   </div>
                 );
@@ -148,6 +151,29 @@ const Officer = (props) => {
           <p>No Officer Selected</p>
         </div>
       )}
+      <ModalUpload
+        isShowing={isShowingModalUpload}
+        hide={toggleModalUpload}
+        isAuth={props.isAuth}
+        officerId={props.match.params.id}
+        setPhotoRefresh={setPhotoRefresh}
+      />
+      <ModalUpdate
+        isShowing={isShowingModalUpdate}
+        hide={toggleModalUpdate}
+        isAuth={props.isAuth}
+        officerId={props.match.params.id}
+        subjectName={officerName}
+        setPhotoRefresh={setProfileRefresh}
+      />
+      <ModalEvent
+        isShowing={isShowingModalEvent}
+        hide={toggleModalEvent}
+        isAuth={props.isAuth}
+        officerId={props.match.params.id}
+        subjectName={officerName}
+        setProfileRefresh={setProfileRefresh}
+      />
     </>
   );
 };

@@ -3,11 +3,6 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 function Navbar({ isAuth, setAuth, setAdmin, setName }) {
-  // const history = useHistory();
-  // const [btnText, setBtnText] = useState("menu");
-  // const [isStarshipSearchActive, setIsStarshipSearchActive] = useState(false);
-  // const [isPersonnelSearchActive, setIsPersonnelSearchActive] = useState(false);
-
   const logout = (e) => {
     e.preventDefault();
     try {
@@ -26,24 +21,10 @@ function Navbar({ isAuth, setAuth, setAdmin, setName }) {
     <>
       <header id="main_header" className="header">
         <div className="header_inner">
-          {/* <hgroup className="p-2">
-            <Link to={"/"} className="navbar-brand">
-              <h2 className="text-right">Starfleet Database at Sector 709</h2>
-            </Link>
-          </hgroup> */}
-
-          {/* <div className="menu-btn_wrapper">
-            <button id="menu-btn" className="material-icons" onClick={toggleNav}>
-              {btnText}
-            </button>
-          </div> */}
-
-          {/* <nav id="main_nav" className={isActive ? "active" : null}> */}
-          <nav id="main_nav" className="active">
+          <nav id="main_nav">
             <ul>
               <li>
                 <span>
-                  {" "}
                   <Link to={"/personnel"} className="nav-link">
                     Personnel
                   </Link>
@@ -51,7 +32,6 @@ function Navbar({ isAuth, setAuth, setAdmin, setName }) {
               </li>
               <li>
                 <span>
-                  {" "}
                   <Link to={"/starships"} className="nav-link">
                     Starships
                   </Link>
@@ -75,15 +55,6 @@ function Navbar({ isAuth, setAuth, setAdmin, setName }) {
                   )}
                 </span>
               </li>
-              {/* {!isAuth ? (
-                <li className="nav-item">
-                  <Link to={"/signup"} className="nav-link">
-                    Sign Up
-                  </Link>
-                </li>
-              ) : (
-                " "
-              )} */}
             </ul>
           </nav>
         </div>

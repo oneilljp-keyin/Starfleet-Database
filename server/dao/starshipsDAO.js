@@ -16,7 +16,7 @@ module.exports = class StarshipsDAO {
     }
   }
 
-  static async getStarships({ filters = null, page = 1, starshipsPerPage = 21, db, userId } = {}) {
+  static async getStarships({ filters = null, page = 1, starshipsPerPage = 30, db, userId } = {}) {
     let query;
     // if (userId !== "null" && userId !== "undefined") {
     //   let searchString = filters["name"] ? filters["name"] : filters["class"];

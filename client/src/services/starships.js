@@ -9,7 +9,7 @@ class StarshipsDataService {
     return http.get(`/starships/id?id=${id}&db=${db}`);
   }
 
-  find(query, by = "name", db = "mongo", userId = "null", page = "0", perpage = "21") {
+  find(query, by = "name", db = "mongo", userId = "null", page = "0", perpage = "30") {
     return http.get(
       `/starships?${by}=${query}&db=${db}&userId=${userId}&page=${page}&starshipsPerPage=${perpage}`
     );

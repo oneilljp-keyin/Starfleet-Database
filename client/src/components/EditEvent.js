@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 
 const EditEvent = (props) => {
   const [edit, setEdit] = useState(false);
-  // const [officerId, setOfficerId] = useState(props.match.params.id);
-  // const [eventId, setEventId] = useState(null);
   const [rankLabels, setRankLabels] = useState([]);
   const [shipSearchResults, setShipSearchResults] = useState([]);
   const [btnLabel, setBtnLabel] = useState("Create");
@@ -182,7 +180,7 @@ const EditEvent = (props) => {
             type="text"
             name="starshipName"
             placeholder="Starship"
-            value={eventInfo.starshipName}
+            value={eventInfo.starshipName + " " + eventInfo.starshipRegistry}
             onChange={(e) => onChangeEventInfo(e)}
           />
           <div id="searchResults" className="results">

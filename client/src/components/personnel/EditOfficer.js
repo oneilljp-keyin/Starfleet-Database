@@ -103,7 +103,7 @@ const EditOfficer = (props) => {
           onChange={(e) => onChangeOfficerInfo(e)}
         />
         <div className="col"></div>
-        <div class="w-100"></div>{" "}
+        <div className="w-100"></div>{" "}
         <input
           className="col form-control form-control-lg my-1"
           type="text"

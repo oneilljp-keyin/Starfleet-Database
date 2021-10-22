@@ -25,7 +25,6 @@ function App() {
   const [database, setDatabase] = useState("mongo");
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
-  // const [time, setTime] = useState(null);
 
   // ---- Get Name and Admin Privileges ---- \\
   async function getProfile(userId) {
@@ -51,11 +50,10 @@ function App() {
   return (
     <div className="container p-0">
       <div className="topbar">
-        <div className="time_wrapper">
+        <div className="title-wrapper">
           <span className="topbar-title">Starfleet Database at Sector 709</span>
         </div>
       </div>
-      {/* <Provider store={store}> */}
       <Navbar
         isAuth={isAuthenticated}
         setAuth={setAuth}
@@ -128,7 +126,7 @@ function App() {
               />
               <Route
                 exact
-                path="/:id/event/:eventid?"
+                path="/personnel/:id/event/"
                 render={(props) =>
                   !isAuthenticated ? (
                     <Redirect to="/" />

@@ -1,0 +1,234 @@
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { toast } from "react-toastify";
+
+import PersonnelDataService from "../../services/personnel";
+
+const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfileRefresh }) => {
+  const clearContents = () => {
+    toast.success(officerId + " " + subjectName);
+    // setProfileRefresh(true);
+    hide();
+  };
+
+  const [edit, setEdit] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const [officerInfo, setOfficerInfo] = useState({
+    _id: "",
+    surname: "",
+    first: "",
+    middle: "",
+    postNom: "",
+    birthDate: "",
+    birthStardate: "",
+    birthPlace: "",
+    birthDateNote: "",
+    deathDate: "",
+    deathStardate: "",
+    deathPlace: "",
+    deathDateNote: "",
+    serial: "",
+    events: [],
+  });
+
+  let [btnLabel, setBtnLabel] = useState("Create");
+
+  const onChangeOfficerInfo = (e) => {
+    setOfficerInfo({ ...officerInfo, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {
+    const getPersonnel = async (id) => {
+      try {
+        let response = await PersonnelDataService.get(id);
+        setOfficerInfo(response.data);
+        // console.log(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getPersonnel(officerId);
+    setEdit(true);
+    setSubmitted(false);
+    setBtnLabel("Update");
+  }, [edit, submitted, officerId]);
+
+  const saveOfficerInfo = () => {
+    let data = officerInfo;
+    delete data["events"];
+
+    if (edit) {
+      data._id = officerId;
+      PersonnelDataService.updateOfficer(data)
+        .then((response) => {
+          setSubmitted(true);
+          toast.success(response.data);
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.warning(err.message);
+        });
+    } else {
+      PersonnelDataService.createOfficer(data)
+        .then((response) => {
+          console.log(response.data);
+          toast.success(response.data);
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.warning(err.message);
+        });
+    }
+  };
+
+  return isShowing && isAuth
+    ? ReactDOM.createPortal(
+        <React.Fragment>
+          <div className="modal-overlay" />
+          <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
+            <div className="modal-main-body">
+              <div className="events-modal modal-content-wrapper">
+                <div className="events-modal-container align-content-center">
+                  <h3>
+                    {btnLabel} Profile - {subjectName}
+                  </h3>
+                  <div className="d-flex row my-1 mx-2 form-group">
+                    <div className="col"></div>
+                    <input
+                      className="col form-control form-control-lg my-1"
+                      type="text"
+                      name="serial"
+                      placeholder="Starfleet Serial Number"
+                      value={officerInfo.serial}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <div className="col"></div>
+                    <div className="w-100"></div>{" "}
+                    <input
+                      className="col form-control form-control-lg my-1"
+                      type="text"
+                      autoFocus
+                      name="surname"
+                      placeholder="Surname"
+                      value={officerInfo.surname}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <input
+                      className="col form-control form-control-lg my-1"
+                      type="text"
+                      name="first"
+                      placeholder="First Name"
+                      value={officerInfo.first}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <input
+                      className="col form-control form-control-lg my-1"
+                      type="text"
+                      name="middle"
+                      placeholder="Middle Name"
+                      value={officerInfo.middle}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <input
+                      className="col form-control form-control-lg my-1"
+                      type="text"
+                      name="postNom"
+                      placeholder="Post Nominals"
+                      value={officerInfo.postNom}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <div className="w-100"></div>{" "}
+                    <label className="col-auto my-1 text-right form-control-lg" htmlFor="birthDate">
+                      Date Of Birth:
+                    </label>
+                    <input
+                      className="col form-control form-control-sm my-1"
+                      type="date"
+                      name="birthDate"
+                      value={officerInfo.birthDate ? officerInfo.birthDate.slice(0, 10) : ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <select
+                      className="col form-control my-1"
+                      name="birthDateNote"
+                      value={officerInfo.birthDateNote}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    >
+                      <option>Exact Date</option>
+                      <option value="approx">Approximate Date</option>
+                      <option value="before">Before This Date</option>
+                      <option value="after">After This Date</option>
+                    </select>
+                    <label className="col-auto my-1 form-control-lg" htmlFor="deathDate">
+                      Date Of Death:
+                    </label>
+                    <input
+                      className="col form-control form-control-sm my-1"
+                      type="date"
+                      name="deathDate"
+                      value={officerInfo.deathDate ? officerInfo.deathDate.slice(0, 10) : ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <select
+                      className="col form-control my-1"
+                      name="deathDateNote"
+                      value={officerInfo.deathDateNote}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    >
+                      <option>Exact Date</option>
+                      <option value="approx">Approximate Date</option>
+                      <option value="before">Before This Date</option>
+                      <option value="after">After This Date</option>
+                    </select>
+                    <div className="w-100"></div>{" "}
+                    <label
+                      className="col-auto my-1 text-right form-control-lg"
+                      htmlFor="birthPlace"
+                    >
+                      Place Of Birth:
+                    </label>
+                    <input
+                      className="col form-control form-control-lg my-1"
+                      type="text"
+                      name="birthPlace"
+                      placeholder="Place Of Birth"
+                      value={officerInfo.birthPlace}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    {/* <div className="col"></div> */}
+                    <label className="col-auto my-1 form-control-lg" htmlFor="deathPlace">
+                      Place Of Death:
+                    </label>
+                    <input
+                      className="col form-control form-control-lg my-1"
+                      type="text"
+                      name="deathPlace"
+                      placeholder="Place Of Death"
+                      value={officerInfo.deathPlace}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                  </div>
+
+                  <button
+                    className="lcars_btn orange_btn left_round small_btn"
+                    onClick={saveOfficerInfo}
+                  >
+                    {btnLabel}
+                  </button>
+                  <button
+                    className="lcars_btn red_btn right_round small_btn"
+                    onClick={clearContents}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </React.Fragment>,
+        document.body
+      )
+    : null;
+};
+export default PopUpEvents;
