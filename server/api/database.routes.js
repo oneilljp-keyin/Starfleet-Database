@@ -42,15 +42,16 @@ router.route("/starships/id/").get(StarshipsCtrl.apiGetStarshipById);
 router.route("/starships/classes").get(StarshipsCtrl.apiGetStarshipClasses);
 
 router.post(
-  "/personnel/photos",
+  "/photos",
   upload.single("file"),
   async (req, res) => {
+    let resize = { width: 400, height: 400 };
     try {
-      const { title, year, description, _id } = req.body;
-      const buffer = await sharp(req.file.buffer)
-        .resize({ width: 400, height: 400 })
-        .png()
-        .toBuffer();
+      const { title, year, description, _id, imageType } = req.body;
+      if (imageType === "starship") {
+        resize.width = 840;
+      }
+      const buffer = await sharp(req.file.buffer).resize(resize).png().toBuffer();
       const file = new Photo({
         title,
         year,

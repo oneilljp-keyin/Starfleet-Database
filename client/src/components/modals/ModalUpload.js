@@ -4,16 +4,17 @@ import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const PopUpUpload = ({ isShowing, hide, isAuth, officerId, setPhotoRefresh }) => {
+const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imageType }) => {
   const [previewSrc, setPreviewSrc] = useState(""); // state for storing previewImage
   const [isPreviewAvailable, setIsPreviewAvailable] = useState(false); // state to show preview only for images
   const [file, setFile] = useState(null); // state for storing actual image
   const dropRef = useRef(); // React ref for managing the hover state of droppable area
-  const [photoInfo, setPhotoInfo] = useState({
+  const initialPhotoState = {
     title: "",
     year: "",
     description: "",
-  });
+  };
+  const [photoInfo, setPhotoInfo] = useState(initialPhotoState);
 
   const onDrop = (files) => {
     const [uploadedFile] = files;
@@ -41,8 +42,6 @@ const PopUpUpload = ({ isShowing, hide, isAuth, officerId, setPhotoRefresh }) =>
   };
 
   const handleOnSubmit = async () => {
-    // e.preventDefault();
-
     try {
       const { title, year, description } = photoInfo;
       if (title.trim() !== "" && description.trim() !== "" && year.trim() !== "") {
@@ -52,10 +51,11 @@ const PopUpUpload = ({ isShowing, hide, isAuth, officerId, setPhotoRefresh }) =>
           formData.append("title", title);
           formData.append("year", year);
           formData.append("description", description);
-          formData.append("_id", officerId);
+          formData.append("_id", subjectId);
+          formData.append("imageType", imageType);
 
           let response = await axios.post(
-            "http://localhost:8000/api/v1/sfdatabase/personnel/photos/",
+            "http://localhost:8000/api/v1/sfdatabase/photos/",
             formData,
             {
               headers: {
@@ -67,12 +67,7 @@ const PopUpUpload = ({ isShowing, hide, isAuth, officerId, setPhotoRefresh }) =>
           setFile(null);
           setIsPreviewAvailable(false);
           toast.success(response.message.data);
-          setPhotoInfo({
-            title: "",
-            year: "",
-            description: "",
-          });
-          hide();
+          closeModal();
         } else {
           toast.warning("Please select a file to add.");
         }
@@ -82,6 +77,10 @@ const PopUpUpload = ({ isShowing, hide, isAuth, officerId, setPhotoRefresh }) =>
     } catch (error) {
       error.response && toast.error(error.response.data);
     }
+  };
+  const closeModal = () => {
+    setPhotoInfo(initialPhotoState);
+    hide();
   };
 
   return isShowing && isAuth
@@ -144,7 +143,10 @@ const PopUpUpload = ({ isShowing, hide, isAuth, officerId, setPhotoRefresh }) =>
                     >
                       Submit
                     </button>
-                    <button className="lcars_btn red_btn right_round small_btn" onClick={hide}>
+                    <button
+                      className="lcars_btn red_btn right_round small_btn"
+                      onClick={closeModal}
+                    >
                       Cancel
                     </button>
                   </div>

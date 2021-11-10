@@ -106,8 +106,16 @@ module.exports = class StarshipsDAO {
               from: "events",
               let: { id: "$_id" },
               pipeline: [
-                { $match: { $expr: { $eq: ["$starship_id", "$$id"] } } },
-                { $sort: { date: -1 } },
+                { $match: { $expr: { $eq: ["$starshipId", "$$id"] } } },
+                { $sort: { date: 1 } },
+                {
+                  $lookup: {
+                    from: "officers",
+                    localField: "officerId",
+                    foreignField: "_id",
+                    as: "officerInfo",
+                  },
+                },
               ],
               as: "events",
             },

@@ -16,7 +16,11 @@ class StarshipsDataService {
   }
 
   createStarship(data) {
-    return http.post("/review-new", data);
+    return http.post("/starships", data);
+  }
+
+  updateStarship(starshipInfo) {
+    return http.patch("/starships/id/", starshipInfo);
   }
 
   getStarshipClasses() {

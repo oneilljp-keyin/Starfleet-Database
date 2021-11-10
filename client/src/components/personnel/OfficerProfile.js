@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
-// import { BINARY_TEST } from "../../utils/constants";
 import PersonnelDataService from "../../services/personnel";
-import OfficerProfilePics from "./OfficerProfilePics";
+import PhotoCarousel from "../PhotoCarousel";
 
-import UseModalUpdate from "../modals/UseModalUpdate";
-import ModalUpdate from "../modals/ModalUpdate";
+import UseModalOfficer from "../modals/UseModalOfficer";
+import ModalOfficer from "../modals/ModalOfficer";
 import UseModalUpload from "../modals/UseModalUpload";
 import ModalUpload from "../modals/ModalUpload";
 import UseModalEvent from "../modals/UseModalEvent";
@@ -14,11 +14,13 @@ import ModalEvent from "../modals/ModalEvent";
 
 const Officer = (props) => {
   const database = props.database;
+  const imageType = "officer";
+
   const [photoRefresh, setPhotoRefresh] = useState(false);
   const [profileRefresh, setProfileRefresh] = useState(false);
   const [officerName, setOfficerName] = useState("");
 
-  const { isShowingModalUpdate, toggleModalUpdate } = UseModalUpdate();
+  const { isShowingModalOfficer, toggleModalOfficer } = UseModalOfficer();
   const { isShowingModalUpload, toggleModalUpload } = UseModalUpload();
   const { isShowingModalEvent, toggleModalEvent } = UseModalEvent();
 
@@ -54,6 +56,7 @@ const Officer = (props) => {
         })
         .catch((err) => {
           console.error(err);
+          toast.error(err.message);
         });
     };
 
@@ -68,7 +71,7 @@ const Officer = (props) => {
         </Link>
         {props.isAuth && (
           <>
-            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpdate}>
+            <button className="lcars_btn orange_btn all_square" onClick={toggleModalOfficer}>
               Edit Profile
             </button>
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpload}>
@@ -83,11 +86,12 @@ const Officer = (props) => {
       {officer ? (
         <div>
           <div className="rows d-flex">
-            <OfficerProfilePics
-              officerId={props.match.params.id}
+            <PhotoCarousel
+              subjectId={props.match.params.id}
               isAuth={props.isAuth}
               photoRefresh={photoRefresh}
               setPhotoRefresh={setPhotoRefresh}
+              imageType={imageType}
             />
             <div>
               <h1>
@@ -157,10 +161,11 @@ const Officer = (props) => {
         isAuth={props.isAuth}
         officerId={props.match.params.id}
         setPhotoRefresh={setPhotoRefresh}
+        imageType={imageType}
       />
-      <ModalUpdate
-        isShowing={isShowingModalUpdate}
-        hide={toggleModalUpdate}
+      <ModalOfficer
+        isShowing={isShowingModalOfficer}
+        hide={toggleModalOfficer}
         isAuth={props.isAuth}
         officerId={props.match.params.id}
         subjectName={officerName}

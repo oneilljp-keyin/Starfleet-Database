@@ -10,6 +10,9 @@
 .officer-pics {
   height: 300px; width: 300px;
 }
+.starship-pics {
+  height: 280px; width: 578px;
+}
 
 .drop-zone {
   height: 250px; border-radius: 2.57rem;

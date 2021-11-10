@@ -56,9 +56,6 @@ const StarshipSchema = new mongoose.Schema(
     destruction_note: {
       type: String,
     },
-    photo: {
-      type: Buffer,
-    },
   },
 
   { strict: false }

@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
-import PersonnelDataService from "../../services/personnel";
+import PersonnelDataService from "../services/personnel";
 
-function OfficerProfilePics({ officerId, isAuth, photoRefresh, setPhotoRefresh }) {
-  const [officerPics, setOfficerPics] = useState([]);
+function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType }) {
+  const [photoArray, setPhotoArray] = useState([]);
   const [picTracker, setPicTracker] = useState([]);
 
   useEffect(() => {
-    const getOfficerPics = (id) => {
+    const getphotoArray = (id) => {
       PersonnelDataService.getAllPhotos(id)
         .then((response) => {
-          setOfficerPics(response.data);
+          setPhotoArray(response.data);
           let array = [];
           for (let i = 0; i < response.data.length; i++) {
             array.push(i);
@@ -21,14 +21,22 @@ function OfficerProfilePics({ officerId, isAuth, photoRefresh, setPhotoRefresh }
           console.error(err);
         });
     };
-    getOfficerPics(officerId);
+    getphotoArray(subjectId);
     setPhotoRefresh(false);
-  }, [officerId, photoRefresh, setPhotoRefresh]);
+  }, [subjectId, photoRefresh, setPhotoRefresh]);
 
   return (
-    <div id="photoCarousel" className="carousel slide officer-pics m-2" data-bs-ride="carousel">
+    <div
+      id="photoCarousel"
+      className={
+        imageType === "officer"
+          ? "carousel slide m-2 officer-pics"
+          : "carousel slide m-2 starship-pics"
+      }
+      data-bs-ride="carousel"
+    >
       <div className="carousel-indicators my-0">
-        {officerPics.length > 0 &&
+        {photoArray.length > 1 &&
           picTracker.map((index) => {
             if (index === 0) {
               return (
@@ -56,8 +64,8 @@ function OfficerProfilePics({ officerId, isAuth, photoRefresh, setPhotoRefresh }
           })}
       </div>
       <div className="carousel-inner h-100">
-        {officerPics.length > 0 &&
-          officerPics.map((photo, index) => {
+        {photoArray.length > 0 &&
+          photoArray.map((photo, index) => {
             let data8 = new Uint8Array(photo.image.data);
             let file = new File([data8], { type: "image/png" });
             const url = URL.createObjectURL(file);
@@ -77,7 +85,7 @@ function OfficerProfilePics({ officerId, isAuth, photoRefresh, setPhotoRefresh }
               </div>
             );
           })}
-        {officerPics.length > 0 && (
+        {photoArray.length > 1 && (
           <>
             <button
               className="carousel-control-prev h-75"
@@ -104,4 +112,4 @@ function OfficerProfilePics({ officerId, isAuth, photoRefresh, setPhotoRefresh }
   );
 }
 
-export default OfficerProfilePics;
+export default PhotoCarousel;

@@ -5,16 +5,9 @@ import { toast } from "react-toastify";
 import PersonnelDataService from "../../services/personnel";
 
 const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfileRefresh }) => {
-  const clearContents = () => {
-    toast.success(officerId + " " + subjectName);
-    // setProfileRefresh(true);
-    hide();
-  };
-
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  const [officerInfo, setOfficerInfo] = useState({
+  const initialOfficerState = {
     _id: "",
     surname: "",
     first: "",
@@ -30,7 +23,9 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
     deathDateNote: "",
     serial: "",
     events: [],
-  });
+  };
+
+  const [officerInfo, setOfficerInfo] = useState(initialOfficerState);
 
   let [btnLabel, setBtnLabel] = useState("Create");
 
@@ -80,6 +75,11 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
           toast.warning(err.message);
         });
     }
+  };
+
+  const closeModal = () => {
+    setOfficerInfo(initialOfficerState);
+    hide();
   };
 
   return isShowing && isAuth
@@ -216,10 +216,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                   >
                     {btnLabel}
                   </button>
-                  <button
-                    className="lcars_btn red_btn right_round small_btn"
-                    onClick={clearContents}
-                  >
+                  <button className="lcars_btn red_btn right_round small_btn" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>

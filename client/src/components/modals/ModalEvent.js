@@ -10,6 +10,7 @@ const PopUpEvents = ({
   hide,
   isAuth,
   officerId,
+  starshipId,
   eventId,
   subjectName,
   setProfileRefresh,
@@ -22,7 +23,7 @@ const PopUpEvents = ({
   const initialEventState = {
     type: "Other",
     officerId: officerId,
-    starshipId: "",
+    starshipId: starshipId,
     starshipName: "",
     starshipRegistry: "",
     location: "",
@@ -39,7 +40,7 @@ const PopUpEvents = ({
   if (eventId) {
     const getEvent = async (id) => {
       try {
-        let response = await PersonnelDataService.getEvents(id);
+        let response = await PersonnelDataService.getEvent(id);
         setEventInfo(response.data);
       } catch (err) {
         console.error(err);
@@ -93,7 +94,7 @@ const PopUpEvents = ({
     retrieveStarship();
   }, [eventInfo.starshipName]);
 
-  const saveOfficerEvent = () => {
+  const saveEvent = () => {
     const asArray = Object.entries(eventInfo);
     const filtered = asArray.filter(([key, value]) => value !== "");
     const data = Object.fromEntries(filtered);
@@ -109,18 +110,31 @@ const PopUpEvents = ({
         })
         .catch((err) => {
           toast.warning(err.message);
-          console.error(err.message);
+          console.error(err);
         });
     } else {
+      if (officerId === "") {
+        delete data["officerId"];
+        delete data["rankLabel"];
+        delete data["position"];
+      }
       PersonnelDataService.insertEvent(data)
         .then((response) => {
-          // setSubmitted(true);
+          setProfileRefresh(true);
+          setEventInfo(initialEventState);
+          hide();
           toast.success(response.data.message);
         })
-        .catch((e) => {
-          toast.warning(e.message);
+        .catch((err) => {
+          toast.warning(err.message);
+          console.error(err);
         });
     }
+  };
+
+  const closeModal = () => {
+    setEventInfo(initialEventState);
+    hide();
   };
 
   return isShowing && isAuth
@@ -165,47 +179,52 @@ const PopUpEvents = ({
                       <option value="after">After This Date</option>
                     </select>
                     <div className="w-100"></div>
-                    <select
-                      className="col form-control my-1"
-                      name="type"
-                      value={eventInfo.type}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    >
-                      <option value="Other">Other Event</option>
-                      <option value="Promotion">Promotion</option>
-                      <option value="Assignment">Assignment</option>
-                    </select>
-                    {/* ID of starship if applicable */}
-                    <div className="col searchContainer my-1 p-0">
-                      <input
-                        className="form-control form-control-lg"
-                        type="text"
-                        name="starshipName"
-                        placeholder="Starship"
-                        value={eventInfo.starshipName}
-                        onChange={(e) => onChangeEventInfo(e)}
-                        autoComplete="off"
-                      />
-                      <div id="searchResults" className="results">
-                        {shipSearchResults.length > 0 &&
-                          shipSearchResults.map((ship) => {
-                            let shipId = ship._id;
-                            let shipName = ship.name;
-                            let shipRegistry = ship.registry ? ship.registry : "";
-                            return (
-                              <div
-                                key={shipId}
-                                className="suggestion"
-                                onClick={() => {
-                                  onClickStarship(shipId, shipName, shipRegistry);
-                                }}
-                              >
-                                {shipName} {shipRegistry}
-                              </div>
-                            );
-                          })}
-                      </div>
-                    </div>
+                    {officerId !== "" && (
+                      <>
+                        {" "}
+                        <select
+                          className="col form-control my-1"
+                          name="type"
+                          value={eventInfo.type}
+                          onChange={(e) => onChangeEventInfo(e)}
+                        >
+                          <option value="Other">Other Event</option>
+                          <option value="Assignment">Assignment</option>
+                          <option value="First Contact">First Contact</option>
+                          <option value="Promotion">Promotion</option>
+                        </select>
+                        <div className="col searchContainer my-1 p-0">
+                          <input
+                            className="form-control form-control-lg"
+                            type="text"
+                            name="starshipName"
+                            placeholder="Starship"
+                            value={eventInfo.starshipName}
+                            onChange={(e) => onChangeEventInfo(e)}
+                            autoComplete="off"
+                          />
+                          <div id="searchResults" className="results">
+                            {shipSearchResults.length > 0 &&
+                              shipSearchResults.map((ship) => {
+                                let shipId = ship._id;
+                                let shipName = ship.name;
+                                let shipRegistry = ship.registry ? ship.registry : "";
+                                return (
+                                  <div
+                                    key={shipId}
+                                    className="suggestion"
+                                    onClick={() => {
+                                      onClickStarship(shipId, shipName, shipRegistry);
+                                    }}
+                                  >
+                                    {shipName} {shipRegistry}
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <input
                       className="col form-control form-control-lg my-1"
                       type="text"
@@ -215,31 +234,34 @@ const PopUpEvents = ({
                       onChange={(e) => onChangeEventInfo(e)}
                     />
                     {/* ID of rank */}
+                    {officerId !== "" && (
+                      <>
+                        <div className="w-100"></div>
+                        <select
+                          className="col form-control my-1"
+                          name="rankLabel"
+                          value={eventInfo.rankLabel}
+                          onChange={(e) => onChangeEventInfo(e)}
+                        >
+                          <option value="">Unknown Rank / N/A</option>
+                          {rankLabels.length > 0 &&
+                            rankLabels.map((rank) => (
+                              <option key={rank.rank_id} value={rank.abbrev}>
+                                {rank.label}
+                              </option>
+                            ))}
+                        </select>
+                        <input
+                          className="col form-control form-control-lg my-1"
+                          type="text"
+                          name="position"
+                          placeholder="Current Position"
+                          value={eventInfo.position}
+                          onChange={(e) => onChangeEventInfo(e)}
+                        />
+                      </>
+                    )}
                     <div className="w-100"></div>
-                    <select
-                      className="col form-control my-1"
-                      name="rankLabel"
-                      value={eventInfo.rankLabel}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    >
-                      <option value="">Unknown Rank / N/A</option>
-                      {rankLabels.length > 0 &&
-                        rankLabels.map((rank) => (
-                          <option key={rank.rank_id} value={rank.label}>
-                            {rank.label}
-                          </option>
-                        ))}
-                    </select>
-                    <input
-                      className="col form-control form-control-lg my-1"
-                      type="text"
-                      name="position"
-                      placeholder="Current Position"
-                      value={eventInfo.position}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    />
-                    <div className="w-100"></div>
-
                     <input
                       className="col form-control form-control-lg my-1"
                       type="text"
@@ -250,13 +272,10 @@ const PopUpEvents = ({
                     />
                   </div>
 
-                  <button
-                    className="lcars_btn orange_btn left_round small_btn"
-                    onClick={saveOfficerEvent}
-                  >
+                  <button className="lcars_btn orange_btn left_round small_btn" onClick={saveEvent}>
                     {btnLabel}
                   </button>
-                  <button className="lcars_btn red_btn right_round small_btn" onClick={hide}>
+                  <button className="lcars_btn red_btn right_round small_btn" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>
