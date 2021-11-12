@@ -68,18 +68,18 @@ const Starships = (props) => {
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
         <Link to={"/starships"} className="lcars_btn orange_btn left_round">
-          Back To Search
+          Search
         </Link>
         {props.isAuth && (
           <>
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalStarship}>
-              Edit Starship
+              Edit
             </button>
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpload}>
-              Upload Photo
+              Upload
             </button>
             <button className="lcars_btn orange_btn right_round" onClick={toggleModalEvent}>
-              Add Event
+              Event
             </button>
           </>
         )}
@@ -150,7 +150,7 @@ const Starships = (props) => {
                     eventDate = event.date.slice(0, 10);
                   }
                 }
-                let officerName;
+                let officerName = "";
                 if (event.officerInfo.length > 0) {
                   if (event.rankLabel) {
                     officerName = event.rankLabel;
@@ -184,7 +184,10 @@ const Starships = (props) => {
                       {officerName !== undefined && (
                         <h5 className="mx-1 col-auto">{officerName} - </h5>
                       )}
-                      <h6 className="mx-1 col">{event.notes}</h6>
+                      {event.position !== undefined && (
+                        <h5 className="mx-1 col-auto">{event.position} - </h5>
+                      )}
+                      <h6 className="mx-1 col justify-text">{event.notes}</h6>
                     </div>
                   </div>
                 );

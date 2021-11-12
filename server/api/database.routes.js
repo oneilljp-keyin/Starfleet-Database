@@ -23,7 +23,7 @@ const upload = multer({
   },
 });
 
-router.route("/personnel").get(PersonnelCtrl.apiGetPersonnel);
+router.route("/personnel").get(PersonnelCtrl.apiGetPersonnel).post(PersonnelCtrl.apiCreateOfficer);
 router
   .route("/personnel/id/")
   .get(PersonnelCtrl.apiGetPersonnelById)

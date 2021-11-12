@@ -233,7 +233,6 @@ const PopUpEvents = ({
                       value={eventInfo.location}
                       onChange={(e) => onChangeEventInfo(e)}
                     />
-                    {/* ID of rank */}
                     {officerId !== "" && (
                       <>
                         <div className="w-100"></div>

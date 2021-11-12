@@ -67,18 +67,18 @@ const Officer = (props) => {
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
         <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
-          Back To Search
+          Search
         </Link>
         {props.isAuth && (
           <>
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalOfficer}>
-              Edit Profile
+              Edit
             </button>
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpload}>
-              Upload Photo
+              Upload
             </button>
             <button className="lcars_btn orange_btn right_round" onClick={toggleModalEvent}>
-              Add Event
+              Event
             </button>
           </>
         )}
@@ -120,7 +120,7 @@ const Officer = (props) => {
                   }
                 }
                 return (
-                  <div key={index} className="d-flex flex-column align-items-baseline">
+                  <div key={index} className="d-flex flex-column align-items-baseline event-list">
                     <div className="rows d-flex flex-row">
                       <h3 className="row mx-1 my-0">
                         {event.date && <>{eventDate}</>}
@@ -137,7 +137,7 @@ const Officer = (props) => {
                     <div className="rows d-flex flex-row">
                       {event.rankLabel && <h5 className="mx-1 col-auto">{event.rankLabel} - </h5>}
                       {event.position && <h5 className="mx-1 col-auto">{event.position} - </h5>}
-                      <h6 className="mx-1 col">{event.notes}</h6>
+                      <h6 className="mx-1 col justify-text">{event.notes}</h6>
                     </div>
                   </div>
                 );
@@ -159,7 +159,7 @@ const Officer = (props) => {
         isShowing={isShowingModalUpload}
         hide={toggleModalUpload}
         isAuth={props.isAuth}
-        officerId={props.match.params.id}
+        subjectId={props.match.params.id}
         setPhotoRefresh={setPhotoRefresh}
         imageType={imageType}
       />
@@ -169,7 +169,7 @@ const Officer = (props) => {
         isAuth={props.isAuth}
         officerId={props.match.params.id}
         subjectName={officerName}
-        setPhotoRefresh={setProfileRefresh}
+        setProfileRefresh={setProfileRefresh}
       />
       <ModalEvent
         isShowing={isShowingModalEvent}

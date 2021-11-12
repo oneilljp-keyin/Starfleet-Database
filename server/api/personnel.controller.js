@@ -63,9 +63,23 @@ module.exports = class PersonnelController {
     try {
       let officer = await PersonnelDAO.updatePersonnelRecord(officer_id, updatedInfo);
       res.json(officer.message);
-    } catch (e) {
-      console.error(`Update Officer Error: ${e.message}`);
-      res.status(500).json({ error: e.message });
+    } catch (err) {
+      console.error(`Update Officer Error: ${err.message}`);
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  static async apiCreateOfficer(req, res, next) {
+    let newRecord = req.body;
+    delete newRecord["_id"];
+    let newOfficer = new Officer(newRecord);
+    console.log(newOfficer);
+    try {
+      await newOfficer.save();
+      res.json("New Officer Record Created");
+    } catch (err) {
+      console.error(`Create Officer Error: ${err.message}`);
+      res.status(500).json({ error: err.message });
     }
   }
 

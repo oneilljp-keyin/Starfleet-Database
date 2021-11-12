@@ -43,10 +43,12 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
         console.error(err);
       }
     };
-    getPersonnel(officerId);
-    setEdit(true);
-    setSubmitted(false);
-    setBtnLabel("Update");
+    if (officerId) {
+      getPersonnel(officerId);
+      setEdit(true);
+      setSubmitted(false);
+      setBtnLabel("Update");
+    }
   }, [edit, submitted, officerId]);
 
   const saveOfficerInfo = () => {
@@ -58,6 +60,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
       PersonnelDataService.updateOfficer(data)
         .then((response) => {
           setSubmitted(true);
+          setProfileRefresh(true);
           toast.success(response.data);
         })
         .catch((err) => {
@@ -69,6 +72,8 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
         .then((response) => {
           console.log(response.data);
           toast.success(response.data);
+          setOfficerInfo(initialOfficerState);
+          hide();
         })
         .catch((err) => {
           console.error(err);
@@ -96,7 +101,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                   <div className="d-flex row my-1 mx-2 form-group">
                     <div className="col"></div>
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       name="serial"
                       placeholder="Starfleet Serial Number"
@@ -104,9 +109,9 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
                     <div className="col"></div>
-                    <div className="w-100"></div>{" "}
+                    <div className="w-100"></div>
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       autoFocus
                       name="surname"
@@ -115,7 +120,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       name="first"
                       placeholder="First Name"
@@ -123,7 +128,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       name="middle"
                       placeholder="Middle Name"
@@ -131,17 +136,21 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       name="postNom"
                       placeholder="Post Nominals"
                       value={officerInfo.postNom}
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
-                    <div className="w-100"></div>{" "}
-                    <label className="col-auto my-1 text-right form-control-lg" htmlFor="birthDate">
-                      Date Of Birth:
+                    <div className="w-100"></div>
+                    <label className="col-6 my-0 form-control-md" htmlFor="birthDate">
+                      Birth Details:
                     </label>
+                    <label className="col-6 my-0 form-control-md" htmlFor="deathDate">
+                      Death Details:
+                    </label>
+                    <div className="w-100"></div>
                     <input
                       className="col form-control form-control-sm my-1"
                       type="date"
@@ -150,7 +159,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
                     <select
-                      className="col form-control my-1"
+                      className="col form-control form-control-sm my-1"
                       name="birthDateNote"
                       value={officerInfo.birthDateNote}
                       onChange={(e) => onChangeOfficerInfo(e)}
@@ -160,9 +169,6 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       <option value="before">Before This Date</option>
                       <option value="after">After This Date</option>
                     </select>
-                    <label className="col-auto my-1 form-control-lg" htmlFor="deathDate">
-                      Date Of Death:
-                    </label>
                     <input
                       className="col form-control form-control-sm my-1"
                       type="date"
@@ -171,7 +177,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
                     <select
-                      className="col form-control my-1"
+                      className="col form-control form-control-sm my-1"
                       name="deathDateNote"
                       value={officerInfo.deathDateNote}
                       onChange={(e) => onChangeOfficerInfo(e)}
@@ -182,26 +188,16 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
                       <option value="after">After This Date</option>
                     </select>
                     <div className="w-100"></div>{" "}
-                    <label
-                      className="col-auto my-1 text-right form-control-lg"
-                      htmlFor="birthPlace"
-                    >
-                      Place Of Birth:
-                    </label>
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       name="birthPlace"
                       placeholder="Place Of Birth"
                       value={officerInfo.birthPlace}
                       onChange={(e) => onChangeOfficerInfo(e)}
                     />
-                    {/* <div className="col"></div> */}
-                    <label className="col-auto my-1 form-control-lg" htmlFor="deathPlace">
-                      Place Of Death:
-                    </label>
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       name="deathPlace"
                       placeholder="Place Of Death"

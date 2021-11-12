@@ -1,11 +1,16 @@
 import { useState } from "react";
-import PersonnelDataService from "../../services/personnel";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
+
+import PersonnelDataService from "../../services/personnel";
+import UseModalOfficer from "../modals/UseModalOfficer";
+import ModalOfficer from "../modals/ModalOfficer";
 
 function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   const [personnel, setPersonnel] = useState([]);
   const [searchName, setSearchName] = useState("");
+
+  const { isShowingModalOfficer, toggleModalOfficer } = UseModalOfficer();
 
   const onChangeSearchName = (e) => {
     const searchName = e.target.value;
@@ -34,8 +39,6 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
 
   return (
     <>
-      {/* <div>{database}</div> */}
-      {/* {isAuth && ( */}
       <div className="rows d-flex align-content-center">
         <div className="col-3"></div>
         <div className="input-group input-group-lg">
@@ -53,18 +56,16 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
           </div>
         </div>
         <div className="col-3"></div>
-        {/* <select
-          className="form-control"
-          name="database"
-          value={database}
-          onChange={(e) => onChangeDatabase(e)}
-        >
-          <option>Database</option>
-          <option value="mongo">MongoDB</option>
-          <option value="post">PostGreSQL</option>
-        </select> */}
       </div>
-      {/* )} */}
+      <div className="menu-btn_wrapper d-flex">
+        {isAuth && (
+          <>
+            <button className="lcars_btn orange_btn all_round" onClick={toggleModalOfficer}>
+              New Officer Record
+            </button>
+          </>
+        )}
+      </div>
       <div className="row">
         {personnel.map((officer) => {
           let officerName;
@@ -95,6 +96,14 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
           );
         })}
       </div>
+      <ModalOfficer
+        isShowing={isShowingModalOfficer}
+        hide={toggleModalOfficer}
+        isAuth={isAuth}
+        officerId={null}
+        subjectName={null}
+        setProfileRefresh={null}
+      />
     </>
   );
 }

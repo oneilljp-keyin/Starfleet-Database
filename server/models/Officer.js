@@ -36,14 +36,14 @@ const OfficerSchema = new mongoose.Schema(
     deathPlace: {
       type: String,
     },
-    birthDateNote: {
+    deathDateNote: {
       type: String,
     },
     serial: {
       type: String,
     },
   },
-  { strict: false }
+  { strict: true }
 );
 
 module.exports = Officer = mongoose.model("officer", OfficerSchema);
