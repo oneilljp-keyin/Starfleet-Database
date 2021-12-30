@@ -1,7 +1,9 @@
 server/db.js
 server/test.env
 server/dev.env
+
 README.md
 LCARS-Graphic.png
-.gitignore
-/project-two/*
+
+project-two/
+.DS_Store

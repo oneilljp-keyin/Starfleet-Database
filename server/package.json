@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "sfdatabase",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for Starfleet Database at Sector 709",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -12,6 +12,9 @@
     "testEnvironment": "node"
   },
   "keywords": [],
+  "engines": {
+    "node": "16.x"
+  },
   "author": "John O'Neill <john.oneill@keyin.com> (http://johnoneill.tech/)",
   "license": "ISC",
   "devDependencies": {
@@ -36,6 +39,6 @@
     "passport-local": "^1.0.0",
     "pg": "^8.7.1",
     "sharp": "^0.29.1",
-    "validator": "^13.6.0"
+    "validator": ">=13.7.0"
   }
 }

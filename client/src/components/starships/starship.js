@@ -13,7 +13,6 @@ import UseModalEvent from "../modals/UseModalEvent";
 import ModalEvent from "../modals/ModalEvent";
 
 const Starships = (props) => {
-  const database = props.database;
   const imageType = "starship";
 
   const [photoRefresh, setPhotoRefresh] = useState(false);
@@ -48,7 +47,7 @@ const Starships = (props) => {
 
   useEffect(() => {
     const getStarship = (id) => {
-      StarshipsDataService.get(id, database)
+      StarshipsDataService.get(id)
         .then((response) => {
           setStarship(response.data);
           console.log(response.data);
@@ -62,7 +61,7 @@ const Starships = (props) => {
     };
 
     getStarship(props.match.params.id);
-  }, [props.match.params.id, database, profileRefresh]);
+  }, [props.match.params.id, profileRefresh]);
 
   return (
     <>

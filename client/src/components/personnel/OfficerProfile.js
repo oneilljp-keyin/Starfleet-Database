@@ -104,7 +104,7 @@ const Officer = (props) => {
             </div>
           </div>
           <div className="list-group">
-            {officer.events.length > 0 ? (
+            {officer.events.length && officer.events.length > 0 ? (
               officer.events.map((event, index) => {
                 let eventDate;
                 if (event.date) {

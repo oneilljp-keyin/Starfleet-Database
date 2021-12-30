@@ -25,7 +25,7 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   const find = (query, by, db, userId) => {
     PersonnelDataService.find(query, by, db, userId)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data.personnel);
         setPersonnel(response.data.personnel);
       })
       .catch((e) => {
@@ -81,7 +81,7 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
             officerName += " " + middleI + ".";
           }
           return (
-            <div className="col-lg-4 p-1" key={uuidv4()}>
+            <div className="col-md-4 p-1" key={uuidv4()}>
               <div className="card text-center bg-dark">
                 <div className="card-body m-1">
                   <h5 className="card-title">{officerName}</h5>

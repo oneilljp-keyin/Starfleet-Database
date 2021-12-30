@@ -1,28 +1,28 @@
 import http from "../http-common";
 
 class PersonnelDataService {
-  getAll(page = 0, db = "mongo") {
-    return http.get(`/personnel?page=${page}&db=${db}`);
+  getAll(page = 0) {
+    return http.get(`/personnel?page=${page}`);
   }
 
-  get(id, db = "mongo") {
-    return http.get(`/personnel/id?id=${id}&db=${db}`);
+  get(id) {
+    return http.get(`/personnelById?id=${id}`);
   }
 
-  find(query, by = "name", db = "mongo", userId) {
-    return http.get(`/personnel?${by}=${query}&db=${db}&userId=${userId}`);
+  find(query, by = "name") {
+    return http.get(`/personnel?${by}=${query}`);
   }
 
   getRankLabels() {
-    return http.get("/personnel/ranks/");
+    return http.get("/ranks");
   }
 
-  getAllEvent(officerId, db = "mongo") {
-    return http.get(`/personnel/events?officer_id=${officerId}&db=${db}`);
+  getAllEvent(officerId) {
+    return http.get(`/personnel/events?officer_id=${officerId}`);
   }
 
-  getEvent(eventId, db = "mongo") {
-    return http.get(`/personnel/event?event_id=${eventId}&db=${db}`);
+  getEvent(eventId) {
+    return http.get(`/personnel/event?event_id=${eventId}`);
   }
 
   insertEvent(eventInfo) {
@@ -34,22 +34,23 @@ class PersonnelDataService {
   }
 
   createOfficer(officerInfo) {
-    return http.post("/personnel/", officerInfo);
+    return http.post("/personnel", officerInfo);
   }
 
   updateOfficer(officerInfo) {
-    return http.patch("/personnel/id/", officerInfo);
+    console.log(officerInfo);
+    return http.patch("/personnelById", officerInfo);
   }
 
   insertPhoto(photoInfo) {
-    return http.post("/personnel/photos/", photoInfo, {
+    return http.post("/photos", photoInfo, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
   }
   getAllPhotos(id) {
-    return http.get(`/personnel/photos?id=${id}`);
+    return http.get(`/photos?id=${id}`);
   }
 }
 

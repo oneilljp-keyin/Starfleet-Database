@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -27,7 +27,7 @@ function App() {
   // ---- Get Name and Admin Privileges ---- \\
   async function getProfile(userId) {
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${userId}`, {
+      const response = await fetch(`https://sfdatabase.herokuapp.com/api/users/${userId}`, {
         method: "GET",
         headers: { token: localStorage.token },
       });
@@ -46,123 +46,125 @@ function App() {
   };
 
   return (
-    <div className="container p-0">
-      <div className="topbar">
-        <div className="title-wrapper">
-          <span className="topbar-title">Starfleet Database at Sector 709</span>
-        </div>
-      </div>
-      <Navbar
-        isAuth={isAuthenticated}
-        setAuth={setAuth}
-        setAdmin={setAdminRole}
-        setName={setName}
-      />
-      <main className="main_body">
-        <div className="content_wrapper">
-          <div className="content_container align-content-center">
-            <Switch>
-              <Route
-                exact
-                path={["/"]}
-                render={(props) => (
-                  <Landing
-                    {...props}
-                    isAuth={isAuthenticated}
-                    userId={userId}
-                    admin={adminRole}
-                    userName={name}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path={["/personnel"]}
-                render={(props) => (
-                  // !isAuthenticated ? (
-                  //   <Redirect to="/signin" />
-                  // ) :
-                  <PersonnelList
-                    {...props}
-                    isAuth={isAuthenticated}
-                    userId={userId}
-                    admin={adminRole}
-                    setDatabase={setDatabase}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path="/personnel/:id"
-                render={(props) => (
-                  <Officer
-                    {...props}
-                    isAuth={isAuthenticated}
-                    admin={adminRole}
-                    userId={userId}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path={["/starships"]}
-                render={(props) => (
-                  // !isAuthenticated ? (
-                  //   <Redirect to="/signin" />
-                  // ) :
-                  <StarshipList
-                    {...props}
-                    isAuth={isAuthenticated}
-                    userId={userId}
-                    admin={adminRole}
-                    setDatabase={setDatabase}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                path="/starships/:id"
-                render={(props) => (
-                  <Starship
-                    {...props}
-                    isAuth={isAuthenticated}
-                    admin={adminRole}
-                    userId={userId}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                path="/signin"
-                render={(props) => (
-                  <SignIn
-                    {...props}
-                    setAuth={setAuth}
-                    setUserId={setUserId}
-                    getProfile={getProfile}
-                  />
-                )}
-              />
-              {/* <Route path="/signup" render={(props) => <SignUp {...props} />} /> */}
-            </Switch>
+    <Router basename="/">
+      <div className="container p-0">
+        <div className="topbar">
+          <div className="title-wrapper">
+            <span className="topbar-title">Starfleet Database at Sector 709</span>
           </div>
         </div>
-      </main>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover={false}
-      />
-      {/* </Provider> */}
-    </div>
+        <Navbar
+          isAuth={isAuthenticated}
+          setAuth={setAuth}
+          setAdmin={setAdminRole}
+          setName={setName}
+        />
+        <main className="main_body">
+          <div className="content_wrapper">
+            <div className="content_container align-content-center">
+              <Switch>
+                <Route
+                  exact
+                  path={["/"]}
+                  render={(props) => (
+                    <Landing
+                      {...props}
+                      isAuth={isAuthenticated}
+                      userId={userId}
+                      admin={adminRole}
+                      userName={name}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path={["/personnel"]}
+                  render={(props) => (
+                    // !isAuthenticated ? (
+                    //   <Redirect to="/signin" />
+                    // ) :
+                    <PersonnelList
+                      {...props}
+                      isAuth={isAuthenticated}
+                      userId={userId}
+                      admin={adminRole}
+                      setDatabase={setDatabase}
+                      database={database}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path="/personnel/:id"
+                  render={(props) => (
+                    <Officer
+                      {...props}
+                      isAuth={isAuthenticated}
+                      admin={adminRole}
+                      userId={userId}
+                      database={database}
+                    />
+                  )}
+                />
+                <Route
+                  exact
+                  path={["/starships"]}
+                  render={(props) => (
+                    // !isAuthenticated ? (
+                    //   <Redirect to="/signin" />
+                    // ) :
+                    <StarshipList
+                      {...props}
+                      isAuth={isAuthenticated}
+                      userId={userId}
+                      admin={adminRole}
+                      setDatabase={setDatabase}
+                      database={database}
+                    />
+                  )}
+                />
+                <Route
+                  path="/starships/:id"
+                  render={(props) => (
+                    <Starship
+                      {...props}
+                      isAuth={isAuthenticated}
+                      admin={adminRole}
+                      userId={userId}
+                      database={database}
+                    />
+                  )}
+                />
+                <Route
+                  path="/signin"
+                  render={(props) => (
+                    <SignIn
+                      {...props}
+                      setAuth={setAuth}
+                      setUserId={setUserId}
+                      getProfile={getProfile}
+                    />
+                  )}
+                />
+                {/* <Route path="/signup" render={(props) => <SignUp {...props} />} /> */}
+              </Switch>
+            </div>
+          </div>
+        </main>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+        />
+        {/* </Provider> */}
+      </div>
+    </Router>
   );
 }
 

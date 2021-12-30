@@ -60,7 +60,7 @@ h5 { font-size: 1.28rem; color: #dd8100; }
 .justify-text { text-align: justify; text-justify: inter-word; }
 
 .container {
-  margin: 0 auto;
+  margin: 0.5rem auto;
   height: 96%; width: 96%;
   display: grid;
   grid-template-columns: 1fr;

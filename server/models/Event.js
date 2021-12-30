@@ -28,15 +28,6 @@ const EventSchema = new mongoose.Schema(
     location: {
       type: String,
     },
-    starshipId: {
-      type: mongoose.Types.ObjectId,
-    },
-    starshipName: {
-      type: String,
-    },
-    starshipRegistry: {
-      type: String,
-    },
     date: {
       type: Date,
     },

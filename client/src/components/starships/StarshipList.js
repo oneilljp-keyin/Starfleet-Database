@@ -114,7 +114,7 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
         {starships.map((starship) => {
           let starshipId = starship.starship_id ? starship.starship_id : starship._id;
           return (
-            <div className="col-lg-4 p-1" key={uuidv4()}>
+            <div className="col-md-4 p-1" key={uuidv4()}>
               <div className="card text-center bg-dark">
                 <div className="card-body m-1">
                   <h5 className="card-title">{starship.name}</h5>

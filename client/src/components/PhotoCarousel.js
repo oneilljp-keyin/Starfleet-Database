@@ -66,16 +66,20 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
       <div className="carousel-inner h-100">
         {photoArray.length > 0 &&
           photoArray.map((photo, index) => {
-            let data8 = new Uint8Array(photo.image.data);
-            let file = new File([data8], { type: "image/png" });
-            const url = URL.createObjectURL(file);
+            // let data8 = new Uint8Array(photo.image.data);
+            // let file = new File([data8], { type: "image/png" });
+            // const url = URL.createObjectURL(file);
             return (
               <div
                 className={index === 0 ? "carousel-item active " : "carousel-item"}
                 data-bs-interval="1000000"
                 key={index}
               >
-                <img src={url} className="d-block w-100" alt={photo.title} />
+                <img
+                  src={`data:image/png;base64,${photo.image.$binary.base64}`}
+                  className="d-block w-100"
+                  alt={photo.title}
+                />
                 <div className="carousel-caption cc-bg d-none d-sm-block p-0 middle">
                   <h5 className="m-0">
                     {photo.title} [<small>{photo.year}</small>]
