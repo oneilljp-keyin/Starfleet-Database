@@ -2,7 +2,9 @@ import React, { useState, useRef } from "react";
 import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
-import axios from "axios";
+// import axios from "axios";
+
+import PersonnelDataService from "../../services/personnel";
 
 const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imageType }) => {
   const [previewSrc, setPreviewSrc] = useState(""); // state for storing previewImage
@@ -54,20 +56,18 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
           formData.append("_id", subjectId);
           formData.append("imageType", imageType);
 
-          let response = await axios.post(
-            "http://localhost:8000/api/v1/sfdatabase/photos/",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          setPhotoRefresh(true);
-          setFile(null);
-          setIsPreviewAvailable(false);
-          toast.success(response.message.data);
-          closeModal();
+          PersonnelDataService.insertPhoto(formData)
+            .then((response) => {
+              setPhotoRefresh(true);
+              setFile(null);
+              setIsPreviewAvailable(false);
+              toast.success(response.message.data);
+              closeModal();
+            })
+            .catch((err) => {
+              console.error(err);
+              toast.warning(err.message);
+            });
         } else {
           toast.warning("Please select a file to add.");
         }

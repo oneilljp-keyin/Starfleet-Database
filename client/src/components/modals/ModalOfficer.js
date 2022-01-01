@@ -54,7 +54,6 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
   const saveOfficerInfo = () => {
     let data = officerInfo;
     delete data["events"];
-
     if (edit) {
       data._id = officerId;
       Object.keys(data).forEach((key) => {
@@ -66,7 +65,8 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
         .then((response) => {
           setSubmitted(true);
           setProfileRefresh(true);
-          toast.success(response.data);
+          toast.success(response.data.message);
+          hide();
         })
         .catch((err) => {
           console.error(err);
@@ -79,10 +79,8 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
           delete data[key];
         }
       });
-      console.log(data);
       PersonnelDataService.createOfficer(data)
         .then((response) => {
-          console.log(response.data);
           toast.success(response.data);
           setOfficerInfo(initialOfficerState);
           hide();

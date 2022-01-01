@@ -9,6 +9,7 @@ import ModalOfficer from "../modals/ModalOfficer";
 function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
   const [personnel, setPersonnel] = useState([]);
   const [searchName, setSearchName] = useState("");
+  const [pageNumber, setPageNumber] = useState(0);
 
   const { isShowingModalOfficer, toggleModalOfficer } = UseModalOfficer();
 

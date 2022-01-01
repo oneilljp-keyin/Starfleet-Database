@@ -6,23 +6,23 @@ class PersonnelDataService {
   }
 
   get(id) {
-    return http.get(`/personnelById?id=${id}`);
+    return http.get(`/personnel?id=${id}`);
   }
 
   find(query, by = "name") {
     return http.get(`/personnel?${by}=${query}`);
   }
 
+  createOfficer(officerInfo) {
+    return http.post("/personnel", officerInfo);
+  }
+
+  updateOfficer(officerInfo) {
+    return http.put("/personnel", officerInfo);
+  }
+
   getRankLabels() {
     return http.get("/ranks");
-  }
-
-  getAllEvent(officerId) {
-    return http.get(`/personnel/events?officer_id=${officerId}`);
-  }
-
-  getEvent(eventId) {
-    return http.get(`/personnel/event?event_id=${eventId}`);
   }
 
   insertEvent(eventInfo) {
@@ -31,15 +31,6 @@ class PersonnelDataService {
 
   updateEvent(eventInfo) {
     return http.patch("/personnel/event/", eventInfo);
-  }
-
-  createOfficer(officerInfo) {
-    return http.post("/personnel", officerInfo);
-  }
-
-  updateOfficer(officerInfo) {
-    console.log(officerInfo);
-    return http.patch("/personnelById", officerInfo);
   }
 
   insertPhoto(photoInfo) {
