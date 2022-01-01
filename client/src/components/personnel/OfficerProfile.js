@@ -46,6 +46,7 @@ const Officer = (props) => {
     const getOfficer = (id) => {
       PersonnelDataService.get(id, database)
         .then((response) => {
+          console.log(response.data);
           setOfficer(response.data);
           setProfileRefresh(false);
           if (response.data.first) {

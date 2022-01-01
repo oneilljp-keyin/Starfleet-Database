@@ -1,3 +1,4 @@
+import axios from "axios";
 import http from "../http-common";
 
 class PersonnelDataService {
@@ -9,8 +10,10 @@ class PersonnelDataService {
     return http.get(`/personnel?id=${id}`);
   }
 
-  find(query, by = "name") {
-    return http.get(`/personnel?${by}=${query}`);
+  find(query, pageNumber, cancel) {
+    return http.get(`/personnel?name=${query}&page=${pageNumber}`, {
+      cancelToken: new axios.CancelToken((c) => (cancel = c)),
+    });
   }
 
   createOfficer(officerInfo) {
