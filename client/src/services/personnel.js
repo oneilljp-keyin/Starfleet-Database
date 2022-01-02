@@ -10,7 +10,7 @@ class PersonnelDataService {
     return http.get(`/personnel?id=${id}`);
   }
 
-  find(query, pageNumber, cancel) {
+  find(query, pageNumber = "0", cancel) {
     return http.get(`/personnel?name=${query}&page=${pageNumber}`, {
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     });

@@ -1,3 +1,4 @@
+import axios from "axios";
 import http from "../http-common";
 
 class StarshipsDataService {
@@ -6,11 +7,13 @@ class StarshipsDataService {
   }
 
   get(id) {
-    return http.get(`/starshipById?id=${id}`);
+    return http.get(`/starships?id=${id}`);
   }
 
-  find(query, by = "name", page = "0", perpage = "30") {
-    return http.get(`/starships?${by}=${query}`);
+  find(nameQuery, classQuery = "Unknown Class", pageNumber = "0", cancel) {
+    return http.get(`/starships?name=${nameQuery}&class=${classQuery}&page=${pageNumber}`, {
+      cancelToken: new axios.CancelToken((c) => (cancel = c)),
+    });
   }
 
   createStarship(data) {
@@ -18,7 +21,7 @@ class StarshipsDataService {
   }
 
   updateStarship(starshipInfo) {
-    return http.patch("/starships/id/", starshipInfo);
+    return http.put("/starships", starshipInfo);
   }
 
   getStarshipClasses() {

@@ -14,6 +14,7 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
 
   const [personnel, setPersonnel] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+
   const [pageNumber, setPageNumber] = useState(0);
   const observer = useRef();
   const lastOfficerRef = useCallback(
@@ -78,11 +79,11 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
             value={searchQuery}
             onChange={onChangeSearchQuery}
           />
-          <div className="input-group-append input-group-lg">
+          {/* <div className="input-group-append input-group-lg">
             <button className="btn btn-outline-secondary" type="button">
               Search
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="col-2"></div>
       </div>
