@@ -1,6 +1,4 @@
-// import { useState, useEffect } from "react";
-
-// import PersonnelDataService from "../services/personnel";
+import { Link } from "react-router-dom";
 
 function Login({ setAuth, userId, getProfile, userName }) {
   // // const [history, setHistory] = useState({});
@@ -40,26 +38,23 @@ function Login({ setAuth, userId, getProfile, userName }) {
           </h3>
         </header>
         <div className="article_content">
-          <p>These are some recommended searches for the database </p>
+          <p>The search features are auto-complete, as you type, the results will come up </p>
           <ul>
+            <li>In the Personnel section, results will appear as you type.</li>
             <li>
-              Kirk will bring up muliple results, namely the famous James T. Kirk, his father George
-              and Mother Winona.
-            </li>
-            <li>
-              Crusher will result in Dr. Beverly Crusher from the Enterprise-D, and her son Wesley,
-              and husband Jack.
-            </li>
-            <li>
-              The are numerous entries in the database, so any name you may have heard related to
-              Star Trek will be listed (if they served in Starfleet). Enjoy
+              In the Starship section, you can search by name or class, if the name is empty
+              <br />
+              select a class to bring up starships of that class, where you can narrow them down
+              <br />
+              by name if you wish.
             </li>
           </ul>
         </div>
-        <footer>
+        <footer className="justify-content-between">
           <a href="http://johnoneill.tech" target="_blank" rel="noreferrer">
             johnoneill.tech
           </a>
+          <Link to={"/signin"}>admin</Link>
           <div className="footer_bar"></div>
         </footer>
       </article>

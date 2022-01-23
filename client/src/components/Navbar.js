@@ -21,41 +21,36 @@ function Navbar({ isAuth, setAuth, setAdmin, setName }) {
     <>
       <header id="main_header" className="header">
         <div className="header_inner">
-          <nav id="main_nav">
-            <ul>
+          <nav>
+            {/* <ul>
               <li>
-                <span>
-                  <Link to={"/personnel"} className="nav-link">
-                    Personnel
-                  </Link>
-                </span>
+                <span> */}
+            <Link to={"/personnel"} className="lcars_btn purple_btn all_round header_btn">
+              Personnel
+            </Link>
+            {/* </span>
               </li>
               <li>
-                <span>
-                  <Link to={"/starships"} className="nav-link">
-                    Starships
-                  </Link>
-                </span>
+                <span> */}
+            <Link to={"/starships"} className="lcars_btn purple_btn all_round header_btn">
+              Starships
+            </Link>
+            {/* </span>
               </li>
               <li>
-                <span>
-                  {isAuth ? (
-                    <Link
-                      to={"/"}
-                      onClick={logout}
-                      className="nav-link"
-                      style={{ cursor: "pointer" }}
-                    >
-                      Logout
-                    </Link>
-                  ) : (
-                    <Link to={"/signin"} className="nav-link">
-                      Sign In
-                    </Link>
-                  )}
-                </span>
+                <span> */}
+            {isAuth ? (
+              <Link to={"/"} onClick={logout} className="lcars_btn purple_btn all_round header_btn">
+                Logout
+              </Link>
+            ) : (
+              <Link to={"/signin"} className="lcars_btn purple_btn all_round header_btn">
+                Sign In
+              </Link>
+            )}
+            {/* </span>
               </li>
-            </ul>
+            </ul> */}
           </nav>
         </div>
       </header>

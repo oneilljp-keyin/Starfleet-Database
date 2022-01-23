@@ -4,12 +4,22 @@ import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 import axios from "axios";
 import { toast } from "react-toastify";
 
+import gray from "../../assets/insignia_gray.png";
+import red from "../../assets/insignia_red.png";
+import purple from "../../assets/insignia_purple.png";
+import pink from "../../assets/insignia_pink.png";
+import orange from "../../assets/insignia_orange.png";
+import yellow from "../../assets/insignia_roman.png";
+import beige from "../../assets/insignia_beige.png";
+import blue from "../../assets/insignia_blue.png";
+import ufp from "../../assets/ufp.png";
+
 import PersonnelDataService from "../../services/personnel";
 import UseModalOfficer from "../modals/UseModalOfficer";
 import ModalOfficer from "../modals/ModalOfficer";
 
 function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
 
   const [personnel, setPersonnel] = useState([]);
@@ -79,11 +89,6 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
             value={searchQuery}
             onChange={onChangeSearchQuery}
           />
-          {/* <div className="input-group-append input-group-lg">
-            <button className="btn btn-outline-secondary" type="button">
-              Search
-            </button>
-          </div> */}
         </div>
         <div className="col-2"></div>
       </div>
@@ -96,39 +101,46 @@ function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
           </>
         )}
       </div>
-      <div className="row">
-        {personnel.map((officer, index) => {
-          let officerName;
-          let officerId = officer.personnel_id ? officer.personnel_id : officer._id;
-          if (officer.surname !== "undefined") {
-            officerName = officer.surname;
-          }
-          if (officer.first) {
-            officerName += ", " + officer.first;
-          }
-          if (officer.middle) {
-            let middleI = officer.middle.slice(0, 1);
-            officerName += " " + middleI + ".";
-          }
-          return (
-            <div
-              className="col-md-4 p-1"
-              key={uuidv4()}
-              ref={personnel.length === index + 1 ? lastOfficerRef : null}
-            >
-              <div className="card text-center bg-dark">
-                <div className="card-body m-1">
-                  <h5 className="card-title">{officerName}</h5>
-                  <div className="row">
-                    <Link to={"/personnel/" + officerId} className="btn btn-primary m-1">
-                      View Officer Profile
-                    </Link>
+      <div className="row d-flex">
+        {searchQuery.length === 0 ? (
+          <div className="m-auto text-center">
+            <img className="load-img d-block mx-auto" src={ufp} alt="Loading..." />
+            <h2>Standby</h2>
+          </div>
+        ) : (
+          personnel.map((officer, index) => {
+            let officerName;
+            let officerId = officer.personnel_id ? officer.personnel_id : officer._id;
+            if (officer.surname !== "undefined") {
+              officerName = officer.surname;
+            }
+            if (officer.first) {
+              officerName += ", " + officer.first;
+            }
+            if (officer.middle) {
+              let middleI = officer.middle.slice(0, 1);
+              officerName += " " + middleI + ".";
+            }
+            return (
+              <div
+                className="col-md-4 p-1"
+                key={uuidv4()}
+                ref={personnel.length === index + 1 ? lastOfficerRef : null}
+              >
+                <div className="card text-center bg-dark">
+                  <div className="card-body m-1">
+                    <h5 className="card-title">{officerName}</h5>
+                    <div className="row">
+                      <Link to={"/personnel/" + officerId} className="btn btn-primary m-1">
+                        View Officer Profile
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
       <ModalOfficer
         isShowing={isShowingModalOfficer}

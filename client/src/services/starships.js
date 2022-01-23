@@ -10,7 +10,7 @@ class StarshipsDataService {
     return http.get(`/starships?id=${id}`);
   }
 
-  find(nameQuery, classQuery = "Unknown Class", pageNumber = "0", cancel) {
+  find(nameQuery, classQuery = "Unknown", pageNumber = "0", cancel) {
     return http.get(`/starships?name=${nameQuery}&class=${classQuery}&page=${pageNumber}`, {
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     });

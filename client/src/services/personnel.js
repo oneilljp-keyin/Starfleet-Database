@@ -36,13 +36,22 @@ class PersonnelDataService {
     return http.patch("/personnel/event/", eventInfo);
   }
 
-  insertPhoto(photoInfo) {
-    return http.post("/photos", photoInfo, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+  async insertPhoto(formData, photoInfo) {
+    let uploadResult = await axios.post(
+      "http://sector709.johnny-o.net/images/upload.php",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    photoInfo.url = uploadResult.data.url;
+
+    return http.post("/photos", photoInfo);
   }
+
   getAllPhotos(id) {
     return http.get(`/photos?id=${id}`);
   }

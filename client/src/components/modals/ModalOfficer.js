@@ -38,9 +38,9 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
       try {
         let response = await PersonnelDataService.get(id);
         setOfficerInfo(response.data);
-        // console.log(response.data);
       } catch (err) {
         console.error(err);
+        toast.error(err.message);
       }
     };
     if (officerId) {
@@ -54,17 +54,19 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
   const saveOfficerInfo = () => {
     let data = officerInfo;
     delete data["events"];
+    Object.keys(data).forEach((key) => {
+      if (data[key] === "") {
+        delete data[key];
+      }
+    });
+    console.log(data);
     if (edit) {
       data._id = officerId;
-      Object.keys(data).forEach((key) => {
-        if (data[key] === "") {
-          delete data[key];
-        }
-      });
       PersonnelDataService.updateOfficer(data)
         .then((response) => {
           setSubmitted(true);
           setProfileRefresh(true);
+          console.log(response.data);
           toast.success(response.data.message);
           hide();
         })
@@ -74,11 +76,6 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
         });
     } else {
       delete data["_id"];
-      Object.keys(data).forEach((key) => {
-        if (data[key] === "") {
-          delete data[key];
-        }
-      });
       PersonnelDataService.createOfficer(data)
         .then((response) => {
           toast.success(response.data);

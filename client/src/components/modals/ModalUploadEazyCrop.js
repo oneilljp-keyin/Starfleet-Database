@@ -1,20 +1,44 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
-// import axios from "axios";
+import Cropper from "react-easy-crop";
 
 import PersonnelDataService from "../../services/personnel";
+import { getCroppedImg } from "../../utils/getCroppedImage";
 
 const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imageType }) => {
-  const [previewSrc, setPreviewSrc] = useState(""); // state for storing previewImage
-  const [isPreviewAvailable, setIsPreviewAvailable] = useState(false); // state to show preview only for images
-  const [file, setFile] = useState(null); // state for storing actual image
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  // const cropSize = { width: 735, height: 350 };
+  const [zoom, setZoom] = useState(2);
+  const [file, setFile] = useState(null);
+  const [isFileSelected, setIsFileSelected] = useState(false);
+  const [cropperSrc, setCropperSrc] = useState(null);
+  const [croppedArea, setCroppedArea] = useState(null);
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedArea(croppedAreaPixels);
+  }, []);
+
+  let aspect = imageType === "starship" ? 21 / 10 : 1;
+
+  const showCroppedImage = useCallback(async () => {
+    try {
+      const croppedImage = await getCroppedImg(cropperSrc, croppedArea, 0);
+      return croppedImage;
+    } catch (error) {
+      console.error(error);
+    }
+  }, [cropperSrc, croppedArea]);
+
   const dropRef = useRef(); // React ref for managing the hover state of droppable area
+
   const initialPhotoState = {
     title: "",
     year: "",
     description: "",
+    url: "",
+    owner: subjectId,
   };
   const [photoInfo, setPhotoInfo] = useState(initialPhotoState);
 
@@ -24,23 +48,36 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
 
     const fileReader = new FileReader();
     fileReader.onload = () => {
-      setPreviewSrc(fileReader.result);
+      setCropperSrc(fileReader.result);
     };
     fileReader.readAsDataURL(uploadedFile);
-    setIsPreviewAvailable(uploadedFile.name.match(/\.(jpeg|jpg|png)$/));
-    dropRef.current.style.border = "2px dashed #9c96ffe6";
-  };
 
-  const updateBorder = (dragState) => {
-    if (dragState === "over") {
-      dropRef.current.style.border = "2px solid #000";
-    } else if (dragState === "leave") {
-      dropRef.current.style.border = "";
-    }
+    setIsFileSelected(uploadedFile.name.match(/\.(jpeg|jpg|png)$/));
   };
 
   const onChangeEvent = (e) => {
     setPhotoInfo({ ...photoInfo, [e.target.name]: e.target.value });
+  };
+
+  function DataURIToBlob(dataURI) {
+    const splitDataURI = dataURI.split(",");
+    const byteString =
+      splitDataURI[0].indexOf("base64") >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+
+    return new Blob([ia], { type: mimeString });
+  }
+
+  const closeModal = () => {
+    setPhotoInfo(initialPhotoState);
+    setPhotoRefresh(true);
+    setFile(null);
+    setIsFileSelected(false);
+    setCroppedArea(null);
+    hide();
   };
 
   const handleOnSubmit = async () => {
@@ -48,27 +85,20 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
       const { title, year, description } = photoInfo;
       if (title.trim() !== "" && description.trim() !== "" && year.trim() !== "") {
         if (file) {
-          console.log(file);
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("title", title);
-          formData.append("year", year);
-          formData.append("description", description);
-          formData.append("_id", subjectId);
-          formData.append("imageType", imageType);
+          let croppedFile = await showCroppedImage();
+          let newFile = DataURIToBlob(croppedFile);
 
-          PersonnelDataService.insertPhoto(formData)
+          const formData = new FormData();
+          formData.append("file", newFile, subjectId);
+
+          PersonnelDataService.insertPhoto(formData, photoInfo)
             .then((response) => {
-              setPhotoRefresh(true);
-              setFile(null);
-              setIsPreviewAvailable(false);
-              console.log(response.data.url);
-              toast.success(response.data.url);
+              toast.success(response.data.message);
               closeModal();
             })
             .catch((err) => {
               console.error(err);
-              toast.warning(err.message);
+              toast.error(err.message);
             });
         } else {
           toast.warning("Please select a file to add.");
@@ -80,10 +110,6 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
       error.response && toast.error(error.response.data);
     }
   };
-  const closeModal = () => {
-    setPhotoInfo(initialPhotoState);
-    hide();
-  };
 
   return isShowing && isAuth
     ? ReactDOM.createPortal(
@@ -91,28 +117,33 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
             <div className="modal-main-body">
-              <div className="upload-modal modal-content-wrapper">
-                <div className="modal-content-container align-content-center">
+              <div className="resize-modal resize-modal-content-wrapper">
+                <div className="resize-modal-content-container align-content-center">
                   <div className="search-form m-auto text-center">
-                    <Dropzone
-                      onDrop={onDrop}
-                      onDragEnter={() => updateBorder("over")}
-                      onDragLeave={() => updateBorder("leave")}
-                    >
-                      {({ getRootProps, getInputProps }) => (
-                        <div {...getRootProps({ className: "drop-zone" })} ref={dropRef}>
-                          <input {...getInputProps()} />
-                          <p className="text-center m-0">
-                            Drag &amp; drop OR click <strong>HERE</strong> to select
-                          </p>
-                          {isPreviewAvailable && (
-                            <div className="image-preview">
-                              <img className="preview-image" src={previewSrc} alt="Preview" />
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </Dropzone>
+                    {!isFileSelected ? (
+                      <Dropzone onDrop={onDrop}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps({ className: "drop-zone" })} ref={dropRef}>
+                            <input {...getInputProps()} />
+                            <p className="text-center m-0">
+                              Drag &amp; drop OR click <strong>HERE</strong> to select
+                            </p>
+                          </div>
+                        )}
+                      </Dropzone>
+                    ) : (
+                      <div className="cropper">
+                        <Cropper
+                          image={cropperSrc}
+                          crop={crop}
+                          zoom={zoom}
+                          aspect={aspect}
+                          onCropChange={setCrop}
+                          onCropComplete={onCropComplete}
+                          onZoomChange={setZoom}
+                        />
+                      </div>
+                    )}
                     <div className="d-flex row">
                       <input
                         className="col form-control form-control-sm my-1"
@@ -147,7 +178,9 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
                     </button>
                     <button
                       className="lcars_btn red_btn right_round small_btn"
-                      onClick={closeModal}
+                      onClick={() => {
+                        closeModal();
+                      }}
                     >
                       Cancel
                     </button>

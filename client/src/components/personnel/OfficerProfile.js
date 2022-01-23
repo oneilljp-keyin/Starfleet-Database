@@ -7,21 +7,25 @@ import PhotoCarousel from "../PhotoCarousel";
 
 import UseModalOfficer from "../modals/UseModalOfficer";
 import ModalOfficer from "../modals/ModalOfficer";
-import UseModalUpload from "../modals/UseModalUpload";
-import ModalUpload from "../modals/ModalUpload";
+
+import UseModalUploadEazyCrop from "../modals/UseModalUploadEazyCrop";
+import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
+
 import UseModalEvent from "../modals/UseModalEvent";
 import ModalEvent from "../modals/ModalEvent";
 
 const Officer = (props) => {
   const database = props.database;
   const imageType = "officer";
+  let dateCheck;
+  let dateBoolean = false;
 
   const [photoRefresh, setPhotoRefresh] = useState(false);
   const [profileRefresh, setProfileRefresh] = useState(false);
   const [officerName, setOfficerName] = useState("");
 
   const { isShowingModalOfficer, toggleModalOfficer } = UseModalOfficer();
-  const { isShowingModalUpload, toggleModalUpload } = UseModalUpload();
+  const { isShowingModalUploadEazyCrop, toggleModalUploadEazyCrop } = UseModalUploadEazyCrop();
   const { isShowingModalEvent, toggleModalEvent } = UseModalEvent();
 
   const initialOfficerState = {
@@ -46,7 +50,6 @@ const Officer = (props) => {
     const getOfficer = (id) => {
       PersonnelDataService.get(id, database)
         .then((response) => {
-          console.log(response.data);
           setOfficer(response.data);
           setProfileRefresh(false);
           if (response.data.first) {
@@ -75,7 +78,7 @@ const Officer = (props) => {
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalOfficer}>
               Edit
             </button>
-            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpload}>
+            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUploadEazyCrop}>
               Upload
             </button>
             <button className="lcars_btn orange_btn right_round" onClick={toggleModalEvent}>
@@ -112,32 +115,46 @@ const Officer = (props) => {
                   if (event.dateNote) {
                     eventDate = event.date.slice(0, 4).toString();
                     if (event.dateNote === "before") {
-                      eventDate = "Before " + eventDate;
+                      eventDate = "Bef. " + eventDate;
                     } else if (event.dateNote === "after") {
-                      eventDate = "After " + eventDate;
+                      eventDate = "Aft. " + eventDate;
                     }
                   } else {
                     eventDate = event.date.slice(0, 10);
                   }
+                  if (eventDate === dateCheck) {
+                    dateBoolean = false;
+                  } else {
+                    dateBoolean = true;
+                  }
+                  dateCheck = eventDate;
                 }
                 return (
                   <div key={index} className="d-flex flex-column align-items-baseline event-list">
                     <div className="rows d-flex flex-row">
-                      <h3 className="row mx-1 my-0">
-                        {event.date && <>{eventDate}</>}
-                        {event.date && event.stardate && <>{" - "}</>}
-                        {event.stardate && <>{event.stardate}</>}
-                        {/* {event.starshipName && event.location && <> - </>}{" "} */}
-                      </h3>
+                      {dateBoolean && (
+                        <h3 className="row mx-1 my-0">
+                          {event.date && <>{eventDate}</>}
+                          {/* {event.date && event.stardate && <>{" - "}</>} */}
+                          {event.stardate && (
+                            <span className="small_hide"> [{event.stardate}]</span>
+                          )}
+                        </h3>
+                      )}
                       <h4 className="row mx-1 my-0">
                         {event.starshipName && <>{event.starshipName}</>}{" "}
                         {event.starshipRegistry && <> - {event.starshipRegistry}</>}{" "}
                         {event.location && <>at/near {event.location}</>}
                       </h4>
+                      <h5>
+                        {event.rankLabel && <>{event.rankLabel}</>}
+                        {event.rankLabel && event.position && <>{" - "}</>}
+                        {event.position && <>{event.position}</>}
+                      </h5>
+                      {/* </div>
+                    <div className="rows d-flex flex-row"> */}
                     </div>
                     <div className="rows d-flex flex-row">
-                      {event.rankLabel && <h5 className="mx-1 col-auto">{event.rankLabel} - </h5>}
-                      {event.position && <h5 className="mx-1 col-auto">{event.position} - </h5>}
                       <h6 className="mx-1 col justify-text">{event.notes}</h6>
                     </div>
                   </div>
@@ -156,9 +173,9 @@ const Officer = (props) => {
           <p>No Officer Selected</p>
         </div>
       )}
-      <ModalUpload
-        isShowing={isShowingModalUpload}
-        hide={toggleModalUpload}
+      <ModalUploadEazyCrop
+        isShowing={isShowingModalUploadEazyCrop}
+        hide={toggleModalUploadEazyCrop}
         isAuth={props.isAuth}
         subjectId={props.match.params.id}
         setPhotoRefresh={setPhotoRefresh}

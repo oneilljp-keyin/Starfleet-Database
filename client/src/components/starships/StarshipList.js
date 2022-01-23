@@ -11,11 +11,12 @@ import ModalStarship from "../modals/ModalStarship";
 function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
+  const [listRefresh, setListRefresh] = useState(false);
 
   const [starships, setStarships] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [searchClass, setSearchClass] = useState("");
-  const [classes, setClasses] = useState(["Unknown Class"]);
+  const [classes, setClasses] = useState(["Unknown"]);
 
   const [pageNumber, setPageNumber] = useState(0);
   const observer = useRef();
@@ -36,6 +37,16 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
   const { isShowingModalStarship, toggleModalStarship } = UseModalStarship();
 
   useEffect(() => {
+    const retrieveClasses = () => {
+      StarshipsDataService.getStarshipClasses()
+        .then((response) => {
+          setClasses(["Unknown"].concat(response.data));
+        })
+        .catch((e) => {
+          console.error(e);
+          toast.error(e.message);
+        });
+    };
     retrieveClasses();
   }, []);
 
@@ -51,91 +62,72 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
 
   useEffect(() => {
     setStarships([]);
-  }, [searchName]);
+  }, [searchName, searchClass]);
 
   useEffect(() => {
-    if (searchName.length > 0 && searchClass !== "Unknown Class") {
-      setLoading(true);
-      const ourRequest = axios.CancelToken.source();
-      StarshipsDataService.find(searchName, searchClass, ourRequest.token)
-        .then((response) => {
-          setStarships((prevStarships) => {
-            return [
-              ...new Set([
-                ...prevStarships,
-                ...response.data.starships.map((starship) => starship),
-              ]),
-            ];
-          });
-          setHasMore(
-            (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-              response.data.total_results
-          );
-          setLoading(false);
-        })
-        .catch((e) => {
-          if (axios.isCancel(e)) return;
-          toast.warning(e.message);
-        });
-      return () => ourRequest.cancel();
-    }
-  }, [searchName, searchClass, pageNumber]);
-
-  const retrieveClasses = () => {
-    StarshipsDataService.getStarshipClasses()
+    // if (searchName.length > 0) {
+    setLoading(true);
+    const ourRequest = axios.CancelToken.source();
+    StarshipsDataService.find(searchName, searchClass, pageNumber, ourRequest.token)
       .then((response) => {
-        // console.log(response.data);
-        setClasses(["Unknown Class"].concat(response.data));
+        setStarships((prevStarships) => {
+          return [
+            ...new Set([...prevStarships, ...response.data.starships.map((starship) => starship)]),
+          ];
+        });
+        setHasMore(
+          (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
+            response.data.total_results
+        );
+        setLoading(false);
+        setListRefresh(false);
       })
       .catch((e) => {
-        console.log(e);
+        if (axios.isCancel(e)) return;
+        console.error(e.message);
+        toast.warning(e.message);
       });
-  };
+    return () => ourRequest.cancel();
+    // }
+  }, [searchName, searchClass, pageNumber, listRefresh]);
 
   return (
     <>
-      <div className="d-flex row form-group">
-        <div className="col-3"></div>
-        <input
-          type="text"
-          className="col-4"
-          placeholder="Search By Name"
-          value={searchName}
-          onChange={onChangeSearchName}
-        />
-        {/* <button
-          className="col-2 btn search_btn btn-outline-secondary"
-          type="button"
-          onClick={findByName}
-        >
-          Search
-        </button> */}
-        <div className="col-3"></div>
-        <div className="w-100"></div>
-        <div className="col-3"></div>
+      <div className="rows d-flex align-content-center">
+        <div className="input-group input-group-lg">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search By Name"
+            value={searchName}
+            onChange={onChangeSearchName}
+          />
+        </div>
         <select
           name="searchClass"
           value={searchClass}
           onChange={onChangeSearchClass}
-          className="col-4"
+          className="col-4 select-center"
         >
           {classes.map((shipClass) => {
             return (
               <option value={shipClass} key={uuidv4()}>
-                {" "}
-                {shipClass.substring(0, 20)}{" "}
+                {`   `}
+                {shipClass.substring(0, 20)}
+                {" Class"}
               </option>
             );
           })}
         </select>
-        {/* <button
-          className="col-2 btn search_btn btn-outline-secondary"
-          type="button"
-          onClick={findByClass}
-        >
-          Search
-        </button> */}
-        <div className="col-3"></div>
+      </div>
+      <div className="menu-btn_wrapper d-flex">
+        {isAuth && (
+          <>
+            <button className="lcars_btn orange_btn all_round" onClick={toggleModalStarship}>
+              New Starship Record
+            </button>
+          </>
+        )}
       </div>
       <div className="row">
         {starships.map((starship, index) => {
@@ -167,7 +159,7 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
         isAuth={isAuth}
         starshipId={null}
         subjectName={null}
-        setProfileRefresh={null}
+        listRefresh={setListRefresh}
       />
     </>
   );

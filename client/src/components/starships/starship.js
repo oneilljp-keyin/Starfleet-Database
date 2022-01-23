@@ -7,19 +7,23 @@ import PhotoCarousel from "../PhotoCarousel";
 
 import ModalStarship from "../modals/ModalStarship";
 import UseModalStarship from "../modals/UseModalStarship";
-import UseModalUpload from "../modals/UseModalUpload";
-import ModalUpload from "../modals/ModalUpload";
+
+import UseModalUploadEazyCrop from "../modals/UseModalUploadEazyCrop";
+import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
+
 import UseModalEvent from "../modals/UseModalEvent";
 import ModalEvent from "../modals/ModalEvent";
 
 const Starships = (props) => {
   const imageType = "starship";
+  let dateCheck;
+  let dateBoolean = false;
 
   const [photoRefresh, setPhotoRefresh] = useState(false);
   const [profileRefresh, setProfileRefresh] = useState(false);
   const [starshipName, setStarshipName] = useState("");
   const { isShowingModalStarship, toggleModalStarship } = UseModalStarship();
-  const { isShowingModalUpload, toggleModalUpload } = UseModalUpload();
+  const { isShowingModalUploadEazyCrop, toggleModalUploadEazyCrop } = UseModalUploadEazyCrop();
   const { isShowingModalEvent, toggleModalEvent } = UseModalEvent();
 
   const initialStarshipsState = {
@@ -50,7 +54,6 @@ const Starships = (props) => {
       StarshipsDataService.get(id)
         .then((response) => {
           setStarship(response.data);
-          console.log(response.data);
           setProfileRefresh(false);
           setStarshipName(response.data.name + " " + response.data.registry);
         })
@@ -74,7 +77,7 @@ const Starships = (props) => {
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalStarship}>
               Edit
             </button>
-            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUpload}>
+            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUploadEazyCrop}>
               Upload
             </button>
             <button className="lcars_btn orange_btn right_round" onClick={toggleModalEvent}>
@@ -94,16 +97,18 @@ const Starships = (props) => {
               imageType={imageType}
               className="flex-grow-1"
             />
-            <div className="m-1">
+            <div className="m-1 width-auto">
               {starship.name && <h1>U.S.S. {starship.name}</h1>}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
             </div>
-            <div className="m-3">
-              <p>
+            <div className="m-1 width-auto">
+              <p className="text-end">
                 {starship.launch_date && (
                   <>
                     <strong>Launch: </strong>
+                    {starship.launch_date_note === "before" && "Before "}
+                    {starship.launch_date_note === "after" && "After "}
                     {starship.launch_date.slice(0, 4)}
                     <br />
                   </>
@@ -111,13 +116,17 @@ const Starships = (props) => {
                 {starship.commission_date && (
                   <>
                     <strong>Commission: </strong>
-                    {starship.decommission_date.slice(0, 4)}
+                    {starship.commission_date_note === "before" && "Before "}
+                    {starship.commission_date_note === "after" && "After "}
+                    {starship.commission_date.slice(0, 4)}
                     <br />
                   </>
                 )}
                 {starship.decommission_date && (
                   <>
                     <strong>Decommission: </strong>
+                    {starship.decommission_date_note === "before" && "Before "}
+                    {starship.decommission_date_note === "after" && "After "}
                     {starship.decommission_date.slice(0, 4)}
                     <br />
                   </>
@@ -125,6 +134,8 @@ const Starships = (props) => {
                 {starship.destruction_date && (
                   <>
                     <strong>Destruction: </strong>
+                    {starship.destruction_date_note === "before" && "Before "}
+                    {starship.destruction_date_note === "after" && "After "}
                     {starship.destruction_date.slice(0, 4)}
                     <br />
                   </>
@@ -148,6 +159,12 @@ const Starships = (props) => {
                   } else {
                     eventDate = event.date.slice(0, 10);
                   }
+                  if (eventDate === dateCheck) {
+                    dateBoolean = false;
+                  } else {
+                    dateBoolean = true;
+                  }
+                  dateCheck = eventDate;
                 }
                 let officerName = "";
                 if (event.officerInfo.length > 0) {
@@ -167,25 +184,25 @@ const Starships = (props) => {
                 }
 
                 return (
-                  <div key={index} className="d-flex flex-column align-items-baseline">
+                  <div key={index} className="d-flex flex-column align-items-baseline event-list">
                     <div className="rows d-flex flex-row">
-                      <h3 className="row mx-1 my-0">
-                        {event.date && <>{eventDate}</>}
-                        {event.date && event.stardate && <>{" - "}</>}
-                        {event.stardate && <>{event.stardate}</>}
-                        {/* {event.starshipName && event.location && <> - </>}{" "} */}
-                      </h3>
+                      {dateBoolean && (
+                        <h3 className="row mx-1 my-0">
+                          {event.date && <>{eventDate}</>}
+                          {event.date && event.stardate && <>{" - "}</>}
+                          {event.stardate && <>{event.stardate}</>}
+                        </h3>
+                      )}
                       <h4 className="row mx-1 my-0">
                         {event.location && <>at/near {event.location}</>}
                       </h4>
+                      <h5>
+                        {officerName !== undefined && <>{officerName}</>}
+                        {officerName !== undefined && event.position !== undefined && <>{" - "}</>}
+                        {event.position !== undefined && <>{event.position}</>}
+                      </h5>
                     </div>
                     <div className="rows d-flex flex-row">
-                      {officerName !== undefined && (
-                        <h5 className="mx-1 col-auto">{officerName} - </h5>
-                      )}
-                      {event.position !== undefined && (
-                        <h5 className="mx-1 col-auto">{event.position} - </h5>
-                      )}
                       <h6 className="mx-1 col justify-text">{event.notes}</h6>
                     </div>
                   </div>
@@ -204,9 +221,9 @@ const Starships = (props) => {
           <p>No Starship Selected</p>
         </div>
       )}
-      <ModalUpload
-        isShowing={isShowingModalUpload}
-        hide={toggleModalUpload}
+      <ModalUploadEazyCrop
+        isShowing={isShowingModalUploadEazyCrop}
+        hide={toggleModalUploadEazyCrop}
         isAuth={props.isAuth}
         subjectId={props.match.params.id}
         setPhotoRefresh={setPhotoRefresh}

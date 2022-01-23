@@ -63,7 +63,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
             }
           })}
       </div>
-      <div className="carousel-inner h-100">
+      <div className="carousel-inner">
         {photoArray.length > 0 &&
           photoArray.map((photo, index) => {
             // let data8 = new Uint8Array(photo.image.data);
@@ -75,11 +75,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
                 data-bs-interval="1000000"
                 key={index}
               >
-                <img
-                  src={`data:image/png;base64,${photo.image.$binary.base64}`}
-                  className="d-block w-100"
-                  alt={photo.title}
-                />
+                <img src={`${photo.url}`} className="d-block w-100" alt={photo.title} />
                 <div className="carousel-caption cc-bg d-none d-sm-block p-0 middle">
                   <h5 className="m-0">
                     {photo.title} [<small>{photo.year}</small>]
