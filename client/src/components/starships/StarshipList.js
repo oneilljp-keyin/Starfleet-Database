@@ -4,11 +4,13 @@ import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 import axios from "axios";
 import { toast } from "react-toastify";
 
+import gray from "../../assets/insignia_gray.png";
+
 import StarshipsDataService from "../../services/starships";
 import UseModalStarship from "../modals/UseModalStarship";
 import ModalStarship from "../modals/ModalStarship";
 
-function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
+function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [listRefresh, setListRefresh] = useState(false);
@@ -130,7 +132,6 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
       </div>
       <div className="row p-1">
         {starships.map((starship, index) => {
-          // console.log(starship);
           let starshipId = starship.starship_id ? starship.starship_id : starship._id;
           return (
             <div
@@ -140,6 +141,11 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
             >
               <div className="card text-center bg-dark">
                 <div className="card-body">
+                  <img
+                    className="search-list"
+                    src={starship.starshipImageUrl[0] ? starship.starshipImageUrl[0] : gray}
+                    alt={starship.name}
+                  />
                   <h5 className="card-title">{starship.name}</h5>
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>
                   <div className="row">
@@ -160,6 +166,8 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
         starshipId={null}
         subjectName={null}
         setListRefresh={setListRefresh}
+        modalClass={modalClass}
+        setModalClass={setModalClass}
       />
     </>
   );

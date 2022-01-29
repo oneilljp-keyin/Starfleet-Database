@@ -7,7 +7,16 @@ import Cropper from "react-easy-crop";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 import { getCroppedImg } from "../../utils/getCroppedImage";
 
-const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imageType }) => {
+const PopUpUpload = ({
+  isShowing,
+  hide,
+  isAuth,
+  subjectId,
+  setPhotoRefresh,
+  imageType,
+  modalClass,
+  setModalClass,
+}) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   // const cropSize = { width: 735, height: 350 };
   const [zoom, setZoom] = useState(2);
@@ -72,6 +81,7 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
   }
 
   const closeModal = () => {
+    // setModalClass("modal-main-body modal-close");
     setPhotoInfo(initialPhotoState);
     setPhotoRefresh(true);
     setFile(null);
@@ -116,7 +126,7 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className="modal-main-body">
+            <div className={modalClass}>
               <div className="resize-modal resize-modal-content-wrapper">
                 <div className="resize-modal-content-container align-content-center">
                   <div className="search-form m-auto text-center">

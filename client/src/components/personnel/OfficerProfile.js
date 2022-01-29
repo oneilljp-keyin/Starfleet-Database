@@ -14,7 +14,8 @@ import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
 import UseModalEvent from "../modals/UseModalEvent";
 import ModalEvent from "../modals/ModalEvent";
 
-const Officer = (props, { isAuth, admin, modalClass, setModalClass }) => {
+const Officer = (props) => {
+  // { isAuth, admin, modalClass, setModalClass }
   const imageType = "officer";
   let dateCheck;
   let dateBoolean = false;
@@ -72,7 +73,7 @@ const Officer = (props, { isAuth, admin, modalClass, setModalClass }) => {
         <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
           Search
         </Link>
-        {isAuth && (
+        {props.isAuth && (
           <>
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalOfficer}>
               Edit
@@ -175,26 +176,32 @@ const Officer = (props, { isAuth, admin, modalClass, setModalClass }) => {
       <ModalUploadEazyCrop
         isShowing={isShowingModalUploadEazyCrop}
         hide={toggleModalUploadEazyCrop}
-        isAuth={isAuth}
+        isAuth={props.isAuth}
         subjectId={props.match.params.id}
         setPhotoRefresh={setPhotoRefresh}
         imageType={imageType}
+        modalClass={props.modalClass}
+        setModalClass={props.setModalClass}
       />
       <ModalOfficer
         isShowing={isShowingModalOfficer}
         hide={toggleModalOfficer}
-        isAuth={isAuth}
+        isAuth={props.isAuth}
         officerId={props.match.params.id}
         subjectName={officerName}
         setProfileRefresh={setProfileRefresh}
+        modalClass={props.modalClass}
+        setModalClass={props.setModalClass}
       />
       <ModalEvent
         isShowing={isShowingModalEvent}
         hide={toggleModalEvent}
-        isAuth={isAuth}
+        isAuth={props.isAuth}
         officerId={props.match.params.id}
         subjectName={officerName}
         setProfileRefresh={setProfileRefresh}
+        modalClass={props.modalClass}
+        setModalClass={props.setModalClass}
       />
     </>
   );

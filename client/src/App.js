@@ -22,10 +22,9 @@ toast.configure();
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminRole, setAdminRole] = useState(false);
-  const [database, setDatabase] = useState("mongo");
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [modalClass, setModalClass] = "main-modal-body";
+  const [modalClass, setModalClass] = useState("main-modal-body modal-open");
 
   // ---- Get Name and Admin Privileges ---- \\
   useEffect(() => {
@@ -130,8 +129,8 @@ function App() {
                         isAuth={isAuthenticated}
                         userId={userId}
                         admin={adminRole}
-                        setDatabase={setDatabase}
-                        database={database}
+                        modalClass={modalClass}
+                        setModalClass={setModalClass}
                       />
                     )}
                   />
@@ -143,7 +142,8 @@ function App() {
                         isAuth={isAuthenticated}
                         admin={adminRole}
                         userId={userId}
-                        database={database}
+                        modalClass={modalClass}
+                        setModalClass={setModalClass}
                       />
                     )}
                   />

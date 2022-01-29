@@ -13,6 +13,8 @@ const PopUpEvents = ({
   subjectName,
   setListRefresh,
   setProfileRefresh,
+  modalClass,
+  setModalClass,
 }) => {
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -128,7 +130,7 @@ const PopUpEvents = ({
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className="modal-main-body">
+            <div className={modalClass}>
               <div className="events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>

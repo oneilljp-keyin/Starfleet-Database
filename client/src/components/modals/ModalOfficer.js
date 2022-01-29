@@ -4,7 +4,16 @@ import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
 
-const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfileRefresh }) => {
+const PopUpEvents = ({
+  isShowing,
+  hide,
+  isAuth,
+  officerId,
+  subjectName,
+  setProfileRefresh,
+  modalClass,
+  setModalClass,
+}) => {
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const initialOfficerState = {
@@ -99,11 +108,11 @@ const PopUpEvents = ({ isShowing, hide, isAuth, officerId, subjectName, setProfi
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className="modal-main-body">
+            <div id="main-modal-body" className={modalClass}>
               <div className="events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
-                    {btnLabel} Profile - {subjectName}
+                    {btnLabel} Profile {subjectName ? ` - ${subjectName}` : null}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
                     <div className="col"></div>

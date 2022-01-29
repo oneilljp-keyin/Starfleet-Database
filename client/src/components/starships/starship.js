@@ -228,6 +228,8 @@ const Starships = (props) => {
         subjectId={props.match.params.id}
         setPhotoRefresh={setPhotoRefresh}
         imageType={imageType}
+        modalClass={props.modalClass}
+        setModalClass={props.setModalClass}
       />
       <ModalStarship
         isShowing={isShowingModalStarship}
@@ -238,6 +240,8 @@ const Starships = (props) => {
         subjectRegistry={starship.registry}
         setPhotoRefresh={setPhotoRefresh}
         setProfileRefresh={setProfileRefresh}
+        modalClass={props.modalClass}
+        setModalClass={props.setModalClass}
       />
       <ModalEvent
         isShowing={isShowingModalEvent}
@@ -247,6 +251,8 @@ const Starships = (props) => {
         starshipId={props.match.params.id}
         subjectName={starshipName}
         setProfileRefresh={setProfileRefresh}
+        modalClass={props.modalClass}
+        setModalClass={props.setModalClass}
       />
     </>
   );

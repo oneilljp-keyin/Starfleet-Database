@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import ufp from "../../assets/ufp.png";
+import gray from "../../assets/insignia_gray.png";
 
 import PersonnelDataService from "../../services/personnel";
 import UseModalOfficer from "../modals/UseModalOfficer";
@@ -93,7 +94,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
           </>
         )}
       </div>
-      <div className="row d-flex">
+      <div className="row d-flex p-1">
         {searchQuery.length === 0 ? (
           <div className="m-auto text-center">
             <img className="load-img d-block mx-auto" src={ufp} alt="Loading..." />
@@ -115,15 +116,20 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
             }
             return (
               <div
-                className="col-md-4 p-1"
+                className="col-md-4 p-2"
                 key={uuidv4()}
                 ref={personnel.length === index + 1 ? lastOfficerRef : null}
               >
                 <div className="card text-center bg-dark">
-                  <div className="card-body m-1">
+                  <div className="card-body">
+                    <img
+                      className="search-list"
+                      src={officer.officerPicUrl[0] ? officer.officerPicUrl[0] : gray}
+                      alt={officerName}
+                    />
                     <h5 className="card-title">{officerName}</h5>
                     <div className="row">
-                      <Link to={"/personnel/" + officerId} className="btn btn-primary m-1">
+                      <Link to={"/personnel/" + officerId} className="btn btn-primary">
                         View Officer Profile
                       </Link>
                     </div>
@@ -141,6 +147,8 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
         officerId={null}
         subjectName={null}
         setProfileRefresh={null}
+        modalClass={modalClass}
+        setModalClass={setModalClass}
       />
     </>
   );
