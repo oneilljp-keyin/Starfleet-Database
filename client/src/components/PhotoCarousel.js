@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import PersonnelDataService from "../services/personnel";
+import EventsAndPhotosDataService from "../services/eventsAndPhotos";
 
 function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType }) {
   const [photoArray, setPhotoArray] = useState([]);
@@ -8,7 +8,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
 
   useEffect(() => {
     const getphotoArray = (id) => {
-      PersonnelDataService.getAllPhotos(id)
+      EventsAndPhotosDataService.getAllPhotos(id)
         .then((response) => {
           setPhotoArray(response.data);
           let array = [];

@@ -16,6 +16,10 @@ class StarshipsDataService {
     });
   }
 
+  findForEvents(query) {
+    return http.get(`/starships?name=${query}`);
+  }
+
   createStarship(data) {
     return http.post("/starships", data);
   }

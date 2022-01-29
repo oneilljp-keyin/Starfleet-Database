@@ -5,7 +5,15 @@ import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import StarshipsDataService from "../../services/starships";
 
-const PopUpEvents = ({ isShowing, hide, isAuth, starshipId, subjectName, setListRefresh }) => {
+const PopUpEvents = ({
+  isShowing,
+  hide,
+  isAuth,
+  starshipId,
+  subjectName,
+  setListRefresh,
+  setProfileRefresh,
+}) => {
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [classes, setClasses] = useState(["Unknown"]);
@@ -72,17 +80,7 @@ const PopUpEvents = ({ isShowing, hide, isAuth, starshipId, subjectName, setList
         .then((response) => {
           setSubmitted(true);
           toast.success(response.data);
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.warning(err.message);
-        });
-    } else {
-      delete data["_id"];
-      StarshipsDataService.createStarship(data)
-        .then((response) => {
-          toast.success(response.data);
-          setStarshipInfo(initialStarshipState);
+          setProfileRefresh(true);
           hide();
         })
         .catch((err) => {
@@ -90,6 +88,19 @@ const PopUpEvents = ({ isShowing, hide, isAuth, starshipId, subjectName, setList
           toast.warning(err.message);
         });
       setListRefresh(true);
+    } else {
+      delete data["_id"];
+      StarshipsDataService.createStarship(data)
+        .then((response) => {
+          toast.success(response.data);
+          setStarshipInfo(initialStarshipState);
+          setListRefresh(true);
+          hide();
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.warning(err.message);
+        });
     }
   };
 
@@ -98,7 +109,6 @@ const PopUpEvents = ({ isShowing, hide, isAuth, starshipId, subjectName, setList
       StarshipsDataService.getStarshipClasses()
         .then((response) => {
           setClasses(["Unknown"].concat(response.data));
-          console.log(response.data);
         })
         .catch((e) => {
           console.error(e);

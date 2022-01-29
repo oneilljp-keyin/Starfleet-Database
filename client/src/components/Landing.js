@@ -1,44 +1,39 @@
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
-function Login({ setAuth, userId, getProfile, userName }) {
-  // // const [history, setHistory] = useState({});
-
-  // const searchHistory = async (userId) => {
-  //   try {
-  //     const response = await fetch(`http://localhost:8000/api/v1/personnel/history/${userId}`, {
-  //       method: "GET",
-  //       headers: { token: localStorage.token },
-  //     });
-
-  //     const parseData = await response.json();
-  //   } catch (err) {
-  //     console.error(err.message);
-  //   }
-
-  //   // PersonnelDataService.searchHistory(id)
-  //   //   .then((response) => {
-  //   //     console.log(response.data);
-  //   //     setHistory(response.data.history);
-  //   //   })
-  //   //   .catch((e) => {
-  //   //     console.log(e);
-  //   //   });
-  // };
-
-  // useEffect(() => {
-  //   searchHistory(userId);
-  // }, [userId]);
+function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
+  const logout = (e) => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      setAuth(false);
+      toast.success("Logout Successful");
+      setAdmin(false);
+      setName("");
+    } catch (err) {
+      toast.success(err.message);
+      console.log(err.message);
+    }
+  };
 
   return (
     <>
       <article>
         <header>
-          <h3 className="text-center">
-            Welcome to Sector 709{userName && ","} {userName}
-          </h3>
+          <h3 className="text-center">Welcome to Sector 709</h3>
+          <h3 className="text-center">{userName}</h3>
+          <h3 className="text-center">{admin && "[You have Administrator priveleges]"}</h3>
         </header>
         <div className="article_content">
-          <p>The search features are auto-complete, as you type, the results will come up </p>
+          <h1 className="text-center">
+            The search features are auto-complete, as you type, the results will come up{" "}
+          </h1>
+          <h4 className="text-center">
+            This site is just launched, so the information is limited, I have a list of personnel
+            and starships, but information on each is almost non-existent. Might implement a update
+            feature, let you know when the site gets updated.{" "}
+          </h4>
+
           <ul>
             <li>In the Personnel section, results will appear as you type.</li>
             <li>
@@ -49,12 +44,26 @@ function Login({ setAuth, userId, getProfile, userName }) {
               by name if you wish.
             </li>
           </ul>
+          <h2 style={{ textTransform: "none" }}>
+            Information on this site has been gathered mainly from{" "}
+            <a href="http://memory-alpha.fandom.com" target="_blank" rel="noreferrer">
+              Memory Alpha
+            </a>
+            . If you want more detailed information, a visit there is recommended. I will eventually
+            include direct links for easier access.
+          </h2>
         </div>
         <footer className="justify-content-between">
           <a href="http://johnoneill.tech" target="_blank" rel="noreferrer">
             johnoneill.tech
           </a>
-          <Link to={"/signin"}>admin</Link>
+          {isAuth ? (
+            <Link to={"/"} onClick={logout}>
+              logout
+            </Link>
+          ) : (
+            <Link to={"/signin"}>admin</Link>
+          )}
           <div className="footer_bar"></div>
         </footer>
       </article>
@@ -62,4 +71,4 @@ function Login({ setAuth, userId, getProfile, userName }) {
   );
 }
 
-export default Login;
+export default Landing;

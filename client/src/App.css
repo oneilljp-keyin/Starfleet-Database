@@ -10,17 +10,24 @@ input { text-align: center; }
 
 button:hover, a { cursor: pointer; }
 
-a { color: #6699ff; }
-a:hover, a:focus { color: #121212;}
+a, a:hover, a:focus { color: #6699ff; }
 
 h1 { font-size: 1.48rem;}
-h2 { font-size: 1.28rem; color: #ffdd22e6; text-transform: uppercase; }
-h3 { font-size: 1.08rem; color: #8066af; text-transform: uppercase; }
-h4 { font-size: 0.98rem; color: #dd8100; margin-bottom: 12px; }
-h5 { font-size: 0.98rem; color: #ffdd22e6; }
+h2 { font-size: 1.38rem; color: #ffdd22e6; text-transform: uppercase; }
+h3 { font-size: 1.28rem; color: #8066af; text-transform: uppercase; }
+h4 { font-size: 1.18rem; color: #dd8100; margin-bottom: 12px; }
+h5 { font-size: 1.18rem; color: #ffdd22e6; }
+h6 { font-size: 1rem; color: #ffffffde; }
+
+.list-group h3, .list-group h4, .list-group h5 {
+  font-size: 1rem;
+}
+
 .topbar-title { font-size: 1rem; color: #ffdd22e6;
                 text-transform: uppercase; text-decoration: none;}
-
+.topbar-title:hover { color: #ffdd22e6; }
+.topbar-title:visited { color: #ffdd22e6; }
+  
 .small_hide {display: none;}
 
 /* ---- OfficerProfile.js - Part of Photo Carousel ---------------------- */
@@ -193,6 +200,8 @@ button.logout {
   padding: 0.25rem 1rem 0.25rem 1rem; font-weight: 500;
 }
 
+.lcars_btn:hover, .lcars_btn:focus {color: #121212;}
+
 /* Button sizes */
 .small_btn {
   max-width: 124px; margin: 0; z-index: 100;
@@ -282,7 +291,11 @@ button.logout {
 
 .article_content p {
   display: block; color: #eeeeeee6;
-  margin: 0.5rem 0; max-width: 720px;
+  margin: 0.5rem 0; font-size: 2rem;
+}
+
+.article_content li {
+  font-size: 1.5rem;
 }
 
 article footer {
@@ -381,10 +394,14 @@ article footer p {
   h1 { font-size: 2rem; color: #ffffffde; }
   h2,
   #main_header hgroup h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.38rem; color: #8066af; }
-  h4 { font-size: 1.18rem; color: #dd8100; }
-  h5 { font-size: 1.18rem; color: #ffdd22e6; }
+  h3 { font-size: 1.48rem; color: #8066af; }
+  h4 { font-size: 1.38rem; color: #dd8100; }
+  h5 { font-size: 1.28rem; color: #ffdd22e6; }
   h6 { font-size: 1.18rem; color: #ffffffde; }
+
+  .list-group h3, .list-group h4, .list-group h5 {
+    font-size: 1.18rem;
+  }
 
   .small_hide {display: block;}
 
@@ -423,6 +440,12 @@ article footer p {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   border-radius: 2.57rem 0 0 2.57rem;
+}
+
+@keyframes modal-grow {
+  0% {transform: scale(0,0)}
+  50% {transform: scale(1,0.2)}
+  100% {transform: scale(1,1)}
 }
 
 .modal-overlay {

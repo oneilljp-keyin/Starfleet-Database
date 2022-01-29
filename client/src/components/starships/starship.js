@@ -167,19 +167,19 @@ const Starships = (props) => {
                   dateCheck = eventDate;
                 }
                 let officerName = "";
-                if (event.officerInfo.length > 0) {
+                if (event.surname || event.first || event.last) {
                   if (event.rankLabel) {
                     officerName = event.rankLabel;
                   }
-                  if (event.officerInfo[0].first) {
-                    officerName += " " + event.officerInfo[0].first;
+                  if (event.first) {
+                    officerName += " " + event.first;
                   }
-                  if (event.officerInfo[0].middle) {
-                    let middleI = event.officerInfo[0].middle.slice(0, 1);
+                  if (event.middle) {
+                    let middleI = event.middle.slice(0, 1);
                     officerName += " " + middleI + ".";
                   }
-                  if (event.officerInfo[0].surname) {
-                    officerName += " " + event.officerInfo[0].surname;
+                  if (event.surname) {
+                    officerName += " " + event.surname;
                   }
                 }
 
@@ -234,8 +234,10 @@ const Starships = (props) => {
         hide={toggleModalStarship}
         isAuth={props.isAuth}
         starshipId={props.match.params.id}
-        subjectName={starshipName}
-        setPhotoRefresh={setProfileRefresh}
+        subjectName={starship.name}
+        subjectRegistry={starship.registry}
+        setPhotoRefresh={setPhotoRefresh}
+        setProfileRefresh={setProfileRefresh}
       />
       <ModalEvent
         isShowing={isShowingModalEvent}

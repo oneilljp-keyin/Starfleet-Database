@@ -4,7 +4,7 @@ import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
 import Cropper from "react-easy-crop";
 
-import PersonnelDataService from "../../services/personnel";
+import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 import { getCroppedImg } from "../../utils/getCroppedImage";
 
 const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imageType }) => {
@@ -91,7 +91,7 @@ const PopUpUpload = ({ isShowing, hide, isAuth, subjectId, setPhotoRefresh, imag
           const formData = new FormData();
           formData.append("file", newFile, subjectId);
 
-          PersonnelDataService.insertPhoto(formData, photoInfo)
+          EventsAndPhotosDataService.insertPhoto(formData, photoInfo)
             .then((response) => {
               toast.success(response.data.message);
               closeModal();

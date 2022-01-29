@@ -1,4 +1,4 @@
-import { StrictMode, useState } from "react";
+import { StrictMode, useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -15,31 +15,43 @@ import Officer from "./components/personnel/OfficerProfile";
 import StarshipList from "./components/starships/StarshipList";
 import Starship from "./components/starships/Starship";
 
+import SignInUpService from "./services/signInUp";
+
 toast.configure();
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [adminRole, setAdminRole] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminRole, setAdminRole] = useState(false);
   const [database, setDatabase] = useState("mongo");
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [modalClass, setModalClass] = "main-modal-body";
 
   // ---- Get Name and Admin Privileges ---- \\
-  async function getProfile(userId) {
-    try {
-      const response = await fetch(`https://sfdatabase.herokuapp.com/api/users/${userId}`, {
-        method: "GET",
-        headers: { token: localStorage.token },
-      });
-
-      const parseData = await response.json();
-
-      setName(parseData.name);
-      setAdminRole(parseData.admin);
-    } catch (err) {
-      console.error(err.message);
+  useEffect(() => {
+    async function getProfile() {
+      SignInUpService.userInfo()
+        .then((response) => {
+          if (!response.data.error) {
+            setName(response.data.name);
+            setAdminRole(response.data.admin);
+            setAuth(true);
+          } else {
+            setAuth(false);
+            setAdminRole(false);
+            setName(null);
+            setUserId(null);
+          }
+        })
+        .catch((err) => {
+          setAuth(false);
+          setAdminRole(false);
+          setName(null);
+          setUserId(null);
+        });
     }
-  }
+    getProfile();
+  }, [isAuthenticated]);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -56,12 +68,7 @@ function App() {
               </Link>
             </div>
           </div>
-          <Navbar
-            isAuth={isAuthenticated}
-            setAuth={setAuth}
-            setAdmin={setAdminRole}
-            setName={setName}
-          />
+          <Navbar />
           <main className="main_body">
             <div className="content_wrapper">
               <div className="content_container align-content-center">
@@ -73,9 +80,11 @@ function App() {
                       <Landing
                         {...props}
                         isAuth={isAuthenticated}
-                        userId={userId}
+                        setAuth={setAuth}
                         admin={adminRole}
+                        setAdmin={setAdminRole}
                         userName={name}
+                        setName={setName}
                       />
                     )}
                   />
@@ -91,8 +100,8 @@ function App() {
                         isAuth={isAuthenticated}
                         userId={userId}
                         admin={adminRole}
-                        setDatabase={setDatabase}
-                        database={database}
+                        modalClass={modalClass}
+                        setModalClass={setModalClass}
                       />
                     )}
                   />
@@ -104,8 +113,8 @@ function App() {
                         {...props}
                         isAuth={isAuthenticated}
                         admin={adminRole}
-                        userId={userId}
-                        database={database}
+                        modalClass={modalClass}
+                        setModalClass={setModalClass}
                       />
                     )}
                   />
@@ -144,8 +153,8 @@ function App() {
                       <SignIn
                         {...props}
                         setAuth={setAuth}
+                        setAdmin={setAdminRole}
                         setUserId={setUserId}
-                        getProfile={getProfile}
                       />
                     )}
                   />

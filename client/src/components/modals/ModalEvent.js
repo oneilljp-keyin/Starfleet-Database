@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
 import StarshipsDataService from "../../services/starships";
+import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
 const PopUpEvents = ({
   isShowing,
@@ -24,7 +25,7 @@ const PopUpEvents = ({
     type: "Other",
     officerId: officerId,
     starshipId: starshipId,
-    starshipName: "",
+    starshipName: subjectName,
     starshipRegistry: "",
     location: "",
     rankLabel: "",
@@ -40,7 +41,7 @@ const PopUpEvents = ({
   if (eventId) {
     const getEvent = async (id) => {
       try {
-        let response = await PersonnelDataService.getEvent(id);
+        let response = await EventsAndPhotosDataService.getEvent(id);
         setEventInfo(response.data);
       } catch (err) {
         console.error(err);
@@ -82,7 +83,7 @@ const PopUpEvents = ({
   useEffect(() => {
     const retrieveStarship = () => {
       if (eventInfo.starshipName.length > 2) {
-        StarshipsDataService.find(eventInfo.starshipName, "name", "mongo", "null", "0", "10")
+        StarshipsDataService.find(eventInfo.starshipName)
           .then((response) => {
             setShipSearchResults(response.data.starships);
           })
@@ -101,7 +102,7 @@ const PopUpEvents = ({
 
     if (edit) {
       data._id = eventId;
-      PersonnelDataService.updateEvent(data)
+      EventsAndPhotosDataService.updateEvent(data)
         .then((response) => {
           setProfileRefresh(true);
           setEventInfo(initialEventState);
@@ -118,7 +119,8 @@ const PopUpEvents = ({
         delete data["rankLabel"];
         delete data["position"];
       }
-      PersonnelDataService.insertEvent(data)
+      console.log(data);
+      EventsAndPhotosDataService.insertEvent(data)
         .then((response) => {
           setProfileRefresh(true);
           setEventInfo(initialEventState);
@@ -245,7 +247,7 @@ const PopUpEvents = ({
                           <option value="">Unknown Rank / N/A</option>
                           {rankLabels.length > 0 &&
                             rankLabels.map((rank) => (
-                              <option key={rank.rank_id} value={rank.abbrev}>
+                              <option key={rank.rank_id} value={rank.label}>
                                 {rank.label}
                               </option>
                             ))}

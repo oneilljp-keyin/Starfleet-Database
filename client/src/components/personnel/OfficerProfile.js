@@ -14,8 +14,7 @@ import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
 import UseModalEvent from "../modals/UseModalEvent";
 import ModalEvent from "../modals/ModalEvent";
 
-const Officer = (props) => {
-  const database = props.database;
+const Officer = (props, { isAuth, admin, modalClass, setModalClass }) => {
   const imageType = "officer";
   let dateCheck;
   let dateBoolean = false;
@@ -48,7 +47,7 @@ const Officer = (props) => {
 
   useEffect(() => {
     const getOfficer = (id) => {
-      PersonnelDataService.get(id, database)
+      PersonnelDataService.get(id)
         .then((response) => {
           setOfficer(response.data);
           setProfileRefresh(false);
@@ -65,7 +64,7 @@ const Officer = (props) => {
     };
 
     getOfficer(props.match.params.id);
-  }, [props.match.params.id, profileRefresh, database]);
+  }, [props.match.params.id, profileRefresh]);
 
   return (
     <>
@@ -73,7 +72,7 @@ const Officer = (props) => {
         <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
           Search
         </Link>
-        {props.isAuth && (
+        {isAuth && (
           <>
             <button className="lcars_btn orange_btn all_square" onClick={toggleModalOfficer}>
               Edit
@@ -130,10 +129,10 @@ const Officer = (props) => {
                   dateCheck = eventDate;
                 }
                 return (
-                  <div key={index} className="d-flex flex-column align-items-baseline event-list">
-                    <div className="rows d-flex flex-row">
+                  <div key={index} className="d-flex flex-column event-list">
+                    <div className="rows d-flex flex-row align-items-baseline">
                       {dateBoolean && (
-                        <h3 className="row mx-1 my-0">
+                        <h3 className="mx-1 my-0">
                           {event.date && <>{eventDate}</>}
                           {/* {event.date && event.stardate && <>{" - "}</>} */}
                           {event.stardate && (
@@ -141,12 +140,12 @@ const Officer = (props) => {
                           )}
                         </h3>
                       )}
-                      <h4 className="row mx-1 my-0">
+                      <h4 className="mx-1 my-0">
                         {event.starshipName && <>{event.starshipName}</>}{" "}
                         {event.starshipRegistry && <> - {event.starshipRegistry}</>}{" "}
                         {event.location && <>at/near {event.location}</>}
                       </h4>
-                      <h5>
+                      <h5 className="mx-1 my-0">
                         {event.rankLabel && <>{event.rankLabel}</>}
                         {event.rankLabel && event.position && <>{" - "}</>}
                         {event.position && <>{event.position}</>}
@@ -176,7 +175,7 @@ const Officer = (props) => {
       <ModalUploadEazyCrop
         isShowing={isShowingModalUploadEazyCrop}
         hide={toggleModalUploadEazyCrop}
-        isAuth={props.isAuth}
+        isAuth={isAuth}
         subjectId={props.match.params.id}
         setPhotoRefresh={setPhotoRefresh}
         imageType={imageType}
@@ -184,7 +183,7 @@ const Officer = (props) => {
       <ModalOfficer
         isShowing={isShowingModalOfficer}
         hide={toggleModalOfficer}
-        isAuth={props.isAuth}
+        isAuth={isAuth}
         officerId={props.match.params.id}
         subjectName={officerName}
         setProfileRefresh={setProfileRefresh}
@@ -192,7 +191,7 @@ const Officer = (props) => {
       <ModalEvent
         isShowing={isShowingModalEvent}
         hide={toggleModalEvent}
-        isAuth={props.isAuth}
+        isAuth={isAuth}
         officerId={props.match.params.id}
         subjectName={officerName}
         setProfileRefresh={setProfileRefresh}

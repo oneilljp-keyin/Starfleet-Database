@@ -65,7 +65,6 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
   }, [searchName, searchClass]);
 
   useEffect(() => {
-    // if (searchName.length > 0) {
     setLoading(true);
     const ourRequest = axios.CancelToken.source();
     StarshipsDataService.find(searchName, searchClass, pageNumber, ourRequest.token)
@@ -129,21 +128,22 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
           </>
         )}
       </div>
-      <div className="row">
+      <div className="row p-1">
         {starships.map((starship, index) => {
+          // console.log(starship);
           let starshipId = starship.starship_id ? starship.starship_id : starship._id;
           return (
             <div
-              className="col-md-4 p-1"
+              className="col-md-4 p-2"
               key={uuidv4()}
               ref={starships.length === index + 1 ? lastStarshipsRef : null}
             >
               <div className="card text-center bg-dark">
-                <div className="card-body m-1">
+                <div className="card-body">
                   <h5 className="card-title">{starship.name}</h5>
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>
                   <div className="row">
-                    <Link to={"/starships/" + starshipId} className="btn btn-primary m-1">
+                    <Link to={"/starships/" + starshipId} className="btn btn-primary">
                       View Starship Profile
                     </Link>
                   </div>
@@ -159,7 +159,7 @@ function StarshipList({ isAuth, userId, admin, setDatabase, database }) {
         isAuth={isAuth}
         starshipId={null}
         subjectName={null}
-        listRefresh={setListRefresh}
+        setListRefresh={setListRefresh}
       />
     </>
   );

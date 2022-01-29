@@ -4,21 +4,13 @@ import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import gray from "../../assets/insignia_gray.png";
-import red from "../../assets/insignia_red.png";
-import purple from "../../assets/insignia_purple.png";
-import pink from "../../assets/insignia_pink.png";
-import orange from "../../assets/insignia_orange.png";
-import yellow from "../../assets/insignia_roman.png";
-import beige from "../../assets/insignia_beige.png";
-import blue from "../../assets/insignia_blue.png";
 import ufp from "../../assets/ufp.png";
 
 import PersonnelDataService from "../../services/personnel";
 import UseModalOfficer from "../modals/UseModalOfficer";
 import ModalOfficer from "../modals/ModalOfficer";
 
-function PersonnelList({ isAuth, userId, admin, setDatabase, database }) {
+function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
 
