@@ -9,7 +9,6 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 const Officer = (props) => {
-  // { isAuth, admin, modalClass, setModalClass }
   const imageType = "officer";
   let dateCheck;
   let dateBoolean = false;
@@ -70,6 +69,8 @@ const Officer = (props) => {
     setEventId(id);
     toggleModal();
   }
+
+  console.log(officer);
 
   return (
     <>
@@ -135,26 +136,27 @@ const Officer = (props) => {
               )}
               {officer.position && (
                 <h3 style={{ textTransform: "capitalize" }}>
-                  <span style={{ color: "#FFDD22E6" }}>Assignment: </span>
+                  <span style={{ color: "#FFDD22E6" }}>Position: </span>
                   {officer.position}
                 </h3>
               )}
-              {(officer.position && !officer.position.includes("etired")) ||
-                ((officer.starshipName || officer.location) && (
-                  <h3 style={{ textTransform: "capitalize" }}>
-                    {officer.starshipName ? (
-                      <>
-                        <span style={{ color: "#FFDD22E6" }}>Vessel: </span>
-                        {officer.starshipName} {officer.starshipRegistry}
-                      </>
-                    ) : (
-                      <>
-                        <span style={{ color: "#FFDD22E6" }}>Location: </span>
-                        {officer.location}
-                      </>
-                    )}
-                  </h3>
-                ))}
+              {/* {(officer.position && !officer.position.includes("etired")) ||
+                ((officer.starshipName || officer.location) && ( */}
+              <h3 style={{ textTransform: "capitalize" }}>
+                {officer.starshipName && (
+                  <>
+                    <span style={{ color: "#FFDD22E6" }}>Vessel: </span>
+                    {officer.starshipName} {officer.starshipRegistry}
+                  </>
+                )}
+                {officer.location && (
+                  <>
+                    <span style={{ color: "#FFDD22E6" }}>Location: </span>
+                    {officer.location}
+                  </>
+                )}
+              </h3>
+              {/* ))} */}
               {officer.birthDate && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>Birth: </span>
@@ -238,7 +240,11 @@ const Officer = (props) => {
                         </>
                       )}
                       <h4 className="mx-1 my-0">
-                        {event.starshipName && <>{event.starshipName}</>}{" "}
+                        {event.starshipName && (
+                          <Link to={`/starships/${event.starshipId}`} className="list-link">
+                            {event.starshipName}
+                          </Link>
+                        )}
                         {event.starshipRegistry && <> - {event.starshipRegistry}</>}{" "}
                         {event.location && <>at/near {event.location}</>}
                       </h4>
@@ -247,26 +253,16 @@ const Officer = (props) => {
                         {event.rankLabel && event.position && <>{" - "}</>}
                         {event.position && <>{event.position}</>}
                       </h5>
-                      {event.notes === "Assignment" && (
-                        <>
-                          <h6 className="mx-1 my-0">&nbsp;Assignment</h6>{" "}
-                        </>
-                      )}
-                      {event.type === "Promotion" && (
-                        <>
-                          <h6 className="mx-1 my-0">&nbsp;Promotion</h6>{" "}
-                        </>
-                      )}
-                      {event.notes === "Demotion" && (
-                        <>
-                          <h6 className="mx-1 my-0">&nbsp;Demotion</h6>{" "}
-                        </>
-                      )}
+                      <h6 className="mx-1 my-0">
+                        {event.notes === "Assignment" && <>Assignment</>}
+                        {event.type === "Promotion" && <>Promotion</>}
+                        {event.notes === "Demotion" && <>Demotion</>}
+                      </h6>
                     </div>
                     <div className="rows d-flex flex-row">
                       {event.notes && event.notes !== "Assignment" && event.notes !== "Demotion" && (
                         <>
-                          <h6 className="mx-1 col justify-text">{event.notes}</h6>
+                          <h6 className="mx-1 my-0 col justify-text">{event.notes}</h6>
                         </>
                       )}
                     </div>

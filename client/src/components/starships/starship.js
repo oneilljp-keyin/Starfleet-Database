@@ -14,7 +14,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 const Starships = (props) => {
-  const imageType = "starship";
+  const [imageType, setImageType] = useState("starship");
   let dateCheck;
   let dateBoolean = false;
 
@@ -68,9 +68,10 @@ const Starships = (props) => {
     getStarship(props.match.params.id);
   }, [props.match.params.id, refreshOption]);
 
-  function OpenModal(modalType, id) {
+  function OpenModal(modalType, id, option = imageType) {
     setModal(modalType);
     setEventId(id);
+    setImageType(option);
     toggleModal();
   }
 
@@ -213,33 +214,41 @@ const Starships = (props) => {
                         <button
                           className="edit"
                           onClick={() => {
-                            OpenModal("event", event._id);
+                            let eventOption = event.officerId ? "officer" : "starship";
+                            OpenModal("event", event._id, eventOption);
                           }}
                         >
                           <i className="far fa-edit" style={{ color: "gray" }}></i>
                         </button>
                       )}
                       {dateBoolean && (
-                        <h3 className="row mx-1 my-0">
-                          {event.date && <>{eventDate}</>}
-                          {event.date && event.stardate && <>{" - "}</>}
-                          {event.stardate && <>{event.stardate}</>}
-                        </h3>
+                        <>
+                          <h3 className="row mx-1 my-0">{event.date && <>{eventDate}</>}</h3>
+                          {event.stardate && <h3 className="row mx-1 my-0">[{event.stardate}]</h3>}
+                        </>
                       )}
                       <h4 className="row mx-1 my-0">
                         {event.location && <>at/near {event.location}</>}
                       </h4>
                       <h5>
-                        {officerName !== undefined && <>{officerName}</>}
+                        {officerName !== undefined && (
+                          <Link to={`/personnel/${event.officerId}`} className="list-link">
+                            {officerName}
+                          </Link>
+                        )}
                         {officerName !== undefined && event.position !== undefined && <>{" - "}</>}
                         {event.position !== undefined && <>{event.position}</>}
                       </h5>
-                      {event.notes === "Assignment" && <h6>&nbsp;-&nbsp;Assignment</h6>}
+                      <h6 className="mx-1 my-0">
+                        {event.notes === "Assignment" && <>Assignment</>}
+                        {event.type === "Promotion" && <>Promotion</>}
+                        {event.notes === "Demotion" && <>Demotion</>}
+                      </h6>
                     </div>
-                    {event.notes !== "Assignment" && (
-                      <div className="rows d-flex flex-row">
+                    {event.notes && event.notes !== "Assignment" && event.notes !== "Demotion" && (
+                      <>
                         <h6 className="mx-1 col justify-text">{event.notes}</h6>
-                      </div>
+                      </>
                     )}
                   </div>
                 );
@@ -257,39 +266,6 @@ const Starships = (props) => {
           <p>No Starship Selected</p>
         </div>
       )}
-      {/* <ModalUploadEazyCrop
-        isShowing={isShowingModalUploadEazyCrop}
-        hide={toggleModalUploadEazyCrop}
-        isAuth={props.isAuth}
-        subjectId={props.match.params.id}
-        setPhotoRefresh={setPhotoRefresh}
-        imageType={imageType}
-        modalClass={props.modalClass}
-        setModalClass={props.setModalClass}
-      />
-      <ModalStarship
-        isShowing={isShowingModalStarship}
-        hide={toggleModalStarship}
-        isAuth={props.isAuth}
-        starshipId={props.match.params.id}
-        subjectName={starship.name}
-        subjectRegistry={starship.registry}
-        setPhotoRefresh={setPhotoRefresh}
-        setProfileRefresh={setProfileRefresh}
-        modalClass={props.modalClass}
-        setModalClass={props.setModalClass}
-      />
-      <ModalEvent
-        isShowing={isShowingModalEvent}
-        hide={toggleModalEvent}
-        isAuth={props.isAuth}
-        officerId=""
-        starshipId={props.match.params.id}
-        subjectName={starshipName}
-        setProfileRefresh={setProfileRefresh}
-        modalClass={props.modalClass}
-        setModalClass={props.setModalClass}
-      /> */}
       <ModalLauncher
         modal={modal}
         isShowing={isShowingModal}

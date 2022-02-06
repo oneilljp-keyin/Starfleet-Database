@@ -196,6 +196,8 @@ button.logout {
   text-decoration: none; text-align: right; border-radius: 1rem 0 0 1rem;
 }
 
+.list-link {text-decoration: none; color: inherit;}
+
 /* Generic Button features */
 .lcars_btn {
   color: #121212; text-align: center; display: inline-block;
