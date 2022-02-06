@@ -9,6 +9,7 @@ main { height: 100%; }
 input { text-align: center; }
 
 button:hover, a { cursor: pointer; }
+button.edit { background-color: none; padding: 0; border: none; background: none; cursor: pointer; }
 
 a, a:hover, a:focus { color: #6699ff; }
 
@@ -19,7 +20,7 @@ h4 { font-size: 1.18rem; color: #dd8100; margin-bottom: 12px; }
 h5 { font-size: 1.18rem; color: #ffdd22e6; }
 h6 { font-size: 1rem; color: #ffffffde; }
 
-.list-group h3, .list-group h4, .list-group h5 {
+.profile-summary h3, .list-group h3, .list-group h4, .list-group h5 {
   font-size: 1rem;
 }
 
@@ -79,6 +80,7 @@ h6 { font-size: 1rem; color: #ffffffde; }
 .container {
   margin: 0.5rem auto;
   height: 96%; width: 96%;
+  max-width: 960px;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto 1fr;
@@ -400,7 +402,7 @@ article footer p {
   h5 { font-size: 1.28rem; color: #ffdd22e6; }
   h6 { font-size: 1.18rem; color: #ffffffde; }
 
-  .list-group h3, .list-group h4, .list-group h5 {
+  .profile-summary h3, .list-group h3, .list-group h4, .list-group h5 {
     font-size: 1.18rem;
   }
 
@@ -432,7 +434,7 @@ article footer p {
 
   .load-img {max-width: 600px;}
   .officer-pics { height: auto; max-width: 256px; }
-  .starship-pics { height: auto; max-width: 450px; }
+  .starship-pics { height: auto; max-width: 400px; }
   
 }
 

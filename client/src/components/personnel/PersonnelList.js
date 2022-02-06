@@ -8,8 +8,8 @@ import ufp from "../../assets/ufp.png";
 import gray from "../../assets/insignia_gray.png";
 
 import PersonnelDataService from "../../services/personnel";
-import UseModalOfficer from "../modals/UseModalOfficer";
-import ModalOfficer from "../modals/ModalOfficer";
+import UseModal from "../modals/UseModal";
+import ModalLauncher from "../modals/ModalLauncher";
 
 function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
     [loading, hasMore]
   );
 
-  const { isShowingModalOfficer, toggleModalOfficer } = UseModalOfficer();
+  const { isShowingModal, toggleModal } = UseModal();
 
   const onChangeSearchQuery = (e) => {
     setSearchQuery(e.target.value);
@@ -88,7 +88,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
       <div className="menu-btn_wrapper d-flex">
         {isAuth && (
           <>
-            <button className="lcars_btn orange_btn all_round" onClick={toggleModalOfficer}>
+            <button className="lcars_btn orange_btn all_round" onClick={toggleModal}>
               New Officer Record
             </button>
           </>
@@ -116,7 +116,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
             }
             return (
               <div
-                className="col-md-4 p-2"
+                className="col-md-3 p-2"
                 key={uuidv4()}
                 ref={personnel.length === index + 1 ? lastOfficerRef : null}
               >
@@ -140,15 +140,16 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
           })
         )}
       </div>
-      <ModalOfficer
-        isShowing={isShowingModalOfficer}
-        hide={toggleModalOfficer}
+      <ModalLauncher
+        modal="officer"
+        isShowing={isShowingModal}
+        hide={toggleModal}
         isAuth={isAuth}
         officerId={null}
+        starshipId={null}
         subjectName={null}
-        setProfileRefresh={null}
-        modalClass={modalClass}
-        setModalClass={setModalClass}
+        imageType={null}
+        setRefresh={null}
       />
     </>
   );

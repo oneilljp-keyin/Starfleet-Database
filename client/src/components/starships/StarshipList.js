@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 import gray from "../../assets/insignia_gray.png";
 
 import StarshipsDataService from "../../services/starships";
-import UseModalStarship from "../modals/UseModalStarship";
-import ModalStarship from "../modals/ModalStarship";
+import UseModal from "../modals/UseModal";
+import ModalLauncher from "../modals/ModalLauncher";
 
 function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
     [loading, hasMore]
   );
 
-  const { isShowingModalStarship, toggleModalStarship } = UseModalStarship();
+  const { isShowingModal, toggleModal } = UseModal();
 
   useEffect(() => {
     const retrieveClasses = () => {
@@ -124,7 +124,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
       <div className="menu-btn_wrapper d-flex">
         {isAuth && (
           <>
-            <button className="lcars_btn orange_btn all_round" onClick={toggleModalStarship}>
+            <button className="lcars_btn orange_btn all_round" onClick={toggleModal}>
               New Starship Record
             </button>
           </>
@@ -135,7 +135,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
           let starshipId = starship.starship_id ? starship.starship_id : starship._id;
           return (
             <div
-              className="col-md-4 p-2"
+              className="col-md-3 p-2"
               key={uuidv4()}
               ref={starships.length === index + 1 ? lastStarshipsRef : null}
             >
@@ -143,7 +143,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
                 <div className="card-body">
                   <img
                     className="search-list"
-                    src={starship.starshipImageUrl[0] ? starship.starshipImageUrl[0] : gray}
+                    src={starship.starshipPicUrl[0] ? starship.starshipPicUrl[0] : gray}
                     alt={starship.name}
                   />
                   <h5 className="card-title">{starship.name}</h5>
@@ -159,15 +159,16 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
           );
         })}
       </div>
-      <ModalStarship
-        isShowing={isShowingModalStarship}
-        hide={toggleModalStarship}
+      <ModalLauncher
+        modal="officer"
+        isShowing={isShowingModal}
+        hide={toggleModal}
         isAuth={isAuth}
+        officerId={null}
         starshipId={null}
         subjectName={null}
-        setListRefresh={setListRefresh}
-        modalClass={modalClass}
-        setModalClass={setModalClass}
+        imageType={null}
+        setRefresh={listRefresh}
       />
     </>
   );

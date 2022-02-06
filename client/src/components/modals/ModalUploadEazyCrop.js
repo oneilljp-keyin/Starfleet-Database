@@ -12,7 +12,7 @@ const PopUpUpload = ({
   hide,
   isAuth,
   subjectId,
-  setPhotoRefresh,
+  setRefresh,
   imageType,
   modalClass,
   setModalClass,
@@ -83,7 +83,7 @@ const PopUpUpload = ({
   const closeModal = () => {
     // setModalClass("modal-main-body modal-close");
     setPhotoInfo(initialPhotoState);
-    setPhotoRefresh(true);
+    setRefresh();
     setFile(null);
     setIsFileSelected(false);
     setCroppedArea(null);

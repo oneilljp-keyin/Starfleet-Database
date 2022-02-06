@@ -72,7 +72,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
             return (
               <div
                 className={index === 0 ? "carousel-item active " : "carousel-item"}
-                data-bs-interval="1000000"
+                data-bs-interval="7200"
                 key={index}
               >
                 <img src={`${photo.url}`} className="d-block w-100" alt={photo.title} />

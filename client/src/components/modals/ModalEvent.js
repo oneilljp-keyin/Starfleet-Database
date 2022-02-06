@@ -14,33 +14,33 @@ const PopUpEvents = ({
   starshipId,
   eventId,
   subjectName,
-  setProfileRefresh,
+  setRefresh,
+  eventType,
   modalClass,
-  setModalClass,
 }) => {
-  const [edit, setEdit] = useState(false);
   const [rankLabels, setRankLabels] = useState([]);
   const [shipSearchResults, setShipSearchResults] = useState([]);
+  const [edit, setEdit] = useState(false);
   const [btnLabel, setBtnLabel] = useState("Create");
 
   const initialEventState = {
     type: "Other",
     officerId: officerId,
     starshipId: starshipId,
-    starshipName: subjectName,
-    starshipRegistry: "",
-    location: "",
-    rankLabel: "",
-    position: "",
-    date: "",
-    dateNote: "",
-    stardate: "",
-    notes: "",
+    starshipName: null,
+    starshipRegistry: null,
+    location: null,
+    rankLabel: null,
+    position: null,
+    date: null,
+    dateNote: null,
+    stardate: null,
+    notes: null,
   };
 
   const [eventInfo, setEventInfo] = useState(initialEventState);
 
-  if (eventId) {
+  useEffect(() => {
     const getEvent = async (id) => {
       try {
         let response = await EventsAndPhotosDataService.getEvent(id);
@@ -49,13 +49,15 @@ const PopUpEvents = ({
         console.error(err);
       }
     };
-    getEvent(eventId);
-    setEdit(true);
-    setBtnLabel("Update");
-  }
+    if (eventId) {
+      getEvent(eventId);
+      setBtnLabel("Update");
+    }
+  }, [eventId]);
 
   const onChangeEventInfo = (e) => {
     setEventInfo({ ...eventInfo, [e.target.name]: e.target.value });
+    // if (e.target.name === "starshipName") setEdit(false);
   };
 
   const onClickStarship = (id, name, registry) => {
@@ -84,29 +86,31 @@ const PopUpEvents = ({
 
   useEffect(() => {
     const retrieveStarship = () => {
-      if (eventInfo.starshipName.length > 2) {
-        StarshipsDataService.find(eventInfo.starshipName)
-          .then((response) => {
-            setShipSearchResults(response.data.starships);
-          })
-          .catch((err) => {
-            console.error(err.message);
-          });
-      }
+      StarshipsDataService.find(eventInfo.starshipName)
+        .then((response) => {
+          setShipSearchResults(response.data.starships);
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
     };
-    retrieveStarship();
+    if (eventInfo.starshipName && eventInfo.starshipName.length > 2) {
+      retrieveStarship();
+    }
   }, [eventInfo.starshipName]);
 
   const saveEvent = () => {
-    const asArray = Object.entries(eventInfo);
-    const filtered = asArray.filter(([key, value]) => value !== "");
-    const data = Object.fromEntries(filtered);
-
-    if (edit) {
+    let data = eventInfo;
+    Object.keys(data).forEach((key) => {
+      if (data[key] === null || data[key] === "" || data[key] === undefined) {
+        delete data[key];
+      }
+    });
+    if (btnLabel === "Update") {
       data._id = eventId;
       EventsAndPhotosDataService.updateEvent(data)
         .then((response) => {
-          setProfileRefresh(true);
+          setRefresh();
           setEventInfo(initialEventState);
           hide();
           toast.success(response.data.message);
@@ -116,15 +120,14 @@ const PopUpEvents = ({
           console.error(err);
         });
     } else {
-      if (officerId === "") {
+      if (officerId === null) {
         delete data["officerId"];
         delete data["rankLabel"];
         delete data["position"];
       }
-      console.log(data);
       EventsAndPhotosDataService.insertEvent(data)
         .then((response) => {
-          setProfileRefresh(true);
+          setRefresh();
           setEventInfo(initialEventState);
           hide();
           toast.success(response.data.message);
@@ -149,13 +152,15 @@ const PopUpEvents = ({
             <div className={modalClass}>
               <div className="events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
-                  <h3>Add Event for {subjectName}</h3>
+                  <h3>
+                    {btnLabel} Event for {subjectName}
+                  </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
                     <label className="col-auto my-1 text-right form-control-lg" htmlFor="eventDate">
                       Date Of Event:
                     </label>
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="date"
                       name="date"
                       value={eventInfo.date ? eventInfo.date.slice(0, 10) : ""}
@@ -163,18 +168,18 @@ const PopUpEvents = ({
                     />
                     {/* Stardate */}
                     <input
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-md my-1"
                       type="text"
                       name="stardate"
                       placeholder="Stardate"
-                      value={eventInfo.stardate}
+                      value={eventInfo.stardate || ""}
                       onChange={(e) => onChangeEventInfo(e)}
                     />
                     {/* Note about event date (exact, approx, before or after) */}
                     <select
                       className="col form-control my-1"
                       name="dateNote"
-                      value={eventInfo.dateNote}
+                      value={eventInfo.dateNote || ""}
                       onChange={(e) => onChangeEventInfo(e)}
                     >
                       <option value="">Exact Date</option>
@@ -183,13 +188,13 @@ const PopUpEvents = ({
                       <option value="after">After This Date</option>
                     </select>
                     <div className="w-100"></div>
-                    {officerId !== "" && (
+                    {eventType !== "starship" && (
                       <>
                         {" "}
                         <select
                           className="col form-control my-1"
                           name="type"
-                          value={eventInfo.type}
+                          value={eventInfo.type || ""}
                           onChange={(e) => onChangeEventInfo(e)}
                         >
                           <option value="Other">Other Event</option>
@@ -203,7 +208,7 @@ const PopUpEvents = ({
                             type="text"
                             name="starshipName"
                             placeholder="Starship"
-                            value={eventInfo.starshipName}
+                            value={eventInfo.starshipName || ""}
                             onChange={(e) => onChangeEventInfo(e)}
                             autoComplete="off"
                           />
@@ -212,7 +217,7 @@ const PopUpEvents = ({
                               shipSearchResults.map((ship) => {
                                 let shipId = ship._id;
                                 let shipName = ship.name;
-                                let shipRegistry = ship.registry ? ship.registry : "";
+                                let shipRegistry = ship.registry ? ship.registry : null;
                                 return (
                                   <div
                                     key={shipId}
@@ -234,16 +239,16 @@ const PopUpEvents = ({
                       type="text"
                       name="location"
                       placeholder="Galatic Location"
-                      value={eventInfo.location}
+                      value={eventInfo.location || ""}
                       onChange={(e) => onChangeEventInfo(e)}
                     />
-                    {officerId !== "" && (
+                    {eventType !== "starship" && (
                       <>
                         <div className="w-100"></div>
                         <select
                           className="col form-control my-1"
                           name="rankLabel"
-                          value={eventInfo.rankLabel}
+                          value={eventInfo.rankLabel || ""}
                           onChange={(e) => onChangeEventInfo(e)}
                         >
                           <option value="">Unknown Rank / N/A</option>
@@ -259,7 +264,7 @@ const PopUpEvents = ({
                           type="text"
                           name="position"
                           placeholder="Current Position"
-                          value={eventInfo.position}
+                          value={eventInfo.position || ""}
                           onChange={(e) => onChangeEventInfo(e)}
                         />
                       </>
@@ -270,7 +275,7 @@ const PopUpEvents = ({
                       type="text"
                       name="notes"
                       placeholder="Brief Description"
-                      value={eventInfo.notes}
+                      value={eventInfo.notes || ""}
                       onChange={(e) => onChangeEventInfo(e)}
                     />
                   </div>

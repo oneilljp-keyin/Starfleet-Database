@@ -6,8 +6,12 @@ class EventsAndPhotosDataService {
     return http.post("/events", eventInfo);
   }
 
+  getEvent(id) {
+    return http.get(`/events?id=${id}`);
+  }
+
   updateEvent(eventInfo) {
-    return http.patch("/events", eventInfo);
+    return http.put("/events", eventInfo);
   }
 
   async insertPhoto(formData, photoInfo) {

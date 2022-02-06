@@ -5,14 +5,8 @@ import { toast } from "react-toastify";
 import PersonnelDataService from "../../services/personnel";
 import PhotoCarousel from "../PhotoCarousel";
 
-import UseModalOfficer from "../modals/UseModalOfficer";
-import ModalOfficer from "../modals/ModalOfficer";
-
-import UseModalUploadEazyCrop from "../modals/UseModalUploadEazyCrop";
-import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
-
-import UseModalEvent from "../modals/UseModalEvent";
-import ModalEvent from "../modals/ModalEvent";
+import UseModal from "../modals/UseModal";
+import ModalLauncher from "../modals/ModalLauncher";
 
 const Officer = (props) => {
   // { isAuth, admin, modalClass, setModalClass }
@@ -20,13 +14,16 @@ const Officer = (props) => {
   let dateCheck;
   let dateBoolean = false;
 
-  const [photoRefresh, setPhotoRefresh] = useState(false);
-  const [profileRefresh, setProfileRefresh] = useState(false);
   const [officerName, setOfficerName] = useState("");
+  const [eventId, setEventId] = useState(null);
+  const [modal, setModal] = useState(null);
+  const [refreshOption, setRefreshOption] = useState(false);
 
-  const { isShowingModalOfficer, toggleModalOfficer } = UseModalOfficer();
-  const { isShowingModalUploadEazyCrop, toggleModalUploadEazyCrop } = UseModalUploadEazyCrop();
-  const { isShowingModalEvent, toggleModalEvent } = UseModalEvent();
+  function toggleRefresh() {
+    setRefreshOption(!refreshOption);
+  }
+
+  const { isShowingModal, toggleModal } = UseModal();
 
   const initialOfficerState = {
     _id: null,
@@ -37,9 +34,11 @@ const Officer = (props) => {
     birthDate: null,
     birthStardate: null,
     birthPlace: null,
+    birthDateNote: null,
     deathDate: null,
     deathStardate: null,
     deathPlace: null,
+    deathDateNote: null,
     serial: null,
     events: [],
   };
@@ -51,7 +50,6 @@ const Officer = (props) => {
       PersonnelDataService.get(id)
         .then((response) => {
           setOfficer(response.data);
-          setProfileRefresh(false);
           if (response.data.first) {
             setOfficerName(response.data.first + " " + response.data.surname);
           } else {
@@ -65,7 +63,13 @@ const Officer = (props) => {
     };
 
     getOfficer(props.match.params.id);
-  }, [props.match.params.id, profileRefresh]);
+  }, [props.match.params.id, refreshOption]);
+
+  function OpenModal(modalType, id) {
+    setModal(modalType);
+    setEventId(id);
+    toggleModal();
+  }
 
   return (
     <>
@@ -75,13 +79,28 @@ const Officer = (props) => {
         </Link>
         {props.isAuth && (
           <>
-            <button className="lcars_btn orange_btn all_square" onClick={toggleModalOfficer}>
+            <button
+              className="lcars_btn orange_btn all_square"
+              onClick={() => {
+                OpenModal("officer", officer._id);
+              }}
+            >
               Edit
             </button>
-            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUploadEazyCrop}>
+            <button
+              className="lcars_btn orange_btn all_square"
+              onClick={() => {
+                OpenModal("photo", officer._id);
+              }}
+            >
               Upload
             </button>
-            <button className="lcars_btn orange_btn right_round" onClick={toggleModalEvent}>
+            <button
+              className="lcars_btn orange_btn right_round"
+              onClick={() => {
+                OpenModal("event", null);
+              }}
+            >
               Event
             </button>
           </>
@@ -93,18 +112,85 @@ const Officer = (props) => {
             <PhotoCarousel
               subjectId={props.match.params.id}
               isAuth={props.isAuth}
-              photoRefresh={photoRefresh}
-              setPhotoRefresh={setPhotoRefresh}
+              photoRefresh={refreshOption}
+              setPhotoRefresh={setRefreshOption}
               imageType={imageType}
             />
-            <div>
+            <div className="profile-summary">
               <h1>
                 {officer.surname && <>{officer.surname}</>}
                 {officer.first && <>, {officer.first}</>}
                 {officer.middle && <> {officer.middle}</>}
                 {officer.postNom && <>, {officer.postNom}</>}
+                {officer.date && (
+                  <span style={{ fontSize: "1.18rem" }}> (As of {officer.date.slice(0, 4)})</span>
+                )}
               </h1>
-              <h2>{officer.serial}</h2>
+              {officer.serial && <h2>{officer.serial}</h2>}
+              {officer.rankLabel && (
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}>Rank: </span>
+                  {officer.rankLabel}
+                </h3>
+              )}
+              {officer.position && (
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}>Assignment: </span>
+                  {officer.position}
+                </h3>
+              )}
+              {(officer.position && !officer.position.includes("etired")) ||
+                ((officer.starshipName || officer.location) && (
+                  <h3 style={{ textTransform: "capitalize" }}>
+                    {officer.starshipName ? (
+                      <>
+                        <span style={{ color: "#FFDD22E6" }}>Vessel: </span>
+                        {officer.starshipName} {officer.starshipRegistry}
+                      </>
+                    ) : (
+                      <>
+                        <span style={{ color: "#FFDD22E6" }}>Location: </span>
+                        {officer.location}
+                      </>
+                    )}
+                  </h3>
+                ))}
+              {officer.birthDate && (
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}>Birth: </span>
+                  {officer.birthDateNote ? (
+                    <>
+                      {officer.birthDateNote} {officer.birthDate.slice(0, 4)}
+                    </>
+                  ) : (
+                    <>{officer.birthDate.slice(0, 10)}</>
+                  )}
+                </h3>
+              )}
+              {officer.birthPlace && (
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}>From: </span>
+                  {officer.birthPlace}
+                </h3>
+              )}
+              {officer.deathDate && (
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}>Death: </span>
+                  {officer.deathDateNote ? (
+                    <>
+                      {officer.deathDateNote} {officer.deathDate.slice(0, 4)}
+                    </>
+                  ) : (
+                    <>{officer.deathDate.slice(0, 10)}</>
+                  )}
+                </h3>
+              )}
+              {officer.deathPlace && (
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}>Place: </span>
+                  {officer.deathPlace}
+                </h3>
+              )}
             </div>
           </div>
           <div className="list-group">
@@ -132,14 +218,24 @@ const Officer = (props) => {
                 return (
                   <div key={index} className="d-flex flex-column event-list">
                     <div className="rows d-flex flex-row align-items-baseline">
+                      {props.isAuth && (
+                        <button
+                          className="edit"
+                          onClick={() => {
+                            OpenModal("event", event._id);
+                          }}
+                        >
+                          <i className="far fa-edit" style={{ color: "gray" }}></i>
+                        </button>
+                      )}
+
                       {dateBoolean && (
-                        <h3 className="mx-1 my-0">
-                          {event.date && <>{eventDate}</>}
-                          {/* {event.date && event.stardate && <>{" - "}</>} */}
+                        <>
+                          <h3 className="mx-1 my-0">{event.date && <>{eventDate}</>}</h3>
                           {event.stardate && (
-                            <span className="small_hide"> [{event.stardate}]</span>
+                            <h3 className="mx-1 my-0 small_hide">[{event.stardate}]</h3>
                           )}
-                        </h3>
+                        </>
                       )}
                       <h4 className="mx-1 my-0">
                         {event.starshipName && <>{event.starshipName}</>}{" "}
@@ -151,11 +247,28 @@ const Officer = (props) => {
                         {event.rankLabel && event.position && <>{" - "}</>}
                         {event.position && <>{event.position}</>}
                       </h5>
-                      {/* </div>
-                    <div className="rows d-flex flex-row"> */}
+                      {event.notes === "Assignment" && (
+                        <>
+                          <h6 className="mx-1 my-0">&nbsp;Assignment</h6>{" "}
+                        </>
+                      )}
+                      {event.type === "Promotion" && (
+                        <>
+                          <h6 className="mx-1 my-0">&nbsp;Promotion</h6>{" "}
+                        </>
+                      )}
+                      {event.notes === "Demotion" && (
+                        <>
+                          <h6 className="mx-1 my-0">&nbsp;Demotion</h6>{" "}
+                        </>
+                      )}
                     </div>
                     <div className="rows d-flex flex-row">
-                      <h6 className="mx-1 col justify-text">{event.notes}</h6>
+                      {event.notes && event.notes !== "Assignment" && event.notes !== "Demotion" && (
+                        <>
+                          <h6 className="mx-1 col justify-text">{event.notes}</h6>
+                        </>
+                      )}
                     </div>
                   </div>
                 );
@@ -173,35 +286,17 @@ const Officer = (props) => {
           <p>No Officer Selected</p>
         </div>
       )}
-      <ModalUploadEazyCrop
-        isShowing={isShowingModalUploadEazyCrop}
-        hide={toggleModalUploadEazyCrop}
+      <ModalLauncher
+        modal={modal}
+        isShowing={isShowingModal}
+        hide={toggleModal}
         isAuth={props.isAuth}
-        subjectId={props.match.params.id}
-        setPhotoRefresh={setPhotoRefresh}
+        officerId={officer._id}
+        starshipId={null}
+        eventId={eventId}
+        subjectName={officerName}
         imageType={imageType}
-        modalClass={props.modalClass}
-        setModalClass={props.setModalClass}
-      />
-      <ModalOfficer
-        isShowing={isShowingModalOfficer}
-        hide={toggleModalOfficer}
-        isAuth={props.isAuth}
-        officerId={props.match.params.id}
-        subjectName={officerName}
-        setProfileRefresh={setProfileRefresh}
-        modalClass={props.modalClass}
-        setModalClass={props.setModalClass}
-      />
-      <ModalEvent
-        isShowing={isShowingModalEvent}
-        hide={toggleModalEvent}
-        isAuth={props.isAuth}
-        officerId={props.match.params.id}
-        subjectName={officerName}
-        setProfileRefresh={setProfileRefresh}
-        modalClass={props.modalClass}
-        setModalClass={props.setModalClass}
+        setRefreshOption={toggleRefresh}
       />
     </>
   );

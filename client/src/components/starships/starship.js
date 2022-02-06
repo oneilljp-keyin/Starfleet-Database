@@ -5,26 +5,29 @@ import { toast } from "react-toastify";
 import StarshipsDataService from "../../services/starships";
 import PhotoCarousel from "../PhotoCarousel";
 
-import ModalStarship from "../modals/ModalStarship";
-import UseModalStarship from "../modals/UseModalStarship";
+import UseModal from "../modals/UseModal";
 
-import UseModalUploadEazyCrop from "../modals/UseModalUploadEazyCrop";
-import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
+// import ModalStarship from "../modals/ModalStarship";
+// import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
+// import ModalEvent from "../modals/ModalEvent";
 
-import UseModalEvent from "../modals/UseModalEvent";
-import ModalEvent from "../modals/ModalEvent";
+import ModalLauncher from "../modals/ModalLauncher";
 
 const Starships = (props) => {
   const imageType = "starship";
   let dateCheck;
   let dateBoolean = false;
 
-  const [photoRefresh, setPhotoRefresh] = useState(false);
-  const [profileRefresh, setProfileRefresh] = useState(false);
   const [starshipName, setStarshipName] = useState("");
-  const { isShowingModalStarship, toggleModalStarship } = UseModalStarship();
-  const { isShowingModalUploadEazyCrop, toggleModalUploadEazyCrop } = UseModalUploadEazyCrop();
-  const { isShowingModalEvent, toggleModalEvent } = UseModalEvent();
+  const [eventId, setEventId] = useState(null);
+  const [modal, setModal] = useState(null);
+  const [refreshOption, setRefreshOption] = useState(false);
+
+  function toggleRefresh() {
+    setRefreshOption(!refreshOption);
+  }
+
+  const { isShowingModal, toggleModal } = UseModal();
 
   const initialStarshipsState = {
     _id: null,
@@ -54,7 +57,6 @@ const Starships = (props) => {
       StarshipsDataService.get(id)
         .then((response) => {
           setStarship(response.data);
-          setProfileRefresh(false);
           setStarshipName(response.data.name + " " + response.data.registry);
         })
         .catch((err) => {
@@ -64,7 +66,13 @@ const Starships = (props) => {
     };
 
     getStarship(props.match.params.id);
-  }, [props.match.params.id, profileRefresh]);
+  }, [props.match.params.id, refreshOption]);
+
+  function OpenModal(modalType, id) {
+    setModal(modalType);
+    setEventId(id);
+    toggleModal();
+  }
 
   return (
     <>
@@ -74,13 +82,28 @@ const Starships = (props) => {
         </Link>
         {props.isAuth && (
           <>
-            <button className="lcars_btn orange_btn all_square" onClick={toggleModalStarship}>
+            <button
+              className="lcars_btn orange_btn all_square"
+              onClick={() => {
+                OpenModal("starship", starship._id);
+              }}
+            >
               Edit
             </button>
-            <button className="lcars_btn orange_btn all_square" onClick={toggleModalUploadEazyCrop}>
+            <button
+              className="lcars_btn orange_btn all_square"
+              onClick={() => {
+                OpenModal("photo", starship._id);
+              }}
+            >
               Upload
             </button>
-            <button className="lcars_btn orange_btn right_round" onClick={toggleModalEvent}>
+            <button
+              className="lcars_btn orange_btn right_round"
+              onClick={() => {
+                OpenModal("event", null);
+              }}
+            >
               Event
             </button>
           </>
@@ -92,8 +115,8 @@ const Starships = (props) => {
             <PhotoCarousel
               subjectId={props.match.params.id}
               isAuth={props.isAuth}
-              photoRefresh={photoRefresh}
-              setPhotoRefresh={setPhotoRefresh}
+              photoRefresh={refreshOption}
+              setPhotoRefresh={setRefreshOption}
               imageType={imageType}
               className="flex-grow-1"
             />
@@ -186,6 +209,16 @@ const Starships = (props) => {
                 return (
                   <div key={index} className="d-flex flex-column align-items-baseline event-list">
                     <div className="rows d-flex flex-row">
+                      {props.isAuth && (
+                        <button
+                          className="edit"
+                          onClick={() => {
+                            OpenModal("event", event._id);
+                          }}
+                        >
+                          <i className="far fa-edit" style={{ color: "gray" }}></i>
+                        </button>
+                      )}
                       {dateBoolean && (
                         <h3 className="row mx-1 my-0">
                           {event.date && <>{eventDate}</>}
@@ -201,10 +234,13 @@ const Starships = (props) => {
                         {officerName !== undefined && event.position !== undefined && <>{" - "}</>}
                         {event.position !== undefined && <>{event.position}</>}
                       </h5>
+                      {event.notes === "Assignment" && <h6>&nbsp;-&nbsp;Assignment</h6>}
                     </div>
-                    <div className="rows d-flex flex-row">
-                      <h6 className="mx-1 col justify-text">{event.notes}</h6>
-                    </div>
+                    {event.notes !== "Assignment" && (
+                      <div className="rows d-flex flex-row">
+                        <h6 className="mx-1 col justify-text">{event.notes}</h6>
+                      </div>
+                    )}
                   </div>
                 );
               })
@@ -221,7 +257,7 @@ const Starships = (props) => {
           <p>No Starship Selected</p>
         </div>
       )}
-      <ModalUploadEazyCrop
+      {/* <ModalUploadEazyCrop
         isShowing={isShowingModalUploadEazyCrop}
         hide={toggleModalUploadEazyCrop}
         isAuth={props.isAuth}
@@ -253,6 +289,18 @@ const Starships = (props) => {
         setProfileRefresh={setProfileRefresh}
         modalClass={props.modalClass}
         setModalClass={props.setModalClass}
+      /> */}
+      <ModalLauncher
+        modal={modal}
+        isShowing={isShowingModal}
+        hide={toggleModal}
+        isAuth={props.isAuth}
+        officerId={null}
+        starshipId={starship._id}
+        eventId={eventId}
+        subjectName={starshipName}
+        imageType={imageType}
+        setRefreshOption={toggleRefresh}
       />
     </>
   );

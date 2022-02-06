@@ -11,37 +11,34 @@ const PopUpEvents = ({
   isAuth,
   starshipId,
   subjectName,
-  setListRefresh,
-  setProfileRefresh,
+  setRefresh,
   modalClass,
-  setModalClass,
 }) => {
   const [edit, setEdit] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [classes, setClasses] = useState(["Unknown"]);
 
   const initialStarshipState = {
-    _id: "",
-    ship_id: "",
-    name: "",
-    registry: "",
-    class: "",
-    launch_date: "",
-    launch_stardate: "",
-    launch_note: "",
-    commission_date: "",
-    commission_stardate: "",
-    commission_note: "",
-    decommission_date: "",
-    decommission_stardate: "",
-    decommission_note: "",
-    destruction_date: "",
-    destruction_stardate: "",
-    destruction_note: "",
+    _id: null,
+    ship_id: null,
+    name: null,
+    registry: null,
+    class: null,
+    launch_date: null,
+    launch_stardate: null,
+    launch_note: null,
+    commission_date: null,
+    commission_stardate: null,
+    commission_note: null,
+    decommission_date: null,
+    decommission_stardate: null,
+    decommission_note: null,
+    destruction_date: null,
+    destruction_stardate: null,
+    destruction_note: null,
     events: [],
   };
 
-  const [starshipInfo, setStarshipInfo] = useState(initialStarshipState);
+  const [starshipInfo, setStarshipInfo] = useState({});
 
   let [btnLabel, setBtnLabel] = useState("Create");
 
@@ -62,17 +59,16 @@ const PopUpEvents = ({
     if (starshipId) {
       getStarship(starshipId);
       setEdit(true);
-      setSubmitted(false);
       setBtnLabel("Update");
     }
-  }, [edit, submitted, starshipId]);
+  }, [edit, starshipId]);
 
   const saveStarshipInfo = () => {
     let data = starshipInfo;
     delete data["events"];
     // removes empty fields
     Object.keys(data).forEach((key) => {
-      if (data[key] === "") {
+      if (data[key] === null || data[key] === "" || data[key] === undefined) {
         delete data[key];
       }
     });
@@ -80,23 +76,22 @@ const PopUpEvents = ({
       data._id = starshipId;
       StarshipsDataService.updateStarship(data)
         .then((response) => {
-          setSubmitted(true);
           toast.success(response.data);
-          setProfileRefresh(true);
+          setRefresh();
           hide();
         })
         .catch((err) => {
           console.error(err);
           toast.warning(err.message);
         });
-      setListRefresh(true);
+      setRefresh();
     } else {
       delete data["_id"];
       StarshipsDataService.createStarship(data)
         .then((response) => {
           toast.success(response.data);
           setStarshipInfo(initialStarshipState);
-          setListRefresh(true);
+          setRefresh();
           hide();
         })
         .catch((err) => {
@@ -144,7 +139,7 @@ const PopUpEvents = ({
                       autoFocus
                       name="ship_id"
                       placeholder="Construction ID"
-                      value={starshipInfo.ship_id}
+                      value={starshipInfo.ship_id || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
                     <div className="col"></div>
@@ -154,7 +149,7 @@ const PopUpEvents = ({
                       type="text"
                       name="name"
                       placeholder="Name"
-                      value={starshipInfo.name}
+                      value={starshipInfo.name || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
                     <input
@@ -162,12 +157,12 @@ const PopUpEvents = ({
                       type="text"
                       name="registry"
                       placeholder="Registry #"
-                      value={starshipInfo.registry}
+                      value={starshipInfo.registry || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
                     <select
                       name="class"
-                      value={starshipInfo.class}
+                      value={starshipInfo.class || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                       className="col form-control form-control-lg my-1 text-center"
                     >
@@ -200,13 +195,13 @@ const PopUpEvents = ({
                       type="text"
                       name="launch_stardate"
                       placeholder="Stardate"
-                      value={starshipInfo.launch_stardate}
+                      value={starshipInfo.launch_stardate || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
                     <select
                       className="col form-control my-1 text-center"
                       name="launch_date_note"
-                      value={starshipInfo.launch_date_note}
+                      value={starshipInfo.launch_date_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>
@@ -234,13 +229,13 @@ const PopUpEvents = ({
                       type="text"
                       name="commission_stardate"
                       placeholder="Stardate"
-                      value={starshipInfo.commission_stardate}
+                      value={starshipInfo.commission_stardate || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
                     <select
                       className="col form-control my-1 text-center"
                       name="commission_date_note"
-                      value={starshipInfo.commission_date_note}
+                      value={starshipInfo.commission_date_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>
@@ -268,13 +263,13 @@ const PopUpEvents = ({
                       type="text"
                       name="decommission_stardate"
                       placeholder="Stardate"
-                      value={starshipInfo.decommission_stardate}
+                      value={starshipInfo.decommission_stardate || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
                     <select
                       className="col form-control my-1 text-center"
                       name="decommission_date_note"
-                      value={starshipInfo.decommission_date_note}
+                      value={starshipInfo.decommission_date_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>
@@ -293,7 +288,7 @@ const PopUpEvents = ({
                       value={
                         starshipInfo.destruction_date
                           ? starshipInfo.destruction_date.slice(0, 10)
-                          : ""
+                          : "null"
                       }
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
@@ -302,13 +297,13 @@ const PopUpEvents = ({
                       type="text"
                       name="destruction_stardate"
                       placeholder="Stardate"
-                      value={starshipInfo.destruction_stardate}
+                      value={starshipInfo.destruction_stardate || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     />
                     <select
                       className="col form-control my-1 text-center"
                       name="destruction_date_note"
-                      value={starshipInfo.destruction_date_note}
+                      value={starshipInfo.destruction_date_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>

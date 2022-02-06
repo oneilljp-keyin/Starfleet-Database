@@ -10,9 +10,8 @@ const PopUpEvents = ({
   isAuth,
   officerId,
   subjectName,
-  setProfileRefresh,
+  setRefresh,
   modalClass,
-  setModalClass,
 }) => {
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -64,18 +63,16 @@ const PopUpEvents = ({
     let data = officerInfo;
     delete data["events"];
     Object.keys(data).forEach((key) => {
-      if (data[key] === "") {
+      if (data[key] === "" || data[key] === null || data[key] === undefined) {
         delete data[key];
       }
     });
-    console.log(data);
     if (edit) {
       data._id = officerId;
       PersonnelDataService.updateOfficer(data)
         .then((response) => {
           setSubmitted(true);
-          setProfileRefresh(true);
-          console.log(response.data);
+          setRefresh();
           toast.success(response.data.message);
           hide();
         })
