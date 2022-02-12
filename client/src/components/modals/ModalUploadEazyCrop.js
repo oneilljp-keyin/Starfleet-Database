@@ -129,7 +129,7 @@ const PopUpUpload = ({
             <div className={modalClass}>
               <div className="resize-modal resize-modal-content-wrapper">
                 <div className="resize-modal-content-container align-content-center">
-                  <div className="search-form m-auto text-center">
+                  <div className="search-form m-auto text-center modal-appear">
                     {!isFileSelected ? (
                       <Dropzone onDrop={onDrop}>
                         {({ getRootProps, getInputProps }) => (

@@ -56,6 +56,20 @@ function App() {
     setIsAuthenticated(boolean);
   };
 
+  const logout = (e) => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      setAuth(false);
+      toast.success("Logout Successful");
+      setAdminRole(false);
+      setName("");
+    } catch (err) {
+      toast.success(err.message);
+      console.log(err.message);
+    }
+  };
+
   return (
     <StrictMode>
       <Router basename="/">
@@ -67,7 +81,7 @@ function App() {
               </Link>
             </div>
           </div>
-          <Navbar />
+          <Navbar isAuth={isAuthenticated} logout={logout} />
           <main className="main_body">
             <div className="content_wrapper">
               <div className="content_container align-content-center">

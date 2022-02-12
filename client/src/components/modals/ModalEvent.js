@@ -20,8 +20,7 @@ const PopUpEvents = ({
 }) => {
   const [rankLabels, setRankLabels] = useState([]);
   const [shipSearchResults, setShipSearchResults] = useState([]);
-  const [edit, setEdit] = useState(false);
-  const [btnLabel, setBtnLabel] = useState("Create");
+  const [btnLabel, setBtnLabel] = useState("Enter");
 
   const initialEventState = {
     type: "Other",
@@ -156,9 +155,9 @@ const PopUpEvents = ({
                     {btnLabel} Event for {subjectName}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
-                    <label className="col-auto my-1 text-right form-control-lg" htmlFor="eventDate">
-                      Date Of Event:
-                    </label>
+                    {/* <label className="col-auto my-1 text-right form-control-lg" htmlFor="eventDate">
+                      Date:
+                    </label> */}
                     <input
                       className="col form-control form-control-md my-1"
                       type="date"
@@ -168,7 +167,7 @@ const PopUpEvents = ({
                     />
                     {/* Stardate */}
                     <input
-                      className="col form-control form-control-md my-1"
+                      className="col form-control form-control-lg my-1"
                       type="text"
                       name="stardate"
                       placeholder="Stardate"
@@ -197,10 +196,13 @@ const PopUpEvents = ({
                           value={eventInfo.type || ""}
                           onChange={(e) => onChangeEventInfo(e)}
                         >
-                          <option value="Other">Other Event</option>
+                          <option value="Other">Other</option>
                           <option value="Assignment">Assignment</option>
                           <option value="First Contact">First Contact</option>
+                          <option value="Life Event">Life Event</option>
+                          <option value="Mission">Mission</option>
                           <option value="Promotion">Promotion</option>
+                          <option value="Demotion">Demotion</option>
                         </select>
                         <div className="col searchContainer my-1 p-0">
                           <input

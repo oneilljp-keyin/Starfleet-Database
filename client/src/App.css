@@ -13,16 +13,16 @@ button.edit { background-color: none; padding: 0; border: none; background: none
 
 a, a:hover, a:focus { color: #6699ff; }
 
-h1 { font-size: 1.48rem;}
-h2 { font-size: 1.38rem; color: #ffdd22e6; text-transform: uppercase; }
-h3 { font-size: 1.28rem; color: #8066af; text-transform: uppercase; }
-h4 { font-size: 1.18rem; color: #dd8100; margin-bottom: 12px; }
-h5 { font-size: 1.18rem; color: #ffdd22e6; }
+h1, .h1cell { font-size: 1.48rem;}
+h2, .h2cell { font-size: 1.38rem; color: #ffdd22e6; text-transform: uppercase; }
+h3, .h3cell { font-size: 1.28rem; color: #8066af; text-transform: uppercase; }
+h4, .h4cell { font-size: 1.18rem; color: #dd8100; margin-bottom: 12px; }
+h5, .h5cell { font-size: 1.18rem; color: #ffdd22e6; }
 h6 { font-size: 1rem; color: #ffffffde; }
-
-.profile-summary h3, .list-group h3, .list-group h4, .list-group h5 {
-  font-size: 1rem;
-}
+.h6cell { font-size: 1rem; color: #ffffffde; text-align: justify;
+  text-justify: inter-word; font-weight: 300; }
+.profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
+.h3cell, .h4cell, .h5cell { font-size: 1rem; }
 
 .topbar-title { font-size: 1rem; color: #ffdd22e6;
                 text-transform: uppercase; text-decoration: none;}
@@ -39,7 +39,9 @@ h6 { font-size: 1rem; color: #ffffffde; }
 /* ---------------------------------------------------------------------- */
 
 /* ---- Background colour of event list on officer profile -------------- */
-.event-list:nth-child(even) { background-color: #30303088; border-radius: 4px; }
+/* .event-list>tbody>tr:nth-child(even) { background-color: #30303088; border-radius: 4px; } */
+.event-list td {padding: 2px;}
+td {padding: 0;}
 /* ---------------------------------------------------------------------- */
 
 /* ---- ModalUpload.js - dimensions on area where pic is uploaded ------- */
@@ -396,20 +398,21 @@ article footer p {
 
   /* Typography */
 
-  h1 { font-size: 2rem; color: #ffffffde; }
-  h2,
+  h1, .h1cell { font-size: 2rem; color: #ffffffde; }
+  h2, .h2cell,
   #main_header hgroup h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.48rem; color: #8066af; }
-  h4 { font-size: 1.38rem; color: #dd8100; }
-  h5 { font-size: 1.28rem; color: #ffdd22e6; }
-  h6 { font-size: 1.18rem; color: #ffffffde; }
+  h3, .h3cell { font-size: 1.48rem; color: #8066af; }
+  h4, .h4cell { font-size: 1.38rem; color: #dd8100; }
+  h5, .h5cell { font-size: 1.28rem; color: #ffdd22e6; }
+  h6, .h6cell { font-size: 1.18rem; color: #ffffffde; }
 
-  .profile-summary h3, .list-group h3, .list-group h4, .list-group h5 {
-    font-size: 1.18rem;
-  }
+  .h6cell { font-size: 1.18rem; color: #ffffffde; text-align: justify;
+                  text-justify: inter-word; font-weight: 400; line-height: 1.2; }
+  
+  .profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
+  .h3cell, .h4cell, .h5cell { font-size: 1.18rem; }
 
-  .small_hide {display: block;}
-
+  .small_hide { display: block; }
 
   .footer_bar {
     height: 1rem;
@@ -447,13 +450,20 @@ article footer p {
   border-radius: 2.57rem 0 0 2.57rem;
 }
 
-.modal-open  { animation: modal-change 1s ease-in-out; }
-.modal-close { animation: modal-change 2s ease-in-out 0.5s backwards;}
+.modal-open   { animation: modal-change 1s ease-in-out; }
+.modal-appear { animation: modal-appear 1.25s ease-in-out; }
+.modal-close  { animation: modal-change 2s ease-in-out 0.5s backwards;}
 
 @keyframes modal-change {
   0% {transform: scale(0,0)}
   50% {transform: scale(1,0.01)}
   100% {transform: scale(1,1)}
+}
+
+@keyframes modal-appear {
+  0% {opacity: 0;}
+  99% {opacity: 0;}
+  100% {opacity: 1;}
 }
 
 .modal-overlay {
@@ -494,7 +504,8 @@ article footer p {
 .modal-content-wrapper::after { 
   content: ""; position: absolute; top: 9.5%; left: 0; 
   width: 10%; height: 28.5%; height: calc(28.5% - 1rem);
-  background: #db5d9abb; border-top: 0.5rem solid #121212; border-bottom: 0.5rem solid #121212;
+  background: #db5d9abb; border-top: 0.5rem solid #121212;
+  border-bottom: 0.5rem solid #121212;
 }
 
 .modal-content-container {
@@ -548,7 +559,7 @@ article footer p {
 
 .resize-modal-content-mask {
   position: relative; z-index: 1; background-color: #121212; width: 90%;
-  height: 105%; box-sizing: border-box;
+  height: 100%; box-sizing: border-box;
 }
 
 .resize-modal-content-container {
