@@ -200,8 +200,8 @@ const PopUpEvents = ({
                     />
                     <select
                       className="col form-control my-1 text-center"
-                      name="launch_date_note"
-                      value={starshipInfo.launch_date_note || ""}
+                      name="launch_note"
+                      value={starshipInfo.launch_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>
@@ -234,8 +234,8 @@ const PopUpEvents = ({
                     />
                     <select
                       className="col form-control my-1 text-center"
-                      name="commission_date_note"
-                      value={starshipInfo.commission_date_note || ""}
+                      name="commission_note"
+                      value={starshipInfo.commission_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>
@@ -268,8 +268,8 @@ const PopUpEvents = ({
                     />
                     <select
                       className="col form-control my-1 text-center"
-                      name="decommission_date_note"
-                      value={starshipInfo.decommission_date_note || ""}
+                      name="decommission_note"
+                      value={starshipInfo.decommission_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>
@@ -302,8 +302,8 @@ const PopUpEvents = ({
                     />
                     <select
                       className="col form-control my-1 text-center"
-                      name="destruction_date_note"
-                      value={starshipInfo.destruction_date_note || ""}
+                      name="destruction_note"
+                      value={starshipInfo.destruction_note || ""}
                       onChange={(e) => onChangeStarshipInfo(e)}
                     >
                       <option>Exact Date</option>

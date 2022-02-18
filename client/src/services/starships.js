@@ -17,7 +17,7 @@ class StarshipsDataService {
   }
 
   findSame(nameQuery, classQuery = "Unknown") {
-    return http.get(`/starships?name=${nameQuery}&class=${classQuery}`);
+    return http.get(`/starships?name=${nameQuery}&class=${classQuery}&starshipsPerPage=50`);
   }
 
   findForEvents(query) {

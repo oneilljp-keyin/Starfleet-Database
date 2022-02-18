@@ -71,7 +71,6 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
     const ourRequest = axios.CancelToken.source();
     StarshipsDataService.find(searchName, searchClass, pageNumber, ourRequest.token)
       .then((response) => {
-        console.log(response);
         setStarships((prevStarships) => {
           return [
             ...new Set([...prevStarships, ...response.data.starships.map((starship) => starship)]),

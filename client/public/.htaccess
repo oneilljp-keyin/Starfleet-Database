@@ -1,0 +1,8 @@
+ErrorDocument 404 http://sector709.johnny-o.net/
+ErrorDocument 403 http://sector709.johnny-o.net/
+
+<Files dbinfo.php>
+Order deny,allow
+Deny from all
+Allow from xxx.xxx.xxx.xxx
+</Files>

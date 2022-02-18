@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import ufpLogo from "../assets/ufp_logo.png";
+
 import EventsAndPhotosDataService from "../services/eventsAndPhotos";
 
 function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType }) {
@@ -64,11 +66,8 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
           })}
       </div>
       <div className="carousel-inner">
-        {photoArray.length > 0 &&
+        {photoArray.length > 0 ? (
           photoArray.map((photo, index) => {
-            // let data8 = new Uint8Array(photo.image.data);
-            // let file = new File([data8], { type: "image/png" });
-            // const url = URL.createObjectURL(file);
             return (
               <div
                 className={index === 0 ? "carousel-item active " : "carousel-item"}
@@ -84,7 +83,12 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
                 </div>
               </div>
             );
-          })}
+          })
+        ) : (
+          <div>
+            <img src={ufpLogo} className="d-block w-100" alt="United Federation of Planets" />
+          </div>
+        )}
         {photoArray.length > 1 && (
           <>
             <button

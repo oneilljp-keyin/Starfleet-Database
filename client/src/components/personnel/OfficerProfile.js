@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
@@ -130,7 +130,11 @@ const Officer = (props) => {
               {officer.rankLabel && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>Rank: </span>
-                  {officer.rankLabel}
+                  {officer.rankLabel.split("-").map((label, index) => {
+                    let rankLabel;
+                    if (index === 0) rankLabel = label;
+                    return rankLabel;
+                  })}
                 </h3>
               )}
               {officer.position && (
@@ -139,8 +143,6 @@ const Officer = (props) => {
                   {officer.position}
                 </h3>
               )}
-              {/* {(officer.position && !officer.position.includes("etired")) ||
-                ((officer.starshipName || officer.location) && ( */}
               <h3 style={{ textTransform: "capitalize" }}>
                 {officer.starshipName && (
                   <>
@@ -148,12 +150,14 @@ const Officer = (props) => {
                     {officer.starshipName} {officer.starshipRegistry}
                   </>
                 )}
-                {officer.location && !officer.position.includes("etired") && (
-                  <>
-                    <span style={{ color: "#FFDD22E6" }}>Location: </span>
-                    {officer.location}
-                  </>
-                )}
+                {officer.location &&
+                  !officer.starshipName &&
+                  (!officer.position || !officer.position.includes("etired")) && (
+                    <>
+                      <span style={{ color: "#FFDD22E6" }}> Location: </span>
+                      {officer.location}
+                    </>
+                  )}
               </h3>
               {/* ))} */}
               {officer.birthDate && (
@@ -218,24 +222,37 @@ const Officer = (props) => {
                     // dateCheck = eventDate;
                   }
                   return (
-                    <>
-                      <tr key={uuidv4()} style={{ borderTop: "1px solid white" }}>
+                    <Fragment key={uuidv4()}>
+                      <tr style={{ borderTop: "1px solid white" }}>
                         <td>
                           {props.isAuth ? (
-                            <button
-                              className="edit"
-                              onClick={() => {
-                                OpenModal("event", event._id);
-                              }}
-                            >
-                              <i className="far fa-edit" style={{ color: "gray" }}></i>
-                            </button>
+                            <>
+                              <button
+                                className="edit"
+                                onClick={() => {
+                                  OpenModal("event", event._id);
+                                }}
+                              >
+                                <i className="far fa-edit" style={{ color: "gray" }}></i>
+                              </button>
+                              <button
+                                className="edit"
+                                onClick={() => {
+                                  OpenModal("event", event._id);
+                                }}
+                              >
+                                <i
+                                  className="fa-solid fa-remove fa-xl"
+                                  style={{ color: "gray" }}
+                                ></i>
+                              </button>
+                            </>
                           ) : null}
                         </td>
                         <td className="h3cell align-top">
                           {event.date && `${eventDate}`}
-                          {event.date && event.stardate && <br />}
-                          {event.stardate && `SD ${event.stardate}`}
+                          {event.date && event.stardate && eventDate.length > 4 && <br />}
+                          {event.stardate && ` SD ${event.stardate}`}
                         </td>
                         <td className="h4cell align-top">
                           {event.starshipName && (
@@ -247,7 +264,16 @@ const Officer = (props) => {
                           {event.location && <>{event.location}</>}
                         </td>
                         <td className="h5cell align-top">
-                          {event.rankLabel && <>{event.rankLabel}</>}
+                          {event.rankLabel && (
+                            <>
+                              {" "}
+                              {event.rankLabel.split("-").map((label, index) => {
+                                let rankLabel;
+                                if (index === 0) rankLabel = label;
+                                return rankLabel;
+                              })}
+                            </>
+                          )}
                           {event.rankLabel && event.position && <br />}
                           {event.position && <>{event.position}</>}
                         </td>
@@ -268,7 +294,7 @@ const Officer = (props) => {
                             </td>
                           </tr>
                         )}
-                    </>
+                    </Fragment>
                   );
                 })
               ) : (
