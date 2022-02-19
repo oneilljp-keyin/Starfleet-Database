@@ -16,7 +16,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [hasMore, setHasMore] = useState(false);
 
   const [personnel, setPersonnel] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(sessionStorage.officerQuery || "");
 
   const [pageNumber, setPageNumber] = useState(0);
   const observer = useRef();
@@ -61,6 +61,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
               response.data.total_results
           );
           setLoading(false);
+          sessionStorage.setItem("officerQuery", searchQuery);
         })
         .catch((e) => {
           if (axios.isCancel(e)) return;

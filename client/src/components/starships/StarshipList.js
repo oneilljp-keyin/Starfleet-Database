@@ -16,8 +16,8 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [listRefresh, setListRefresh] = useState(false);
 
   const [starships, setStarships] = useState([]);
-  const [searchName, setSearchName] = useState("");
-  const [searchClass, setSearchClass] = useState("");
+  const [searchName, setSearchName] = useState(sessionStorage.starshipName || "");
+  const [searchClass, setSearchClass] = useState(sessionStorage.starshipClass || "");
   const [classes, setClasses] = useState(["Unknown"]);
 
   const [pageNumber, setPageNumber] = useState(0);
@@ -80,6 +80,8 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
           (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
             response.data.total_results
         );
+        sessionStorage.setItem("starshipName", searchName);
+        sessionStorage.setItem("starshipClass", searchClass);
         setLoading(false);
         setListRefresh(false);
       })

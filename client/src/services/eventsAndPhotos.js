@@ -14,6 +14,10 @@ class EventsAndPhotosDataService {
     return http.put("/events", eventInfo);
   }
 
+  deleteEvent(eventId) {
+    return http.delete(`/events?id=${eventId}`);
+  }
+
   async insertPhoto(formData, photoInfo) {
     let uploadResult = await axios.post(
       "http://sector709.johnny-o.net/images/upload.php",

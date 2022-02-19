@@ -20,8 +20,8 @@ const PopUpEvents = ({
 }) => {
   const [rankLabels, setRankLabels] = useState([]);
   const [shipSearchResults, setShipSearchResults] = useState([]);
-  const [edit, setEdit] = useState(false);
-  const [btnLabel, setBtnLabel] = useState("Create");
+  const [btnLabel, setBtnLabel] = useState("Enter");
+  const [searchOption, setSearchOption] = useState(false);
 
   const initialEventState = {
     type: "Other",
@@ -33,7 +33,7 @@ const PopUpEvents = ({
     rankLabel: null,
     position: null,
     date: null,
-    dateNote: null,
+    dateNote: "exact",
     stardate: null,
     notes: null,
   };
@@ -57,7 +57,7 @@ const PopUpEvents = ({
 
   const onChangeEventInfo = (e) => {
     setEventInfo({ ...eventInfo, [e.target.name]: e.target.value });
-    // if (e.target.name === "starshipName") setEdit(false);
+    setSearchOption(true);
   };
 
   const onClickStarship = (id, name, registry) => {
@@ -89,15 +89,16 @@ const PopUpEvents = ({
       StarshipsDataService.find(eventInfo.starshipName)
         .then((response) => {
           setShipSearchResults(response.data.starships);
+          setSearchOption(false);
         })
         .catch((err) => {
           console.error(err.message);
         });
     };
-    if (eventInfo.starshipName && eventInfo.starshipName.length > 2) {
+    if (eventInfo.starshipName && eventInfo.starshipName.length > 2 && searchOption) {
       retrieveStarship();
     }
-  }, [eventInfo.starshipName]);
+  }, [eventInfo.starshipName, searchOption]);
 
   const saveEvent = () => {
     let data = eventInfo;
@@ -156,62 +157,81 @@ const PopUpEvents = ({
                     {btnLabel} Event for {subjectName}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
-                    <label className="col-auto my-1 text-right form-control-lg" htmlFor="eventDate">
-                      Date Of Event:
-                    </label>
-                    <input
-                      className="col form-control form-control-md my-1"
-                      type="date"
-                      name="date"
-                      value={eventInfo.date ? eventInfo.date.slice(0, 10) : ""}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    />
+                    <div className="form-floating col-4">
+                      <input
+                        className="form-control form-control-md my-1"
+                        type="date"
+                        name="date"
+                        id="eventDate"
+                        value={eventInfo.date ? eventInfo.date.slice(0, 10) : ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      />
+                      <label htmlFor="eventDate">Date</label>
+                    </div>
                     {/* Stardate */}
-                    <input
-                      className="col form-control form-control-md my-1"
-                      type="text"
-                      name="stardate"
-                      placeholder="Stardate"
-                      value={eventInfo.stardate || ""}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    />
+                    <div className="form-floating col-4">
+                      <input
+                        className="form-control form-control-lg my-1"
+                        type="text"
+                        name="stardate"
+                        id="eventStardate"
+                        placeholder="Stardate"
+                        value={eventInfo.stardate || ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      />
+                      <label htmlFor="eventStardate">Stardate</label>
+                    </div>
+
                     {/* Note about event date (exact, approx, before or after) */}
-                    <select
-                      className="col form-control my-1"
-                      name="dateNote"
-                      value={eventInfo.dateNote || ""}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    >
-                      <option value="">Exact Date</option>
-                      <option value="approx">Approximate Date</option>
-                      <option value="before">Before This Date</option>
-                      <option value="after">After This Date</option>
-                    </select>
-                    <div className="w-100"></div>
+                    <div className="form-floating col-4">
+                      <select
+                        className="form-control my-1"
+                        name="dateNote"
+                        id="dateNote"
+                        value={eventInfo.dateNote || ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      >
+                        <option value="exact">Exact Date</option>
+                        <option value="approx">Approximate Date</option>
+                        <option value="before">Before This Date</option>
+                        <option value="after">After This Date</option>
+                      </select>
+                      <label htmlFor="dateNote">Date Note</label>
+                    </div>
+                    {/* <div className="w-100"></div> */}
                     {eventType !== "starship" && (
                       <>
                         {" "}
-                        <select
-                          className="col form-control my-1"
-                          name="type"
-                          value={eventInfo.type || ""}
-                          onChange={(e) => onChangeEventInfo(e)}
-                        >
-                          <option value="Other">Other Event</option>
-                          <option value="Assignment">Assignment</option>
-                          <option value="First Contact">First Contact</option>
-                          <option value="Promotion">Promotion</option>
-                        </select>
-                        <div className="col searchContainer my-1 p-0">
+                        <div className="form-floating col-4">
+                          <select
+                            className="form-control my-1"
+                            name="type"
+                            id="eventType"
+                            value={eventInfo.type || ""}
+                            onChange={(e) => onChangeEventInfo(e)}
+                          >
+                            <option value="Other">Other</option>
+                            <option value="Assignment">Assignment</option>
+                            <option value="First Contact">First Contact</option>
+                            <option value="Life Event">Life Event</option>
+                            <option value="Mission">Mission</option>
+                            <option value="Promotion">Promotion</option>
+                            <option value="Demotion">Demotion</option>
+                          </select>
+                          <label htmlFor="eventType">Event Type</label>
+                        </div>
+                        <div className="col-4 form-floating searchContainer my-1 p-0">
                           <input
                             className="form-control form-control-lg"
                             type="text"
                             name="starshipName"
+                            id="starshipName"
                             placeholder="Starship"
                             value={eventInfo.starshipName || ""}
                             onChange={(e) => onChangeEventInfo(e)}
                             autoComplete="off"
                           />
+                          <label htmlFor="starshipName">Starship</label>
                           <div id="searchResults" className="results">
                             {shipSearchResults.length > 0 &&
                               shipSearchResults.map((ship) => {
@@ -234,50 +254,72 @@ const PopUpEvents = ({
                         </div>
                       </>
                     )}
-                    <input
-                      className="col form-control form-control-lg my-1"
-                      type="text"
-                      name="location"
-                      placeholder="Galatic Location"
-                      value={eventInfo.location || ""}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    />
+                    <div
+                      className={
+                        eventType !== "starship" ? "form-floating col-4" : "form-floating col-12"
+                      }
+                    >
+                      <input
+                        className="form-control form-control-lg my-1"
+                        type="text"
+                        name="location"
+                        id="eventLocation"
+                        placeholder="Galatic Location"
+                        value={eventInfo.location || ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      />
+                      <label htmlFor="eventLocation">Galatic Location</label>
+                    </div>
+
                     {eventType !== "starship" && (
                       <>
-                        <div className="w-100"></div>
-                        <select
-                          className="col form-control my-1"
-                          name="rankLabel"
-                          value={eventInfo.rankLabel || ""}
-                          onChange={(e) => onChangeEventInfo(e)}
-                        >
-                          <option value="">Unknown Rank / N/A</option>
-                          {rankLabels.length > 0 &&
-                            rankLabels.map((rank) => (
-                              <option key={rank.rank_id} value={rank.label}>
-                                {rank.label}
-                              </option>
-                            ))}
-                        </select>
-                        <input
-                          className="col form-control form-control-lg my-1"
-                          type="text"
-                          name="position"
-                          placeholder="Current Position"
-                          value={eventInfo.position || ""}
-                          onChange={(e) => onChangeEventInfo(e)}
-                        />
+                        {/* <div className="w-100"></div> */}
+                        <div className="form-floating col-6">
+                          <select
+                            className="form-control my-1"
+                            name="rankLabel"
+                            id="rankLabel"
+                            value={eventInfo.rankLabel || ""}
+                            onChange={(e) => onChangeEventInfo(e)}
+                          >
+                            <option value="">Unknown Rank / N/A</option>
+                            {rankLabels.length > 0 &&
+                              rankLabels.map((rank) => (
+                                <option key={rank.rank_id} value={rank.label + "-" + rank.abbrev}>
+                                  {rank.label}
+                                </option>
+                              ))}
+                          </select>
+                          <label htmlFor="rankLabel">Rank</label>
+                        </div>
+                        <div className="form-floating col-6">
+                          <input
+                            className="form-control form-control-lg my-1"
+                            type="text"
+                            name="position"
+                            id="officerPosition"
+                            placeholder="Current Position"
+                            value={eventInfo.position || ""}
+                            onChange={(e) => onChangeEventInfo(e)}
+                          />{" "}
+                          <label htmlFor="officerPosition">Postition</label>
+                        </div>
                       </>
                     )}
-                    <div className="w-100"></div>
-                    <input
-                      className="col form-control form-control-lg my-1"
-                      type="text"
-                      name="notes"
-                      placeholder="Brief Description"
-                      value={eventInfo.notes || ""}
-                      onChange={(e) => onChangeEventInfo(e)}
-                    />
+                    {/* <div className="w-100"></div> */}
+                    <div className="form-floating col-12">
+                      <textarea
+                        className="col form-control form-control-lg my-1"
+                        style={{ height: "100%" }}
+                        type="text"
+                        name="notes"
+                        id="eventNotes"
+                        placeholder="Brief Description"
+                        value={eventInfo.notes || ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      />
+                      <label htmlFor="eventNotes">Brief Description</label>
+                    </div>
                   </div>
 
                   <button className="lcars_btn orange_btn left_round small_btn" onClick={saveEvent}>

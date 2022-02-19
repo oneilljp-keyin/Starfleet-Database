@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import PersonnelDataService from "../../services/personnel";
 import PhotoCarousel from "../PhotoCarousel";
@@ -9,9 +10,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 const Officer = (props) => {
-  const imageType = "officer";
-  let dateCheck;
-  let dateBoolean = false;
+  const [imageType, setImageType] = useState("officer");
 
   const [officerName, setOfficerName] = useState("");
   const [eventId, setEventId] = useState(null);
@@ -64,19 +63,18 @@ const Officer = (props) => {
     getOfficer(props.match.params.id);
   }, [props.match.params.id, refreshOption]);
 
-  function OpenModal(modalType, id) {
+  function OpenModal(modalType, id = null, type = "officer") {
     setModal(modalType);
     setEventId(id);
+    setImageType(type);
     toggleModal();
   }
-
-  console.log(officer);
 
   return (
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
         <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
-          Search
+          Back to Search
         </Link>
         {props.isAuth && (
           <>
@@ -99,7 +97,7 @@ const Officer = (props) => {
             <button
               className="lcars_btn orange_btn right_round"
               onClick={() => {
-                OpenModal("event", null);
+                OpenModal("event");
               }}
             >
               Event
@@ -115,7 +113,8 @@ const Officer = (props) => {
               isAuth={props.isAuth}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
-              imageType={imageType}
+              imageType={"officer"}
+              OpenModal={OpenModal}
             />
             <div className="profile-summary">
               <h1>
@@ -131,7 +130,11 @@ const Officer = (props) => {
               {officer.rankLabel && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>Rank: </span>
-                  {officer.rankLabel}
+                  {officer.rankLabel.split("-").map((label, index) => {
+                    let rankLabel;
+                    if (index === 0) rankLabel = label;
+                    return rankLabel;
+                  })}
                 </h3>
               )}
               {officer.position && (
@@ -140,21 +143,21 @@ const Officer = (props) => {
                   {officer.position}
                 </h3>
               )}
-              {/* {(officer.position && !officer.position.includes("etired")) ||
-                ((officer.starshipName || officer.location) && ( */}
               <h3 style={{ textTransform: "capitalize" }}>
                 {officer.starshipName && (
                   <>
                     <span style={{ color: "#FFDD22E6" }}>Vessel: </span>
-                    {officer.starshipName} {officer.starshipRegistry}
+                    USS {officer.starshipName} {officer.starshipRegistry}
                   </>
                 )}
-                {officer.location && (
-                  <>
-                    <span style={{ color: "#FFDD22E6" }}>Location: </span>
-                    {officer.location}
-                  </>
-                )}
+                {officer.location &&
+                  !officer.starshipName &&
+                  (!officer.position || !officer.position.includes("etired")) && (
+                    <>
+                      <span style={{ color: "#FFDD22E6" }}> Location: </span>
+                      {officer.location}
+                    </>
+                  )}
               </h3>
               {/* ))} */}
               {officer.birthDate && (
@@ -195,86 +198,113 @@ const Officer = (props) => {
               )}
             </div>
           </div>
-          <div className="list-group">
-            {officer.events.length && officer.events.length > 0 ? (
-              officer.events.map((event, index) => {
-                let eventDate;
-                if (event.date) {
-                  if (event.dateNote) {
-                    eventDate = event.date.slice(0, 4).toString();
-                    if (event.dateNote === "before") {
-                      eventDate = "Bef. " + eventDate;
-                    } else if (event.dateNote === "after") {
-                      eventDate = "Aft. " + eventDate;
+          <table className="table event-list table-borderless w-100">
+            <tbody>
+              {officer.events.length && officer.events.length > 0 ? (
+                officer.events.map((event, index) => {
+                  let eventDate;
+                  if (event.date) {
+                    if (event.dateNote) {
+                      eventDate = event.date.slice(0, 4).toString();
+                      if (event.dateNote === "before") {
+                        eventDate = "Bef. " + eventDate;
+                      } else if (event.dateNote === "after") {
+                        eventDate = "Aft. " + eventDate;
+                      }
+                    } else {
+                      eventDate = event.date.slice(0, 10);
                     }
-                  } else {
-                    eventDate = event.date.slice(0, 10);
                   }
-                  if (eventDate === dateCheck) {
-                    dateBoolean = false;
-                  } else {
-                    dateBoolean = true;
-                  }
-                  dateCheck = eventDate;
-                }
-                return (
-                  <div key={index} className="d-flex flex-column event-list">
-                    <div className="rows d-flex flex-row align-items-baseline">
-                      {props.isAuth && (
-                        <button
-                          className="edit"
-                          onClick={() => {
-                            OpenModal("event", event._id);
-                          }}
+                  return (
+                    <Fragment key={uuidv4()}>
+                      <tr style={{ borderTop: "1px solid white" }}>
+                        <td
+                          rowSpan={
+                            event.notes &&
+                            event.notes !== "Assignment" &&
+                            event.notes !== "Promotion" &&
+                            event.notes !== "Demotion"
+                              ? 2
+                              : 1
+                          }
                         >
-                          <i className="far fa-edit" style={{ color: "gray" }}></i>
-                        </button>
-                      )}
-
-                      {dateBoolean && (
-                        <>
-                          <h3 className="mx-1 my-0">{event.date && <>{eventDate}</>}</h3>
-                          {event.stardate && (
-                            <h3 className="mx-1 my-0 small_hide">[{event.stardate}]</h3>
+                          {props.isAuth ? (
+                            <>
+                              <button
+                                className="edit"
+                                onClick={() => {
+                                  OpenModal("event", event._id);
+                                }}
+                              >
+                                <i className="far fa-edit" style={{ color: "gray" }}></i>
+                              </button>
+                              <br />
+                              <button
+                                className="edit"
+                                onClick={() => {
+                                  OpenModal("delete", event._id, "event");
+                                }}
+                              >
+                                <i
+                                  className="fa-solid fa-remove fa-xl"
+                                  style={{ color: "gray" }}
+                                ></i>
+                              </button>
+                            </>
+                          ) : null}
+                        </td>
+                        <td className="h3cell align-top">
+                          {event.date && `${eventDate}`}
+                          {event.date && event.stardate && eventDate.length > 4 && <br />}
+                          {event.stardate && ` SD ${event.stardate}`}
+                        </td>
+                        <td className="h4cell align-top">
+                          {event.starshipName && (
+                            <Link to={`/starships/${event.starshipId}`} className="list-link">
+                              USS {event.starshipName} {event.starshipRegistry}
+                            </Link>
                           )}
-                        </>
-                      )}
-                      <h4 className="mx-1 my-0">
-                        {event.starshipName && (
-                          <Link to={`/starships/${event.starshipId}`} className="list-link">
-                            {event.starshipName}
-                          </Link>
+                          {event.starshipName && event.location && <br />}
+                          {event.location && <>{event.location}</>}
+                        </td>
+                        <td className="h5cell align-top">
+                          {event.rankLabel && (
+                            <>
+                              {" "}
+                              {event.rankLabel.split("-").map((label, index) => {
+                                let rankLabel;
+                                if (index === 0) rankLabel = label;
+                                return rankLabel;
+                              })}
+                            </>
+                          )}
+                          {event.rankLabel && event.position && <br />}
+                          {event.position && <>{event.position}</>}
+                        </td>
+                        <td className="h6cell align-top">
+                          {event.type !== "Other" && <>{event.type}</>}
+                        </td>
+                      </tr>
+                      {event.notes &&
+                        event.notes !== "Assignment" &&
+                        event.notes !== "Promotion" &&
+                        event.notes !== "Demotion" && (
+                          <tr>
+                            <td className="h6cell" colSpan={7}>
+                              {event.notes}
+                            </td>
+                          </tr>
                         )}
-                        {event.starshipRegistry && <> - {event.starshipRegistry}</>}{" "}
-                        {event.location && <>at/near {event.location}</>}
-                      </h4>
-                      <h5 className="mx-1 my-0">
-                        {event.rankLabel && <>{event.rankLabel}</>}
-                        {event.rankLabel && event.position && <>{" - "}</>}
-                        {event.position && <>{event.position}</>}
-                      </h5>
-                      <h6 className="mx-1 my-0">
-                        {event.notes === "Assignment" && <>Assignment</>}
-                        {event.type === "Promotion" && <>Promotion</>}
-                        {event.notes === "Demotion" && <>Demotion</>}
-                      </h6>
-                    </div>
-                    <div className="rows d-flex flex-row">
-                      {event.notes && event.notes !== "Assignment" && event.notes !== "Demotion" && (
-                        <>
-                          <h6 className="mx-1 my-0 col justify-text">{event.notes}</h6>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="col-sm-4">
-                <p>No Events Yet</p>
-              </div>
-            )}
-          </div>
+                    </Fragment>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={7}>No Events Yet</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div>

@@ -1,7 +1,9 @@
 import ModalOfficer from "../modals/ModalOfficer";
 import ModalStarship from "../modals/ModalStarship";
-import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
 import ModalEvent from "../modals/ModalEvent";
+import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
+import ModalDelete from "../modals/ModalDelete";
+import ModalSignin from "../modals/ModalSignin";
 
 const ModalLauncher = ({
   modal,
@@ -14,6 +16,8 @@ const ModalLauncher = ({
   subjectName,
   imageType,
   setRefreshOption,
+  setAuth,
+  setAdmin,
 }) => {
   const modalClass = "main-modal-body modal-open";
 
@@ -68,6 +72,30 @@ const ModalLauncher = ({
           subjectName={subjectName}
           setRefresh={setRefreshOption}
           modalClass={modalClass}
+        />
+      );
+    case "delete":
+      return (
+        <ModalDelete
+          isShowing={isShowing}
+          hide={hide}
+          isAuth={isAuth}
+          officerId={officerId}
+          starshipId={starshipId}
+          eventId={eventId}
+          setRefresh={setRefreshOption}
+          recordType={imageType}
+          modalClass={modalClass}
+        />
+      );
+    case "signin":
+      return (
+        <ModalSignin
+          isShowing={isShowing}
+          hide={hide}
+          modalClass={modalClass}
+          setAuth={setAuth}
+          setAdmin={setAdmin}
         />
       );
     default:

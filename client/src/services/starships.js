@@ -16,6 +16,10 @@ class StarshipsDataService {
     });
   }
 
+  findSame(nameQuery, classQuery = "Unknown") {
+    return http.get(`/starships?name=${nameQuery}&class=${classQuery}&starshipsPerPage=50`);
+  }
+
   findForEvents(query) {
     return http.get(`/starships?name=${query}`);
   }
@@ -26,6 +30,10 @@ class StarshipsDataService {
 
   updateStarship(starshipInfo) {
     return http.put("/starships", starshipInfo);
+  }
+
+  deleteStarship(starshipId) {
+    return http.delete(`/starships?id=${starshipId}`);
   }
 
   getStarshipClasses() {

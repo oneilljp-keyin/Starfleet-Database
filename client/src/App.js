@@ -56,6 +56,20 @@ function App() {
     setIsAuthenticated(boolean);
   };
 
+  const logout = (e) => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      setAuth(false);
+      toast.success("Logout Successful");
+      setAdminRole(false);
+      setName("");
+    } catch (err) {
+      toast.success(err.message);
+      console.log(err.message);
+    }
+  };
+
   return (
     <StrictMode>
       <Router basename="/">
@@ -67,7 +81,12 @@ function App() {
               </Link>
             </div>
           </div>
-          <Navbar />
+          <Navbar
+            isAuth={isAuthenticated}
+            logout={logout}
+            setAdmin={setAdminRole}
+            setAuth={setIsAuthenticated}
+          />
           <main className="main_body">
             <div className="content_wrapper">
               <div className="content_container align-content-center">
@@ -91,9 +110,6 @@ function App() {
                     exact
                     path={["/personnel"]}
                     render={(props) => (
-                      // !isAuthenticated ? (
-                      //   <Redirect to="/signin" />
-                      // ) :
                       <PersonnelList
                         {...props}
                         isAuth={isAuthenticated}
@@ -121,9 +137,6 @@ function App() {
                     exact
                     path={["/starships"]}
                     render={(props) => (
-                      // !isAuthenticated ? (
-                      //   <Redirect to="/signin" />
-                      // ) :
                       <StarshipList
                         {...props}
                         isAuth={isAuthenticated}
@@ -174,7 +187,6 @@ function App() {
             draggable
             pauseOnHover={false}
           />
-          {/* </Provider> */}
         </div>
       </Router>
     </StrictMode>

@@ -129,7 +129,7 @@ const PopUpUpload = ({
             <div className={modalClass}>
               <div className="resize-modal resize-modal-content-wrapper">
                 <div className="resize-modal-content-container align-content-center">
-                  <div className="search-form m-auto text-center">
+                  <div className="search-form m-auto text-center modal-appear">
                     {!isFileSelected ? (
                       <Dropzone onDrop={onDrop}>
                         {({ getRootProps, getInputProps }) => (
@@ -154,32 +154,44 @@ const PopUpUpload = ({
                         />
                       </div>
                     )}
-                    <div className="d-flex row">
-                      <input
-                        className="col form-control form-control-sm my-1"
-                        type="text"
-                        name="title"
-                        placeholder="Image Title"
-                        value={photoInfo.title}
-                        onChange={(e) => onChangeEvent(e)}
-                      />
-                      <input
-                        className="col form-control form-control-sm my-1"
-                        type="text"
-                        name="year"
-                        placeholder="Year"
-                        value={photoInfo.year}
-                        onChange={(e) => onChangeEvent(e)}
-                      />
+                    <div className="d-flex row form-group mx-2">
+                      <div className="form-floating col-6">
+                        <input
+                          className="form-control form-control-sm my-1"
+                          type="text"
+                          name="title"
+                          id="imageTitle"
+                          placeholder="Image Title"
+                          value={photoInfo.title}
+                          onChange={(e) => onChangeEvent(e)}
+                        />
+                        <label htmlFor="imageTitle">Image Title</label>
+                      </div>
+                      <div className="form-floating col-6">
+                        <input
+                          className="form-control form-control-sm my-1"
+                          type="text"
+                          name="year"
+                          id="imageYear"
+                          placeholder="Year"
+                          value={photoInfo.year}
+                          onChange={(e) => onChangeEvent(e)}
+                        />
+                        <label htmlFor="imageYear">Year</label>
+                      </div>
+                      <div className="form-floating col-12">
+                        <input
+                          className="form-control form-control-sm my-1"
+                          type="text"
+                          name="description"
+                          id="imageDescription"
+                          placeholder="Image Description"
+                          value={photoInfo.description}
+                          onChange={(e) => onChangeEvent(e)}
+                        />
+                        <label htmlFor="imageDescription">Description</label>
+                      </div>
                     </div>
-                    <input
-                      className="col form-control form-control-sm my-1"
-                      type="text"
-                      name="description"
-                      placeholder="Image Description"
-                      value={photoInfo.description}
-                      onChange={(e) => onChangeEvent(e)}
-                    />
                     <button
                       className="lcars_btn orange_btn left_round small_btn"
                       onClick={handleOnSubmit}
