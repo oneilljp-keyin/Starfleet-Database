@@ -10,9 +10,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 const Officer = (props) => {
-  const imageType = "officer";
-  // let dateCheck;
-  // let dateBoolean = false;
+  const [imageType, setImageType] = useState("officer");
 
   const [officerName, setOfficerName] = useState("");
   const [eventId, setEventId] = useState(null);
@@ -65,9 +63,10 @@ const Officer = (props) => {
     getOfficer(props.match.params.id);
   }, [props.match.params.id, refreshOption]);
 
-  function OpenModal(modalType, id) {
+  function OpenModal(modalType, id = null, type = "officer") {
     setModal(modalType);
     setEventId(id);
+    setImageType(type);
     toggleModal();
   }
 
@@ -75,7 +74,7 @@ const Officer = (props) => {
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
         <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
-          Search
+          Back to Search
         </Link>
         {props.isAuth && (
           <>
@@ -98,7 +97,7 @@ const Officer = (props) => {
             <button
               className="lcars_btn orange_btn right_round"
               onClick={() => {
-                OpenModal("event", null);
+                OpenModal("event");
               }}
             >
               Event
@@ -114,7 +113,8 @@ const Officer = (props) => {
               isAuth={props.isAuth}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
-              imageType={imageType}
+              imageType={"officer"}
+              OpenModal={OpenModal}
             />
             <div className="profile-summary">
               <h1>
@@ -147,7 +147,7 @@ const Officer = (props) => {
                 {officer.starshipName && (
                   <>
                     <span style={{ color: "#FFDD22E6" }}>Vessel: </span>
-                    {officer.starshipName} {officer.starshipRegistry}
+                    USS {officer.starshipName} {officer.starshipRegistry}
                   </>
                 )}
                 {officer.location &&
@@ -214,17 +214,20 @@ const Officer = (props) => {
                     } else {
                       eventDate = event.date.slice(0, 10);
                     }
-                    // if (eventDate === dateCheck) {
-                    //   dateBoolean = false;
-                    // } else {
-                    //   dateBoolean = true;
-                    // }
-                    // dateCheck = eventDate;
                   }
                   return (
                     <Fragment key={uuidv4()}>
                       <tr style={{ borderTop: "1px solid white" }}>
-                        <td>
+                        <td
+                          rowSpan={
+                            event.notes &&
+                            event.notes !== "Assignment" &&
+                            event.notes !== "Promotion" &&
+                            event.notes !== "Demotion"
+                              ? 2
+                              : 1
+                          }
+                        >
                           {props.isAuth ? (
                             <>
                               <button
@@ -235,10 +238,11 @@ const Officer = (props) => {
                               >
                                 <i className="far fa-edit" style={{ color: "gray" }}></i>
                               </button>
+                              <br />
                               <button
                                 className="edit"
                                 onClick={() => {
-                                  OpenModal("event", event._id);
+                                  OpenModal("delete", event._id, "event");
                                 }}
                               >
                                 <i
@@ -286,9 +290,6 @@ const Officer = (props) => {
                         event.notes !== "Promotion" &&
                         event.notes !== "Demotion" && (
                           <tr>
-                            <td className="align-top">
-                              {/* <i className="fas fa-square fa-xs" style={{ color: "#f9f9f9" }}></i> */}
-                            </td>
                             <td className="h6cell" colSpan={7}>
                               {event.notes}
                             </td>

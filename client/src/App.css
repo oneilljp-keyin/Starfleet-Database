@@ -33,10 +33,15 @@ h6 { font-size: 1rem; color: #ffffffde; }
   
 .small_hide {display: none;}
 
+.form-floating {padding: 0;}
+.form-floating textarea {height: 120px;}
+label {color: #6d6d6d; }
+
 /* ---- OfficerProfile.js - Part of Photo Carousel ---------------------- */
 .carousel-item:hover .middle { opacity: 1; }
-.cc-bg { background-color: #55555588; border-radius: 1em; }
-.middle { transition: 0.5s ease; opacity: 0; text-align: center; }
+.cc-bg { background-color: #55555588; border-radius: 1em; left: 4px; width: 96%;}
+.left-delete { position: absolute; top: 4px; left: 4px; width: 32px; height: 32px;}
+.middle { opacity: 1; text-align: center; }
 .officer-pics { height: auto; max-width: 120px; }
 /* ---------------------------------------------------------------------- */
 
@@ -61,6 +66,7 @@ td {padding: 0;}
 .searchContainer { position: relative;  display: inline-block; }
 
 .starship-pics { height: auto; max-width: 300px; }
+.loading {height: 32px; width: auto;}
 
 .suggestion {
   cursor: pointer; z-index: 5;
@@ -177,28 +183,14 @@ td {padding: 0;}
   background-color: #ccccff;
 }
 
-#main_nav {
-  background-color: #121212;
-  border-radius: 0 0 0 2.57rem;
-  width: 100%;
-  font-weight: 500;
-  overflow: hidden;
-}
-
-#main_nav ul {
-  display: block; list-style: none;
-}
-
-#main_nav li {
-  max-width: 200px;
-}
-
+#main_nav    { background-color: #121212; border-radius: 0 0 0 2.57rem;
+               width: 100%; font-weight: 500; overflow: hidden; }
+#main_nav ul { display: block; list-style: none; }
+#main_nav li { max-width: 200px; }
 #main_nav a,
-button.logout {
-  color: #121212; background-color: #9999ffe6;
-  display: block; margin: 0.5rem 0 1rem 1rem; padding: 1rem;
-  text-decoration: none; text-align: right; border-radius: 1rem 0 0 1rem;
-}
+button.logout { color: #121212; background-color: #9999ffe6;
+                display: block; margin: 0.5rem 0 1rem 1rem; padding: 1rem;
+                text-decoration: none; text-align: right; border-radius: 1rem 0 0 1rem; }
 
 .list-link {text-decoration: none; color: inherit;}
 .same-ships { width: 45%; min-width: 300px; border: 1px solid #3D3D3D;
@@ -208,15 +200,13 @@ button.logout {
 .lcars_btn {
   color: #121212; text-align: center; display: inline-block;
   border: none; text-decoration: none;
-  padding: 0.25rem 1rem 0.25rem 1rem; font-weight: 500;
+  padding: 0.25rem 1rem; font-weight: 500;
 }
 
 .lcars_btn:hover, .lcars_btn:focus {color: #121212;}
 
 /* Button sizes */
-.small_btn {
-  max-width: 124px; margin: 0; z-index: 100;
-}
+.small_btn { max-width: 124px; margin: 0; z-index: 100; }
 
 /* Button Colours */
 .orange_btn       { background-color: #ff9400e6; }
@@ -240,15 +230,14 @@ button.logout {
 .search_btn       { border-top-left-radius: 0; border-bottom-left-radius: 0;}
 .search_input     { border-top-right-radius: 0; border-bottom-right-radius: 0;}
 
-.header_btn       { min-width: 88px; text-align: right; font-size: 0.875em;}
+.header_btn       { min-width: 88px; font-size: 0.875em; text-align: center;}
 
 /* Button Shapes */
 
-.all_square  { border-radius: 0    0    0    0   ; margin: 0.5rem   0    0.5rem   4px; }
-.left_round  { border-radius: 1rem 0    0    1rem; margin: 0.5rem   0    0.5rem   1rem; }
-.right_round { border-radius: 0    1rem 1rem 0;    margin: 0.5rem   1rem 0.5rem   4px; }
-.all_round   { border-radius: 1rem 1rem 1rem 1rem; margin: 0.5rem   0    0.5rem   1rem; 
-               margin: 8px;}
+.all_square  { border-radius: 0    0    0    0   ; margin: 0.5rem  1px  0.5rem  1px; }
+.left_round  { border-radius: 1rem 0    0    1rem; margin: 0.5rem  1px  0.5rem  1px; }
+.right_round { border-radius: 0    1rem 1rem 0;    margin: 0.5rem  1px  0.5rem  1px; }
+.all_round   { border-radius: 1rem 1rem 1rem 1rem; margin: 0.5rem  1px  0.5rem  1px; }
 
 #main_nav a:hover,
 #main_nav a:focus {
@@ -357,48 +346,24 @@ article footer p {
 }
 
 @media screen and (min-width: 639px) {
-  #main_header {
-    padding-bottom: 1rem;
-  }
+  #main_header { padding-bottom: 1rem; border-radius: 0 0 0 2.47rem; }
+  #main_header hgroup { padding: 1.62rem; }
 
-  #main_header hgroup {
-    padding: 1.62rem;
-  }
-
-  #menu-btn {
-    margin-bottom: 1rem;
-  }
-
-  #viewport-btn {
-    margin-top: 1rem;
-  }
+  #menu-btn { margin-bottom: 1rem; }
+  #viewport-btn { margin-top: 1rem; }
 
   #menu-btn,
-  #viewport-btn {
-    border-radius: 1.5rem 0 0 1.5rem;
-  }
+  #viewport-btn { border-radius: 1.5rem 0 0 1.5rem; }
 
-  #main_header {
-    border-radius: 0 0 0 2.47rem;
-  }
+  .header_inner { border-radius: 0 0 0 1.5rem; padding: 0 8px; }
 
-  .header_inner {
-    border-radius: 0 0 0 1.5rem;
-  }
+  #main_nav ul { display: flex; justify-content: flex-end; padding-top: 0.5rem; }
+  #main_nav li { width: 25%; max-width: 200px; }
+  #main_nav a  { position: relative; box-sizing: border-box; border-radius: 1rem;
+                 padding: 0.5rem; margin: 0 0 0 1rem; }
 
-  #main_nav ul {
-    display: flex; justify-content: flex-end; padding-top: 0.5rem;
-  }
-
-  #main_nav li {
-    width: 25%;
-    max-width: 200px;
-  }
-
-  #main_nav a {
-    position: relative; box-sizing: border-box; border-radius: 1rem;
-    padding: 0.5rem; margin: 0 0 0 1rem;
-  }
+  .left-delete { position: absolute; top: 8px; left: 8px; width: 40px; height: 40px; }
+  .middle { transition: 0.5s ease; opacity: 0; text-align: center; }
 
   /* Typography */
 
@@ -419,28 +384,13 @@ article footer p {
 
   .small_hide { display: block; }
 
-  .footer_bar {
-    height: 1rem;
-    border-radius: 0.5rem;
-  }
+  .footer_bar { height: 1rem; border-radius: 0.5rem; }
 
-  #main_footer {
-    margin: 1rem 0 0 0;
-    border-radius: 2.47rem 0 0 0;
-    padding-top: 1rem;
-  }
+  #main_footer { margin: 1rem 0 0 0; border-radius: 2.47rem 0 0 0; padding-top: 1rem; }
+  .main_footer_content { padding: 1.62rem; border-radius: 1.5rem 0 0 0; }
 
-  .main_footer_content {
-    padding: 1.62rem;
-    border-radius: 1.5rem 0 0 0;
-  }
-
-  .lcars_btn {
-    padding: 0.5rem 2rem 0.5rem 2rem; font-weight: 500;
-  }
-
-  .header_btn { min-width: 124px; text-align: right; font-size: 1rem;
-                padding: 8px 8px; margin: 8px 8px 16px 8px}
+  .lcars_btn { padding: 8px 24px; font-weight: 500; min-width: 96px;}
+  .header_btn { min-width: 124px; font-size: 1rem; padding: 8px 24px; margin: 4px 1px;}
 
   .load-img {max-width: 600px;}
   .officer-pics { height: auto; max-width: 256px; }
@@ -471,20 +421,12 @@ article footer p {
   100% {opacity: 1;}
 }
 
-.modal-overlay {
-  position: fixed; top: 0; left: 0; z-index: 40;
-  width: 100vw; height: 100vh;
-  background-color: #121212; opacity: 0.25;
-}
+.modal-overlay { position: fixed; top: 0; left: 0; z-index: 40; width: 100vw;
+                 height: 100vh; background-color: #121212; opacity: 0.25; }
+.modal-wrapper { position: fixed; top: 0; left: 0; z-index: 50; width: 100%;
+                 height: 100vh; overflow-x: hidden; overflow-y: auto; outline: 0; }
 
-.modal-wrapper {
-  position: fixed; top: 0; left: 0; z-index: 50; width: 100%; height: 100vh;
-  overflow-x: hidden; overflow-y: auto; outline: 0;
-}
-
-.cropper {
- height: 350px; position: relative
-}
+.cropper { height: 350px; position: relative; }
 
 /* ------ Upload Modal --------------------------------------------------------------- */
 

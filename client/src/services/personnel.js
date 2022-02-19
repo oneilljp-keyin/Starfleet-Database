@@ -24,6 +24,10 @@ class PersonnelDataService {
     return http.put("/personnel", officerInfo);
   }
 
+  deleteOfficer(officerId) {
+    return http.delete(`/personnel?id=${officerId}`);
+  }
+
   getRankLabels() {
     return http.get("/ranks");
   }

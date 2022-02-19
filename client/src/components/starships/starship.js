@@ -115,16 +115,23 @@ const Starships = (props) => {
               isAuth={props.isAuth}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
-              imageType={imageType}
+              imageType={"starship"}
               className="flex-grow-1"
             />
             <div className="m-1 width-auto">
-              {starship.name && <h1>U.S.S. {starship.name}</h1>}
+              {starship.name && <h1>USS {starship.name}</h1>}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
             </div>
             <div className="m-1 width-auto">
-              <p className="text-end">
+              <p className="text-start">
+                {starship.shipyard && (
+                  <>
+                    <strong>Shipyard: </strong>
+                    {starship.shipyard}
+                    <br />
+                  </>
+                )}
                 {starship.launch_date && (
                   <>
                     <strong>Launch: </strong>
@@ -187,12 +194,6 @@ const Starships = (props) => {
                       } else {
                         eventDate = event.date.slice(0, 10);
                       }
-                      // if (eventDate === dateCheck) {
-                      //   dateBoolean = false;
-                      // } else {
-                      //   dateBoolean = true;
-                      // }
-                      // dateCheck = eventDate;
                     }
                     let officerName = "";
                     if (event.surname || event.first || event.last) {
@@ -215,22 +216,45 @@ const Starships = (props) => {
                     return (
                       <Fragment key={uuidv4()}>
                         <tr style={{ borderTop: "1px solid white" }}>
-                          <td>
+                          <td
+                            rowSpan={
+                              event.notes &&
+                              event.notes !== "Assignment" &&
+                              event.notes !== "Promotion" &&
+                              event.notes !== "Demotion"
+                                ? 2
+                                : 1
+                            }
+                          >
                             {props.isAuth ? (
-                              <button
-                                className="edit"
-                                onClick={() => {
-                                  let eventOption = event.officerId ? "officer" : "starship";
-                                  OpenModal("event", event._id, eventOption);
-                                }}
-                              >
-                                <i className="far fa-edit" style={{ color: "gray" }}></i>
-                              </button>
+                              <>
+                                <button
+                                  className="edit"
+                                  onClick={() => {
+                                    let eventOption = event.officerId ? "officer" : "starship";
+                                    OpenModal("event", event._id, eventOption);
+                                  }}
+                                >
+                                  <i className="far fa-edit" style={{ color: "gray" }}></i>
+                                </button>
+                                <br />
+                                <button
+                                  className="edit"
+                                  onClick={() => {
+                                    OpenModal("delete", event._id, "event");
+                                  }}
+                                >
+                                  <i
+                                    className="fa-solid fa-remove fa-xl"
+                                    style={{ color: "gray" }}
+                                  ></i>
+                                </button>
+                              </>
                             ) : null}
                           </td>
                           <td className="h3cell align-top">
                             {event.date && `${eventDate}`}
-                            {event.date && event.stardate && eventDate.length > 4 && <br />}
+                            {/* {event.date && event.stardate && eventDate.length > 4 && <br />} */}
                             {event.stardate && ` SD ${event.stardate}`}
                           </td>
                           <td className="h4cell align-top">
@@ -253,10 +277,10 @@ const Starships = (props) => {
                           event.notes !== "Assignment" &&
                           event.notes !== "Promotion" &&
                           event.notes !== "Demotion" && (
-                            <tr key={uuidv4()}>
-                              <td className="align-top">
-                                {/* <i className="fas fa-square fa-xs" style={{ color: "#f9f9f9" }}></i> */}
-                              </td>
+                            <tr>
+                              {/* <td className="align-top">
+                                <i className="fas fa-square fa-xs" style={{ color: "#f9f9f9" }}></i>
+                              </td> */}
                               <td className="h6cell" colSpan={7}>
                                 {event.notes}
                               </td>

@@ -4,7 +4,7 @@ import ufpLogo from "../assets/ufp_logo.png";
 
 import EventsAndPhotosDataService from "../services/eventsAndPhotos";
 
-function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType }) {
+function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType, OpenModal }) {
   const [photoArray, setPhotoArray] = useState([]);
   const [picTracker, setPicTracker] = useState([]);
 
@@ -71,11 +71,23 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
             return (
               <div
                 className={index === 0 ? "carousel-item active " : "carousel-item"}
-                data-bs-interval="7200"
+                data-bs-interval="14400"
                 key={index}
               >
                 <img src={`${photo.url}`} className="d-block w-100" alt={photo.title} />
-                <div className="carousel-caption cc-bg d-none d-sm-block p-0 middle">
+                {isAuth && (
+                  <div className="cc-bg p-2 left-delete middle">
+                    <button
+                      className="edit"
+                      onClick={() => {
+                        OpenModal("delete", photo._id, "photo");
+                      }}
+                    >
+                      <i className="fa-solid fa-remove fa-lg" style={{ color: "white" }}></i>
+                    </button>
+                  </div>
+                )}
+                <div className="carousel-caption cc-bg d-none d-sm-block p-1 middle">
                   <h5 className="m-0">
                     {photo.title} [<small>{photo.year}</small>]
                   </h5>
@@ -92,7 +104,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
         {photoArray.length > 1 && (
           <>
             <button
-              className="carousel-control-prev h-75"
+              className="carousel-control-prev h-100"
               type="button"
               data-bs-target="#photoCarousel"
               data-bs-slide="prev"
@@ -101,7 +113,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
               <span className="visually-hidden">Previous</span>
             </button>
             <button
-              className="carousel-control-next h-75"
+              className="carousel-control-next h-100"
               type="button"
               data-bs-target="#photoCarousel"
               data-bs-slide="next"
