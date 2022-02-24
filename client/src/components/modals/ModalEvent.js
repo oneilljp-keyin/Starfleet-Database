@@ -57,7 +57,7 @@ const PopUpEvents = ({
 
   const onChangeEventInfo = (e) => {
     setEventInfo({ ...eventInfo, [e.target.name]: e.target.value });
-    setSearchOption(true);
+    if (e.target.name === "starshipName") setSearchOption(true);
   };
 
   const onClickStarship = (id, name, registry) => {
@@ -107,6 +107,8 @@ const PopUpEvents = ({
         delete data[key];
       }
     });
+    delete data["starshipName"];
+    delete data["starshipRegistry"];
     if (btnLabel === "Update") {
       data._id = eventId;
       EventsAndPhotosDataService.updateEvent(data)
@@ -151,13 +153,13 @@ const PopUpEvents = ({
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
             <div className={modalClass}>
-              <div className="events-modal modal-content-wrapper">
+              <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
                     {btnLabel} Event for {subjectName}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
-                    <div className="form-floating col-4">
+                    <div className="form-floating col-sm-4">
                       <input
                         className="form-control form-control-md my-1"
                         type="date"
@@ -169,7 +171,7 @@ const PopUpEvents = ({
                       <label htmlFor="eventDate">Date</label>
                     </div>
                     {/* Stardate */}
-                    <div className="form-floating col-4">
+                    <div className="form-floating col-sm-4">
                       <input
                         className="form-control form-control-lg my-1"
                         type="text"
@@ -183,7 +185,7 @@ const PopUpEvents = ({
                     </div>
 
                     {/* Note about event date (exact, approx, before or after) */}
-                    <div className="form-floating col-4">
+                    <div className="form-floating col-sm-4">
                       <select
                         className="form-control my-1"
                         name="dateNote"
@@ -199,28 +201,28 @@ const PopUpEvents = ({
                       <label htmlFor="dateNote">Date Note</label>
                     </div>
                     {/* <div className="w-100"></div> */}
+                    <div className="form-floating col-sm-4">
+                      <select
+                        className="form-control my-1"
+                        name="type"
+                        id="eventType"
+                        value={eventInfo.type || ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      >
+                        <option value="Other">Other</option>
+                        <option value="Assignment">Assignment</option>
+                        <option value="First Contact">First Contact</option>
+                        {eventType !== "starship" && <option value="Life Event">Life Event</option>}
+                        <option value="Mission">Mission</option>
+                        {eventType !== "starship" && <option value="Promotion">Promotion</option>}
+                        {eventType !== "starship" && <option value="Demotion">Demotion</option>}
+                      </select>
+                      <label htmlFor="eventType">Event Type</label>
+                    </div>
                     {eventType !== "starship" && (
                       <>
                         {" "}
-                        <div className="form-floating col-4">
-                          <select
-                            className="form-control my-1"
-                            name="type"
-                            id="eventType"
-                            value={eventInfo.type || ""}
-                            onChange={(e) => onChangeEventInfo(e)}
-                          >
-                            <option value="Other">Other</option>
-                            <option value="Assignment">Assignment</option>
-                            <option value="First Contact">First Contact</option>
-                            <option value="Life Event">Life Event</option>
-                            <option value="Mission">Mission</option>
-                            <option value="Promotion">Promotion</option>
-                            <option value="Demotion">Demotion</option>
-                          </select>
-                          <label htmlFor="eventType">Event Type</label>
-                        </div>
-                        <div className="col-4 form-floating searchContainer my-1 p-0">
+                        <div className="col-sm-4 form-floating searchContainer my-1 p-0">
                           <input
                             className="form-control form-control-lg"
                             type="text"
@@ -256,7 +258,9 @@ const PopUpEvents = ({
                     )}
                     <div
                       className={
-                        eventType !== "starship" ? "form-floating col-4" : "form-floating col-12"
+                        eventType !== "starship"
+                          ? "form-floating col-sm-4"
+                          : "form-floating col-sm-8"
                       }
                     >
                       <input
@@ -274,7 +278,7 @@ const PopUpEvents = ({
                     {eventType !== "starship" && (
                       <>
                         {/* <div className="w-100"></div> */}
-                        <div className="form-floating col-6">
+                        <div className="form-floating col-sm-6">
                           <select
                             className="form-control my-1"
                             name="rankLabel"
@@ -292,7 +296,7 @@ const PopUpEvents = ({
                           </select>
                           <label htmlFor="rankLabel">Rank</label>
                         </div>
-                        <div className="form-floating col-6">
+                        <div className="form-floating col-sm-6">
                           <input
                             className="form-control form-control-lg my-1"
                             type="text"
@@ -307,7 +311,7 @@ const PopUpEvents = ({
                       </>
                     )}
                     {/* <div className="w-100"></div> */}
-                    <div className="form-floating col-12">
+                    <div className="form-floating col-sm-12">
                       <textarea
                         className="col form-control form-control-lg my-1"
                         style={{ height: "100%" }}

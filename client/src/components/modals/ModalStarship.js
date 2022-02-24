@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import StarshipsDataService from "../../services/starships";
 
@@ -84,21 +85,21 @@ const PopUpStarship = ({
       StarshipsDataService.updateStarship(data)
         .then((response) => {
           toast.success(response.data);
-          setRefresh();
+          setRefresh(true);
           hide();
         })
         .catch((err) => {
           console.error(err);
           toast.warning(err.message);
         });
-      setRefresh();
+      setRefresh(true);
     } else {
       delete data["_id"];
       StarshipsDataService.createStarship(data)
         .then((response) => {
           toast.success(response.data);
           setStarshipInfo(initialStarshipState);
-          setRefresh();
+          setRefresh(true);
           hide();
         })
         .catch((err) => {
@@ -133,7 +134,7 @@ const PopUpStarship = ({
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
             <div className={modalClass}>
-              <div className="events-modal modal-content-wrapper">
+              <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
                     {btnLabel} Entry{subjectName && <> - U.S.S. {subjectName}</>}
@@ -240,8 +241,8 @@ const PopUpStarship = ({
                         value={starshipInfo.launch_note || ""}
                         onChange={(e) => onChangeStarshipInfo(e)}
                       >
-                        {dateOptions.map(({ label, value, index }) => (
-                          <option key={index} value={value}>
+                        {dateOptions.map(({ label, value }) => (
+                          <option key={uuidv4()} value={value}>
                             {label}
                           </option>
                         ))}
@@ -283,8 +284,8 @@ const PopUpStarship = ({
                         value={starshipInfo.commission_note || ""}
                         onChange={(e) => onChangeStarshipInfo(e)}
                       >
-                        {dateOptions.map(({ label, value, index }) => (
-                          <option key={index} value={value}>
+                        {dateOptions.map(({ label, value }) => (
+                          <option key={uuidv4()} value={value}>
                             {label}
                           </option>
                         ))}
@@ -326,8 +327,8 @@ const PopUpStarship = ({
                         value={starshipInfo.decommission_note || ""}
                         onChange={(e) => onChangeStarshipInfo(e)}
                       >
-                        {dateOptions.map(({ label, value, index }) => (
-                          <option key={index} value={value}>
+                        {dateOptions.map(({ label, value }) => (
+                          <option key={uuidv4()} value={value}>
                             {label}
                           </option>
                         ))}
@@ -369,8 +370,8 @@ const PopUpStarship = ({
                         value={starshipInfo.destruction_note || ""}
                         onChange={(e) => onChangeStarshipInfo(e)}
                       >
-                        {dateOptions.map(({ label, value, index }) => (
-                          <option key={index} value={value}>
+                        {dateOptions.map(({ label, value }) => (
+                          <option key={uuidv4()} value={value}>
                             {label}
                           </option>
                         ))}

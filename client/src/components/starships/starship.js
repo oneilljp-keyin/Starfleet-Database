@@ -11,7 +11,8 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 const Starships = (props) => {
-  const [imageType, setImageType] = useState("starship");
+  const [type, setType] = useState("starship");
+  const [category, setCategory] = useState(null);
   // let dateCheck;
   // let dateBoolean = false;
 
@@ -54,7 +55,11 @@ const Starships = (props) => {
       StarshipsDataService.get(id)
         .then((response) => {
           setStarship(response.data);
-          setStarshipName(response.data.name + " " + response.data.registry);
+          setStarshipName(
+            response.data.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "") +
+              " " +
+              response.data.registry
+          );
         })
         .catch((err) => {
           console.error(err);
@@ -65,10 +70,11 @@ const Starships = (props) => {
     getStarship(props.match.params.id);
   }, [props.match.params.id, refreshOption]);
 
-  function OpenModal(modalType, id, option = imageType) {
+  function OpenModal(modalType, id, option = type, category = "") {
     setModal(modalType);
     setEventId(id);
-    setImageType(option);
+    setType(option);
+    setCategory(category);
     toggleModal();
   }
 
@@ -116,14 +122,16 @@ const Starships = (props) => {
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
               imageType={"starship"}
-              className="flex-grow-1"
+              className="flex-grow-1 col"
             />
-            <div className="m-1 width-auto">
-              {starship.name && <h1>USS {starship.name}</h1>}
+            <div className="m-1 width-auto col">
+              {starship.name && (
+                <h1>USS {starship.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}</h1>
+              )}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
             </div>
-            <div className="m-1 width-auto">
+            <div className="m-1 width-auto col">
               <p className="text-start">
                 {starship.shipyard && (
                   <>
@@ -171,16 +179,41 @@ const Starships = (props) => {
               </p>
             </div>
           </div>
-          <div className="d-flex justify-content-around flex-wrap m-1 p-2">
+
+          <div className="d-flex justify-content-around flex-wrap m-1 p-1">
             <StarshipsSame starshipName={starship.name} starshipId={starship._id} />
             <StarshipsSame starshipClass={starship.class} starshipId={starship._id} />
+          </div>
+
+          <div className="d-flex justify-content-center flex-wrap m-1 p-1">
+            <div className="lcars_end_cap left_round rose_btn"> </div>
+            <button
+              className="lcars_btn all_square rose_btn"
+              onClick={() => {
+                OpenModal("list", null, "Personnel", "Assignment");
+              }}
+            >
+              Personnel
+            </button>
+            <button
+              className="lcars_btn all_square rose_btn"
+              onClick={() => {
+                OpenModal("list", null, "First Contact Missions", "First Contact");
+              }}
+            >
+              First Contact
+            </button>
+            <div className="lcars_end_cap right_round rose_btn"> </div>
           </div>
 
           <table className="table event-list table-borderless w-100">
             <tbody>
               {starship.events.length > 0 ? (
                 starship.events
-                  .filter((filteredEvents) => filteredEvents.type !== "Life Event")
+                  .filter(
+                    (filteredEvents) =>
+                      filteredEvents.type !== "Life Event" && filteredEvents.type !== "Assignment"
+                  )
                   .map((event, index) => {
                     let eventDate;
                     if (event.date) {
@@ -311,11 +344,12 @@ const Starships = (props) => {
         hide={toggleModal}
         isAuth={props.isAuth}
         officerId={null}
-        starshipId={starship._id}
+        starshipId={props.match.params.id}
         eventId={eventId}
         subjectName={starshipName}
-        imageType={imageType}
+        type={type}
         setRefreshOption={toggleRefresh}
+        category={category}
       />
     </>
   );

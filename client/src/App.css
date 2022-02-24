@@ -40,9 +40,9 @@ label {color: #6d6d6d; }
 /* ---- OfficerProfile.js - Part of Photo Carousel ---------------------- */
 .carousel-item:hover .middle { opacity: 1; }
 .cc-bg { background-color: #55555588; border-radius: 1em; left: 4px; width: 96%;}
-.left-delete { position: absolute; top: 4px; left: 4px; width: 32px; height: 32px;}
+.left-delete { position: absolute; top: 4px; left: 4px; width: 40px; height: 40px;}
 .middle { opacity: 1; text-align: center; }
-.officer-pics { height: auto; max-width: 120px; }
+.officer-pics { max-height: 120px; max-width: 120px; }
 /* ---------------------------------------------------------------------- */
 
 /* ---- Background colour of event list on officer profile -------------- */
@@ -89,7 +89,7 @@ td {padding: 0;}
 
 .container {
   margin: 0.5rem auto;
-  height: 96%; width: 96%;
+  height: 100%; width: 100%;
   max-width: 960px;
   display: grid;
   grid-template-columns: 1fr;
@@ -114,17 +114,11 @@ td {padding: 0;}
   scrollbar-width: none; /* Firefox */
 }
 
-.topbar {
-  grid-area: clock; text-transform: uppercase; background: #9999ff9e;
-  display: flex; justify-content: flex-end;
-  border-radius: 0 1rem 1rem 0; line-height: 1;
-}
+.topbar { grid-area: clock; text-transform: uppercase; background: #9999ff9e;
+          display: flex; justify-content: flex-end;  border-radius: 0 1rem 1rem 0; line-height: 1; }
 
-.title-wrapper {
-  position: relative; color: #9999ffe6; display: inline-block;
-  background-color: #121212;
-  margin-right: 3rem; padding: 0 1rem; grid: flex; align-items: center;
-}
+.title-wrapper { position: relative; color: #9999ffe6; display: inline-block; align-items: center;
+                 background-color: #121212; margin-right: 3rem; padding: 0 1rem; grid: flex; }
 
 .title-wrapper::before,
 .title-wrapper::after {
@@ -197,13 +191,10 @@ button.logout { color: #121212; background-color: #9999ffe6;
               border-radius: 10px;}
 
 /* Generic Button features */
-.lcars_btn {
-  color: #121212; text-align: center; display: inline-block;
-  border: none; text-decoration: none;
-  padding: 0.25rem 1rem; font-weight: 500;
-}
-
+.lcars_btn { color: #121212; text-align: center; display: inline-block;
+             border: none; text-decoration: none; padding: 0.25rem 1rem; font-weight: 500; }
 .lcars_btn:hover, .lcars_btn:focus {color: #121212;}
+.lcars_end_cap { padding: 0.25rem 1rem; }
 
 /* Button sizes */
 .small_btn { max-width: 124px; margin: 0; z-index: 100; }
@@ -227,6 +218,9 @@ button.logout { color: #121212; background-color: #9999ffe6;
 .rose_btn         { background-color: #d495cfe6; }
 .rose_btn:hover   { background-color: #d495cf; }
 
+.blue_btn         { background-color: #5898ffe6; }
+.blue_btn:hover   { background-color: #5898ff; }
+
 .search_btn       { border-top-left-radius: 0; border-bottom-left-radius: 0;}
 .search_input     { border-top-right-radius: 0; border-bottom-right-radius: 0;}
 
@@ -234,10 +228,10 @@ button.logout { color: #121212; background-color: #9999ffe6;
 
 /* Button Shapes */
 
-.all_square  { border-radius: 0    0    0    0   ; margin: 0.5rem  1px  0.5rem  1px; }
-.left_round  { border-radius: 1rem 0    0    1rem; margin: 0.5rem  1px  0.5rem  1px; }
-.right_round { border-radius: 0    1rem 1rem 0;    margin: 0.5rem  1px  0.5rem  1px; }
-.all_round   { border-radius: 1rem 1rem 1rem 1rem; margin: 0.5rem  1px  0.5rem  1px; }
+.all_square  { border-radius: 0    0    0    0   ; margin: 0.5rem  1px; }
+.left_round  { border-radius: 1rem 0    0    1rem; margin: 0.5rem  1px; }
+.right_round { border-radius: 0    1rem 1rem 0;    margin: 0.5rem  1px; }
+.all_round   { border-radius: 1rem 1rem 1rem 1rem; margin: 0.5rem  1px; }
 
 #main_nav a:hover,
 #main_nav a:focus {
@@ -362,7 +356,7 @@ article footer p {
   #main_nav a  { position: relative; box-sizing: border-box; border-radius: 1rem;
                  padding: 0.5rem; margin: 0 0 0 1rem; }
 
-  .left-delete { position: absolute; top: 8px; left: 8px; width: 40px; height: 40px; }
+  .left-delete { position: absolute; top: 8px; left: 108px; width: 40px; height: 40px; }
   .middle { transition: 0.5s ease; opacity: 0; text-align: center; }
 
   /* Typography */
@@ -374,28 +368,32 @@ article footer p {
   h4, .h4cell { font-size: 1.38rem; color: #dd8100; }
   h5, .h5cell { font-size: 1.28rem; color: #ffdd22e6; }
   h6, .h6cell { font-size: 1.18rem; color: #ffffffde; }
-  .ship_list { font-size: 1rem; color: #ffffffde;}
+  .ship_list  { font-size: 1rem; color: #ffffffde; }
 
   .h6cell { font-size: 1.18rem; color: #ffffffde; text-align: justify;
-                  text-justify: inter-word; font-weight: 400; line-height: 1.2; }
+            text-justify: inter-word; font-weight: 400; line-height: 1.2; }
   
   .profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
   .h3cell, .h4cell, .h5cell { font-size: 1.18rem; }
 
-  .small_hide { display: block; }
+  .small_hide  { display: block; }
 
-  .footer_bar { height: 1rem; border-radius: 0.5rem; }
+  .footer_bar  { height: 1rem; border-radius: 0.5rem; }
 
   #main_footer { margin: 1rem 0 0 0; border-radius: 2.47rem 0 0 0; padding-top: 1rem; }
   .main_footer_content { padding: 1.62rem; border-radius: 1.5rem 0 0 0; }
 
-  .lcars_btn { padding: 8px 24px; font-weight: 500; min-width: 96px;}
-  .header_btn { min-width: 124px; font-size: 1rem; padding: 8px 24px; margin: 4px 1px;}
+  .lcars_btn  { padding: 8px 24px; font-weight: 500; min-width: 96px; }
+  .lcars_end_cap { padding: 8px 16px; display: block}
+  .header_btn { min-width: 124px; font-size: 1rem; padding: 8px 24px; margin: 4px 1px; }
 
-  .load-img {max-width: 600px;}
-  .officer-pics { height: auto; max-width: 256px; }
+  .load-img      { max-width: 600px; }
+  .officer-pics  { max-height: 256px; max-width: 256px; }
   .starship-pics { height: auto; width: 50vw; max-width: 352px; }
-  
+
+  .list-footer { position: absolute; bottom: 0; width: calc(100% - 16px);}
+  .list-modal-content-container {padding: 0 0.5rem;}
+  .footer-btn {padding: 4px 24px;}
 }
 
 .modal-main-body {
@@ -428,17 +426,17 @@ article footer p {
 
 .cropper { height: 350px; position: relative; }
 
+.modal-bg { z-index: 100; color: #ffffffde; position: relative; text-align: center;
+            border-radius: 10px; padding: 2rem; backdrop-filter: blur(50px);
+            box-shadow: 8px 8px 4px 4px #12121266, -8px -8px 4px 4px #12121266,
+                       -8px 8px 4px 4px #12121266,  8px -8px 4px 4px #12121266; }
+
 /* ------ Upload Modal --------------------------------------------------------------- */
 
-.upload-modal {
-  z-index: 100; color: #ffffffde; position: relative; text-align: center;
-  border-radius: 10px; max-width: 400px; padding: 2rem; backdrop-filter: blur(50px);
-  box-shadow: 8px 8px 4px 4px #12121266, -8px -8px 4px 4px #12121266,
-  -8px 8px 4px 4px #12121266,  8px -8px 4px 4px #12121266;
-}
+.upload-modal { max-width: 400px; }
 
 .modal-content-wrapper {
-  position: relative; margin: 2.47rem auto; background-color: #9999ff9e;
+  position: relative; margin: 4.94rem auto; background-color: #9999ff9e;
   border-radius: 2.47rem 0 0 2.47rem; padding-top: 1rem; padding-bottom: 1rem;
 }
 
@@ -449,8 +447,8 @@ article footer p {
 }
 
 .modal-content-wrapper::after { 
-  content: ""; position: absolute; top: 9.5%; left: 0; 
-  width: 10%; height: 28.5%; height: calc(28.5% - 1rem);
+  content: ""; position: absolute; top: 20%; left: 0; 
+  width: 10%; height: 28.5%; min-height: 24px;
   background: #db5d9abb; border-top: 0.5rem solid #121212;
   border-bottom: 0.5rem solid #121212;
 }
@@ -466,16 +464,11 @@ article footer p {
 .events-modal-container {
   position: relative; z-index: 1; background-color: #121212;
   width: 103%; border-radius: 2.47rem 0 0 2.47rem; margin: 0 0 0 auto; padding: 1rem;
-  min-height: 368px; box-sizing: border-box; overflow: hidden;
+   box-sizing: border-box; overflow: hidden;
 }
 
-.events-modal {
-  z-index: 100; color: #ffffffde; position: relative; text-align: center;
-  border-radius: 2.57rem 0 0 2.57rem; width: 80%; min-width: 376px;
-  padding: 1rem 2rem; backdrop-filter: blur(50px);
-  box-shadow: 8px 8px 4px 4px #12121266, -8px -8px 4px 4px #12121266,
-             -8px 8px 4px 4px #12121266,  8px -8px 4px 4px #12121266;
-}
+.events-modal { border-radius: 2.57rem 0 0 2.57rem; width: 80%; 
+                min-width: 376px; max-width: 960px; padding: 1rem 2rem; }
 
 .events-modal-content-wrapper::before {
   content: ""; position: absolute; top: 0; left: 50%; height: 1.1rem;
@@ -492,12 +485,7 @@ article footer p {
 
 /* ------ Upload & Resize Modal ------------------------------------------------------- */
 
-.resize-modal {
-  z-index: 100; color: #ffffffde; position: relative; text-align: center;
-  border-radius: 10px; max-width: 800px; padding: 2rem; backdrop-filter: blur(50px);
-  box-shadow: 8px 8px 4px 4px #12121266, -8px -8px 4px 4px #12121266,
-  -8px 8px 4px 4px #12121266,  8px -8px 4px 4px #12121266;
-}
+.resize-modal { max-width: 800px; }
 
 .resize-modal-content-wrapper {
   position: relative; margin: 2.47rem auto; background-color: #ff9400;
@@ -524,5 +512,27 @@ article footer p {
   content: ""; position: absolute; bottom: 0; left: 7%; 
   width: 86%; height: 5%; background: #121212;
 }
+
+/* ------------------------------------------------------------------------------------ */
+
+.login-modal {max-width: 448px; max-height: 304px;}
+
+/* -------- List Modals --------------------------------------------------------------- */
+
+.list-modal {width: 100%; max-width: 960px; height: 90vh; border: 0.5px solid #3D3D3D;}
+
+.list-modal-content-wrapper {
+  position: relative; margin: 2.47rem auto; background-color: #121212;
+  border-radius: 2.47rem; padding: 1rem;
+}
+
+.list-modal-content-container {
+  position: relative; z-index: 2; background-color: #121212;
+  width: 100%; border-radius: 1rem; margin: 0 0 0 auto; padding: 0;
+  height: 100%; box-sizing: border-box; overflow: hidden;
+}
+
+.list-footer { position: absolute; bottom: 0; width: 100%;}
+.footer-btn {padding: 4px 24px;}
 
 /* ------------------------------------------------------------------------------------ */

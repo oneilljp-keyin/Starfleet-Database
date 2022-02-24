@@ -10,6 +10,22 @@ class EventsAndPhotosDataService {
     return http.get(`/events?id=${id}`);
   }
 
+  getEventsByCategory(officerId = "", starshipId = "", category = "") {
+    let urlQuery = "";
+    if (category && category !== "" && category !== undefined && category !== null) {
+      urlQuery += "category=" + category;
+    }
+    if (officerId && officerId !== "" && officerId !== undefined && officerId !== null) {
+      if (urlQuery.length > 0) urlQuery += "&";
+      urlQuery += "officer_id=" + officerId;
+    }
+    if (starshipId && starshipId !== "" && starshipId !== undefined && starshipId !== null) {
+      if (urlQuery.length > 0) urlQuery += "&";
+      urlQuery += "starship_id=" + starshipId;
+    }
+    return http.get(`/events?${urlQuery}`);
+  }
+
   updateEvent(eventInfo) {
     return http.put("/events", eventInfo);
   }

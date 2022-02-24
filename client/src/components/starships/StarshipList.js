@@ -162,14 +162,12 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
         })}
       </div>
       <ModalLauncher
-        modal="officer"
+        modal="starship"
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={isAuth}
-        officerId={null}
         starshipId={null}
         subjectName={null}
-        imageType={null}
         setRefresh={listRefresh}
       />
     </>

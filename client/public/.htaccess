@@ -6,3 +6,12 @@ Order deny,allow
 Deny from all
 Allow from xxx.xxx.xxx.xxx
 </Files>
+
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
+RewriteCond %{HTTPS} !=on  
+RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+Header add Access-Control-Allow-Origin "*"

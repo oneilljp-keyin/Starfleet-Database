@@ -117,7 +117,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
             }
             return (
               <div
-                className="col-md-3 p-2"
+                className="col-sm-3 p-2"
                 key={uuidv4()}
                 ref={personnel.length === index + 1 ? lastOfficerRef : null}
               >

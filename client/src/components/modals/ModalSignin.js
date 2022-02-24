@@ -46,16 +46,16 @@ const SignInPopUp = ({ isShowing, hide, isAuth, modalClass, setAuth, setAdmin })
       });
   };
 
-  return !isShowing && !isAuth
+  return isShowing && !isAuth
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
             <div className={modalClass}>
-              <div className="events-modal modal-content-wrapper">
+              <div className="modal-bg events-modal modal-content-wrapper login-modal">
                 <div className="events-modal-container align-content-center">
                   <h1 className="text-center">Sign-In</h1>
-                  <form className="text-center m-5" onSubmit={onSubmitForm}>
+                  <form className="text-center" onSubmit={onSubmitForm}>
                     <div className="row my-2 justify-content-center">
                       <input
                         type="text"

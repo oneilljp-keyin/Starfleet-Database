@@ -6,7 +6,12 @@ function StarshipsSame({ starshipName = "", starshipClass = "Unknown", starshipI
   const [starshipsSame, setStarshipsSame] = useState([]);
 
   useEffect(() => {
-    StarshipsDataService.findSame(starshipName, starshipClass, 50)
+    let queryName = "";
+    let queryLetter = "";
+    if (starshipName) {
+      [queryName] = starshipName.split("-");
+    }
+    StarshipsDataService.findSame(queryName, starshipClass, 50)
       .then((response) => {
         setStarshipsSame(response.data);
       })

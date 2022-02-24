@@ -4,6 +4,7 @@ import ModalEvent from "../modals/ModalEvent";
 import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
 import ModalDelete from "../modals/ModalDelete";
 import ModalSignin from "../modals/ModalSignin";
+import ModalList from "../modals/ModalList";
 
 const ModalLauncher = ({
   modal,
@@ -14,10 +15,11 @@ const ModalLauncher = ({
   starshipId,
   eventId,
   subjectName,
-  imageType,
+  type,
   setRefreshOption,
   setAuth,
   setAdmin,
+  category,
 }) => {
   const modalClass = "main-modal-body modal-open";
 
@@ -33,12 +35,12 @@ const ModalLauncher = ({
           eventId={eventId}
           subjectName={subjectName}
           setRefresh={setRefreshOption}
-          eventType={imageType}
+          eventType={type}
           modalClass={modalClass}
         />
       );
     case "photo":
-      let subjectId = imageType === "starship" ? starshipId : officerId;
+      let subjectId = type === "starship" ? starshipId : officerId;
       return (
         <ModalUploadEazyCrop
           isShowing={isShowing}
@@ -46,7 +48,7 @@ const ModalLauncher = ({
           isAuth={isAuth}
           subjectId={subjectId}
           setRefresh={setRefreshOption}
-          imageType={imageType}
+          imageType={type}
           modalClass={modalClass}
         />
       );
@@ -84,7 +86,7 @@ const ModalLauncher = ({
           starshipId={starshipId}
           eventId={eventId}
           setRefresh={setRefreshOption}
-          recordType={imageType}
+          recordType={type}
           modalClass={modalClass}
         />
       );
@@ -96,6 +98,19 @@ const ModalLauncher = ({
           modalClass={modalClass}
           setAuth={setAuth}
           setAdmin={setAdmin}
+        />
+      );
+    case "list":
+      return (
+        <ModalList
+          isShowing={isShowing}
+          hide={hide}
+          modalClass={modalClass}
+          starshipName={subjectName}
+          officerId={officerId}
+          starshipId={starshipId}
+          listType={type}
+          category={category}
         />
       );
     default:

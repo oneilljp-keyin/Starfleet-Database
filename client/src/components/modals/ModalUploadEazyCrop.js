@@ -127,7 +127,7 @@ const PopUpUpload = ({
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
             <div className={modalClass}>
-              <div className="resize-modal resize-modal-content-wrapper">
+              <div className="modal-bg resize-modal resize-modal-content-wrapper">
                 <div className="resize-modal-content-container align-content-center">
                   <div className="search-form m-auto text-center modal-appear">
                     {!isFileSelected ? (

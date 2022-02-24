@@ -29,7 +29,7 @@ class PersonnelDataService {
   }
 
   getRankLabels() {
-    return http.get("/ranks");
+    return axios.get("../ranks.json");
   }
 }
 

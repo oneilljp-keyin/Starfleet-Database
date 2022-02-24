@@ -74,7 +74,7 @@ const Officer = (props) => {
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
         <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
-          Back to Search
+          Search
         </Link>
         {props.isAuth && (
           <>
@@ -105,9 +105,10 @@ const Officer = (props) => {
           </>
         )}
       </div>
+
       {officer ? (
         <div>
-          <div className="rows d-flex">
+          <div className="rows d-flex flex-wrap">
             <PhotoCarousel
               subjectId={props.match.params.id}
               isAuth={props.isAuth}
@@ -115,21 +116,28 @@ const Officer = (props) => {
               setPhotoRefresh={setRefreshOption}
               imageType={"officer"}
               OpenModal={OpenModal}
+              className="col"
             />
-            <div className="profile-summary">
+            <div className="profile-summary col">
               <h1>
                 {officer.surname && <>{officer.surname}</>}
                 {officer.first && <>, {officer.first}</>}
                 {officer.middle && <> {officer.middle}</>}
                 {officer.postNom && <>, {officer.postNom}</>}
                 {officer.date && (
-                  <span style={{ fontSize: "1.18rem" }}> (As of {officer.date.slice(0, 4)})</span>
+                  <span style={{ fontSize: "1.18rem" }}>
+                    {" "}
+                    (As of{" "}
+                    {officer.deathDate ? officer.deathDate.slice(0, 4) : officer.date.slice(0, 4)})
+                  </span>
                 )}
               </h1>
               {officer.serial && <h2>{officer.serial}</h2>}
               {officer.rankLabel && (
                 <h3 style={{ textTransform: "capitalize" }}>
-                  <span style={{ color: "#FFDD22E6" }}>Rank: </span>
+                  <span style={{ color: "#FFDD22E6" }}>
+                    {officer.deathDate && <>Last </>}Rank:{" "}
+                  </span>
                   {officer.rankLabel.split("-").map((label, index) => {
                     let rankLabel;
                     if (index === 0) rankLabel = label;
@@ -139,14 +147,18 @@ const Officer = (props) => {
               )}
               {officer.position && (
                 <h3 style={{ textTransform: "capitalize" }}>
-                  <span style={{ color: "#FFDD22E6" }}>Position: </span>
+                  <span style={{ color: "#FFDD22E6" }}>
+                    {officer.deathDate && <>Last </>}Position:{" "}
+                  </span>
                   {officer.position}
                 </h3>
               )}
               <h3 style={{ textTransform: "capitalize" }}>
                 {officer.starshipName && (
                   <>
-                    <span style={{ color: "#FFDD22E6" }}>Vessel: </span>
+                    <span style={{ color: "#FFDD22E6" }}>
+                      {officer.deathDate && <>Last </>}Vessel:{" "}
+                    </span>
                     USS {officer.starshipName} {officer.starshipRegistry}
                   </>
                 )}
@@ -259,12 +271,14 @@ const Officer = (props) => {
                           {event.stardate && ` SD ${event.stardate}`}
                         </td>
                         <td className="h4cell align-top">
-                          {event.starshipName && (
+                          {event.name && (
                             <Link to={`/starships/${event.starshipId}`} className="list-link">
-                              USS {event.starshipName} {event.starshipRegistry}
+                              USS{" "}
+                              {event.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
+                              {event.registry}
                             </Link>
                           )}
-                          {event.starshipName && event.location && <br />}
+                          {event.name && event.location && <br />}
                           {event.location && <>{event.location}</>}
                         </td>
                         <td className="h5cell align-top">
@@ -300,7 +314,9 @@ const Officer = (props) => {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7}>No Events Yet</td>
+                  <td colSpan={7} className="h6cell">
+                    No Events Yet
+                  </td>
                 </tr>
               )}
             </tbody>

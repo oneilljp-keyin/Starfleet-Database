@@ -60,7 +60,7 @@ const PopUpEvents = ({
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
             <div className={modalClass}>
-              <div className="events-modal modal-content-wrapper">
+              <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
                     Confirm Deletion of {recordType[0].toUpperCase() + recordType.slice(1)} Record
