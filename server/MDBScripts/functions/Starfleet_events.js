@@ -2,6 +2,7 @@ exports = async function (payload, response) {
   // payload contains {query, headers, body}
   const events = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("events");
   const id = payload.query.id;
+  const eventSort = { $sort: { date: parseInt(payload.query.sort) } };
 
   let responseData = { message: "Something Went Wrong in the 'events' function" };
 
@@ -35,7 +36,7 @@ exports = async function (payload, response) {
                 as: "info",
               },
             },
-            { $sort: { date: -1 } },
+            { $sort: eventSort },
             {
               $replaceRoot: {
                 newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
@@ -113,13 +114,6 @@ exports = async function (payload, response) {
             event.officerId = event.officerId.toString();
           }
         });
-
-        // responseData = {
-        //   personnel: personnelList,
-        //   page: page.toString(),
-        //   entries_per_page: personnelPerPage.toString(),
-        //   total_results: await personnel.count(query).then(num => num.toString()),
-        // };
 
         return responseData;
       } else {
