@@ -1,35 +1,5 @@
 [
     {
-        "route": "/Starfleet/starships",
-        "http_method": "*",
-        "function_name": "Starfleet_starships",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/classes",
-        "http_method": "GET",
-        "function_name": "Starfleet_classes",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/ranks",
-        "http_method": "GET",
-        "function_name": "Starfleet_ranks",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
         "route": "/Starfleet/photos",
         "http_method": "*",
         "function_name": "Starfleet_photos",
@@ -63,6 +33,36 @@
         "route": "/Starfleet/personnel",
         "http_method": "*",
         "function_name": "Starfleet_personnel",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/starships",
+        "http_method": "*",
+        "function_name": "Starfleet_starships",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/classes",
+        "http_method": "GET",
+        "function_name": "Starfleet_classes",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/ranks",
+        "http_method": "GET",
+        "function_name": "Starfleet_ranks",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,
