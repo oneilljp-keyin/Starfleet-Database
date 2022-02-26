@@ -105,23 +105,33 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
             value={searchName}
             onChange={onChangeSearchName}
           />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={() => {
+              setSearchName("");
+              setSearchClass("");
+            }}
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+          <select
+            name="searchClass"
+            value={searchClass}
+            onChange={onChangeSearchClass}
+            className="col-4 select-center"
+          >
+            {classes.map((shipClass) => {
+              return (
+                <option value={shipClass} key={uuidv4()}>
+                  {`   `}
+                  {shipClass.substring(0, 20)}
+                  {" Class"}
+                </option>
+              );
+            })}
+          </select>
         </div>
-        <select
-          name="searchClass"
-          value={searchClass}
-          onChange={onChangeSearchClass}
-          className="col-4 select-center"
-        >
-          {classes.map((shipClass) => {
-            return (
-              <option value={shipClass} key={uuidv4()}>
-                {`   `}
-                {shipClass.substring(0, 20)}
-                {" Class"}
-              </option>
-            );
-          })}
-        </select>
       </div>
       <div className="menu-btn_wrapper d-flex">
         {isAuth && (
@@ -132,12 +142,12 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
           </>
         )}
       </div>
-      <div className="row p-1">
+      <div className="row">
         {starships.map((starship, index) => {
           let starshipId = starship.starship_id ? starship.starship_id : starship._id;
           return (
             <div
-              className="col-md-3 p-2"
+              className="col-md-3 list-cards"
               key={uuidv4()}
               ref={starships.length === index + 1 ? lastStarshipsRef : null}
             >
@@ -152,7 +162,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>
                   <div className="row">
                     <Link to={"/starships/" + starshipId} className="btn btn-primary">
-                      View Starship Profile
+                      View Profile
                     </Link>
                   </div>
                 </div>

@@ -83,6 +83,15 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
             value={searchQuery}
             onChange={onChangeSearchQuery}
           />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={() => {
+              setSearchQuery("");
+            }}
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </button>
         </div>
         <div className="col-2"></div>
       </div>
@@ -117,7 +126,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
             }
             return (
               <div
-                className="col-sm-3 p-2"
+                className="col-sm-3 list-cards"
                 key={uuidv4()}
                 ref={personnel.length === index + 1 ? lastOfficerRef : null}
               >
@@ -131,7 +140,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
                     <h5 className="card-title">{officerName}</h5>
                     <div className="row">
                       <Link to={"/personnel/" + officerId} className="btn btn-primary">
-                        View Officer Profile
+                        View Profile
                       </Link>
                     </div>
                   </div>

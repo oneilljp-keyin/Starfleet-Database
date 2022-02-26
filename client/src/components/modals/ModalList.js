@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
-import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
+import PersonnelList from "./modalList/PersonnelList";
+import Missions from "./modalList/Missions";
+
+import Assignments from "./modalList/Assignments";
+import LifeEvents from "./modalList/LifeEvents";
 
 const PopUpList = ({
   isShowing,
+  isAuth,
   hide,
   modalClass,
   starshipName,
@@ -15,30 +18,6 @@ const PopUpList = ({
   listType,
   category,
 }) => {
-  const [personnel, setPersonnel] = useState({});
-
-  useEffect(() => {
-    const getEvents = (oid = "", sid = "", cat = "") => {
-      EventsAndPhotosDataService.getEventsByCategory(oid, sid, cat)
-        .then((response) => {
-          setPersonnel(
-            response.data.filter(
-              (element1, index) =>
-                index ===
-                response.data.findIndex((element2) => element2.officerId === element1.officerId)
-            )
-          );
-          // let pp = arr.filter( (ele, ind) => ind === arr.findIndex( elem => elem.jobid === ele.jobid && elem.id === ele.id))
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.error(err.message);
-        });
-    };
-
-    getEvents(officerId, starshipId, category);
-  }, [officerId, starshipId, category]);
-
   const closeModal = () => {
     hide();
   };
@@ -64,21 +43,46 @@ const PopUpList = ({
                   </div>
 
                   {/* main body */}
-                  <div className="d-flex flex-wrap" style={{ minHeight: "calc(100% - 96px)" }}>
-                    {personnel.length > 0 ? (
-                      personnel
-                        .sort((a, b) => a.surname.localeCompare(b.surname))
-                        .map((officer) => {
-                          return (
-                            <div key={uuidv4()} className="p-2 bd-highlight">
-                              {officer.surname}
-                            </div>
-                          );
-                        })
-                    ) : (
-                      <h2 className="mx-auto my-auto">No {listType} Found</h2>
-                    )}
-                  </div>
+                  {
+                    {
+                      Personnel: (
+                        <PersonnelList
+                          listType={listType}
+                          starshipId={starshipId}
+                          category={category}
+                        />
+                      ),
+                      "First Contact Missions": (
+                        <Missions
+                          isAuth={isAuth}
+                          listType={listType}
+                          starshipId={starshipId}
+                          category={category}
+                        />
+                      ),
+                      "Life Events": (
+                        <LifeEvents listType={listType} officerId={officerId} category={category} />
+                      ),
+                      Assignments: (
+                        <Assignments
+                          listType={listType}
+                          officerId={officerId}
+                          category={category}
+                        />
+                      ),
+                      "General Missions": (
+                        <Missions
+                          isAuth={isAuth}
+                          listType={listType}
+                          starshipId={starshipId}
+                          category={category}
+                        />
+                      ),
+                      "Repairs/Upgrades": (
+                        <Missions listType={listType} starshipId={starshipId} category={category} />
+                      ),
+                    }[listType]
+                  }
 
                   {/* footer */}
                   <div className="d-flex justify-content-center list-footer">

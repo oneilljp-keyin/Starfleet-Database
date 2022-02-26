@@ -1,7 +1,6 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import StarshipsDataService from "../../services/starships";
 import PhotoCarousel from "../PhotoCarousel";
@@ -13,10 +12,9 @@ import ModalLauncher from "../modals/ModalLauncher";
 const Starships = (props) => {
   const [type, setType] = useState("starship");
   const [category, setCategory] = useState(null);
-  // let dateCheck;
-  // let dateBoolean = false;
 
   const [starshipName, setStarshipName] = useState("");
+  const [starshipId, setStarshipId] = useState(null);
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
@@ -33,6 +31,7 @@ const Starships = (props) => {
     name: null,
     registry: null,
     class: null,
+    shipyard: null,
     launch_date: null,
     launch_stardate: null,
     launch_note: null,
@@ -60,6 +59,7 @@ const Starships = (props) => {
               " " +
               response.data.registry
           );
+          setStarshipId(response.data._id);
         })
         .catch((err) => {
           console.error(err);
@@ -115,7 +115,7 @@ const Starships = (props) => {
       </div>
       {starship ? (
         <div>
-          <div className="rows d-flex flex-wrap">
+          <div className="d-flex flex-wrap justify-content-around">
             <PhotoCarousel
               subjectId={props.match.params.id}
               isAuth={props.isAuth}
@@ -124,14 +124,14 @@ const Starships = (props) => {
               imageType={"starship"}
               className="flex-grow-1 col"
             />
-            <div className="m-1 width-auto col">
+            <div className="m-1 mobile-center">
               {starship.name && (
                 <h1>USS {starship.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}</h1>
               )}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
             </div>
-            <div className="m-1 width-auto col">
+            <div className="m-1 mobile-center">
               <p className="text-start">
                 {starship.shipyard && (
                   <>
@@ -180,15 +180,17 @@ const Starships = (props) => {
             </div>
           </div>
 
-          <div className="d-flex justify-content-around flex-wrap m-1 p-1">
+          <div className="d-flex justify-content-around flex-wrap">
             <StarshipsSame starshipName={starship.name} starshipId={starship._id} />
             <StarshipsSame starshipClass={starship.class} starshipId={starship._id} />
           </div>
 
-          <div className="d-flex justify-content-center flex-wrap m-1 p-1">
-            <div className="lcars_end_cap left_round rose_btn"> </div>
+          <div className="m-4 small-hide"></div>
+
+          <div className="d-flex justify-content-center flex-wrap">
+            <div className="lcars_end_cap left_round rose_btn my-0"> </div>
             <button
-              className="lcars_btn all_square rose_btn"
+              className="lcars_btn all_square rose_btn my-0 flex-fill"
               onClick={() => {
                 OpenModal("list", null, "Personnel", "Assignment");
               }}
@@ -196,141 +198,34 @@ const Starships = (props) => {
               Personnel
             </button>
             <button
-              className="lcars_btn all_square rose_btn"
+              className="lcars_btn all_square rose_btn my-0 flex-fill"
               onClick={() => {
                 OpenModal("list", null, "First Contact Missions", "First Contact");
               }}
             >
               First Contact
             </button>
-            <div className="lcars_end_cap right_round rose_btn"> </div>
+            <div className="small_hide lcars_end_cap right_round rose_btn my-0"> </div>
+            <div className="w-100 small_hide m-1"></div>
+            <div className="small_hide lcars_end_cap left_round rose_btn my-0"> </div>
+            <button
+              className="lcars_btn all_square rose_btn my-0 flex-fill"
+              onClick={() => {
+                OpenModal("list", null, "General Missions", "Mission");
+              }}
+            >
+              Missions
+            </button>
+            <button
+              className="lcars_btn all_square rose_btn my-0 flex-fill"
+              onClick={() => {
+                OpenModal("list", null, "Repairs/Upgrades", "Repair Upgrade");
+              }}
+            >
+              Repairs/Upgrades
+            </button>
+            <div className="lcars_end_cap right_round rose_btn my-0"> </div>
           </div>
-
-          <table className="table event-list table-borderless w-100">
-            <tbody>
-              {starship.events.length > 0 ? (
-                starship.events
-                  .filter(
-                    (filteredEvents) =>
-                      filteredEvents.type !== "Life Event" && filteredEvents.type !== "Assignment"
-                  )
-                  .map((event, index) => {
-                    let eventDate;
-                    if (event.date) {
-                      if (event.dateNote !== "exact") {
-                        eventDate = event.date.slice(0, 4).toString();
-                        if (event.dateNote === "before") {
-                          eventDate = "Before " + eventDate;
-                        } else if (event.dateNote === "after") {
-                          eventDate = "After " + eventDate;
-                        }
-                      } else {
-                        eventDate = event.date.slice(0, 10);
-                      }
-                    }
-                    let officerName = "";
-                    if (event.surname || event.first || event.last) {
-                      if (event.rankLabel) {
-                        const [, abbrev] = event.rankLabel.split("-");
-                        officerName = abbrev;
-                      }
-                      if (event.first) {
-                        officerName += " " + event.first;
-                      }
-                      if (event.middle) {
-                        let middleI = event.middle.slice(0, 1);
-                        officerName += " " + middleI + ".";
-                      }
-                      if (event.surname) {
-                        officerName += " " + event.surname;
-                      }
-                    }
-
-                    return (
-                      <Fragment key={uuidv4()}>
-                        <tr style={{ borderTop: "1px solid white" }}>
-                          <td
-                            rowSpan={
-                              event.notes &&
-                              event.notes !== "Assignment" &&
-                              event.notes !== "Promotion" &&
-                              event.notes !== "Demotion"
-                                ? 2
-                                : 1
-                            }
-                          >
-                            {props.isAuth ? (
-                              <>
-                                <button
-                                  className="edit"
-                                  onClick={() => {
-                                    let eventOption = event.officerId ? "officer" : "starship";
-                                    OpenModal("event", event._id, eventOption);
-                                  }}
-                                >
-                                  <i className="far fa-edit" style={{ color: "gray" }}></i>
-                                </button>
-                                <br />
-                                <button
-                                  className="edit"
-                                  onClick={() => {
-                                    OpenModal("delete", event._id, "event");
-                                  }}
-                                >
-                                  <i
-                                    className="fa-solid fa-remove fa-xl"
-                                    style={{ color: "gray" }}
-                                  ></i>
-                                </button>
-                              </>
-                            ) : null}
-                          </td>
-                          <td className="h3cell align-top">
-                            {event.date && `${eventDate}`}
-                            {/* {event.date && event.stardate && eventDate.length > 4 && <br />} */}
-                            {event.stardate && ` SD ${event.stardate}`}
-                          </td>
-                          <td className="h4cell align-top">
-                            {event.location && <>{event.location}</>}
-                          </td>
-                          <td className="h5cell align-top">
-                            {officerName !== undefined && (
-                              <Link to={`/personnel/${event.officerId}`} className="list-link">
-                                {officerName}
-                              </Link>
-                            )}
-                            {officerName !== undefined && event.position !== undefined && <br />}
-                            {event.position !== undefined && <>{event.position}</>}
-                          </td>
-                          <td className="h6cell align-top">
-                            {event.type !== "Other" && <>{event.type}</>}
-                          </td>
-                        </tr>
-                        {event.notes &&
-                          event.notes !== "Assignment" &&
-                          event.notes !== "Promotion" &&
-                          event.notes !== "Demotion" && (
-                            <tr>
-                              {/* <td className="align-top">
-                                <i className="fas fa-square fa-xs" style={{ color: "#f9f9f9" }}></i>
-                              </td> */}
-                              <td className="h6cell" colSpan={7}>
-                                {event.notes}
-                              </td>
-                            </tr>
-                          )}
-                      </Fragment>
-                    );
-                  })
-              ) : (
-                <tr>
-                  <td colSpan={7} className="h6cell">
-                    No Events Yet
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
         </div>
       ) : (
         <div>
@@ -338,13 +233,14 @@ const Starships = (props) => {
           <p>No Starship Selected</p>
         </div>
       )}
+      <div className="m-4 small-hide"></div>
       <ModalLauncher
         modal={modal}
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={props.isAuth}
         officerId={null}
-        starshipId={props.match.params.id}
+        starshipId={starshipId}
         eventId={eventId}
         subjectName={starshipName}
         type={type}

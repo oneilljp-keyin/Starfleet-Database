@@ -156,7 +156,7 @@ const PopUpEvents = ({
               <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
-                    {btnLabel} Event for {subjectName}
+                    {btnLabel} Event for {subjectName} {officerId}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
                     <div className="form-floating col-sm-4">
@@ -214,6 +214,9 @@ const PopUpEvents = ({
                         <option value="First Contact">First Contact</option>
                         {eventType !== "starship" && <option value="Life Event">Life Event</option>}
                         <option value="Mission">Mission</option>
+                        {eventType === "starship" && (
+                          <option value="Repair Upgrade">Repairs/Upgrades</option>
+                        )}
                         {eventType !== "starship" && <option value="Promotion">Promotion</option>}
                         {eventType !== "starship" && <option value="Demotion">Demotion</option>}
                       </select>

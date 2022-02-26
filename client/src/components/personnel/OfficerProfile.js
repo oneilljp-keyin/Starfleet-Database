@@ -135,9 +135,7 @@ const Officer = (props) => {
               {officer.serial && <h2>{officer.serial}</h2>}
               {officer.rankLabel && (
                 <h3 style={{ textTransform: "capitalize" }}>
-                  <span style={{ color: "#FFDD22E6" }}>
-                    {officer.deathDate && <>Last </>}Rank:{" "}
-                  </span>
+                  <span style={{ color: "#FFDD22E6" }}>{!officer.active && <>Last </>}Rank: </span>
                   {officer.rankLabel.split("-").map((label, index) => {
                     let rankLabel;
                     if (index === 0) rankLabel = label;
@@ -148,22 +146,23 @@ const Officer = (props) => {
               {officer.position && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>
-                    {officer.deathDate && <>Last </>}Position:{" "}
+                    {!officer.active && <>Last </>}Position:{" "}
                   </span>
                   {officer.position}
                 </h3>
               )}
               <h3 style={{ textTransform: "capitalize" }}>
-                {officer.starshipName && (
+                {officer.name && (
                   <>
                     <span style={{ color: "#FFDD22E6" }}>
-                      {officer.deathDate && <>Last </>}Vessel:{" "}
+                      {!officer.active && <>Last </>}Vessel:{" "}
                     </span>
-                    USS {officer.starshipName} {officer.starshipRegistry}
+                    USS {officer.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
+                    {officer.registry}
                   </>
                 )}
                 {officer.location &&
-                  !officer.starshipName &&
+                  !officer.name &&
                   (!officer.position || !officer.position.includes("etired")) && (
                     <>
                       <span style={{ color: "#FFDD22E6" }}> Location: </span>
@@ -337,7 +336,7 @@ const Officer = (props) => {
         starshipId={null}
         eventId={eventId}
         subjectName={officerName}
-        imageType={imageType}
+        type={imageType}
         setRefreshOption={toggleRefresh}
       />
     </>

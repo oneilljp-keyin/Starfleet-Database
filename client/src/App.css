@@ -18,11 +18,10 @@ strong { color: #ffdd22e6}
 h1, .h1cell { font-size: 1.48rem;}
 h2, .h2cell { font-size: 1.38rem; color: #ffdd22e6; text-transform: uppercase; }
 h3, .h3cell { font-size: 1.28rem; color: #8066af; text-transform: uppercase; }
-h4, .h4cell { font-size: 1.18rem; color: #dd8100; margin-bottom: 12px; }
+h4, .h4cell { font-size: 1.18rem; color: #dd8100; }
 h5, .h5cell { font-size: 1.18rem; color: #ffdd22e6; }
-h6 { font-size: 1rem; color: #ffffffde; }
-.h6cell { font-size: 1rem; color: #ffffffde; text-align: justify;
-  text-justify: inter-word; font-weight: 300; }
+h6, .h6cell { font-size: 1rem; color: #ffffffde; }
+.h6cell { text-align: justify; text-justify: inter-word; font-weight: 300; }
 .profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
 .h3cell, .h4cell, .h5cell { font-size: 1rem; }
 
@@ -48,7 +47,7 @@ label {color: #6d6d6d; }
 /* ---- Background colour of event list on officer profile -------------- */
 /* .event-list>tbody>tr:nth-child(even) { background-color: #30303088; border-radius: 4px; } */
 .event-list td {padding: 2px;}
-td {padding: 0;}
+td {padding: 0; text-align: left;}
 /* ---------------------------------------------------------------------- */
 
 /* ---- ModalUpload.js - dimensions on area where pic is uploaded ------- */
@@ -81,7 +80,7 @@ td {padding: 0;}
 .nav-buffer { height: 64px; }
 
 .load-img {min-width: 45vw; max-width: 325px;}
-.search-list {width: auto; height: 62px;}
+.search-list {width: auto; height: 80px;}
 
 .input-size { max-width: 400px;}
 
@@ -115,7 +114,7 @@ td {padding: 0;}
 }
 
 .topbar { grid-area: clock; text-transform: uppercase; background: #9999ff9e;
-          display: flex; justify-content: flex-end;  border-radius: 0 1rem 1rem 0; line-height: 1; }
+          display: flex; justify-content: flex-end; line-height: 1; }
 
 .title-wrapper { position: relative; color: #9999ffe6; display: inline-block; align-items: center;
                  background-color: #121212; margin-right: 3rem; padding: 0 1rem; grid: flex; }
@@ -187,8 +186,10 @@ button.logout { color: #121212; background-color: #9999ffe6;
                 text-decoration: none; text-align: right; border-radius: 1rem 0 0 1rem; }
 
 .list-link {text-decoration: none; color: inherit;}
-.same-ships { width: 45%; min-width: 300px; border: 1px solid #3D3D3D;
-              border-radius: 10px;}
+.same-ships { width: 45%; min-width: 300px; border-radius: 10px;
+              border: 1px solid #ffca92e6; }
+
+.mobile-center {text-align: center;}
 
 /* Generic Button features */
 .lcars_btn { color: #121212; text-align: center; display: inline-block;
@@ -228,10 +229,10 @@ button.logout { color: #121212; background-color: #9999ffe6;
 
 /* Button Shapes */
 
-.all_square  { border-radius: 0    0    0    0   ; margin: 0.5rem  1px; }
-.left_round  { border-radius: 1rem 0    0    1rem; margin: 0.5rem  1px; }
-.right_round { border-radius: 0    1rem 1rem 0;    margin: 0.5rem  1px; }
-.all_round   { border-radius: 1rem 1rem 1rem 1rem; margin: 0.5rem  1px; }
+.all_square  { border-radius: 0    0    0    0   ; margin: 0.5rem  4px; }
+.left_round  { border-radius: 1rem 0    0    1rem; margin: 0.5rem  4px; }
+.right_round { border-radius: 0    1rem 1rem 0;    margin: 0.5rem  4px; }
+.all_round   { border-radius: 1rem 1rem 1rem 1rem; margin: 0.5rem  4px; }
 
 #main_nav a:hover,
 #main_nav a:focus {
@@ -376,16 +377,14 @@ article footer p {
   .profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
   .h3cell, .h4cell, .h5cell { font-size: 1.18rem; }
 
-  .small_hide  { display: block; }
-
   .footer_bar  { height: 1rem; border-radius: 0.5rem; }
 
   #main_footer { margin: 1rem 0 0 0; border-radius: 2.47rem 0 0 0; padding-top: 1rem; }
   .main_footer_content { padding: 1.62rem; border-radius: 1.5rem 0 0 0; }
 
   .lcars_btn  { padding: 8px 24px; font-weight: 500; min-width: 96px; }
-  .lcars_end_cap { padding: 8px 16px; display: block}
-  .header_btn { min-width: 124px; font-size: 1rem; padding: 8px 24px; margin: 4px 1px; }
+  .lcars_end_cap { padding: 8px 16px;}
+  .header_btn { min-width: 124px; font-size: 1rem; padding: 8px 24px; margin: 4px 4px; }
 
   .load-img      { max-width: 600px; }
   .officer-pics  { max-height: 256px; max-width: 256px; }
@@ -393,6 +392,8 @@ article footer p {
 
   .list-footer { position: absolute; bottom: 0; width: calc(100% - 16px);}
   .list-modal-content-container {padding: 0 0.5rem;}
+  .list-cards { margin: 8px 0; }
+  .list-cards .h3cell, .list-cards .h5cell, .list-cards .h6cell {font-size: 1rem; }
   .footer-btn {padding: 4px 24px;}
 }
 
@@ -427,7 +428,7 @@ article footer p {
 .cropper { height: 350px; position: relative; }
 
 .modal-bg { z-index: 100; color: #ffffffde; position: relative; text-align: center;
-            border-radius: 10px; padding: 2rem; backdrop-filter: blur(50px);
+            border-radius: 10px; padding: 2rem; backdrop-filter: blur(50px); 
             box-shadow: 8px 8px 4px 4px #12121266, -8px -8px 4px 4px #12121266,
                        -8px 8px 4px 4px #12121266,  8px -8px 4px 4px #12121266; }
 
@@ -498,31 +499,29 @@ article footer p {
 }
 
 .resize-modal-content-container {
-  position: relative; z-index: 2; background-color: #121212;
-  width: 100%; border-radius: 1rem; margin: 0 0 0 auto; padding: 1rem;
-  min-height: 500px; box-sizing: border-box; overflow: hidden;
+  position: relative; z-index: 2; background-color: #121212; width: 100%; 
+  border-radius: 1rem; margin: 0 0 0 auto; padding: 1rem; min-height: 500px; 
+  box-sizing: border-box; overflow: hidden;
 }
 
 .resize-modal-content-wrapper::before { 
-  content: ""; position: absolute; top: 0; left: 7%; 
-  width: 86%; height: 5%; background: #121212;
+  content: ""; position: absolute; top: 0; left: 7%; width: 86%; height: 5%; background: #121212;
 }
 
 .resize-modal-content-wrapper::after { 
-  content: ""; position: absolute; bottom: 0; left: 7%; 
-  width: 86%; height: 5%; background: #121212;
+  content: ""; position: absolute; bottom: 0; left: 7%; width: 86%; height: 5%; background: #121212;
 }
 
 /* ------------------------------------------------------------------------------------ */
 
-.login-modal {max-width: 448px; max-height: 304px;}
+.login-modal { max-width: 448px; max-height: 304px; }
 
 /* -------- List Modals --------------------------------------------------------------- */
 
 .list-modal {width: 100%; max-width: 960px; height: 90vh; border: 0.5px solid #3D3D3D;}
 
 .list-modal-content-wrapper {
-  position: relative; margin: 2.47rem auto; background-color: #121212;
+  position: relative; margin: 2rem auto; background-color: #121212;
   border-radius: 2.47rem; padding: 1rem;
 }
 
@@ -536,3 +535,17 @@ article footer p {
 .footer-btn {padding: 4px 24px;}
 
 /* ------------------------------------------------------------------------------------ */
+
+@media screen and (max-width: 639px) {
+  .row {margin: 0 auto;}
+  .list-cards {width: calc(50% - 4px); padding: 4px; font-size: 1rem;}
+
+  .resize-modal-content-wrapper::before { left: 12.5%; width: 75%; }
+  
+  .resize-modal-content-wrapper::after  { left: 12.5%; width: 75%; }
+  
+}
+
+@media screen and (max-width: 689px) {
+  .small_hide {display: block}
+}

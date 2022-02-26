@@ -104,6 +104,7 @@ const ModalLauncher = ({
       return (
         <ModalList
           isShowing={isShowing}
+          isAuth={isAuth}
           hide={hide}
           modalClass={modalClass}
           starshipName={subjectName}

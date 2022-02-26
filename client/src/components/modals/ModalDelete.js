@@ -6,7 +6,7 @@ import PersonnelDataService from "../../services/personnel";
 import StarshipsDataService from "../../services/starships";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
-const PopUpEvents = ({
+const PopUpDelete = ({
   isShowing,
   hide,
   isAuth,
@@ -83,4 +83,4 @@ const PopUpEvents = ({
       )
     : null;
 };
-export default PopUpEvents;
+export default PopUpDelete;

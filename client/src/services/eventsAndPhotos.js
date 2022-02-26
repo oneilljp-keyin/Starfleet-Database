@@ -10,7 +10,7 @@ class EventsAndPhotosDataService {
     return http.get(`/events?id=${id}`);
   }
 
-  getEventsByCategory(officerId = "", starshipId = "", category = "") {
+  getEventsByCategory(officerId = "", starshipId = "", category = "", sort = 1) {
     let urlQuery = "";
     if (category && category !== "" && category !== undefined && category !== null) {
       urlQuery += "category=" + category;
@@ -23,7 +23,7 @@ class EventsAndPhotosDataService {
       if (urlQuery.length > 0) urlQuery += "&";
       urlQuery += "starship_id=" + starshipId;
     }
-    return http.get(`/events?${urlQuery}`);
+    return http.get(`/events?${urlQuery}&sort=${sort}`);
   }
 
   updateEvent(eventInfo) {

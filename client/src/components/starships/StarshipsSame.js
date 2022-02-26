@@ -7,7 +7,6 @@ function StarshipsSame({ starshipName = "", starshipClass = "Unknown", starshipI
 
   useEffect(() => {
     let queryName = "";
-    let queryLetter = "";
     if (starshipName) {
       [queryName] = starshipName.split("-");
     }
@@ -23,10 +22,11 @@ function StarshipsSame({ starshipName = "", starshipClass = "Unknown", starshipI
   return (
     <>
       {parseInt(starshipsSame.total_results) > 1 && starshipName && (
-        <div className="text-white bg-121212 same-ships">
+        <div className="text-white bg-121212 same-ships mb-1">
           <div className="card-header text-center" style={{ borderBottom: "1px solid #F9F9F9" }}>
             <span className="h5cell">
-              Starships named <em>{starshipName}</em>
+              Starships named{" "}
+              <em>{starshipName.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}</em>
             </span>
           </div>
           <div className="d-flex flex-wrap justify-content-evenly">
@@ -43,7 +43,7 @@ function StarshipsSame({ starshipName = "", starshipClass = "Unknown", starshipI
         </div>
       )}
       {parseInt(starshipsSame.total_results) > 1 && starshipClass !== "Unknown" && (
-        <div className="text-white bg-121212 same-ships">
+        <div className="text-white bg-121212 same-ships mb-1">
           <div className="card-header text-center" style={{ borderBottom: "1px solid #F9F9F9" }}>
             <span className="h5cell">
               <em>{starshipClass}</em>-class starships
