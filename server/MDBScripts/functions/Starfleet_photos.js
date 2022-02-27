@@ -43,5 +43,9 @@ exports = async function(payload, response) {
       }
       break;
     }
+    case "POST": {
+      return photoId;
+      break;
+    }
   }
 };
