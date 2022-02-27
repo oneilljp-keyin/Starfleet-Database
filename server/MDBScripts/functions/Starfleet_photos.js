@@ -23,8 +23,8 @@ exports = async function(payload, response) {
         
         // return photoInfo;
         
-        photoInfo._id = photoInfo._id.toString();
-        photoInfo.owner = photoInfo.owner.toString();
+        photoInfo[0]._id = photoInfo[0]._id.toString();
+        photoInfo[0].owner = photoInfo[0].owner.toString();
         
         return photoInfo;        
       }
