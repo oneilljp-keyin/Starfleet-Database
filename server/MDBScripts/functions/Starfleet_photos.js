@@ -44,7 +44,11 @@ exports = async function(payload, response) {
       break;
     }
     case "PUT": {
-      return photoId;
+      return {message: "Update"};
+      break;
+    }
+    case "DELETE": {
+      return {message: "Delete"};
       break;
     }
   }
