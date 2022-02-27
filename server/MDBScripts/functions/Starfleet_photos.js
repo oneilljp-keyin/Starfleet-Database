@@ -21,6 +21,8 @@ exports = async function(payload, response) {
         let photoInfo;
         photoInfo = await photos.find({owner: BSON.ObjectId(photoId)}).toArray();
         
+        return photoInfo;
+        
           photoInfo._id = photoInfo._id.toString();
           photoInfo.owner = photoInfo.owner.toString();
         
