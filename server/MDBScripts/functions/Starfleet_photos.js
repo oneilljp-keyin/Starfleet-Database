@@ -19,12 +19,12 @@ exports = async function(payload, response) {
         return photos;
       } else {
         let photoInfo;
-        photoInfo = await photos.find({_id: BSON.ObjectId(photoId)});
+        photoInfo = await photos.findOne({_id: BSON.ObjectId(photoId)});
         
         // return photoInfo;
         
-        photoInfo[0]._id = photoInfo[0]._id.toString();
-        photoInfo[0].owner = photoInfo[0].owner.toString();
+        photoInfo._id = photoInfo._id.toString();
+        photoInfo.owner = photoInfo.owner.toString();
         
         return photoInfo;        
       }
