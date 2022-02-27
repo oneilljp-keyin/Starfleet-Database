@@ -43,7 +43,7 @@ exports = async function(payload, response) {
       }
       break;
     }
-    case "POST": {
+    case "PUT": {
       return photoId;
       break;
     }
