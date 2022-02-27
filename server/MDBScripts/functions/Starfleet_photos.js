@@ -11,7 +11,6 @@ exports = async function(payload, response) {
         
         subjectPhotos = await photos.find({owner: BSON.ObjectId(subjectId)}).sort({ year: -1 }).toArray();
         
-        return subjectPhotos;
         subjectPhotos.forEach(photo => {
           photo._id = photo._id.toString();
           photo.owner = photo.owner.toString();
