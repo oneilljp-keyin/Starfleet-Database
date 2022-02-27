@@ -1,24 +1,33 @@
 exports = async function(payload, response) {
   
+  const subjectId = payload.query.subject_id || "";
+  const photoId = payload.query.id;
   const photos = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("photos");
       
   switch(context.request.httpMethod) {
     case "GET": {
-
-      const id = payload.query.id || "";
-      
-      let officerPhotos = [];
-      
-      officerPhotos = await photos.find({owner: BSON.ObjectId(id)}).sort({ year: -1 }).toArray();
-      
-      officerPhotos.forEach(officerPhoto => {
-        officerPhoto._id = officerPhoto._id.toString();
-        officerPhoto.owner = officerPhoto.owner.toString();
-        if(officerPhoto.createdAt) {officerPhoto.createdAt = new Date(officerPhoto.createdAt).toString();}
-        if(officerPhoto.updatedAt) {officerPhoto.updatedAt = new Date(officerPhoto.updatedAt).toString();}
-      });
-  
-      return officerPhotos;
+      if(!photoId) {
+        let photos = [];
+        
+        photos = await photos.find({owner: BSON.ObjectId(subjectId)}).sort({ year: -1 }).toArray();
+        
+        photos.forEach(photo => {
+          photo._id = photo._id.toString();
+          photo.owner = photo.owner.toString();
+        });
+    
+        return photos;
+      } else {
+        let photoInfo;
+        photoInfo = await photos.find({owner: BSON.ObjectId(photoId)}).toArray();
+        
+          photoInfo._id = photo._id.toString();
+          photoInfo.owner = photo.owner.toString();
+        
+        
+        return photoInfo;        
+      }
+      break;
     }
     case "POST": {
       const newPhotoInfo = EJSON.parse(payload.body.text());
