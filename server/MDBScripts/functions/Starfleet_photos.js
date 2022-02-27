@@ -19,7 +19,7 @@ exports = async function(payload, response) {
         return photos;
       } else {
         let photoInfo;
-        photoInfo = await photos.find({_id: BSON.ObjectId(photoId)}).toArray();
+        photoInfo = await photos.find({_id: BSON.ObjectId(photoId)});
         
         return photoInfo;
         
