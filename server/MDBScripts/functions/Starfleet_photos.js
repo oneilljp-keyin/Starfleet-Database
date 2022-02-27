@@ -7,11 +7,11 @@ exports = async function(payload, response) {
   switch(context.request.httpMethod) {
     case "GET": {
       if(!photoId) {
-        return subjectId;
         let photos = [];
         
         photos = await photos.find({owner: BSON.ObjectId(subjectId)}).sort({ year: -1 }).toArray();
         
+        return photos;
         photos.forEach(photo => {
           photo._id = photo._id.toString();
           photo.owner = photo.owner.toString();
