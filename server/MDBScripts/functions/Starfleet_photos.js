@@ -44,7 +44,20 @@ exports = async function(payload, response) {
       break;
     }
     case "PUT": {
-      return {message: "Update"};
+      const updatedInfo = EJSON.parse(payload.body.text());
+      const photoId = updatedInfo._id;
+
+      delete updatedInfo["_id"];
+      delete updatedInfo["owner"];
+      delete updatedInfo["url"];
+
+      try {
+        await photos.updateOne({ _id: BSON.ObjectId(photoId) }, { $set: updatedInfo });
+        return { message: "Record Updated Successfully" };
+      } catch (err) {
+        console.error(`Record Update Failed ${err.message}`);
+        return { message: `Record Update Failed ${err.message}` };
+      }
       break;
     }
     case "DELETE": {
