@@ -48,7 +48,12 @@ exports = async function(payload, response) {
       break;
     }
     case "DELETE": {
-      return {message: "Delete"};
+      try {
+        await photos.deleteOne({ _id: BSON.ObjectId(id) });
+        return { message: "Photo Info Successfully Deleted" };
+      } catch (err) {
+        return { message: `Deletion of Photo Info Failed ${err.message}` };
+      }
       break;
     }
   }
