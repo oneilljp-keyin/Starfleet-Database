@@ -53,10 +53,10 @@ exports = async function(payload, response) {
 
       try {
         await photos.updateOne({ _id: BSON.ObjectId(photoId) }, { $set: updatedInfo });
-        return { message: "Record Updated Successfully" };
+        return { message: "Photo Updated Successfully" };
       } catch (err) {
-        console.error(`Record Update Failed ${err.message}`);
-        return { message: `Record Update Failed ${err.message}` };
+        console.error(`Photo Update Failed ${err.message}`);
+        return { message: `Photo Update Failed ${err.message}` };
       }
       break;
     }
