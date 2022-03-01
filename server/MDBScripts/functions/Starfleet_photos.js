@@ -32,8 +32,8 @@ exports = async function(payload, response) {
     }
     case "POST": {
       const newPhotoInfo = EJSON.parse(payload.body.text());
-      // return newPhotoInfo;
       newPhotoInfo.owner = BSON.ObjectId(newPhotoInfo.owner.toString());
+      delete newPhotoInfo["_id"];
       try {
         await photos.insertOne(newPhotoInfo);
         return { message: "Photo Inserted Successfully" };
