@@ -45,7 +45,6 @@ exports = async function (payload, response) {
                 let: { id: "$officerId" },
                 pipeline: [
                   { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
-                  { $match: { $expr: { $eq: ["$owner", "$$id"] } } },
                   { $project: { _id: 0, url: 1 } },
                 ],
                 as: "officerPics",
@@ -69,14 +68,21 @@ exports = async function (payload, response) {
               },
             },
             { $sort: eventSort },
+            { $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] }, }, },
+            { $project: { info: 0, __v: 0, officerId: 0 } },
             {
-              $replaceRoot: {
-                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+              $lookup: {
+                from: "photos",
+                let: { id: "$starshId" },
+                pipeline: [
+                  { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
+                  { $project: { _id: 0, url: 1 } },
+                ],
+                as: "starshipPics",
               },
             },
-            {
-              $project: { info: 0, __v: 0, officerId: 0}
-            },
+            { $addFields: { starshipPicUrl: "$starshipPics.url" } },
+            { $project: { starshipPics: 0 } },
           ];
         }
 
