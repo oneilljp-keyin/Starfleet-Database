@@ -37,21 +37,16 @@ exports = async function (payload, response) {
               },
             },
             { $sort: eventSort },
-            {
-              $replaceRoot: {
-                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
-              },
-            },
+            { $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] }, }, },
             { $project: { info: 0, __v: 0, starshipId: 0 } },
             {
               $lookup: {
                 from: "photos",
                 let: { id: "$officerId" },
                 pipeline: [
+                  { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
                   { $match: { $expr: { $eq: ["$owner", "$$id"] } } },
                   { $project: { _id: 0, url: 1 } },
-                  { $sort: { year: -1 } },
-                  { $limit: 1 },
                 ],
                 as: "officerPics",
               },
@@ -65,37 +60,22 @@ exports = async function (payload, response) {
             {
               $lookup: {
                 from: "starships",
-                localField: "starshipId",
-                foreignField: "_id",
+                let: { id: "$starshipId" },
+                pipeline: [
+                  { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
+                  { $project: { _id: 0, name: 1, registry: 1 } },
+                ],
                 as: "info",
               },
             },
+            { $sort: eventSort },
             {
               $replaceRoot: {
                 newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
               },
             },
             {
-              $project: {
-                info: 0,
-                __v: 0,
-                ship_id: 0,
-                class: 0,
-                shipyard: 0,
-                officerId: 0,
-                launch_date: 0,
-                launch_stardate: 0,
-                launch_note: 0,
-                commission_date: 0,
-                commission_stardate: 0,
-                commission_note: 0,
-                decommission_date: 0,
-                decommission_stardate: 0,
-                decommission_note: 0,
-                destruction_date: 0,
-                destruction_stardate: 0,
-                destruction_note: 0,
-              },
+              $project: { info: 0, __v: 0, officerId: 0}
             },
           ];
         }
