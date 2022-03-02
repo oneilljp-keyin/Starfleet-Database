@@ -125,7 +125,9 @@ exports = async function(payload, response) {
           { $project: { "lastAssignment": 0 } },
         ];
         
-        responseData = await personnel.findOne( { _id: BSON.ObjectId(id) } );
+        // responseData = await personnel.findOne( { _id: BSON.ObjectId(id) } );
+        
+        responseData = await personnel.aggregate(pipeline).next();
         
         responseData._id = responseData._id.toString();
         if (responseData.species_id) {responseData.species_id = responseData.species_id.toString();}
