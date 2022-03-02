@@ -74,14 +74,6 @@ exports = async function(payload, response) {
               let: { id: "$_id" },
               pipeline: [
                 { $match: { $expr: { $eq: ["$starshipId", "$$id"] } } },
-                // {
-                //   $lookup: {
-                //     from: "officers",
-                //     localField: "officerId",
-                //     foreignField: "_id",
-                //     as: "officerInfo",
-                //   },
-                // },
                 {
                   $lookup: {
                     from: "officers",
@@ -94,19 +86,6 @@ exports = async function(payload, response) {
                   },
                 },
                 { $sort: { date: 1 } },
-                // { $project: { 
-                //     "officerInfo._id": 0, 
-                //     "officerInfo.serial": 0, 
-                //     "officerInfo.birthDate": 0,
-                //     "officerInfo.birthPlace": 0,
-                //     "officerInfo.deathDate": 0,
-                //     "officerInfo.deathPlace": 0,
-                //     "officerInfo.deathDateNote": 0,
-                //     "officerInfo.birthDateNote": 0,
-                //     "officerInfo.location": 0,
-                //     "officerInfo.position": 0,
-                //   }
-                // },
                 { $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$officerInfo", 0 ] }, "$$ROOT" ] } } },
                 { $project: { officerInfo: 0, "__v": 0 } }
               ],
