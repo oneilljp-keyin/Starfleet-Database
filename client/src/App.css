@@ -225,7 +225,7 @@ button.logout { color: #121212; background-color: #9999ffe6;
 .search_btn       { border-top-left-radius: 0; border-bottom-left-radius: 0;}
 .search_input     { border-top-right-radius: 0; border-bottom-right-radius: 0;}
 
-.header_btn       { min-width: 88px; font-size: 0.875em; text-align: center;}
+.header_btn       { min-width: 88px; font-size: 0.875em; text-align: center; margin: 4px 4px;}
 
 /* Button Shapes */
 
@@ -357,7 +357,8 @@ article footer p {
   #main_nav a  { position: relative; box-sizing: border-box; border-radius: 1rem;
                  padding: 0.5rem; margin: 0 0 0 1rem; }
 
-  .left-delete { position: absolute; top: 8px; left: 108px; width: 40px; height: 40px; }
+  .left-delete  { position: absolute; top: 8px; left: 8px; width: 40px; height: 40px; z-index: 200; }
+  .right-edit { position: absolute; top: 8px; left: 8px; width: 40px; height: 40px; z-index: 200; }
   .middle { transition: 0.5s ease; opacity: 0; text-align: center; }
 
   /* Typography */

@@ -85,21 +85,21 @@ const PopUpStarship = ({
       StarshipsDataService.updateStarship(data)
         .then((response) => {
           toast.success(response.data);
-          setRefresh(true);
+          setRefresh();
           hide();
         })
         .catch((err) => {
           console.error(err);
           toast.warning(err.message);
         });
-      setRefresh(true);
+      setRefresh();
     } else {
       delete data["_id"];
       StarshipsDataService.createStarship(data)
         .then((response) => {
           toast.success(response.data);
           setStarshipInfo(initialStarshipState);
-          setRefresh(true);
+          setRefresh();
           hide();
         })
         .catch((err) => {

@@ -181,8 +181,12 @@ const Starships = (props) => {
           </div>
 
           <div className="d-flex justify-content-around flex-wrap">
-            <StarshipsSame starshipName={starship.name} starshipId={starship._id} />
-            <StarshipsSame starshipClass={starship.class} starshipId={starship._id} />
+            {starship.name && (
+              <StarshipsSame starshipName={starship.name} starshipId={starship._id} />
+            )}
+            {starship.class && (
+              <StarshipsSame starshipClass={starship.class} starshipId={starship._id} />
+            )}
           </div>
 
           <div className="m-4 small-hide"></div>

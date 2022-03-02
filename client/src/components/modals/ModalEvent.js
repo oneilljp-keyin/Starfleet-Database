@@ -116,6 +116,7 @@ const PopUpEvents = ({
           setRefresh();
           setEventInfo(initialEventState);
           hide();
+          setBtnLabel("Enter");
           toast.success(response.data.message);
         })
         .catch((err) => {
@@ -123,7 +124,7 @@ const PopUpEvents = ({
           console.error(err);
         });
     } else {
-      if (officerId === null) {
+      if (officerId === "starship") {
         delete data["officerId"];
         delete data["rankLabel"];
         delete data["position"];
@@ -133,6 +134,7 @@ const PopUpEvents = ({
           setRefresh();
           setEventInfo(initialEventState);
           hide();
+          setBtnLabel("Enter");
           toast.success(response.data.message);
         })
         .catch((err) => {
@@ -144,6 +146,7 @@ const PopUpEvents = ({
 
   const closeModal = () => {
     setEventInfo(initialEventState);
+    setBtnLabel("Enter");
     hide();
   };
 

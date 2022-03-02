@@ -14,6 +14,7 @@ const ModalLauncher = ({
   officerId,
   starshipId,
   eventId,
+  photoId,
   subjectName,
   type,
   setRefreshOption,
@@ -50,6 +51,7 @@ const ModalLauncher = ({
           setRefresh={setRefreshOption}
           imageType={type}
           modalClass={modalClass}
+          photoId={photoId}
         />
       );
     case "officer":

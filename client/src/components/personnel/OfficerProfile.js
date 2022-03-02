@@ -1,7 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import PersonnelDataService from "../../services/personnel";
 import PhotoCarousel from "../PhotoCarousel";
@@ -11,6 +10,7 @@ import ModalLauncher from "../modals/ModalLauncher";
 
 const Officer = (props) => {
   const [imageType, setImageType] = useState("officer");
+  const [category, setCategory] = useState(null);
 
   const [officerName, setOfficerName] = useState("");
   const [eventId, setEventId] = useState(null);
@@ -63,10 +63,11 @@ const Officer = (props) => {
     getOfficer(props.match.params.id);
   }, [props.match.params.id, refreshOption]);
 
-  function OpenModal(modalType, id = null, type = "officer") {
+  function OpenModal(modalType, id = null, type = "officer", category = "") {
     setModal(modalType);
     setEventId(id);
     setImageType(type);
+    setCategory(category);
     toggleModal();
   }
 
@@ -121,7 +122,11 @@ const Officer = (props) => {
             <div className="profile-summary col">
               <h1>
                 {officer.surname && <>{officer.surname}</>}
-                {officer.first && <>, {officer.first}</>}
+                {officer.first && (
+                  <>
+                    {officer.species_id !== "51" && <>,</>} {officer.first}
+                  </>
+                )}
                 {officer.middle && <> {officer.middle}</>}
                 {officer.postNom && <>, {officer.postNom}</>}
                 {officer.date && (
@@ -209,7 +214,51 @@ const Officer = (props) => {
               )}
             </div>
           </div>
-          <table className="table event-list table-borderless w-100">
+
+          <div className="m-4 small-hide"></div>
+
+          <div className="d-flex justify-content-center flex-wrap">
+            <div className="lcars_end_cap left_round blue_btn my-0"> </div>
+            <button
+              className="lcars_btn all_square blue_btn my-0 flex-fill"
+              onClick={() => {
+                OpenModal("list", null, "Vessels Assigned", "Assignment");
+              }}
+            >
+              Vessels Assigned
+            </button>
+            <button
+              className="lcars_btn all_square blue_btn my-0 flex-fill"
+              onClick={() => {
+                OpenModal("list", null, "Assignments/Promotions", "Assign-Pro-De");
+              }}
+            >
+              Assignments/Promotions
+            </button>
+            <div className="small_hide lcars_end_cap right_round blue_btn my-0"> </div>
+            <div className="w-100 small_hide m-1"></div>
+            <div className="small_hide lcars_end_cap left_round blue_btn my-0"> </div>
+            <button
+              className="lcars_btn all_square blue_btn my-0 flex-fill"
+              onClick={() => {
+                OpenModal("list", null, "General Missions", "Mission");
+              }}
+            >
+              Missions
+            </button>
+            <button
+              className="lcars_btn all_square blue_btn my-0 flex-fill"
+              onClick={() => {
+                OpenModal("list", null, "Life Events", "Life Event");
+              }}
+            >
+              Life Events
+            </button>
+            <div className="lcars_end_cap right_round blue_btn my-0"> </div>
+          </div>
+          <div className="m-4 small-hide"></div>
+
+          {/* <table className="table event-list table-borderless w-100">
             <tbody>
               {officer.events.length && officer.events.length > 0 ? (
                 officer.events.map((event, index) => {
@@ -319,7 +368,7 @@ const Officer = (props) => {
                 </tr>
               )}
             </tbody>
-          </table>
+              </table> */}
         </div>
       ) : (
         <div>
@@ -332,12 +381,13 @@ const Officer = (props) => {
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={props.isAuth}
-        officerId={officer._id}
+        officerId={props.match.params.id}
         starshipId={null}
         eventId={eventId}
         subjectName={officerName}
         type={imageType}
         setRefreshOption={toggleRefresh}
+        category={category}
       />
     </>
   );

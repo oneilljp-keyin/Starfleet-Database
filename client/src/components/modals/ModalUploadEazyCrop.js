@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Dropzone from "react-dropzone";
 import { toast } from "react-toastify";
@@ -12,6 +12,7 @@ const PopUpUpload = ({
   hide,
   isAuth,
   subjectId,
+  photoId,
   setRefresh,
   imageType,
   modalClass,
@@ -24,6 +25,8 @@ const PopUpUpload = ({
   const [isFileSelected, setIsFileSelected] = useState(false);
   const [cropperSrc, setCropperSrc] = useState(null);
   const [croppedArea, setCroppedArea] = useState(null);
+
+  const [edit, setEdit] = useState(false);
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedArea(croppedAreaPixels);
@@ -43,11 +46,13 @@ const PopUpUpload = ({
   const dropRef = useRef(); // React ref for managing the hover state of droppable area
 
   const initialPhotoState = {
+    _id: "",
     title: "",
     year: "",
     description: "",
     url: "",
     owner: subjectId,
+    primary: false,
   };
   const [photoInfo, setPhotoInfo] = useState(initialPhotoState);
 
@@ -66,6 +71,10 @@ const PopUpUpload = ({
 
   const onChangeEvent = (e) => {
     setPhotoInfo({ ...photoInfo, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeChk = (e) => {
+    setPhotoInfo({ ...photoInfo, [e.target.name]: e.target.checked });
   };
 
   function DataURIToBlob(dataURI) {
@@ -88,6 +97,49 @@ const PopUpUpload = ({
     setIsFileSelected(false);
     setCroppedArea(null);
     hide();
+  };
+
+  useEffect(() => {
+    const getEvent = async (id) => {
+      try {
+        let response = await EventsAndPhotosDataService.getPhotoInfo(id);
+        setPhotoInfo(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (photoId) {
+      getEvent(photoId);
+      setEdit(true);
+    }
+  }, [photoId]);
+
+  const deletePhoto = async () => {
+    try {
+      let response = await EventsAndPhotosDataService.deletePhoto(photoId);
+      toast.dark(response.data.message);
+      closeModal();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updatePhoto = async () => {
+    let data = photoInfo;
+    Object.keys(data).forEach((key) => {
+      if (data[key] === null || data[key] === "" || data[key] === undefined) {
+        delete data[key];
+      }
+    });
+    delete data["url"];
+    delete data["owner"];
+    try {
+      let response = await EventsAndPhotosDataService.updatePhotoInfo(data);
+      toast.dark(response.data.message);
+      closeModal();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleOnSubmit = async () => {
@@ -130,7 +182,7 @@ const PopUpUpload = ({
               <div className="modal-bg resize-modal resize-modal-content-wrapper">
                 <div className="resize-modal-content-container align-content-center">
                   <div className="search-form m-auto text-center modal-appear">
-                    {!isFileSelected ? (
+                    {!isFileSelected && !edit ? (
                       <Dropzone onDrop={onDrop}>
                         {({ getRootProps, getInputProps }) => (
                           <div {...getRootProps({ className: "drop-zone" })} ref={dropRef}>
@@ -141,6 +193,12 @@ const PopUpUpload = ({
                           </div>
                         )}
                       </Dropzone>
+                    ) : photoInfo.url && edit ? (
+                      <img
+                        src={`${photoInfo.url}`}
+                        className="d-block drop-zone mx-auto"
+                        alt={photoInfo.title}
+                      />
                     ) : (
                       <div className="cropper">
                         <Cropper
@@ -191,13 +249,35 @@ const PopUpUpload = ({
                         />
                         <label htmlFor="imageDescription">Description</label>
                       </div>
+                      <div className="col-sm-4 form-check align-items-center m-auto">
+                        <input
+                          className="form-check-input ms-1"
+                          type="checkbox"
+                          id="primary"
+                          name="primary"
+                          checked={photoInfo.primary || ""}
+                          onChange={(e) => handleChangeChk(e)}
+                          style={{ transform: "scale(1.8)" }}
+                        />
+                        <label className="form-check-label" htmlFor="primary">
+                          Primary Photo
+                        </label>
+                      </div>
                     </div>
                     <button
                       className="lcars_btn orange_btn left_round small_btn"
-                      onClick={handleOnSubmit}
+                      onClick={edit ? updatePhoto : handleOnSubmit}
                     >
-                      Submit
+                      {edit ? "Update" : "Submit"}
                     </button>
+                    {edit && (
+                      <button
+                        className="lcars_btn purple_btn all_square small_btn"
+                        onClick={deletePhoto}
+                      >
+                        Delete
+                      </button>
+                    )}
                     <button
                       className="lcars_btn red_btn right_round small_btn"
                       onClick={() => {

@@ -7,7 +7,7 @@ import EventsAndPhotosDataService from "../../../services/eventsAndPhotos";
 import UseModal from "../UseModal";
 import ModalLauncher from "../ModalLauncher";
 
-function FirstContacts({ listType, starshipId, category, isAuth }) {
+function Missions({ listType, officerId, starshipId, category, isAuth }) {
   const [starship, setStarship] = useState({});
 
   const [type, setType] = useState("");
@@ -35,8 +35,8 @@ function FirstContacts({ listType, starshipId, category, isAuth }) {
         });
     };
 
-    getEvents("", starshipId, category);
-  }, [starshipId, category]);
+    getEvents(officerId, starshipId, category);
+  }, [officerId, starshipId, category]);
 
   function OpenModal(modalType, id, option = type, category = "") {
     setModal(modalType);
@@ -49,7 +49,7 @@ function FirstContacts({ listType, starshipId, category, isAuth }) {
   return (
     <>
       <div
-        className="d-flex flex-wrap row overflow-auto px-2"
+        className="d-flex flex-wrap row overflow-auto px-2 align-items-start"
         style={{ height: "calc(100% - 96px)" }}
       >
         <table className="table table-borderless w-100">
@@ -71,7 +71,7 @@ function FirstContacts({ listType, starshipId, category, isAuth }) {
                 }
                 return (
                   <Fragment key={uuidv4()}>
-                    <tr style={{ borderBottom: "1px solid white" }}>
+                    <tr style={{ borderTop: "1px solid white", marginBottom: "auto" }}>
                       <td
                         rowSpan={
                           event.notes &&
@@ -93,7 +93,7 @@ function FirstContacts({ listType, starshipId, category, isAuth }) {
                             >
                               <i className="far fa-edit" style={{ color: "gray" }}></i>
                             </button>
-                            <br />
+                            {/* <br /> */}{" "}
                             <button
                               className="edit"
                               onClick={() => {
@@ -125,17 +125,17 @@ function FirstContacts({ listType, starshipId, category, isAuth }) {
                       <td className="h6cell align-top">
                         {event.type !== "Other" && <>{event.type}</>}
                       </td> */}
-                      {/* </tr> */}
-                      {event.notes &&
-                        event.notes !== "Assignment" &&
-                        event.notes !== "Promotion" &&
-                        event.notes !== "Demotion" && (
-                          // <tr>
+                    </tr>
+                    {event.notes &&
+                      event.notes !== "Assignment" &&
+                      event.notes !== "Promotion" &&
+                      event.notes !== "Demotion" && (
+                        <tr>
                           <td className="h6cell" colSpan={7}>
                             {event.notes}
                           </td>
-                        )}
-                    </tr>
+                        </tr>
+                      )}
                   </Fragment>
                 );
               })
@@ -166,4 +166,4 @@ function FirstContacts({ listType, starshipId, category, isAuth }) {
   );
 }
 
-export default FirstContacts;
+export default Missions;

@@ -87,16 +87,28 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
                 >
                   <img src={`${photo.url}`} className="d-block w-100" alt={photo.title} />
                   {isAuth && (
-                    <div className="cc-bg p-2 left-delete middle">
-                      <button
-                        className="edit"
-                        onClick={() => {
-                          OpenModal("delete", photo._id);
-                        }}
-                      >
-                        <i className="fa-solid fa-remove fa-lg" style={{ color: "white" }}></i>
-                      </button>
-                    </div>
+                    <>
+                      {/* <div className="cc-bg p-2 middle left-delete">
+                        <button
+                          className="edit"
+                          onClick={() => {
+                            OpenModal("delete", photo._id);
+                          }}
+                        >
+                          <i className="fa-solid fa-remove fa-lg" style={{ color: "white" }}></i>
+                        </button>
+                      </div> */}
+                      <div className="cc-bg p-2 middle right-edit">
+                        <button
+                          className="edit"
+                          onClick={() => {
+                            OpenModal("photo", photo._id);
+                          }}
+                        >
+                          <i className="far fa-edit fa-lg" style={{ color: "white" }}></i>
+                        </button>
+                      </div>
+                    </>
                   )}
                   <div className="carousel-caption cc-bg d-none d-sm-block p-1 middle">
                     <h5 className="m-0">
@@ -137,7 +149,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
         </div>
       </div>
       <ModalLauncher
-        modal={"delete"}
+        modal={"photo"}
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={isAuth}

@@ -2,10 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import PersonnelList from "./modalList/PersonnelList";
+import VesselsServed from "./modalList/VesselsServed";
 import Missions from "./modalList/Missions";
-
-import Assignments from "./modalList/Assignments";
-import LifeEvents from "./modalList/LifeEvents";
 
 const PopUpList = ({
   isShowing,
@@ -61,10 +59,10 @@ const PopUpList = ({
                         />
                       ),
                       "Life Events": (
-                        <LifeEvents listType={listType} officerId={officerId} category={category} />
+                        <Missions listType={listType} officerId={officerId} category={category} />
                       ),
-                      Assignments: (
-                        <Assignments
+                      "Vessels Assigned": (
+                        <VesselsServed
                           listType={listType}
                           officerId={officerId}
                           category={category}
@@ -74,6 +72,7 @@ const PopUpList = ({
                         <Missions
                           isAuth={isAuth}
                           listType={listType}
+                          officerId={officerId}
                           starshipId={starshipId}
                           category={category}
                         />

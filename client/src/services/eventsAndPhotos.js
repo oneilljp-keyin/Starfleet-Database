@@ -36,7 +36,7 @@ class EventsAndPhotosDataService {
 
   async insertPhoto(formData, photoInfo) {
     let uploadResult = await axios.post(
-      "http://sector709.johnny-o.net/images/upload.php",
+      "https://sector709.johnny-o.net/images/upload.php",
       formData,
       {
         headers: {
@@ -50,8 +50,20 @@ class EventsAndPhotosDataService {
     return http.post("/photos", photoInfo);
   }
 
-  getAllPhotos(id) {
-    return http.get(`/photos?id=${id}`);
+  getPhotoInfo(photoId) {
+    return http.get(`/photos?id=${photoId}`);
+  }
+
+  getAllPhotos(subjectId) {
+    return http.get(`/photos?subject_id=${subjectId}`);
+  }
+
+  deletePhoto(photoId) {
+    return http.delete(`/photos?id=${photoId}`);
+  }
+
+  updatePhotoInfo(photoInfo) {
+    return http.put("/photos", photoInfo);
   }
 }
 
