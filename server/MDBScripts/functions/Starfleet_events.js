@@ -9,7 +9,6 @@ exports = async function (payload, response) {
   switch (context.request.httpMethod) {
     case "GET": {
       if (!id) {
-        let query;
         let idQuery = {};
         let idtype = {};
 
@@ -20,10 +19,12 @@ exports = async function (payload, response) {
         }
 
         if (payload.query.category == "Assign-Pro-De") {
-          query = { $and: [idQuery, { type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] };
+          idType = { $or: [ { type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" } ] };
         } else {
-          query = { $and: [idQuery, { type: payload.query.category }] };
+          idType = { type: payload.query.category };
         }
+
+        let query = { $and: [ idQuery, idType ] };
 
         let pipeline = [];
 
