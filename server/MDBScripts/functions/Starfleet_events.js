@@ -91,7 +91,7 @@ exports = async function (payload, response) {
           ];
         }
 
-        return pipeline;
+        // return pipeline;
 
         let responseData = await events.aggregate(pipeline).toArray();
 
