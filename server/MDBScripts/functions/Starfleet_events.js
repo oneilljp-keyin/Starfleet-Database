@@ -9,16 +9,22 @@ exports = async function (payload, response) {
   switch (context.request.httpMethod) {
     case "GET": {
       if (!id) {
+        let query;
         let idQuery = {};
-        let idLookup = {};
-        let idProject = {};
+        let idtype = {};
 
         if (payload.query.officer_id) {
           idQuery = { officerId: BSON.ObjectId(payload.query.officer_id) };
         } else {
           idQuery = { starshipId: BSON.ObjectId(payload.query.starship_id) };
         }
-        let query = { $and: [idQuery, { type: payload.query.category }] };
+
+        if (payload.query.category == "Assign-Pro-De") {
+          query = { $and: [idQuery, { type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] };
+        } else {
+          query = { $and: [idQuery, { type: payload.query.category }] };
+        }
+
 
         let pipeline = [];
 
