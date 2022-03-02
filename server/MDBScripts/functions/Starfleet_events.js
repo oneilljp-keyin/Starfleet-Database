@@ -24,7 +24,7 @@ exports = async function (payload, response) {
         } else {
           query = { $and: [idQuery, { type: payload.query.category }] };
         }
-        return query;
+
         let pipeline = [];
 
         if (payload.query.starship_id) {
@@ -90,6 +90,8 @@ exports = async function (payload, response) {
             { $project: { starshipPics: 0 } },
           ];
         }
+
+        return pipeline;
 
         let responseData = await events.aggregate(pipeline).toArray();
 
