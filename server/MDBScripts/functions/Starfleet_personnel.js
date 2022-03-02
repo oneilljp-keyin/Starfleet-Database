@@ -54,78 +54,76 @@ exports = async function(payload, response) {
           total_results: await personnel.count(query).then(num => num.toString()),
         };
       } else {
-        // const pipeline = [
-        //   { $match: { _id: BSON.ObjectId(id), } },
-        //   {
-        //     $lookup: {
-        //       from: "events",
-        //       let: { id: "$_id" },
-        //       pipeline: [
-        //         { $match: { $expr: { $eq: ["$officerId", "$$id"] } } },
-        //         {
-        //           $lookup: {
-        //             from: "starships",
-        //             localField: "starshipId",
-        //             foreignField: "_id",
-        //             as: "starshipInfo",
-        //           },
-        //         },
-        //         { $sort: { date: 1 } },
-        //         { $project: { 
-        //             "starshipInfo._id": 0, 
-        //             "starshipInfo.class": 0, 
-        //             "starshipInfo.shipyard": 0, 
-        //             "starshipInfo.ship_id": 0, 
-        //             "starshipInfo.launch_date": 0,
-        //             "starshipInfo.launch_note": 0,
-        //             "starshipInfo.commission_date": 0,
-        //             "starshipInfo.commission_note": 0,
-        //             "starshipInfo.decommission_date": 0,
-        //             "starshipInfo.decommission_note": 0,
-        //             "starshipInfo.destruction_date": 0,
-        //             "starshipInfo.destruction_note": 0,
-        //           }
-        //         },
-        //         { $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$starshipInfo", 0 ] }, "$$ROOT" ] } } },
-        //         { $project: { starshipInfo: 0, "__v": 0 } }
-        //       ],
-        //       as: "events",
-        //     },
-        //   },
-        //   { $addFields: { events: "$events" } },
-        //   {
-        //     $lookup: {
-        //       from: "events",
-        //       let: { id: "$_id" },
-        //       pipeline: [
-        //         { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Assignment" } ] } },
-        //         { $sort: { date: -1 } },
-        //         { $limit: 1 },
-        //         { $project: { "rankLabel": 1, "position": 1, "location": 1, "date": 1, "starshipId": 1, "_id": 0 } },
-        //         {
-        //           $lookup: {
-        //             from: "starships",
-        //             localField: "starshipId",
-        //             foreignField: "_id",
-        //             as: "starshipInfo",
-        //           },
-        //         },
-        //         { $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$starshipInfo", 0 ] }, "$$ROOT" ] } } },
-        //         { $project: { starshipInfo: 0, "ship_id": 0,  "class": 0, "shipyard": 0, "starshipId": 0, 
-        //                       "launch_date": 0, "launch_stardate": 0, "launch_note": 0,
-        //                       "commission_date": 0, "commission_stardate": 0, "commission_note": 0,
-        //                       "decommission_date": 0, "decommission_stardate": 0, "decommission_note": 0, 
-        //                       "destruction_date": 0, "destruction_stardate": 0, "destruction_note": 0, } }
-        //       ],
-        //       as: "lastAssignment",
-        //     },
-        //   },
-        //   // { $addFields: { lastAssignment: "$lastAssignment" } },
-        //   {
-        //     $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$lastAssignment", 0 ] }, "$$ROOT" ] } }
-        //   },
-        //   { $project: { "lastAssignment": 0 } },
-        // ];
+        const pipeline = [
+          { $match: { _id: BSON.ObjectId(id), } },
+          // {
+          //   $lookup: {
+          //     from: "events",
+          //     let: { id: "$_id" },
+          //     pipeline: [
+          //       { $match: { $expr: { $eq: ["$officerId", "$$id"] } } },
+          //       {
+          //         $lookup: {
+          //           from: "starships",
+          //           localField: "starshipId",
+          //           foreignField: "_id",
+          //           as: "starshipInfo",
+          //         },
+          //       },
+          //       { $sort: { date: 1 } },
+          //       { $project: { 
+          //           "starshipInfo._id": 0, 
+          //           "starshipInfo.class": 0, 
+          //           "starshipInfo.shipyard": 0, 
+          //           "starshipInfo.ship_id": 0, 
+          //           "starshipInfo.launch_date": 0,
+          //           "starshipInfo.launch_note": 0,
+          //           "starshipInfo.commission_date": 0,
+          //           "starshipInfo.commission_note": 0,
+          //           "starshipInfo.decommission_date": 0,
+          //           "starshipInfo.decommission_note": 0,
+          //           "starshipInfo.destruction_date": 0,
+          //           "starshipInfo.destruction_note": 0,
+          //         }
+          //       },
+          //       { $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$starshipInfo", 0 ] }, "$$ROOT" ] } } },
+          //       { $project: { starshipInfo: 0, "__v": 0 } }
+          //     ],
+          //     as: "events",
+          //   },
+          // },
+          // { $addFields: { events: "$events" } },
+          {
+            $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Assignment" } ] } },
+                { $sort: { date: -1 } },
+                { $limit: 1 },
+                { $project: { "rankLabel": 1, "position": 1, "location": 1, "date": 1, "starshipId": 1, "_id": 0 } },
+                {
+                  $lookup: {
+                    from: "starships",
+                    let: { id: "$starshipId" },
+                    pipeline: [
+                      { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
+                      { $project: {"_id": 0, "name": 1, "registry": 1}}                        
+                    ]
+                  },
+                },
+                { $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$starshipInfo", 0 ] }, "$$ROOT" ] } } },
+                { $project: { starshipInfo: 0 } }
+              ],
+              as: "lastAssignment",
+            },
+          },
+          // { $addFields: { lastAssignment: "$lastAssignment" } },
+          {
+            $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$lastAssignment", 0 ] }, "$$ROOT" ] } }
+          },
+          { $project: { "lastAssignment": 0 } },
+        ];
         
         responseData = await personnel.findOne( { _id: BSON.ObjectId(id) } );
         
