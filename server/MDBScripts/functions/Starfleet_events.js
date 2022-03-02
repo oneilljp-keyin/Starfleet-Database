@@ -10,15 +10,21 @@ exports = async function (payload, response) {
     case "GET": {
       if (!id) {
         let idQuery = {};
-        let idLookup = {};
-        let idProject = {};
+        let idtype = {};
 
         if (payload.query.officer_id) {
           idQuery = { officerId: BSON.ObjectId(payload.query.officer_id) };
         } else {
           idQuery = { starshipId: BSON.ObjectId(payload.query.starship_id) };
         }
-        let query = { $and: [idQuery, { type: payload.query.category }] };
+
+        if (payload.query.category == "Assign-Pro-De") {
+          idType = { $or: [ { type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" } ] };
+        } else {
+          idType = { type: payload.query.category };
+        }
+
+        let query = { $and: [ idQuery, idType ] };
 
         let pipeline = [];
 
@@ -37,21 +43,15 @@ exports = async function (payload, response) {
               },
             },
             { $sort: eventSort },
-            {
-              $replaceRoot: {
-                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
-              },
-            },
+            { $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] }, }, },
             { $project: { info: 0, __v: 0, starshipId: 0 } },
             {
               $lookup: {
                 from: "photos",
                 let: { id: "$officerId" },
                 pipeline: [
-                  { $match: { $expr: { $eq: ["$owner", "$$id"] } } },
+                  { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
                   { $project: { _id: 0, url: 1 } },
-                  { $sort: { year: -1 } },
-                  { $limit: 1 },
                 ],
                 as: "officerPics",
               },
@@ -65,40 +65,34 @@ exports = async function (payload, response) {
             {
               $lookup: {
                 from: "starships",
-                localField: "starshipId",
-                foreignField: "_id",
+                let: { id: "$starshipId" },
+                pipeline: [
+                  { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
+                  { $project: { _id: 0, name: 1, registry: 1 } },
+                ],
                 as: "info",
               },
             },
+            { $sort: eventSort },
+            { $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] }, }, },
+            { $project: { info: 0, __v: 0, officerId: 0 } },
             {
-              $replaceRoot: {
-                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+              $lookup: {
+                from: "photos",
+                let: { id: "$starshipId" },
+                pipeline: [
+                  { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
+                  { $project: { _id: 0, url: 1 } },
+                ],
+                as: "starshipPics",
               },
             },
-            {
-              $project: {
-                info: 0,
-                __v: 0,
-                ship_id: 0,
-                class: 0,
-                shipyard: 0,
-                officerId: 0,
-                launch_date: 0,
-                launch_stardate: 0,
-                launch_note: 0,
-                commission_date: 0,
-                commission_stardate: 0,
-                commission_note: 0,
-                decommission_date: 0,
-                decommission_stardate: 0,
-                decommission_note: 0,
-                destruction_date: 0,
-                destruction_stardate: 0,
-                destruction_note: 0,
-              },
-            },
+            { $addFields: { starshipPicUrl: "$starshipPics.url" } },
+            { $project: { starshipPics: 0 } },
           ];
         }
+
+        // return pipeline;
 
         let responseData = await events.aggregate(pipeline).toArray();
 
