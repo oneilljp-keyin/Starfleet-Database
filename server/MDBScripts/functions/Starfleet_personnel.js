@@ -109,7 +109,8 @@ exports = async function(payload, response) {
                     pipeline: [
                       { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
                       { $project: {"_id": 0, "name": 1, "registry": 1}}                        
-                    ]
+                    ],
+                    as: "starshipInfo",
                   },
                 },
                 { $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$starshipInfo", 0 ] }, "$$ROOT" ] } } },
