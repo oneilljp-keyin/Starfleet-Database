@@ -84,7 +84,7 @@ exports = async function (payload, response) {
         return { error: "404", message: "Email and/or Password Incorrect" };
       }
     } else {
-      return payload.body.name;
+      return payload.body.text();
     }
       
     }
