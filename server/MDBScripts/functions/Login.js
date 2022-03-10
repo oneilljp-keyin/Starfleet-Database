@@ -22,6 +22,7 @@ exports = async function (payload, response) {
       break;
     }
     case "POST": {
+      if (!payload.body.name) {
       const loginInfo = EJSON.parse(payload.body.text());
 
       const njwt = require("njwt");
@@ -82,6 +83,10 @@ exports = async function (payload, response) {
       } else {
         return { error: "404", message: "Email and/or Password Incorrect" };
       }
+    } else {
+      return payload.body.name;
+    }
+      
     }
   }
 };
