@@ -47,15 +47,6 @@ exports = async function (payload, response) {
       } catch (e) {
         return { message: e };
       }
-      // Password hashing
-      // const options = {algorithm: "md5", saltLength: 8, interations: 8}
-
-      // let hashPass = passwordHash.generate(password, options);
-
-      // console.log(passwordHash.verify('password1234', hashPass)); // true
-      // console.log(passwordHash.verify('Password0', hashPass)); // false
-
-      // return "Password Matched: " + passwordHash.verify(password, userCheck.password);
 
       let validToken;
 
