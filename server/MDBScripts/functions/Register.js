@@ -6,12 +6,10 @@ exports = async function (payload, response) {
     case "POST": {
       const registerInfo = EJSON.parse(payload.body.text());
       
-      return registerInfo;
-
       const njwt = require("njwt");
       const passwordHash = require("password-hash");
 
-      const { errors, isValid } = await context.functions.execute("user_login", loginInfo);
+      const { errors, isValid } = await context.functions.execute("user_login", registerInfo);
 
       // Check Validation
       if (!isValid) return errors;
