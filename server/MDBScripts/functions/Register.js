@@ -1,6 +1,8 @@
 exports = async function (payload, response) {
   const users = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("users");
   const secretKey = context.values.get("secretKey");
+  
+  return "Hello";
 
   switch (context.request.httpMethod) {
     case "POST": {
