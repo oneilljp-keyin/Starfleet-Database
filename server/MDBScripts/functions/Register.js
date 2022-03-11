@@ -25,7 +25,7 @@ exports = async function (payload, response) {
       try {
         userCheck = await users.findOne({ email });
         // Check if email already exists
-        if (!userCheck) {
+        if (userCheck) {
           return { error: "404", message: "Email address already in use" };
         }
       } catch (e) {
