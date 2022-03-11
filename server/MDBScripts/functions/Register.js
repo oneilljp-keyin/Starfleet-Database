@@ -4,7 +4,9 @@ exports = async function (payload, response) {
 
   switch (context.request.httpMethod) {
     case "POST": {
-      const loginInfo = EJSON.parse(payload.body.text());
+      const registerInfo = EJSON.parse(payload.body.text());
+      
+      return registerInfo;
 
       const njwt = require("njwt");
       const passwordHash = require("password-hash");
