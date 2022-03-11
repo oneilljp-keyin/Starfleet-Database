@@ -24,8 +24,6 @@ exports = async function (payload, response) {
     case "POST": {
       const loginInfo = EJSON.parse(payload.body.text());
       
-      return loginInfo;
-
       const njwt = require("njwt");
       const passwordHash = require("password-hash");
 
