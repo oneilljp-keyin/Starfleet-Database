@@ -6,7 +6,7 @@ exports = async function (payload, response) {
     case "POST": {
       const registerInfo = EJSON.parse(payload.body.text());
       
-      return registerInfo;
+      return {message: "Is This Working"};
 
       const njwt = require("njwt");
       const passwordHash = require("password-hash");
