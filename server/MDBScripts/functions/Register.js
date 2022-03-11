@@ -2,14 +2,11 @@ exports = async function (payload, response) {
   const users = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("users");
   const secretKey = context.values.get("secretKey");
   
-  
-
   switch (context.request.httpMethod) {
-    case "GET": {return "Hello";}
     case "POST": {
       const registerInfo = EJSON.parse(payload.body.text());
       
-      return {message: "Is This Working"};
+      return registerInfo;
 
       const njwt = require("njwt");
       const passwordHash = require("password-hash");
