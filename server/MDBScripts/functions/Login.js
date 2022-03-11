@@ -15,7 +15,7 @@ exports = async function (payload, response) {
           _id: BSON.ObjectId(decoded._id),
           "tokens.token": jwToken,
         });
-        return { name: user.name, email: user.email, admin: user.admin };
+        return { id: user._id.toString(), name: user.name, email: user.email, admin: user.admin };
       } catch (e) {
         return { error: "401", message: "Invalid credientials, Please Sign In" };
       }
