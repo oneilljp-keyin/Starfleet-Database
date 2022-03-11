@@ -34,14 +34,9 @@ exports = async function (payload, response) {
 
       let validToken;
       
-      return {name: name, email: email, password: hashedPassword};
+      let addToken = await users.insertOne({name, email, password: hashedPassword});
 
-      let addToken = await users.updateOne(
-        { _id: BSON.ObjectId(userCheck._id.toString()) },
-        { $set: { tokens } }
-      );
-
-      return { token: token, id: userCheck._id.toString() };
+      return { message: "Profile Created" };
     }
   }
 };
