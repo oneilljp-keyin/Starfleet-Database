@@ -12,7 +12,7 @@ exports = async function (payload, response) {
       const { errors, isValid } = await context.functions.execute("user_login", registerInfo);
 
       // Check Validation
-      if (!isValid) return errors;
+      if (!isValid) return {message: errors};
       
       const name = registerInfo.name.trim();
       const email = registerInfo.email.toLowerCase();
