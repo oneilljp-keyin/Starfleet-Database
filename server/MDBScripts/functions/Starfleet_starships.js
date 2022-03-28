@@ -43,7 +43,7 @@ exports = async function(payload, response) {
           },
           { $addFields: { starshipPicUrl: "$starshipPics.url" } },
           { $project: { "starshipPics": 0 } },
-          { $sort: { ship_id: 1 } },
+          { $sort: { ship_id: -1 } },
           { $skip: page*starshipsPerPage },
           { $limit: starshipsPerPage },
         ];
