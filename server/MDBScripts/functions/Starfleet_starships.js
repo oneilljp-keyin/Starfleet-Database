@@ -144,8 +144,6 @@ exports = async function(payload, response) {
       
       delete updatedStarship["_id"];
       
-      return updatedStarship;
-      
       try {
         await starships.updateOne({ _id: BSON.ObjectId(starshipId) }, { $set: updatedStarship });
         return { message: "Record " + starshipName + " Updated Successfully" };
