@@ -15,16 +15,15 @@ exports = async function (payload, response) {
           _id: BSON.ObjectId(decoded._id),
           "tokens.token": jwToken,
         });
-        return { name: user.name, email: user.email, admin: user.admin };
+        return { id: user._id.toString(), name: user.name, email: user.email, admin: user.admin };
       } catch (e) {
         return { error: "401", message: "Invalid credientials, Please Sign In" };
       }
       break;
     }
     case "POST": {
-      if (!payload.body.name) {
       const loginInfo = EJSON.parse(payload.body.text());
-
+      
       const njwt = require("njwt");
       const passwordHash = require("password-hash");
 
@@ -83,10 +82,7 @@ exports = async function (payload, response) {
       } else {
         return { error: "404", message: "Email and/or Password Incorrect" };
       }
-    } else {
-      return payload.body.name;
-    }
-      
+
     }
   }
 };
