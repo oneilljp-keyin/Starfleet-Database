@@ -10,7 +10,7 @@ const PopUpList = ({
   isAuth,
   hide,
   modalClass,
-  starshipName,
+  subjectName,
   officerId,
   starshipId,
   listType,
@@ -33,7 +33,7 @@ const PopUpList = ({
                     <div className="lcars_end_cap left_round orange_btn"> </div>
                     <div className="d-flex align-items-center ms-2">
                       <span className="h3cell align-self-center">
-                        {starshipName} {listType}
+                        {subjectName} {listType}
                       </span>
                     </div>
                     <div className="lcars_btn all_sqaure beige_btn flex-grow-1 m-2 p-3"> </div>
@@ -59,7 +59,13 @@ const PopUpList = ({
                         />
                       ),
                       "Life Events": (
-                        <Missions listType={listType} officerId={officerId} category={category} />
+                        <Missions
+                          isAuth={isAuth}
+                          listType={listType}
+                          officerId={officerId}
+                          category={category}
+                          subjectName={subjectName}
+                        />
                       ),
                       "Vessels Assigned": (
                         <VesselsServed
@@ -75,10 +81,26 @@ const PopUpList = ({
                           officerId={officerId}
                           starshipId={starshipId}
                           category={category}
+                          subjectName={subjectName}
                         />
                       ),
                       "Repairs/Upgrades": (
-                        <Missions listType={listType} starshipId={starshipId} category={category} />
+                        <Missions
+                          isAuth={isAuth}
+                          listType={listType}
+                          starshipId={starshipId}
+                          category={category}
+                          subjectName={subjectName}
+                        />
+                      ),
+                      "Assignments/Promotions": (
+                        <Missions
+                          isAuth={isAuth}
+                          listType={listType}
+                          officerId={officerId}
+                          category={category}
+                          subjectName={subjectName}
+                        />
                       ),
                     }[listType]
                   }

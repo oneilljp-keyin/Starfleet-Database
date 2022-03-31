@@ -1,13 +1,14 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
+import { Link } from "react-router-dom";
 
 import EventsAndPhotosDataService from "../../../services/eventsAndPhotos";
 
 import UseModal from "../UseModal";
 import ModalLauncher from "../ModalLauncher";
 
-function Missions({ listType, officerId, starshipId, category, isAuth }) {
+function Missions({ listType, officerId, starshipId, category, isAuth, subjectName }) {
   const [starship, setStarship] = useState({});
 
   const [type, setType] = useState("");
@@ -69,6 +70,12 @@ function Missions({ listType, officerId, starshipId, category, isAuth }) {
                     eventDate = event.date.slice(0, 10);
                   }
                 }
+                let currentRank;
+                if (event.rankLabel) {
+                  const [rank] = event.rankLabel.split("-");
+                  currentRank = rank;
+                }
+
                 return (
                   <Fragment key={uuidv4()}>
                     <tr style={{ borderTop: "1px solid white", marginBottom: "auto" }}>
@@ -110,21 +117,24 @@ function Missions({ listType, officerId, starshipId, category, isAuth }) {
                         {/* {event.date && event.stardate && eventDate.length > 4 && <br />} */}
                         {event.stardate && ` SD ${event.stardate}`}
                       </td>
+                      <td className="h5cell align-top">
+                        {event.name && (
+                          <Link to={`/starships/${event.starshipId}`} className="list-link">
+                            {event.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
+                            {event.registry}
+                          </Link>
+                        )}
+                        {event.name && currentRank !== undefined && <br />}
+                        {currentRank !== undefined && <>{currentRank}</>}
+                        {(event.name || event.position) && <br />}
+                        {event.position && <>{event.position}</>}
+                      </td>
                       <td className="h4cell align-top">
                         {event.location && <>{event.location}</>}
                       </td>
-                      {/* <td className="h5cell align-top">
-                        {officerName !== undefined && (
-                          <Link to={`/personnel/${event.officerId}`} className="list-link">
-                            {officerName}
-                          </Link>
-                        )}
-                        {officerName !== undefined && event.position !== undefined && <br />}
-                        {event.position !== undefined && <>{event.position}</>}
-                      </td>
                       <td className="h6cell align-top">
                         {event.type !== "Other" && <>{event.type}</>}
-                      </td> */}
+                      </td>
                     </tr>
                     {event.notes &&
                       event.notes !== "Assignment" &&
@@ -157,7 +167,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth }) {
         officerId={null}
         starshipId={starshipId}
         eventId={eventId}
-        subjectName={null}
+        subjectName={subjectName}
         type={type}
         setRefreshOption={toggleRefresh}
         category={eventCategory}

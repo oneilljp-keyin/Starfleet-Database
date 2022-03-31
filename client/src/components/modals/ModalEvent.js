@@ -113,7 +113,7 @@ const PopUpEvents = ({
       data._id = eventId;
       EventsAndPhotosDataService.updateEvent(data)
         .then((response) => {
-          setRefresh();
+          // setRefresh();
           setEventInfo(initialEventState);
           hide();
           setBtnLabel("Enter");
@@ -131,11 +131,11 @@ const PopUpEvents = ({
       }
       EventsAndPhotosDataService.insertEvent(data)
         .then((response) => {
-          setRefresh();
-          setEventInfo(initialEventState);
-          hide();
-          setBtnLabel("Enter");
           toast.success(response.data.message);
+          hide();
+          // setRefresh();
+          setEventInfo(initialEventState);
+          setBtnLabel("Enter");
         })
         .catch((err) => {
           toast.warning(err.message);
@@ -159,7 +159,7 @@ const PopUpEvents = ({
               <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
-                    {btnLabel} Event for {subjectName} {officerId}
+                    {btnLabel} Event for {subjectName}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
                     <div className="form-floating col-sm-4">
@@ -215,17 +215,15 @@ const PopUpEvents = ({
                         <option value="Other">Other</option>
                         <option value="Assignment">Assignment</option>
                         <option value="First Contact">First Contact</option>
-                        {eventType !== "starship" && <option value="Life Event">Life Event</option>}
+                        {!officerId && <option value="Life Event">Life Event</option>}
                         <option value="Mission">Mission</option>
-                        {eventType === "starship" && (
-                          <option value="Repair Upgrade">Repairs/Upgrades</option>
-                        )}
-                        {eventType !== "starship" && <option value="Promotion">Promotion</option>}
-                        {eventType !== "starship" && <option value="Demotion">Demotion</option>}
+                        {!officerId && <option value="Repair Upgrade">Repairs/Upgrades</option>}
+                        {!officerId && <option value="Promotion">Promotion</option>}
+                        {!officerId && <option value="Demotion">Demotion</option>}
                       </select>
                       <label htmlFor="eventType">Event Type</label>
                     </div>
-                    {eventType !== "starship" && (
+                    {officerId && (
                       <>
                         {" "}
                         <div className="col-sm-4 form-floating searchContainer my-1 p-0">
@@ -263,11 +261,7 @@ const PopUpEvents = ({
                       </>
                     )}
                     <div
-                      className={
-                        eventType !== "starship"
-                          ? "form-floating col-sm-4"
-                          : "form-floating col-sm-8"
-                      }
+                      className={officerId ? "form-floating col-sm-4" : "form-floating col-sm-8"}
                     >
                       <input
                         className="form-control form-control-lg my-1"
@@ -281,7 +275,7 @@ const PopUpEvents = ({
                       <label htmlFor="eventLocation">Galatic Location</label>
                     </div>
 
-                    {eventType !== "starship" && (
+                    {officerId && (
                       <>
                         {/* <div className="w-100"></div> */}
                         <div className="form-floating col-sm-6">

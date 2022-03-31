@@ -16,11 +16,11 @@ const ModalLauncher = ({
   eventId,
   photoId,
   subjectName,
-  type,
-  setRefreshOption,
+  type, // Officer or Starship
+  setRefresh,
   setAuth,
   setAdmin,
-  category,
+  category, //
 }) => {
   const modalClass = "main-modal-body modal-open";
 
@@ -35,7 +35,7 @@ const ModalLauncher = ({
           starshipId={starshipId}
           eventId={eventId}
           subjectName={subjectName}
-          setRefresh={setRefreshOption}
+          setRefresh={setRefresh}
           eventType={type}
           modalClass={modalClass}
         />
@@ -48,7 +48,7 @@ const ModalLauncher = ({
           hide={hide}
           isAuth={isAuth}
           subjectId={subjectId}
-          setRefresh={setRefreshOption}
+          setRefresh={setRefresh}
           imageType={type}
           modalClass={modalClass}
           photoId={photoId}
@@ -62,7 +62,7 @@ const ModalLauncher = ({
           isAuth={isAuth}
           officerId={officerId}
           subjectName={subjectName}
-          setRefresh={setRefreshOption}
+          setRefresh={setRefresh}
           modalClass={modalClass}
         />
       );
@@ -74,7 +74,7 @@ const ModalLauncher = ({
           isAuth={isAuth}
           starshipId={starshipId}
           subjectName={subjectName}
-          setRefresh={setRefreshOption}
+          setRefresh={setRefresh}
           modalClass={modalClass}
         />
       );
@@ -87,7 +87,7 @@ const ModalLauncher = ({
           officerId={officerId}
           starshipId={starshipId}
           eventId={eventId}
-          setRefresh={setRefreshOption}
+          setRefresh={setRefresh}
           recordType={type}
           modalClass={modalClass}
         />
@@ -109,7 +109,7 @@ const ModalLauncher = ({
           isAuth={isAuth}
           hide={hide}
           modalClass={modalClass}
-          starshipName={subjectName}
+          subjectName={subjectName}
           officerId={officerId}
           starshipId={starshipId}
           listType={type}

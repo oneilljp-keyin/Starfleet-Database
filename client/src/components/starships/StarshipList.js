@@ -158,7 +158,9 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
                     src={starship.starshipPicUrl[0] ? starship.starshipPicUrl[0] : gray}
                     alt={starship.name}
                   />
-                  <h5 className="card-title">{starship.name}</h5>
+                  <h5 className="card-title">
+                    {starship.name.replace(/-A|-B|-C|-D|-E|-F|-G|-I|-J|-K|-L|-M/g, "")}
+                  </h5>
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>
                   <div className="row">
                     <Link to={"/starships/" + starshipId} className="btn btn-primary">
@@ -178,7 +180,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
         isAuth={isAuth}
         starshipId={null}
         subjectName={null}
-        setRefresh={listRefresh}
+        setRefresh={setListRefresh}
       />
     </>
   );

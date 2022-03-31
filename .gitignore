@@ -18,3 +18,5 @@ client/key.pem
 client/server.crt
 client/server.key
 client/localhost.cer
+client/cypress.json
+client/cypress.env.json

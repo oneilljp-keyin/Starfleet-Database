@@ -54,11 +54,9 @@ const Starships = (props) => {
       StarshipsDataService.get(id)
         .then((response) => {
           setStarship(response.data);
-          setStarshipName(
-            response.data.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "") +
-              " " +
-              response.data.registry
-          );
+          let starshipName = response.data.name.replace(/-A|-B|-C|-D|-E|-F|-G|-I|-J|-K|-L|-M/g, "");
+          if (response.data.registry) starshipName += " " + response.data.registry;
+          setStarshipName(starshipName);
           setStarshipId(response.data._id);
         })
         .catch((err) => {
@@ -126,7 +124,7 @@ const Starships = (props) => {
             />
             <div className="m-1 mobile-center">
               {starship.name && (
-                <h1>USS {starship.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}</h1>
+                <h1>USS {starship.name.replace(/-A|-B|-C|-D|-E|-F|-G|-I|-J|-K|-L|-M/g, "")}</h1>
               )}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
@@ -248,7 +246,7 @@ const Starships = (props) => {
         eventId={eventId}
         subjectName={starshipName}
         type={type}
-        setRefreshOption={toggleRefresh}
+        setRefresh={toggleRefresh}
         category={category}
       />
     </>
