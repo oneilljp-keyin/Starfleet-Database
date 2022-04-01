@@ -104,12 +104,12 @@ exports = async function(payload, response) {
         if(responseData.decommission_date) {responseData.decommission_date = new Date(responseData.decommission_date).toISOString();}
         if(responseData.destruction_date) {responseData.destruction_date = new Date(responseData.destruction_date).toISOString();}
         
-        responseData.events.forEach(event => {
-          if(event.date) {event.date = new Date(event.date).toISOString();}
-          event._id = event._id.toString();
-          if(event.officerId) {event.officerId = event.officerId.toString();}
-          if(event.starshipId) {event.starshipId = event.starshipId.toString();}
-        });
+        // responseData.events.forEach(event => {
+        //   if(event.date) {event.date = new Date(event.date).toISOString();}
+        //   event._id = event._id.toString();
+        //   if(event.officerId) {event.officerId = event.officerId.toString();}
+        //   if(event.starshipId) {event.starshipId = event.starshipId.toString();}
+        // });
       }
       return responseData;
     }
