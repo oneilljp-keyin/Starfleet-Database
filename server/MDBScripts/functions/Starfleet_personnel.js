@@ -94,6 +94,7 @@ exports = async function(payload, response) {
         responseData = await personnel.aggregate(pipeline).next();
         
         responseData._id = responseData._id.toString();
+        if (responseData.starshipId) {responseData.starshipId = responseData.starshipId.toString();}
         if (responseData.species_id) {responseData.species_id = responseData.species_id.toString();}
         if (responseData.birthDate) {responseData.birthDate = new Date(responseData.birthDate).toISOString();}
         if (responseData.deathDate) {responseData.deathDate = new Date(responseData.deathDate).toISOString();}
