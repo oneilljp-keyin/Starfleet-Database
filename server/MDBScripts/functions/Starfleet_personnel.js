@@ -64,7 +64,7 @@ exports = async function(payload, response) {
                 { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Assignment" }, {position: {$ne: "Retired"}} ] } },
                 { $sort: { date: -1 } },
                 { $limit: 1 },
-                // { $project: { "rankLabel": 1, "position": 1, "location": 1, "date": 1, "starshipId": 1, "_id": 0 } },
+                { $project: { "rankLabel": 1, "position": 1, "location": 1, "date": 1, "starshipId": 1, "_id": 0 } },
                 {
                   $lookup: {
                     from: "starships",
