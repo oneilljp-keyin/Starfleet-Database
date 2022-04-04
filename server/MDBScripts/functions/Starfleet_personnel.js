@@ -61,7 +61,7 @@ exports = async function(payload, response) {
               from: "events",
               let: { id: "$_id" },
               pipeline: [
-                { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Assignment" }, {position: {$ne: "Retired"}} ] } },
+                { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { $or: [{type: "Assignment"}, {type: "Promotion"}] }, {position: {$ne: "Retired"}} ] } },
                 { $sort: { date: -1 } },
                 { $limit: 1 },
                 { $project: { "rankLabel": 1, "position": 1, "location": 1, "date": 1, "starshipId": 1, "_id": 0 } },
