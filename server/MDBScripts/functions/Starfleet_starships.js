@@ -68,31 +68,16 @@ exports = async function(payload, response) {
       } else {
         const pipeline = [
           { $match: { _id: BSON.ObjectId(id), } },
-          // {
-          //   $lookup: {
-          //     from: "events",
-          //     let: { id: "$_id" },
-          //     pipeline: [
-          //       { $match: { $expr: { $eq: ["$starshipId", "$$id"] } } },
-          //       {
-          //         $lookup: {
-          //           from: "officers",
-          //           let: { id: "$officerId" },
-          //           pipeline: [
-          //             { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
-          //             { $project: { _id: 0, surname: 1, first: 1, middle: 1 } },
-          //           ],
-          //           as: "officerInfo",
-          //         },
-          //       },
-          //       { $sort: { date: 1 } },
-          //       { $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$officerInfo", 0 ] }, "$$ROOT" ] } } },
-          //       { $project: { officerInfo: 0, "__v": 0 } }
-          //     ],
-          //     as: "events",
-          //   },
-          // },
-          // { $addFields: { events: "$events" } },
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $expr: { $eq: ["$starshipId", "$$id"] } } },
+                { $count: "personnelNum" },
+              ],
+            as: "personnelCount",
+            }
+          },
         ];
         
         responseData = await starships.aggregate(pipeline).next();
