@@ -78,7 +78,7 @@ exports = async function(payload, response) {
             as: "personnelAssignments",
             }
           },
-          { $addFields: { personnelCount: "personnelAssignments.personnelNum" } },
+          { $addFields: { personnelCount: "$personnelAssignments.personnelNum" } },
           { $project: { "personnelAssignments": 0 } },
         ];
         
