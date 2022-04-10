@@ -78,6 +78,8 @@ exports = async function(payload, response) {
             as: "personnelCount",
             }
           },
+          { $addFields: { personnelCount: "personnelCount.personnelNum" } },
+          { $project: { "personnelCount": 0 } },
         ];
         
         responseData = await starships.aggregate(pipeline).next();
