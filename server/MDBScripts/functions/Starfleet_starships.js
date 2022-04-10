@@ -75,11 +75,11 @@ exports = async function(payload, response) {
                 { $match: { $expr: { $eq: ["$starshipId", "$$id"] } } },
                 { $count: "personnelNum" },
               ],
-            as: "personnelCount",
+            as: "personnelAssignments",
             }
           },
-          { $addFields: { personnelCount: "personnelCount.personnelNum" } },
-          { $project: { "personnelCount": 0 } },
+          { $addFields: { personnelCount: "personnelAssignments.personnelNum" } },
+          { $project: { "personnelAssignments": 0 } },
         ];
         
         responseData = await starships.aggregate(pipeline).next();
