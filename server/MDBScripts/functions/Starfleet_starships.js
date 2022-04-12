@@ -105,6 +105,7 @@ exports = async function(payload, response) {
         if(responseData.decommission_date) {responseData.decommission_date = new Date(responseData.decommission_date).toISOString();}
         if(responseData.destruction_date) {responseData.destruction_date = new Date(responseData.destruction_date).toISOString();}
         if(responseData.personnelCount) {responseData.personnelCount = responseData.personnelCount.toString();}
+        if(responseData.missionCount) {responseData.missionCount = responseData.missionCount.toString();}
         
         // responseData.events.forEach(event => {
         //   if(event.date) {event.date = new Date(event.date).toISOString();}
