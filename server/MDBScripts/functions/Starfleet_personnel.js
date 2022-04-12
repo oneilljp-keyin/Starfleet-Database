@@ -64,7 +64,7 @@ exports = async function(payload, response) {
                 { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { $or: [{type: "Assignment"}, {type: "Promotion"}] }, {position: {$ne: "Retired"}} ] } },
                 { $sort: { date: -1 } },
                 { $limit: 1 },
-                { $project: { "rankLabel": 1, "position": 1, "location": 1, "date": 1, "starshipId": 1, "_id": 0 } },
+                { $project: { "rankLabel": 1, "position": 1, "location": 1, "date": 1, "endDate": 1, "starshipId": 1, "_id": 0 } },
                 {
                   $lookup: {
                     from: "starships",
@@ -99,6 +99,7 @@ exports = async function(payload, response) {
         if (responseData.birthDate) {responseData.birthDate = new Date(responseData.birthDate).toISOString();}
         if (responseData.deathDate) {responseData.deathDate = new Date(responseData.deathDate).toISOString();}
         if (responseData.date) {responseData.date = new Date(responseData.date).toISOString();}
+        if (responseData.endDate) {responseData.endDate = new Date(responseData.endDate).toISOString();}
         
         // responseData.events.forEach(event => {
         //   event._id = event._id.toString();
