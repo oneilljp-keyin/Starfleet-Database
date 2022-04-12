@@ -83,47 +83,47 @@ exports = async function(payload, response) {
           { $addFields: { personnelCount: "$personnelAssignments.personnelNum" } },
           { $project: { "personnelAssignments": 0 } },
           
-          // // Count number of general missions
-          // { $lookup: {
-          //     from: "events",
-          //     let: { id: "$_id" },
-          //     pipeline: [
-          //       { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Mission" } ] } },
-          //       { $count: "missonNum" },
-          //     ],
-          //   as: "missions",
-          //   }
-          // },
-          // { $addFields: { missionCount: "$missions.missonNum" } },
-          // { $project: { "missions": 0 } },
+          // Count number of general missions
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Mission" } ] } },
+                { $count: "missonNum" },
+              ],
+            as: "missions",
+            }
+          },
+          { $addFields: { missionCount: "$missions.missonNum" } },
+          { $project: { "missions": 0 } },
           
-          // // Count number of First Contact missions
-          // { $lookup: {
-          //     from: "events",
-          //     let: { id: "$_id" },
-          //     pipeline: [
-          //       { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "First Contact" } ] } },
-          //       { $count: "firstContactNum" },
-          //     ],
-          //   as: "firstContact",
-          //   }
-          // },
-          // { $addFields: { firstContactCount: "$firstContact.firstContactNum" } },
-          // { $project: { "firstContact": 0 } },
+          // Count number of First Contact missions
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "First Contact" } ] } },
+                { $count: "firstContactNum" },
+              ],
+            as: "firstContact",
+            }
+          },
+          { $addFields: { firstContactCount: "$firstContact.firstContactNum" } },
+          { $project: { "firstContact": 0 } },
           
-          // // Count number of Maintenance/Repair/Upgrades
-          // { $lookup: {
-          //     from: "events",
-          //     let: { id: "$_id" },
-          //     pipeline: [
-          //       { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Repair Upgrade" } ] } },
-          //       { $count: "maintenanceNum" },
-          //     ],
-          //   as: "maintenance",
-          //   }
-          // },
-          // { $addFields: { maintenanceCount: "$maintenance.maintenanceNum" } },
-          // { $project: { "maintenance": 0 } },
+          // Count number of Maintenance/Repair/Upgrades
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Repair Upgrade" } ] } },
+                { $count: "maintenanceNum" },
+              ],
+            as: "maintenance",
+            }
+          },
+          { $addFields: { maintenanceCount: "$maintenance.maintenanceNum" } },
+          { $project: { "maintenance": 0 } },
         ];
         
         responseData = await starships.aggregate(pipeline).next();
