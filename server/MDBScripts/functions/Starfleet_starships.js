@@ -68,6 +68,7 @@ exports = async function(payload, response) {
       } else {
         const pipeline = [
           { $match: { _id: BSON.ObjectId(id), } },
+          // Count number of personnel assigned
           { $lookup: {
               from: "events",
               let: { id: "$_id" },
@@ -80,6 +81,19 @@ exports = async function(payload, response) {
           },
           { $addFields: { personnelCount: "$personnelAssignments.personnelNum" } },
           { $project: { "personnelAssignments": 0 } },
+          // Count number of missions
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Mission" } ] } },
+                { $count: "missonNum" },
+              ],
+            as: "missions",
+            }
+          },
+          { $addFields: { missionCount: "$missions.missonNum" } },
+          { $project: { "missions": 0 } },
         ];
         
         responseData = await starships.aggregate(pipeline).next();
