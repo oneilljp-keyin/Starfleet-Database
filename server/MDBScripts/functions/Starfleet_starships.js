@@ -105,7 +105,7 @@ exports = async function(payload, response) {
             as: "firstContact",
             }
           },
-          { $addFields: { missionCount: "$firstContact.firstContactNum" } },
+          { $addFields: { firstContactCount: "$firstContact.firstContactNum" } },
           { $project: { "firstContact": 0 } },
           // Count number of Maintenance/Repair/Upgrades
           { $lookup: {
@@ -118,7 +118,7 @@ exports = async function(payload, response) {
             as: "maintenance",
             }
           },
-          { $addFields: { missionCount: "$maintenance.maintenanceNum" } },
+          { $addFields: { maintenanceCount: "$maintenance.maintenanceNum" } },
           { $project: { "maintenance": 0 } },
         ];
         
@@ -132,6 +132,8 @@ exports = async function(payload, response) {
         if(responseData.destruction_date) {responseData.destruction_date = new Date(responseData.destruction_date).toISOString();}
         if(responseData.personnelCount) {responseData.personnelCount = responseData.personnelCount.toString();}
         if(responseData.missionCount) {responseData.missionCount = responseData.missionCount.toString();}
+        if(responseData.firstContactCount) {responseData.firstContactCount = responseData.firstContactCount.toString();}
+        if(responseData.maintenanceCount) {responseData.maintenanceCount = responseData.maintenanceCount.toString();}
         
         // responseData.events.forEach(event => {
         //   if(event.date) {event.date = new Date(event.date).toISOString();}
