@@ -72,7 +72,7 @@ exports = async function(payload, response) {
               from: "events",
               let: { id: "$_id" },
               pipeline: [
-                { $match: { $expr: { $eq: ["$starshipId", "$$id"] } } },
+                { $match: { $expr: { $and: [ { $eq: ["$starshipId", "$$id"] }, { type: "Assignment" } ] } } },
                 { $count: "personnelNum" },
               ],
             as: "personnelAssignments",
