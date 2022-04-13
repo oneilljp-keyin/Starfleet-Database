@@ -75,14 +75,14 @@ exports = async function(payload, response) {
               let: { id: "$_id" },
               pipeline: [
                 { $group : { _id : "$officerId" } }, 
-                // { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Assignment" } ] } },
-                { $count: "personnelNum" },
+                { $match: { $and: [ { $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Assignment" } ] } },
+                // { $count: "personnelNum" },
               ],
             as: "personnelAssignments",
             }
           },
-          { $addFields: { personnelCount: "$personnelAssignments.personnelNum" } },
-          { $project: { "personnelAssignments": 0 } },
+          // { $addFields: { personnelCount: "$personnelAssignments.personnelNum" } },
+          // { $project: { "personnelAssignments": 0 } },
           
           // Count number of general missions
           { $lookup: {
