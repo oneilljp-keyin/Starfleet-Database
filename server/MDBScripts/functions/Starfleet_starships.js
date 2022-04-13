@@ -81,8 +81,8 @@ exports = async function(payload, response) {
             as: "personnelAssignments",
             }
           },
-          // { $addFields: { personnelCount: "$personnelAssignments.personnelNum" } },
-          // { $project: { "personnelAssignments": 0 } },
+          { $addFields: { personnelCount: "$personnelAssignments.personnelNum" } },
+          { $project: { "personnelAssignments": 0 } },
           
           // Count number of general missions
           { $lookup: {
