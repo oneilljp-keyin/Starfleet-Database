@@ -1,45 +1,5 @@
 [
     {
-        "route": "/Starfleet/events",
-        "http_method": "*",
-        "function_name": "Starfleet_events",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/register",
-        "http_method": "*",
-        "function_name": "Register",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/personnel",
-        "http_method": "*",
-        "function_name": "Starfleet_personnel",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/starships",
-        "http_method": "*",
-        "function_name": "Starfleet_starships",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
         "route": "/Starfleet/classes",
         "http_method": "GET",
         "function_name": "Starfleet_classes",
@@ -73,6 +33,46 @@
         "route": "/Starfleet/login",
         "http_method": "*",
         "function_name": "Login",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/events",
+        "http_method": "*",
+        "function_name": "Starfleet_events",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/register",
+        "http_method": "*",
+        "function_name": "Register",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/personnel",
+        "http_method": "*",
+        "function_name": "Starfleet_personnel",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/starships",
+        "http_method": "*",
+        "function_name": "Starfleet_starships",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,

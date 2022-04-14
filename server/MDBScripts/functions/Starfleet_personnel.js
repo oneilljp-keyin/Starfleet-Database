@@ -102,6 +102,48 @@ exports = async function(payload, response) {
           { $addFields: { personnelCount: "$starshipAssignments.vesslesNum" } },
           { $project: { "starshipAssignments": 0 } },
 
+          // Count number of Assignments, Promotions and Demotions
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, {$or: [ { type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" } ]} ] } },
+                { $count: "AssignProDeNum" },
+              ],
+            as: "Assign-Pro-De",
+            }
+          },
+          { $addFields: { missionCount: "$Assign-Pro-De.AssignProDeNum" } },
+          { $project: { "Assign-Pro-De": 0 } },
+          
+          // Count number of general missions
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Mission" } ] } },
+                { $count: "generalNum" },
+              ],
+            as: "generalMissions",
+            }
+          },
+          { $addFields: { firstContactCount: "$generalMissions.generalNum" } },
+          { $project: { "generalMissions": 0 } },
+          
+          // Count number of Life Events
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Life Events" } ] } },
+                { $count: "lifeEventsNum" },
+              ],
+            as: "lifeEvents",
+            }
+          },
+          { $addFields: { maintenanceCount: "$lifeEvents.lifeEventsNum" } },
+          { $project: { "lifeEvents": 0 } },
+
         ];
         
         responseData = await personnel.aggregate(pipeline).next();
