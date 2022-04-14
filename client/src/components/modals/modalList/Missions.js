@@ -126,7 +126,8 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                         )}
                         {event.name && currentRank !== undefined && <br />}
                         {currentRank !== undefined && <>{currentRank}</>}
-                        {(event.name || event.position) && <br />}
+                        {((event.name && event.position) ||
+                          (currentRank !== undefined && event.position)) && <br />}
                         {event.position && <>{event.position}</>}
                       </td>
                       <td className="h4cell align-top">
@@ -164,7 +165,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={isAuth}
-        officerId={null}
+        officerId={officerId}
         starshipId={starshipId}
         eventId={eventId}
         subjectName={subjectName}

@@ -54,7 +54,10 @@ const Starships = (props) => {
       StarshipsDataService.get(id)
         .then((response) => {
           setStarship(response.data);
-          let starshipName = response.data.name.replace(/-A|-B|-C|-D|-E|-F|-G|-I|-J|-K|-L|-M/g, "");
+          let starshipName = response.data.name.replace(
+            /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
+            ""
+          );
           if (response.data.registry) starshipName += " " + response.data.registry;
           setStarshipName(starshipName);
           setStarshipId(response.data._id);
@@ -124,7 +127,13 @@ const Starships = (props) => {
             />
             <div className="m-1 mobile-center">
               {starship.name && (
-                <h1>USS {starship.name.replace(/-A|-B|-C|-D|-E|-F|-G|-I|-J|-K|-L|-M/g, "")}</h1>
+                <h1>
+                  USS{" "}
+                  {starship.name.replace(
+                    /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
+                    ""
+                  )}
+                </h1>
               )}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
@@ -197,7 +206,7 @@ const Starships = (props) => {
                 OpenModal("list", null, "Personnel", "Assignment");
               }}
             >
-              Personnel
+              Personnel {starship.personnelCount ? `(${starship.personnelCount})` : "(0)"}
             </button>
             <button
               className="lcars_btn all_square rose_btn my-0 flex-fill"
@@ -205,7 +214,7 @@ const Starships = (props) => {
                 OpenModal("list", null, "First Contact Missions", "First Contact");
               }}
             >
-              First Contact
+              First Contact {starship.firstContactCount ? `(${starship.firstContactCount})` : "(0)"}
             </button>
             <div className="small_hide lcars_end_cap right_round rose_btn my-0"> </div>
             <div className="w-100 small_hide m-1"></div>
@@ -216,7 +225,7 @@ const Starships = (props) => {
                 OpenModal("list", null, "General Missions", "Mission");
               }}
             >
-              Missions
+              Missions {starship.missionCount ? `(${starship.missionCount})` : "(0)"}
             </button>
             <button
               className="lcars_btn all_square rose_btn my-0 flex-fill"
@@ -224,7 +233,8 @@ const Starships = (props) => {
                 OpenModal("list", null, "Repairs/Upgrades", "Repair Upgrade");
               }}
             >
-              Repairs/Upgrades
+              Repairs/Upgrades{" "}
+              {starship.maintenanceCount ? `(${starship.maintenanceCount})` : "(0)"}
             </button>
             <div className="lcars_end_cap right_round rose_btn my-0"> </div>
           </div>

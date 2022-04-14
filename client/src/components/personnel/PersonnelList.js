@@ -76,13 +76,13 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
       <div className="rows d-flex align-content-center">
         <div className="col-2"></div>
         <div className="input-group input-group-lg">
-          <button
+          {/* <button
             className="btn btn-outline-secondary"
             type="button"
             style={{ visibility: "hidden" }}
           >
             <i className="fa-solid fa-xmark"></i>
-          </button>
+          </button> */}
           <input
             type="text"
             className="form-control"

@@ -47,11 +47,11 @@ label {color: #6d6d6d; }
 /* ---- Background colour of event list on officer profile -------------- */
 /* .event-list>tbody>tr:nth-child(even) { background-color: #30303088; border-radius: 4px; } */
 .event-list td {padding: 2px;}
-td {padding: 0; text-align: left;}
+td {text-align: left; padding: 2px 4px 2px 4px !important;}
 /* ---------------------------------------------------------------------- */
 
 /* ---- ModalUpload.js - dimensions on area where pic is uploaded ------- */
-.drop-zone { height: 350px; border-radius: 2.57rem; }
+.drop-zone { height: 350px; }
 .image-preview { height: 250px; }
 .preview-image { max-height: 350px; }
 /* ---------------------------------------------------------------------- */
@@ -109,6 +109,7 @@ td {padding: 0; text-align: left;}
 .main_body {
   grid-area: main;
   overflow-x: hidden;
+  /* min-height: calc(100vh - 112px); */
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
@@ -278,10 +279,9 @@ button.logout { color: #121212; background-color: #9999ffe6;
 }
 
 .content_container {
-  position: relative; z-index: 1; background-color: #121212;
-  width: 92%; margin: 0 0 0 auto;
-  border-radius: 1.5rem 0 0 1.5rem; padding: 0.5rem; min-height: 300px;
-  box-sizing: border-box; overflow: hidden;
+  position: relative; z-index: 1; background-color: #121212; width: 92%; margin: 0 0 0 auto;
+  border-radius: 1.5rem 0 0 1.5rem; padding: 0.5rem; box-sizing: border-box; overflow: hidden;
+  /* min-height: calc(100vh - 178px);  */
 }
 
 .article_content p {

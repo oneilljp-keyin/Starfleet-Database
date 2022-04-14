@@ -145,6 +145,39 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
       <div className="row">
         {starships.map((starship, index) => {
           let starshipId = starship.starship_id ? starship.starship_id : starship._id;
+          let dateString = "";
+          if (starship.launch_note === "before" || starship.commission_note === "before")
+            dateString += ">";
+          else if (starship.launch_note === "after" || starship.commission_note === "after")
+            dateString += "<";
+          else if (starship.launch_note === "approx" || starship.commission_note === "approx")
+            dateString += "~";
+          if (starship.launch_date || starship.commission_date) {
+            dateString += starship.launch_date
+              ? starship.launch_date.slice(0, 4)
+              : starship.commission_date.slice(0, 4);
+          } else {
+            dateString += "????";
+          }
+          if (dateString.length > 0) {
+            dateString += "-";
+          }
+          if (starship.decommission_note === "before" || starship.destruction_note === "before")
+            dateString += ">";
+          else if (starship.decommission_note === "after" || starship.destruction_note === "after")
+            dateString += "<";
+          else if (
+            starship.decommission_note === "approx" ||
+            starship.destruction_note === "approx"
+          )
+            dateString += "~";
+          if (starship.destruction_date || starship.decommission_date) {
+            dateString += starship.destruction_date
+              ? starship.destruction_date.slice(0, 4)
+              : starship.decommission_date.slice(0, 4);
+          } else {
+            dateString += "????";
+          }
           return (
             <div
               className="col-md-3 list-cards"
@@ -153,13 +186,19 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
             >
               <div className="card text-center bg-dark">
                 <div className="card-body">
+                  {" "}
+                  <strong style={{ margin: "0", color: "#8066af" }}>{dateString}</strong>
+                  <br />
                   <img
                     className="search-list"
                     src={starship.starshipPicUrl[0] ? starship.starshipPicUrl[0] : gray}
                     alt={starship.name}
                   />
                   <h5 className="card-title">
-                    {starship.name.replace(/-A|-B|-C|-D|-E|-F|-G|-I|-J|-K|-L|-M/g, "")}
+                    {starship.name.replace(
+                      /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
+                      ""
+                    )}
                   </h5>
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>
                   <div className="row">

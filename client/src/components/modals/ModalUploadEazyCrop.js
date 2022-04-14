@@ -92,7 +92,7 @@ const PopUpUpload = ({
   const closeModal = () => {
     // setModalClass("modal-main-body modal-close");
     setPhotoInfo(initialPhotoState);
-    // setRefresh(true);
+    // setRefresh();
     setFile(null);
     setIsFileSelected(false);
     setCroppedArea(null);

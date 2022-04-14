@@ -133,7 +133,12 @@ const Officer = (props) => {
                   <span style={{ fontSize: "1.18rem" }}>
                     {" "}
                     (As of{" "}
-                    {officer.deathDate ? officer.deathDate.slice(0, 4) : officer.date.slice(0, 4)})
+                    {officer.deathDate
+                      ? officer.deathDate.slice(0, 4)
+                      : officer.endDate
+                      ? officer.endDate.slice(0, 4)
+                      : officer.date.slice(0, 4)}
+                    )
                   </span>
                 )}
               </h1>
@@ -156,25 +161,23 @@ const Officer = (props) => {
                   {officer.position}
                 </h3>
               )}
-              <h3 style={{ textTransform: "capitalize" }}>
-                {officer.name && (
-                  <>
-                    <span style={{ color: "#FFDD22E6" }}>
-                      {!officer.active && <>Last </>}Vessel:{" "}
-                    </span>
-                    USS {officer.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
-                    {officer.registry}
-                  </>
+              {officer.name && (
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}>
+                    {!officer.active && <>Last </>}Vessel:{" "}
+                  </span>
+                  USS {officer.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
+                  {officer.registry}
+                </h3>
+              )}
+              {officer.location &&
+                (!officer.name || officer.surname.includes("Sisko")) &&
+                (!officer.position || !officer.position.includes("etired")) && (
+                  <h3 style={{ textTransform: "capitalize" }}>
+                    <span style={{ color: "#FFDD22E6" }}> Location: </span>
+                    {officer.location}
+                  </h3>
                 )}
-                {officer.location &&
-                  !officer.name &&
-                  (!officer.position || !officer.position.includes("etired")) && (
-                    <>
-                      <span style={{ color: "#FFDD22E6" }}> Location: </span>
-                      {officer.location}
-                    </>
-                  )}
-              </h3>
               {/* ))} */}
               {officer.birthDate && (
                 <h3 style={{ textTransform: "capitalize" }}>
@@ -225,7 +228,7 @@ const Officer = (props) => {
                 OpenModal("list", null, "Vessels Assigned", "Assignment");
               }}
             >
-              Vessels Assigned
+              Vessels Assigned ({officer.starshipCount ? `${officer.starshipCount}` : "0"})
             </button>
             <button
               className="lcars_btn all_square blue_btn my-0 flex-fill"
@@ -233,7 +236,7 @@ const Officer = (props) => {
                 OpenModal("list", null, "Assignments/Promotions", "Assign-Pro-De");
               }}
             >
-              Assignments/Promotions
+              Assignments/Promotions ({officer.assignCount ? `${officer.assignCount}` : "0"})
             </button>
             <div className="small_hide lcars_end_cap right_round blue_btn my-0"> </div>
             <div className="w-100 small_hide m-1"></div>
@@ -244,7 +247,7 @@ const Officer = (props) => {
                 OpenModal("list", null, "General Missions", "Mission");
               }}
             >
-              Missions
+              Missions ({officer.missionCount ? `${officer.missionCount}` : "0"})
             </button>
             <button
               className="lcars_btn all_square blue_btn my-0 flex-fill"
@@ -252,7 +255,7 @@ const Officer = (props) => {
                 OpenModal("list", null, "Life Events", "Life Event");
               }}
             >
-              Life Events
+              Life Events ({officer.lifeEventCount ? `${officer.lifeEventCount}` : "0"})
             </button>
             <div className="lcars_end_cap right_round blue_btn my-0"> </div>
           </div>

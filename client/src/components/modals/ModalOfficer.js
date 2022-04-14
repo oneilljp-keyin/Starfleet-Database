@@ -207,10 +207,10 @@ const PopUpOfficer = ({
                       <input
                         className="form-control form-control-lg my-1"
                         type="text"
-                        name="deathStardate"
-                        id="deathStardate"
-                        placeholder="Stardate of Death"
-                        value={officerInfo.deathStardate || ""}
+                        name="birthStardate"
+                        id="birthStardate"
+                        placeholder="Stardate of Birth"
+                        value={officerInfo.birthStardate || ""}
                         onChange={(e) => onChangeOfficerInfo(e)}
                       />
                       <label htmlFor="deathStardate">Stardate</label>

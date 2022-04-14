@@ -35,6 +35,9 @@ const PopUpEvents = ({
     date: null,
     dateNote: "exact",
     stardate: null,
+    endDate: null,
+    endDateNote: "exact",
+    endStardate: null,
     notes: null,
   };
 
@@ -203,6 +206,48 @@ const PopUpEvents = ({
                       </select>
                       <label htmlFor="dateNote">Date Note</label>
                     </div>
+                    {/* End Date of Event */}
+                    <div className="form-floating col-sm-4">
+                      <input
+                        className="form-control form-control-md my-1"
+                        type="date"
+                        name="endDate"
+                        id="eventEndDate"
+                        value={eventInfo.endDate ? eventInfo.endDate.slice(0, 10) : ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      />
+                      <label htmlFor="eventEndDate">End Date</label>
+                    </div>
+                    {/* End Stardate */}
+                    <div className="form-floating col-sm-4">
+                      <input
+                        className="form-control form-control-lg my-1"
+                        type="text"
+                        name="endStardate"
+                        id="eventEndStardate"
+                        placeholder="End Stardate"
+                        value={eventInfo.endStardate || ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      />
+                      <label htmlFor="eventEndStardate">End Stardate</label>
+                    </div>
+
+                    {/* Note about event date (exact, approx, before or after) */}
+                    <div className="form-floating col-sm-4">
+                      <select
+                        className="form-control my-1"
+                        name="endDateNote"
+                        id="endDateNote"
+                        value={eventInfo.endDateNote || ""}
+                        onChange={(e) => onChangeEventInfo(e)}
+                      >
+                        <option value="exact">Exact Date</option>
+                        <option value="approx">Approximate Date</option>
+                        <option value="before">Before This Date</option>
+                        <option value="after">After This Date</option>
+                      </select>
+                      <label htmlFor="endDateNote">End Date Note</label>
+                    </div>
                     {/* <div className="w-100"></div> */}
                     <div className="form-floating col-sm-4">
                       <select
@@ -215,11 +260,11 @@ const PopUpEvents = ({
                         <option value="Other">Other</option>
                         <option value="Assignment">Assignment</option>
                         <option value="First Contact">First Contact</option>
-                        {!officerId && <option value="Life Event">Life Event</option>}
+                        {officerId && <option value="Life Event">Life Event</option>}
                         <option value="Mission">Mission</option>
-                        {!officerId && <option value="Repair Upgrade">Repairs/Upgrades</option>}
-                        {!officerId && <option value="Promotion">Promotion</option>}
-                        {!officerId && <option value="Demotion">Demotion</option>}
+                        <option value="Repair Upgrade">Repairs/Upgrades</option>
+                        {officerId && <option value="Promotion">Promotion</option>}
+                        {officerId && <option value="Demotion">Demotion</option>}
                       </select>
                       <label htmlFor="eventType">Event Type</label>
                     </div>
