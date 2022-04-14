@@ -82,14 +82,27 @@ exports = async function(payload, response) {
               as: "lastAssignment",
             },
           },
-          // { $addFields: { lastAssignment: "$lastAssignment" } },
           {
             $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$lastAssignment", 0 ] }, "$$ROOT" ] } }
           },
           { $project: { "lastAssignment": 0 } },
+          
+          // Count number of starships assigned
+          { $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [ { $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Assignment" } ] } },
+                { $group : { _id : "$starshipId" } }, 
+                { $count: "vesslesNum" },
+              ],
+            as: "starshipAssignments",
+            }
+          },
+          { $addFields: { personnelCount: "$starshipAssignments.vesslesNum" } },
+          { $project: { "starshipAssignments": 0 } },
+
         ];
-        
-        // responseData = await personnel.findOne( { _id: BSON.ObjectId(id) } );
         
         responseData = await personnel.aggregate(pipeline).next();
         
