@@ -2,7 +2,7 @@ exports = async function (payload, response) {
   // payload contains {query, headers, body}
   const events = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("events");
   const id = payload.query.id;
-  const eventSort = { date: parseInt(payload.query.sort)} || {date: 1} ;
+  const eventSort = { date: parseInt(payload.query.sort) } || { date: 1 };
 
   let responseData = { message: "Something Went Wrong in the 'events' function" };
 
@@ -19,12 +19,12 @@ exports = async function (payload, response) {
         }
 
         if (payload.query.category == "Assign-Pro-De") {
-          idType = { $or: [ { type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" } ] };
+          idType = { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] };
         } else {
           idType = { type: payload.query.category };
         }
 
-        let query = { $and: [ idQuery, idType ] };
+        let query = { $and: [idQuery, idType] };
 
         let pipeline = [];
 
@@ -43,14 +43,18 @@ exports = async function (payload, response) {
               },
             },
             { $sort: eventSort },
-            { $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] }, }, },
+            {
+              $replaceRoot: {
+                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+              },
+            },
             { $project: { info: 0, __v: 0, starshipId: 0 } },
             {
               $lookup: {
                 from: "photos",
                 let: { id: "$officerId" },
                 pipeline: [
-                  { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
+                  { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
                   { $project: { _id: 0, url: 1 } },
                 ],
                 as: "officerPics",
@@ -74,14 +78,18 @@ exports = async function (payload, response) {
               },
             },
             { $sort: eventSort },
-            { $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] }, }, },
+            {
+              $replaceRoot: {
+                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+              },
+            },
             { $project: { info: 0, __v: 0, officerId: 0 } },
             {
               $lookup: {
                 from: "photos",
                 let: { id: "$starshipId" },
                 pipeline: [
-                  { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
+                  { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
                   { $project: { _id: 0, url: 1 } },
                 ],
                 as: "starshipPics",
