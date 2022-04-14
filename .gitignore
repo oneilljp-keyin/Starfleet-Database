@@ -20,3 +20,4 @@ client/server.key
 client/localhost.cer
 client/cypress.json
 client/cypress.env.json
+test.js
