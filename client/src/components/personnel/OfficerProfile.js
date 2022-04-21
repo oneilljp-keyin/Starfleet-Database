@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
-import PhotoCarousel from "../PhotoCarousel";
+import PhotoCarousel from "../hooks/PhotoCarousel";
 
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
+
+import ma_logo from "../../assets/MemoryAlphaLogo.png";
 
 const Officer = (props) => {
   const [imageType, setImageType] = useState("officer");
@@ -38,7 +40,8 @@ const Officer = (props) => {
     deathPlace: null,
     deathDateNote: null,
     serial: null,
-    events: [],
+    active: null,
+    memoryAlphaURL: null,
   };
 
   const [officer, setOfficer] = useState(initialOfficerState);
@@ -74,6 +77,19 @@ const Officer = (props) => {
   return (
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
+        {officer.memoryAlphaURL && (
+          <div style={{ width: "100%" }} className="text-center">
+            <a
+              href={`https://memory-alpha.fandom.com/wiki/${officer.memoryAlphaURL}`}
+              className="mf-1 list-link"
+              target="_blank"
+            >
+              <img src={ma_logo} alt="Memory Alpha" />
+              <strong className="mx-2">Memory Alpha Link</strong>
+              <i className="fa-solid fa-up-right-from-square" style={{ color: "gray" }}></i>
+            </a>
+          </div>
+        )}
         <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
           Search
         </Link>
@@ -166,7 +182,8 @@ const Officer = (props) => {
                   <span style={{ color: "#FFDD22E6" }}>
                     {!officer.active && <>Last </>}Vessel:{" "}
                   </span>
-                  USS {officer.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
+                  USS{" "}
+                  {officer.name.replace(/-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g, "")}{" "}
                   {officer.registry}
                 </h3>
               )}
@@ -178,7 +195,6 @@ const Officer = (props) => {
                     {officer.location}
                   </h3>
                 )}
-              {/* ))} */}
               {officer.birthDate && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>Birth: </span>
@@ -233,10 +249,10 @@ const Officer = (props) => {
             <button
               className="lcars_btn all_square blue_btn my-0 flex-fill"
               onClick={() => {
-                OpenModal("list", null, "Assignments/Promotions", "Assign-Pro-De");
+                OpenModal("list", null, "Service Record", "Assign-Pro-De");
               }}
             >
-              Assignments/Promotions ({officer.assignCount ? `${officer.assignCount}` : "0"})
+              Service Record ({officer.assignCount ? `${officer.assignCount}` : "0"})
             </button>
             <div className="small_hide lcars_end_cap right_round blue_btn my-0"> </div>
             <div className="w-100 small_hide m-1"></div>
@@ -260,118 +276,6 @@ const Officer = (props) => {
             <div className="lcars_end_cap right_round blue_btn my-0"> </div>
           </div>
           <div className="m-4 small-hide"></div>
-
-          {/* <table className="table event-list table-borderless w-100">
-            <tbody>
-              {officer.events.length && officer.events.length > 0 ? (
-                officer.events.map((event, index) => {
-                  let eventDate;
-                  if (event.date) {
-                    if (event.dateNote) {
-                      eventDate = event.date.slice(0, 4).toString();
-                      if (event.dateNote === "before") {
-                        eventDate = "Bef. " + eventDate;
-                      } else if (event.dateNote === "after") {
-                        eventDate = "Aft. " + eventDate;
-                      }
-                    } else {
-                      eventDate = event.date.slice(0, 10);
-                    }
-                  }
-                  return (
-                    <Fragment key={uuidv4()}>
-                      <tr style={{ borderTop: "1px solid white" }}>
-                        <td
-                          rowSpan={
-                            event.notes &&
-                            event.notes !== "Assignment" &&
-                            event.notes !== "Promotion" &&
-                            event.notes !== "Demotion"
-                              ? 2
-                              : 1
-                          }
-                        >
-                          {props.isAuth ? (
-                            <>
-                              <button
-                                className="edit"
-                                onClick={() => {
-                                  OpenModal("event", event._id);
-                                }}
-                              >
-                                <i className="far fa-edit" style={{ color: "gray" }}></i>
-                              </button>
-                              <br />
-                              <button
-                                className="edit"
-                                onClick={() => {
-                                  OpenModal("delete", event._id, "event");
-                                }}
-                              >
-                                <i
-                                  className="fa-solid fa-remove fa-xl"
-                                  style={{ color: "gray" }}
-                                ></i>
-                              </button>
-                            </>
-                          ) : null}
-                        </td>
-                        <td className="h3cell align-top">
-                          {event.date && `${eventDate}`}
-                          {event.date && event.stardate && eventDate.length > 4 && <br />}
-                          {event.stardate && ` SD ${event.stardate}`}
-                        </td>
-                        <td className="h4cell align-top">
-                          {event.name && (
-                            <Link to={`/starships/${event.starshipId}`} className="list-link">
-                              USS{" "}
-                              {event.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
-                              {event.registry}
-                            </Link>
-                          )}
-                          {event.name && event.location && <br />}
-                          {event.location && <>{event.location}</>}
-                        </td>
-                        <td className="h5cell align-top">
-                          {event.rankLabel && (
-                            <>
-                              {" "}
-                              {event.rankLabel.split("-").map((label, index) => {
-                                let rankLabel;
-                                if (index === 0) rankLabel = label;
-                                return rankLabel;
-                              })}
-                            </>
-                          )}
-                          {event.rankLabel && event.position && <br />}
-                          {event.position && <>{event.position}</>}
-                        </td>
-                        <td className="h6cell align-top">
-                          {event.type !== "Other" && <>{event.type}</>}
-                        </td>
-                      </tr>
-                      {event.notes &&
-                        event.notes !== "Assignment" &&
-                        event.notes !== "Promotion" &&
-                        event.notes !== "Demotion" && (
-                          <tr>
-                            <td className="h6cell" colSpan={7}>
-                              {event.notes}
-                            </td>
-                          </tr>
-                        )}
-                    </Fragment>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan={7} className="h6cell">
-                    No Events Yet
-                  </td>
-                </tr>
-              )}
-            </tbody>
-              </table> */}
         </div>
       ) : (
         <div>
@@ -389,7 +293,7 @@ const Officer = (props) => {
         eventId={eventId}
         subjectName={officerName}
         type={imageType}
-        setRefreshOption={toggleRefresh}
+        setRefresh={toggleRefresh}
         category={category}
       />
     </>

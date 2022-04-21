@@ -93,7 +93,7 @@ const PopUpList = ({
                           subjectName={subjectName}
                         />
                       ),
-                      "Assignments/Promotions": (
+                      "Service Record": (
                         <Missions
                           isAuth={isAuth}
                           listType={listType}

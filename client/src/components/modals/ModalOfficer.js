@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
 
+import StardateConverter from "../hooks/StardateConverter";
+
 const PopUpOfficer = ({
   isShowing,
   hide,
@@ -31,7 +33,7 @@ const PopUpOfficer = ({
     deathDateNote: "",
     serial: "",
     active: true,
-    events: [],
+    memoryAlphaURL: "",
   };
 
   const [officerInfo, setOfficerInfo] = useState(initialOfficerState);
@@ -66,12 +68,30 @@ const PopUpOfficer = ({
 
   const saveOfficerInfo = () => {
     let data = officerInfo;
-    delete data["events"];
+    delete data["name"];
+    delete data["registry"];
+    delete data["starshipId"];
+    delete data["location"];
+    delete data["rankLabel"];
+    delete data["position"];
+    delete data["date"];
+    delete data["starshipCount"];
+    delete data["assignCount"];
+    delete data["missionCount"];
+    delete data["lifeEventCount"];
     Object.keys(data).forEach((key) => {
       if (data[key] === "" || data[key] === null || data[key] === undefined) {
         delete data[key];
       }
     });
+    if (data.birthStardate && data.birthStardate.length > 6) {
+      let newDate = StardateConverter(data.birthStardate);
+      data.birthDate = newDate;
+    }
+    if (data.deathStardate && data.deathStardate.length > 6) {
+      let newDate = StardateConverter(data.deathStardate);
+      data.deathDate = newDate;
+    }
     if (edit) {
       data._id = officerId;
       PersonnelDataService.updateOfficer(data)
@@ -291,6 +311,18 @@ const PopUpOfficer = ({
                         onChange={(e) => onChangeOfficerInfo(e)}
                       />
                       <label htmlFor="deathPlace">Place of Death</label>
+                    </div>
+                    <div className="form-floating col-sm-12">
+                      <input
+                        className="form-control form-control-md my-1"
+                        type="text"
+                        name="memoryAlphaURL"
+                        id="memoryAlphaURL"
+                        placeholder="Memory Alpha Link"
+                        value={officerInfo.memoryAlphaURL || ""}
+                        onChange={(e) => onChangeOfficerInfo(e)}
+                      />
+                      <label htmlFor="deathPlace">Memory Alpha Link</label>
                     </div>
                   </div>
 

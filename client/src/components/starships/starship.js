@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import StarshipsDataService from "../../services/starships";
-import PhotoCarousel from "../PhotoCarousel";
+import PhotoCarousel from "../hooks/PhotoCarousel";
 import StarshipsSame from "./StarshipsSame";
 
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
+
+import ma_logo from "../../assets/MemoryAlphaLogo.png";
 
 const Starships = (props) => {
   const [type, setType] = useState("starship");
@@ -82,6 +84,19 @@ const Starships = (props) => {
   return (
     <>
       <div className="menu-btn_wrapper flex-row d-flex">
+        {starship.memoryAlphaURL && (
+          <div style={{ width: "100%" }} className="text-center">
+            <a
+              href={`https://memory-alpha.fandom.com/wiki/${starship.memoryAlphaURL}`}
+              className="mf-1 list-link"
+              target="_blank"
+            >
+              <img src={ma_logo} alt="Memory Alpha" />
+              <strong className="mx-2">Memory Alpha Link</strong>
+              <i className="fa-solid fa-up-right-from-square" style={{ color: "gray" }}></i>
+            </a>
+          </div>
+        )}
         <Link to={"/starships"} className="lcars_btn orange_btn left_round">
           Search
         </Link>
@@ -256,6 +271,7 @@ const Starships = (props) => {
         eventId={eventId}
         subjectName={starshipName}
         type={type}
+        refreshOption={refreshOption}
         setRefresh={toggleRefresh}
         category={category}
       />

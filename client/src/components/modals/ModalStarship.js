@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import StarshipsDataService from "../../services/starships";
+import StardateConverter from "../hooks/StardateConverter";
 
 const PopUpStarship = ({
   isShowing,
@@ -74,12 +75,31 @@ const PopUpStarship = ({
   const saveStarshipInfo = () => {
     let data = starshipInfo;
     delete data["events"];
+    // convert stardates to calendar dates
+    if (data.launch_stardate && data.launch_stardate.length > 6) {
+      let newDate = StardateConverter(data.launch_stardate);
+      data.launch_date = newDate;
+    }
+    if (data.commission_stardate && data.commission_stardate.length > 6) {
+      let newDate = StardateConverter(data.commission_stardate);
+      data.commission_date = newDate;
+    }
+    if (data.decommission_stardate && data.decommission_stardate.length > 6) {
+      let newDate = StardateConverter(data.decommission_stardate);
+      data.decommission_date = newDate;
+    }
+    if (data.destruction_stardate && data.destruction_stardate.length > 6) {
+      let newDate = StardateConverter(data.destruction_stardate);
+      data.destruction_date = newDate;
+    }
+
     // removes empty fields
     Object.keys(data).forEach((key) => {
       if (data[key] === null || data[key] === "" || data[key] === undefined) {
         delete data[key];
       }
     });
+
     if (edit) {
       data._id = starshipId;
       StarshipsDataService.updateStarship(data)
@@ -98,7 +118,6 @@ const PopUpStarship = ({
       StarshipsDataService.createStarship(data)
         .then((response) => {
           toast.success(response.data);
-          setStarshipInfo(initialStarshipState);
           setRefresh(true);
           hide();
         })
@@ -124,7 +143,6 @@ const PopUpStarship = ({
   }, []);
 
   const closeModal = () => {
-    setStarshipInfo(initialStarshipState);
     hide();
   };
 
@@ -377,6 +395,18 @@ const PopUpStarship = ({
                         ))}
                       </select>
                       <label htmlFor="destructionNote">Date Note</label>
+                    </div>
+                    <div className="form-floating col-sm-12">
+                      <input
+                        className="form-control form-control-md my-1"
+                        type="text"
+                        name="memoryAlphaURL"
+                        id="memoryAlphaURL"
+                        placeholder="Memory Alpha Link"
+                        value={starshipInfo.memoryAlphaURL || ""}
+                        onChange={(e) => onChangeStarshipInfo(e)}
+                      />
+                      <label htmlFor="deathPlace">Memory Alpha Link</label>
                     </div>
                   </div>
 

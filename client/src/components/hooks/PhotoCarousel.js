@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
-import ufpLogo from "../assets/ufp_logo.png";
+import ufpLogo from "../../assets/ufp_logo.png";
 
-import EventsAndPhotosDataService from "../services/eventsAndPhotos";
-import ModalLauncher from "./modals/ModalLauncher";
-import UseModal from "./modals/UseModal";
+import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
+import ModalLauncher from "../modals/ModalLauncher";
+import UseModal from "../modals/UseModal";
 
-function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType }) {
+function PhotoCarousel({ subjectId, isAuth, refreshOption, setPhotoRefresh, imageType }) {
   const [photoArray, setPhotoArray] = useState([]);
   const [picTracker, setPicTracker] = useState([]);
 
@@ -29,8 +29,8 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
         });
     };
     getphotoArray(subjectId);
-    setPhotoRefresh(false);
-  }, [subjectId, photoRefresh, setPhotoRefresh]);
+    setPhotoRefresh();
+  }, [subjectId, refreshOption]);
 
   function OpenModal(modalType, id = null, type = "photo") {
     setPhotoId(id);
@@ -155,7 +155,7 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
         isAuth={isAuth}
         photoId={photoId}
         imageType={"photo"}
-        setRefreshOption={setPhotoRefresh}
+        setRefresh={setPhotoRefresh}
       />
     </>
   );

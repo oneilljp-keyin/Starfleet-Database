@@ -6,6 +6,8 @@ import PersonnelDataService from "../../services/personnel";
 import StarshipsDataService from "../../services/starships";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
+import StardateConverter from "../hooks/StardateConverter";
+
 const PopUpEvents = ({
   isShowing,
   hide,
@@ -36,7 +38,7 @@ const PopUpEvents = ({
     dateNote: "exact",
     stardate: null,
     endDate: null,
-    endDateNote: "exact",
+    endDateNote: null,
     endStardate: null,
     notes: null,
   };
@@ -112,6 +114,17 @@ const PopUpEvents = ({
     });
     delete data["starshipName"];
     delete data["starshipRegistry"];
+
+    if (data.stardate && data.stardate.length > 6) {
+      let newDate = StardateConverter(data.stardate);
+      data.date = newDate;
+    }
+
+    if (data.endStardate && data.endStardate.length > 6) {
+      let newDate = StardateConverter(data.endStardate);
+      data.endDate = newDate;
+    }
+
     if (btnLabel === "Update") {
       data._id = eventId;
       EventsAndPhotosDataService.updateEvent(data)

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 import axios from "axios";
 import { toast } from "react-toastify";
+import { debounce } from "lodash";
 
 import ufp from "../../assets/ufp.png";
 import gray from "../../assets/insignia_gray.png";
@@ -45,11 +46,10 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
     setPersonnel([]);
   }, [searchQuery]);
 
-  useEffect(() => {
-    if (searchQuery.length > 0) {
-      setLoading(true);
+  const debounceQuery = useCallback(
+    debounce((searchValue) => {
       const ourRequest = axios.CancelToken.source();
-      PersonnelDataService.find(searchQuery, pageNumber, ourRequest.token)
+      PersonnelDataService.find(searchValue, pageNumber, ourRequest.token)
         .then((response) => {
           setPersonnel((prevPersonnel) => {
             return [
@@ -68,6 +68,14 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
           toast.warning(e.message);
         });
       return () => ourRequest.cancel();
+    }, 500),
+    []
+  );
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      setLoading(true);
+      debounceQuery(searchQuery);
     }
   }, [searchQuery, pageNumber]);
 
@@ -76,13 +84,6 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
       <div className="rows d-flex align-content-center">
         <div className="col-2"></div>
         <div className="input-group input-group-lg">
-          {/* <button
-            className="btn btn-outline-secondary"
-            type="button"
-            style={{ visibility: "hidden" }}
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </button> */}
           <input
             type="text"
             className="form-control"
