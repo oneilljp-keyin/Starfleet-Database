@@ -64,7 +64,7 @@ exports = async function(payload, response) {
       try {
         let photoURL = await photos.findOne({ _id: BSON.ObjectId(photoId) }, "url");
         // await photos.deleteOne({ _id: BSON.ObjectId(photoId) });
-        return { message: "Photo Info Successfully Deleted", photoURL };
+        return { message: "Photo Info Successfully Deleted", photoURL: photoURL };
       } catch (err) {
         return { message: `Deletion of Photo Info Failed ${err.message}` };
       }
