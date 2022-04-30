@@ -185,6 +185,7 @@ exports = async function (payload, response) {
       if (eventInfo.starshipId) eventInfo.starshipId = BSON.ObjectId(eventInfo.starshipId);
       if (eventInfo.officerId) eventInfo.officerId = BSON.ObjectId(eventInfo.officerId);
       if (eventInfo.date) eventInfo.date = new Date(eventInfo.date);
+      if (eventInfo.enddDate) eventInfo.endDate = new Date(eventInfo.endDate);
       try {
         await events.insertOne(eventInfo);
         return { message: "Record Inserted Successfully" };
@@ -207,9 +208,8 @@ exports = async function (payload, response) {
       const updatedInfo = EJSON.parse(payload.body.text());
       const eventId = updatedInfo._id;
 
-      if (updatedInfo.date) {
-        updatedInfo.date = new Date(updatedInfo.date);
-      }
+      if (updatedInfo.date) updatedInfo.date = new Date(updatedInfo.date);
+      if (updatedInfo.enddDate) updatedInfo.endDate = new Date(updatedInfo.endDate);
       if (updatedInfo.starshipId) updatedInfo.starshipId = BSON.ObjectId(updatedInfo.starshipId);
       if (updatedInfo.officerId) updatedInfo.officerId = BSON.ObjectId(updatedInfo.officerId);
 
