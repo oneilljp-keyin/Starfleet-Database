@@ -10,7 +10,7 @@ exports = async function (payload, response) {
     // Get a list of starships (search by name or class if search value provided) or by _id for individual
     case "GET": {
       if (!id) {
-        let { starshipsPerPage = 10, page = 0 } = payload.query;
+        let { starshipsPerPage = 12, page = 0 } = payload.query;
         starshipsPerPage = parseInt(starshipsPerPage);
         let nameQuery = {};
         let classQuery = {};
