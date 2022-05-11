@@ -19,8 +19,10 @@ exports = async function (payload, response) {
           nameQuery = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
         }
 
-        if (!payload.query.class || payload.query.class === "Unknown") {
+        if (!payload.query.class || payload.query.class === "All") {
           classQuery = { $or: [{ class: { $exists: true } }, { class: { $exists: false } }] };
+        } else if (payload.query.class === "Unknown") {
+          classQuery = { class: { $exists: false } };
         } else {
           classQuery = { class: { $eq: payload.query.class } };
         }
