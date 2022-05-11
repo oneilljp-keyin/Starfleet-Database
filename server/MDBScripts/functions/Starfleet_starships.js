@@ -108,7 +108,7 @@ exports = async function (payload, response) {
               pipeline: [
                 {
                   $match: {
-                    $and: [{ $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Mission" }],
+                    $and: [{ $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Mission" }, {officerId: {$exists: false}}],
                   },
                 },
                 { $count: "missonNum" },
