@@ -61,7 +61,6 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
               response.data.total_results
           );
           setLoading(false);
-          sessionStorage.setItem("officerQuery", searchQuery);
         })
         .catch((e) => {
           if (axios.isCancel(e)) return;
@@ -76,6 +75,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
     if (searchQuery.length > 0) {
       setLoading(true);
       debounceQuery(searchQuery);
+      sessionStorage.setItem("officerQuery", searchQuery);
     }
   }, [searchQuery, pageNumber]);
 
@@ -133,8 +133,9 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
               officerName += " " + middleI + ".";
             }
             return (
-              <div
-                className="col-sm-3 list-cards"
+              <Link
+                to={"/personnel/" + officerId}
+                className="col-sm-3 search-cards"
                 key={uuidv4()}
                 ref={personnel.length === index + 1 ? lastOfficerRef : null}
               >
@@ -146,14 +147,9 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
                       alt={officerName}
                     />
                     <h5 className="card-title">{officerName}</h5>
-                    <div className="row">
-                      <Link to={"/personnel/" + officerId} className="btn btn-primary">
-                        View Profile
-                      </Link>
-                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })
         )}

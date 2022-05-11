@@ -35,7 +35,7 @@ const PopUpEvents = ({
     rankLabel: null,
     position: null,
     date: null,
-    dateNote: "exact",
+    dateNote: "approx",
     stardate: null,
     endDate: null,
     endDateNote: null,
@@ -115,12 +115,12 @@ const PopUpEvents = ({
     delete data["starshipName"];
     delete data["starshipRegistry"];
 
-    if (data.stardate && data.stardate.length > 6) {
+    if (data.stardate && data.stardate.charAt(5) === ".") {
       let newDate = StardateConverter(data.stardate);
       data.date = newDate;
     }
 
-    if (data.endStardate && data.endStardate.length > 6) {
+    if (data.endStardate && data.endStardate.charAt(5) === ".") {
       let newDate = StardateConverter(data.endStardate);
       data.endDate = newDate;
     }
@@ -129,7 +129,7 @@ const PopUpEvents = ({
       data._id = eventId;
       EventsAndPhotosDataService.updateEvent(data)
         .then((response) => {
-          // setRefresh();
+          setRefresh();
           setEventInfo(initialEventState);
           hide();
           setBtnLabel("Enter");
@@ -149,7 +149,7 @@ const PopUpEvents = ({
         .then((response) => {
           toast.success(response.data.message);
           hide();
-          // setRefresh();
+          setRefresh();
           setEventInfo(initialEventState);
           setBtnLabel("Enter");
         })
@@ -209,7 +209,7 @@ const PopUpEvents = ({
                         className="form-control my-1"
                         name="dateNote"
                         id="dateNote"
-                        value={eventInfo.dateNote || ""}
+                        value={eventInfo.dateNote || "approx"}
                         onChange={(e) => onChangeEventInfo(e)}
                       >
                         <option value="exact">Exact Date</option>
@@ -251,7 +251,7 @@ const PopUpEvents = ({
                         className="form-control my-1"
                         name="endDateNote"
                         id="endDateNote"
-                        value={eventInfo.endDateNote || ""}
+                        value={eventInfo.endDateNote || "approx"}
                         onChange={(e) => onChangeEventInfo(e)}
                       >
                         <option value="exact">Exact Date</option>
@@ -271,7 +271,7 @@ const PopUpEvents = ({
                         onChange={(e) => onChangeEventInfo(e)}
                       >
                         <option value="Other">Other</option>
-                        <option value="Assignment">Assignment</option>
+                        {officerId && <option value="Assignment">Assignment</option>}
                         <option value="First Contact">First Contact</option>
                         {officerId && <option value="Life Event">Life Event</option>}
                         <option value="Mission">Mission</option>

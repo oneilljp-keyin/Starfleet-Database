@@ -15,15 +15,13 @@ import Officer from "./components/personnel/OfficerProfile";
 import StarshipList from "./components/starships/StarshipList";
 import Starship from "./components/starships/Starship";
 
-import StardateConverter from "./components/hooks/StardateConverter";
-
 import SignInUpService from "./services/signInUp";
 
 toast.configure();
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [adminRole, setAdminRole] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [adminRole, setAdminRole] = useState(null);
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
   const [modalClass, setModalClass] = useState("main-modal-body modal-open");

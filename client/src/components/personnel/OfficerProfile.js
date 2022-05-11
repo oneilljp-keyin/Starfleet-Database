@@ -216,7 +216,7 @@ const Officer = (props) => {
               {officer.deathDate && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>Death: </span>
-                  {officer.deathDateNote ? (
+                  {officer.deathDateNote && officer.deathDateNote !== "Exact Date" ? (
                     <>
                       {officer.deathDateNote} {officer.deathDate.slice(0, 4)}
                     </>
@@ -236,7 +236,7 @@ const Officer = (props) => {
 
           <div className="m-4 small-hide"></div>
 
-          <div className="d-flex justify-content-center flex-wrap">
+          {/* <div className="d-flex justify-content-center flex-wrap">
             <div className="lcars_end_cap left_round blue_btn my-0"> </div>
             <button
               className="lcars_btn all_square blue_btn my-0 flex-fill"
@@ -275,7 +275,60 @@ const Officer = (props) => {
             </button>
             <div className="lcars_end_cap right_round blue_btn my-0"> </div>
           </div>
-          <div className="m-4 small-hide"></div>
+          <div className="m-4 small-hide"></div> */}
+          <div className="list-container">
+            <div className="lcars_end_cap left_round rose_btn"> </div>
+            <button
+              className="lcars_btn all_square rose_btn"
+              onClick={() => {
+                OpenModal("list", null, "Vessels Assigned", "Assignment");
+              }}
+            >
+              Vessels ({officer.starshipCount ? `${officer.starshipCount}` : "0"})
+            </button>
+            <button
+              className="lcars_btn all_square pink_btn"
+              onClick={() => {
+                OpenModal("list", null, "Service Record", "Assign-Pro-De");
+              }}
+            >
+              Service Record ({officer.assignCount ? `${officer.assignCount}` : "0"})
+            </button>
+            <div className="lcars_end_cap right_round pink_btn"> </div>
+            <div className=""> </div>
+            <div className=""> </div>
+            <button
+              className="lcars_btn all_square orange_btn"
+              onClick={() => {
+                OpenModal("list", null, "General Missions", "Mission");
+              }}
+            >
+              Missions ({officer.missionCount ? `${officer.missionCount}` : "0"})
+            </button>
+            <div className="lcars_end_cap right_round orange_btn"> </div>
+            <div className=""> </div>
+            <div className=""> </div>
+            <button
+              className="lcars_btn all_square blue_btn"
+              onClick={() => {
+                OpenModal("list", null, "Life Events", "Life Event");
+              }}
+            >
+              Life Events ({officer.lifeEventCount ? `${officer.lifeEventCount}` : "0"})
+            </button>
+            <div className="lcars_end_cap right_round blue_btn"> </div>
+            {/* <div className=""> </div>
+            <div className=""> </div>
+            <button
+              className="lcars_btn all_square beige_btn"
+              onClick={() => {
+                OpenModal("list", null, "Complete Chronology", "Chronology");
+              }}
+            >
+              Chronology ({officer.totalEventCount ? `${officer.totalEventCount}` : "0"})
+            </button>
+            <div className="lcars_end_cap right_round beige_btn"> </div> */}
+          </div>
         </div>
       ) : (
         <div>

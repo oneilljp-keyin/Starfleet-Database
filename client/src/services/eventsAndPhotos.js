@@ -60,6 +60,18 @@ class EventsAndPhotosDataService {
 
   deletePhoto(photoId) {
     return http.delete(`/photos?id=${photoId}`);
+    // // console.log(deleteResults.data);
+    // console.log(JSON.stringify(deleteResults.data));
+    // let photoName = deleteResults.data.photoURL.replace(
+    //   "https://sector709.johnny-o.net/images/",
+    //   ""
+    // );
+    // let deleteFile = axios.delete("https://sector709.johnny-o.net/images/upload.php", photoName, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    // return deleteFile;
   }
 
   updatePhotoInfo(photoInfo) {

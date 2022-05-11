@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
-import orange from "../../../assets/insignia_orange.png";
+import orange from "../../../assets/insignia_orange_wide.png";
 
 import { toast } from "react-toastify";
 
@@ -34,34 +34,47 @@ const StarshipsList = ({ listType, officerId, category }) => {
   }, [officerId, category]);
 
   return (
-    <div className="d-flex flex-wrap row overflow-auto" style={{ height: "calc(100% - 96px)" }}>
+    <div
+      className="d-flex flex-wrap row overflow-y justify-content-evenly"
+      style={{ maxHeight: "calc(100% - 96px)" }}
+    >
       {starships.length > 0 ? (
         starships
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((starship) => {
             return (
-              <div className="col-sm-3 list-cards" key={uuidv4()}>
-                <div className="card text-center bg-dark">
-                  <div className="card-body">
-                    {/* {officer.position && <span className="h6cell">{officer.position}</span>}
-                    <br />
-                    <span className="h3cell">{rankAbbrev}</span>
-                    <br /> */}
+              // <div className="col-sm-3 list-cards" key={uuidv4()}>
+              <Link
+                key={uuidv4()}
+                to={"/starships/" + starship.starshipId}
+                className="list-link col-sm-5 bg-dark list-cards p-0"
+              >
+                <div className="row d-flex">
+                  <div className="col-sm-5 p-0 my-auto">
                     <img
-                      className="search-list"
+                      className="service-list"
                       src={starship.starshipPicUrl[0] ? starship.starshipPicUrl[0] : orange}
                       alt={starship.name}
                     />
-                    <br />
-                    <span className="h5cell">{starship.name}</span>
-                    <div className="row">
-                      <Link to={"/starships/" + starship.starshipId} className="btn btn-primary">
-                        View Profile
-                      </Link>
-                    </div>
+                  </div>
+                  <div className="col-sm-7 my-auto">
+                    <span className="h5cell">USS {starship.name}</span>
+                    {starship.class && (
+                      <>
+                        <br />
+                        <span className="h3cell">{starship.class}</span>
+                      </>
+                    )}
+                    {starship.registry && (
+                      <>
+                        <br />
+                        <span className="h6cell">{starship.registry}</span>
+                      </>
+                    )}{" "}
                   </div>
                 </div>
-              </div>
+              </Link>
+              // </div>
             );
           })
       ) : (

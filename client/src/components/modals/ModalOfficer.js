@@ -79,16 +79,23 @@ const PopUpOfficer = ({
     delete data["assignCount"];
     delete data["missionCount"];
     delete data["lifeEventCount"];
+    delete data["endDate"];
     Object.keys(data).forEach((key) => {
       if (data[key] === "" || data[key] === null || data[key] === undefined) {
         delete data[key];
       }
     });
-    if (data.birthStardate && data.birthStardate.length > 6) {
+    if (
+      data.birthStardate &&
+      (data.birthStardate.charAt(5) === "." || data.birthStardate.charAt(6) === ".")
+    ) {
       let newDate = StardateConverter(data.birthStardate);
       data.birthDate = newDate;
     }
-    if (data.deathStardate && data.deathStardate.length > 6) {
+    if (
+      data.deathStardate &&
+      (data.deathStardate.charAt(5) === "." || data.deathStardate.charAt(6) === ".")
+    ) {
       let newDate = StardateConverter(data.deathStardate);
       data.deathDate = newDate;
     }

@@ -6,7 +6,7 @@ import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 import ModalLauncher from "../modals/ModalLauncher";
 import UseModal from "../modals/UseModal";
 
-function PhotoCarousel({ subjectId, isAuth, refreshOption, setPhotoRefresh, imageType }) {
+function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType }) {
   const [photoArray, setPhotoArray] = useState([]);
   const [picTracker, setPicTracker] = useState([]);
 
@@ -30,7 +30,7 @@ function PhotoCarousel({ subjectId, isAuth, refreshOption, setPhotoRefresh, imag
     };
     getphotoArray(subjectId);
     setPhotoRefresh();
-  }, [subjectId, refreshOption]);
+  }, [subjectId, photoRefresh]);
 
   function OpenModal(modalType, id = null, type = "photo") {
     setPhotoId(id);

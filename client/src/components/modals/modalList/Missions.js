@@ -37,7 +37,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
     };
 
     getEvents(officerId, starshipId, category);
-  }, [officerId, starshipId, category]);
+  }, [officerId, starshipId, category, refreshOption]);
 
   function OpenModal(modalType, id, option = type, category = "") {
     setModal(modalType);
@@ -115,12 +115,16 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                       <td className="h3cell align-top">
                         {event.date && `${eventDate}`}
                         {/* {event.date && event.stardate && eventDate.length > 4 && <br />} */}
-                        {event.stardate && ` SD ${event.stardate}`}
+                        {event.stardate && event.stardate !== "0" && ` SD ${event.stardate}`}
                       </td>
                       <td className="h5cell align-top">
                         {event.name && (
                           <Link to={`/starships/${event.starshipId}`} className="list-link">
-                            {event.name.replace(/-A|-B|-C|-D|-E|-F|-G|-H|-I|-J|-K|-L|-M/g, "")}{" "}
+                            USS{" "}
+                            {event.name.replace(
+                              /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
+                              ""
+                            )}{" "}
                             {event.registry}
                           </Link>
                         )}
@@ -170,7 +174,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
         eventId={eventId}
         subjectName={subjectName}
         type={type}
-        setRefreshOption={toggleRefresh}
+        setRefresh={toggleRefresh}
         category={eventCategory}
       />
     </>

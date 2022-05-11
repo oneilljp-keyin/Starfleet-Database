@@ -33,51 +33,58 @@ const PersonnelList = ({ listType, starshipId, category }) => {
   }, [starshipId, category]);
 
   return (
-    <div className="d-flex flex-wrap row overflow-auto" style={{ height: "calc(100% - 96px)" }}>
+    <div
+      className="d-flex flex-wrap row overflow-auto justify-content-evenly"
+      style={{ maxHeight: "calc(100% - 96px)" }}
+    >
       {personnel.length > 0 ? (
         personnel
           .sort((a, b) => a.surname.localeCompare(b.surname))
           .map((officer) => {
             let officerName;
             let rankAbbrev;
+            let rankLabel;
             if (officer.surname !== "undefined") {
               officerName = officer.surname;
             }
             if (officer.first) {
               officerName += ", " + officer.first;
             }
-            if (officer.middle) {
-              let middleI = officer.middle.slice(0, 1);
-              officerName += " " + middleI + ".";
-            }
             if (officer.rankLabel) {
-              const [, abbrev] = officer.rankLabel.split("-");
+              const [label, abbrev] = officer.rankLabel.split("-");
+              rankLabel = label;
               rankAbbrev = abbrev;
             }
 
             return (
-              <div className="col-sm-3 list-cards" key={uuidv4()}>
-                <div className="card text-center bg-dark">
-                  <div className="card-body">
-                    {officer.position && <span className="h6cell">{officer.position}</span>}
-                    <br />
-                    <span className="h3cell">{rankAbbrev}</span>
-                    <br />
+              // <div className="col-sm-4 bg-dark list-cards p-0" key={uuidv4()}>
+              <Link
+                key={uuidv4()}
+                to={"/personnel/" + officer.officerId}
+                className="list-link col-sm-5 bg-dark list-cards p-0"
+              >
+                <div className="row d-flex">
+                  <div className="col-sm-3 p-0 my-auto">
                     <img
-                      className="search-list"
+                      className="service-list"
                       src={officer.officerPicUrl[0] ? officer.officerPicUrl[0] : orange}
                       alt={officerName}
                     />
-                    <br />
+                  </div>
+                  <div className="col-sm-9 my-auto">
                     <span className="h5cell">{officerName}</span>
-                    <div className="row">
-                      <Link to={"/personnel/" + officer.officerId} className="btn btn-primary">
-                        View Profile
-                      </Link>
-                    </div>
+                    {rankLabel && (
+                      <>
+                        <br />
+                        <span className="h3cell">{rankLabel}</span>
+                      </>
+                    )}
+                    <br />
+                    {officer.position && <span className="h6cell">{officer.position}</span>}
                   </div>
                 </div>
-              </div>
+              </Link>
+              // </div>
             );
           })
       ) : (

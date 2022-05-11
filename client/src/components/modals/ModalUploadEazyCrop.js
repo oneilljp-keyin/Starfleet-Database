@@ -14,6 +14,7 @@ const PopUpUpload = ({
   subjectId,
   photoId,
   setRefresh,
+  setPhotoRefresh,
   imageType,
   modalClass,
   setModalClass,
@@ -90,9 +91,8 @@ const PopUpUpload = ({
   }
 
   const closeModal = () => {
-    // setModalClass("modal-main-body modal-close");
     setPhotoInfo(initialPhotoState);
-    // setRefresh();
+    setRefresh();
     setFile(null);
     setIsFileSelected(false);
     setCroppedArea(null);
@@ -117,6 +117,7 @@ const PopUpUpload = ({
   const deletePhoto = async () => {
     try {
       let response = await EventsAndPhotosDataService.deletePhoto(photoId);
+      // setPhotoRefresh();
       toast.dark(response.data.message);
       closeModal();
     } catch (err) {

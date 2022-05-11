@@ -75,20 +75,36 @@ const PopUpStarship = ({
   const saveStarshipInfo = () => {
     let data = starshipInfo;
     delete data["events"];
+    delete data["personnelCount"];
+    delete data["firstContactCount"];
+    delete data["missionCount"];
+    delete data["maintenanceCount"];
     // convert stardates to calendar dates
-    if (data.launch_stardate && data.launch_stardate.length > 6) {
+    if (
+      data.launch_stardate &&
+      (data.launch_stardate.charAt(5) === "." || data.launch_stardate.charAt(6) === ".")
+    ) {
       let newDate = StardateConverter(data.launch_stardate);
       data.launch_date = newDate;
     }
-    if (data.commission_stardate && data.commission_stardate.length > 6) {
+    if (
+      data.commission_stardate &&
+      (data.commission_stardate.charAt(5) === "." || data.commission_stardate.charAt(6) === ".")
+    ) {
       let newDate = StardateConverter(data.commission_stardate);
       data.commission_date = newDate;
     }
-    if (data.decommission_stardate && data.decommission_stardate.length > 6) {
+    if (
+      data.decommission_stardate &&
+      (data.decommission_stardate.charAt(5) === "." || data.decommission_stardate.charAt(6) === ".")
+    ) {
       let newDate = StardateConverter(data.decommission_stardate);
       data.decommission_date = newDate;
     }
-    if (data.destruction_stardate && data.destruction_stardate.length > 6) {
+    if (
+      data.destruction_stardate &&
+      (data.destruction_stardate.charAt(5) === "." || data.destruction_stardate.charAt(6) === ".")
+    ) {
       let newDate = StardateConverter(data.destruction_stardate);
       data.destruction_date = newDate;
     }
@@ -269,7 +285,7 @@ const PopUpStarship = ({
                     </div>
                     <div className="form-floating col-sm-4">
                       <input
-                        className="form-control form-control-sm my-1"
+                        className="form-control form-control-md my-1"
                         type="date"
                         name="commission_date"
                         id="commissionDate"
@@ -312,7 +328,7 @@ const PopUpStarship = ({
                     </div>
                     <div className="form-floating col-sm-4">
                       <input
-                        className="form-control form-control-sm my-1"
+                        className="form-control form-control-md my-1"
                         type="date"
                         name="decommission_date"
                         id="decommissionDate"
@@ -355,7 +371,7 @@ const PopUpStarship = ({
                     </div>
                     <div className="form-floating col-sm-4">
                       <input
-                        className="form-control form-control-sm my-1"
+                        className="form-control form-control-md my-1"
                         type="date"
                         name="destruction_date"
                         id="destructionDate"
@@ -403,10 +419,11 @@ const PopUpStarship = ({
                         name="memoryAlphaURL"
                         id="memoryAlphaURL"
                         placeholder="Memory Alpha Link"
+                        autoComplete="off"
                         value={starshipInfo.memoryAlphaURL || ""}
                         onChange={(e) => onChangeStarshipInfo(e)}
                       />
-                      <label htmlFor="deathPlace">Memory Alpha Link</label>
+                      <label htmlFor="memoryAlphaURL">Memory Alpha Link</label>
                     </div>
                   </div>
 

@@ -201,7 +201,6 @@ const Starships = (props) => {
               </p>
             </div>
           </div>
-
           <div className="d-flex justify-content-around flex-wrap">
             {starship.name && (
               <StarshipsSame starshipName={starship.name} starshipId={starship._id} />
@@ -213,45 +212,58 @@ const Starships = (props) => {
 
           <div className="m-4 small-hide"></div>
 
-          <div className="d-flex justify-content-center flex-wrap">
-            <div className="lcars_end_cap left_round rose_btn my-0"> </div>
+          <div className="list-container">
+            <div className="lcars_end_cap left_round rose_btn"> </div>
             <button
-              className="lcars_btn all_square rose_btn my-0 flex-fill"
+              className="lcars_btn all_square rose_btn"
               onClick={() => {
-                OpenModal("list", null, "Personnel", "Assignment");
+                OpenModal("list", null, "Personnel", "Assign-Pro-De");
               }}
             >
               Personnel {starship.personnelCount ? `(${starship.personnelCount})` : "(0)"}
             </button>
             <button
-              className="lcars_btn all_square rose_btn my-0 flex-fill"
+              className="lcars_btn all_square pink_btn"
               onClick={() => {
                 OpenModal("list", null, "First Contact Missions", "First Contact");
               }}
             >
               First Contact {starship.firstContactCount ? `(${starship.firstContactCount})` : "(0)"}
             </button>
-            <div className="small_hide lcars_end_cap right_round rose_btn my-0"> </div>
-            <div className="w-100 small_hide m-1"></div>
-            <div className="small_hide lcars_end_cap left_round rose_btn my-0"> </div>
+            <div className="lcars_end_cap right_round pink_btn"> </div>
+            <div className=""> </div>
+            <div className=""> </div>
             <button
-              className="lcars_btn all_square rose_btn my-0 flex-fill"
+              className="lcars_btn all_square orange_btn"
               onClick={() => {
                 OpenModal("list", null, "General Missions", "Mission");
               }}
             >
               Missions {starship.missionCount ? `(${starship.missionCount})` : "(0)"}
             </button>
+            <div className="lcars_end_cap right_round orange_btn"> </div>
+            <div className=""> </div>
+            <div className=""> </div>
             <button
-              className="lcars_btn all_square rose_btn my-0 flex-fill"
+              className="lcars_btn all_square blue_btn"
               onClick={() => {
                 OpenModal("list", null, "Repairs/Upgrades", "Repair Upgrade");
               }}
             >
-              Repairs/Upgrades{" "}
-              {starship.maintenanceCount ? `(${starship.maintenanceCount})` : "(0)"}
+              Maintenance {starship.maintenanceCount ? `(${starship.maintenanceCount})` : "(0)"}
             </button>
-            <div className="lcars_end_cap right_round rose_btn my-0"> </div>
+            <div className="lcars_end_cap right_round blue_btn"> </div>
+            {/* <div className=""> </div>
+            <div className=""> </div>
+            <button
+              className="lcars_btn all_square beige_btn"
+              onClick={() => {
+                OpenModal("list", null, "Complete Chronology", "Chronology");
+              }}
+            >
+              Chronology {starship.totalEventCount ? `(${starship.totalEventCount})` : "(0)"}
+            </button>
+            <div className="lcars_end_cap right_round beige_btn"> </div> */}
           </div>
         </div>
       ) : (
@@ -266,7 +278,6 @@ const Starships = (props) => {
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={props.isAuth}
-        officerId={null}
         starshipId={starshipId}
         eventId={eventId}
         subjectName={starshipName}

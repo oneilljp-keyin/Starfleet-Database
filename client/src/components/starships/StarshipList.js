@@ -3,9 +3,15 @@ import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 import axios from "axios";
 import { toast } from "react-toastify";
-import { debounce } from "lodash";
 
-import gray from "../../assets/insignia_gray.png";
+import d2150 from "../../assets/insignia_2150s_wide.png";
+import d2250 from "../../assets/insignia_2250s_wide.png";
+import d2260 from "../../assets/insignia_2260s_wide.png";
+import d2280 from "../../assets/insignia_2280s_wide.png";
+import d2340 from "../../assets/insignia_2340s_wide.png";
+import d2370 from "../../assets/insignia_2370s_wide.png";
+import d2390 from "../../assets/insignia_2390s_wide.png";
+import d3100 from "../../assets/insignia_3100s_wide.png";
 
 import StarshipsDataService from "../../services/starships";
 import UseModal from "../modals/UseModal";
@@ -19,7 +25,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [starships, setStarships] = useState([]);
   const [searchName, setSearchName] = useState(sessionStorage.starshipName || "");
   const [searchClass, setSearchClass] = useState(sessionStorage.starshipClass || "");
-  const [classes, setClasses] = useState(["Unknown"]);
+  const [classes, setClasses] = useState(["All", "Unknown"]);
 
   const [pageNumber, setPageNumber] = useState(0);
   const observer = useRef();
@@ -43,7 +49,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
     const retrieveClasses = () => {
       StarshipsDataService.getStarshipClasses()
         .then((response) => {
-          setClasses(["Unknown"].concat(response.data));
+          setClasses(["All", "Unknown"].concat(response.data));
         })
         .catch((e) => {
           console.error(e);
@@ -66,6 +72,26 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   useEffect(() => {
     setStarships([]);
   }, [searchName, searchClass]);
+
+  function defaultImage(ship_id) {
+    if (ship_id < 500) {
+      return d2150;
+    } else if (ship_id < 1500) {
+      return d2250;
+    } else if (ship_id < 2000) {
+      return d2260;
+    } else if (ship_id < 40000) {
+      return d2280;
+    } else if (ship_id < 74000) {
+      return d2340;
+    } else if (ship_id < 82000) {
+      return d2370;
+    } else if (ship_id < 300000) {
+      return d2390;
+    } else {
+      return d3100;
+    }
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -180,19 +206,24 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
             dateString += "????";
           }
           return (
-            <div
-              className="col-md-3 list-cards"
+            <Link
+              to={"/starships/" + starshipId}
+              className="col-md-3 search-cards"
               key={uuidv4()}
               ref={starships.length === index + 1 ? lastStarshipsRef : null}
             >
-              <div className="card text-center bg-dark">
+              <div className="card card-radius text-center bg-dark">
                 <div className="card-body">
                   {" "}
                   <strong style={{ margin: "0", color: "#8066af" }}>{dateString}</strong>
                   <br />
                   <img
                     className="search-list"
-                    src={starship.starshipPicUrl[0] ? starship.starshipPicUrl[0] : gray}
+                    src={
+                      starship.starshipPicUrl[0]
+                        ? starship.starshipPicUrl[0]
+                        : defaultImage(starship.ship_id)
+                    }
                     alt={starship.name}
                   />
                   <h5 className="card-title">
@@ -202,14 +233,9 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
                     )}
                   </h5>
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>
-                  <div className="row">
-                    <Link to={"/starships/" + starshipId} className="btn btn-primary">
-                      View Profile
-                    </Link>
-                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

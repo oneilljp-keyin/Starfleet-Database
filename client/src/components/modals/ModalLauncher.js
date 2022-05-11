@@ -18,6 +18,7 @@ const ModalLauncher = ({
   subjectName,
   type, // Officer or Starship
   setRefresh,
+  setPhotoRefresh,
   setAuth,
   setAdmin,
   category, //
@@ -49,6 +50,7 @@ const ModalLauncher = ({
           isAuth={isAuth}
           subjectId={subjectId}
           setRefresh={setRefresh}
+          setPhotoRefresh={setPhotoRefresh}
           imageType={type}
           modalClass={modalClass}
           photoId={photoId}
