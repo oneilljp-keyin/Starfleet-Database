@@ -15,12 +15,12 @@ exports = async function (payload, response) {
         if (payload.query.officer_id) {
           idQuery = { officerId: BSON.ObjectId(payload.query.officer_id) };
         } else {
-          idQuery = { starshipId: BSON.ObjectId(payload.query.starship_id) };
+          idQuery = { $and: [{starshipId: BSON.ObjectId(payload.query.starship_id)}, {officerId: {$exists: false}}] };
         }
 
         if (payload.query.category == "Assign-Pro-De") {
           idType = { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] };
-          idQuery = { $and: [{starshipId: BSON.ObjectId(payload.query.starship_id)}, {officerId: {$exists: false}}] };
+          idQuery = { starshipId: BSON.ObjectId(payload.query.starship_id) };
         } else {
           idType = { type: payload.query.category };
         }
