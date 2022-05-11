@@ -10,7 +10,7 @@ exports = async function (payload, response) {
     // Get a list of starships (search by name or class if search value provided) or by _id for individual
     case "GET": {
       if (!id) {
-        let { starshipsPerPage = 10, page = 0 } = payload.query;
+        let { starshipsPerPage = 12, page = 0 } = payload.query;
         starshipsPerPage = parseInt(starshipsPerPage);
         let nameQuery = {};
         let classQuery = {};
@@ -19,8 +19,10 @@ exports = async function (payload, response) {
           nameQuery = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
         }
 
-        if (!payload.query.class || payload.query.class === "Unknown") {
+        if (!payload.query.class || payload.query.class === "All") {
           classQuery = { $or: [{ class: { $exists: true } }, { class: { $exists: false } }] };
+        } else if (payload.query.class === "Unknown") {
+          classQuery = { class: { $exists: false } };
         } else {
           classQuery = { class: { $eq: payload.query.class } };
         }
@@ -34,7 +36,7 @@ exports = async function (payload, response) {
               from: "photos",
               let: { id: "$_id" },
               pipeline: [
-                { $match: { $expr: { $eq: ["$owner", "$$id"] } } },
+                { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
                 { $project: { _id: 0, title: 0, description: 0, owner: 0 } },
                 { $sort: { year: -1 } },
                 { $limit: 1 },
