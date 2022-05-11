@@ -20,7 +20,9 @@ exports = async function (payload, response) {
 
         if (payload.query.category == "Assign-Pro-De") {
           idType = { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] };
-          idQuery = { officerId: BSON.ObjectId(payload.query.officer_id) };
+          if (payload.query.starship_id) {
+            idQuery = { starshipId: BSON.ObjectId(payload.query.starship_id) };
+          }
         } else {
           idType = { type: payload.query.category };
         }
