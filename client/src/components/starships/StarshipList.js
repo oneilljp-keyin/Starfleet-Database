@@ -16,6 +16,7 @@ import d3100 from "../../assets/insignia_3100s_wide.png";
 import StarshipsDataService from "../../services/starships";
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
+import loadingGIF from "../../assets/loading.gif";
 
 function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const [loading, setLoading] = useState(false);
@@ -86,7 +87,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
       return d2340;
     } else if (ship_id < 82000) {
       return d2370;
-    } else if (ship_id < 300000) {
+    } else if (ship_id < 200000) {
       return d2390;
     } else {
       return d3100;
@@ -226,7 +227,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
                     }
                     alt={starship.name}
                   />
-                  <h5 className="card-title">
+                  <h5 className="card-title" style={{ textTransform: "capitalize" }}>
                     {starship.name.replace(
                       /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
                       ""
@@ -238,7 +239,13 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
             </Link>
           );
         })}
+        {loading ? (
+          <div className="w-100 text-center">
+            <img src={loadingGIF} className="loading" alt="loading..." />
+          </div>
+        ) : null}
       </div>
+
       <ModalLauncher
         modal="starship"
         isShowing={isShowingModal}

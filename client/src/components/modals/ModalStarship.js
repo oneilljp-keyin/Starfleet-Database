@@ -79,6 +79,9 @@ const PopUpStarship = ({
     delete data["firstContactCount"];
     delete data["missionCount"];
     delete data["maintenanceCount"];
+    if (data["class"] === "Unknown") {
+      delete data["class"];
+    }
     // convert stardates to calendar dates
     if (
       data.launch_stardate &&

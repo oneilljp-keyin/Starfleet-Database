@@ -135,6 +135,7 @@ const Starships = (props) => {
             <PhotoCarousel
               subjectId={props.match.params.id}
               isAuth={props.isAuth}
+              shipId={starship.ship_id}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
               imageType={"starship"}
@@ -165,8 +166,9 @@ const Starships = (props) => {
                 {starship.launch_date && (
                   <>
                     <strong>Launch: </strong>
-                    {starship.launch_note === "before" && "Before "}
-                    {starship.launch_note === "after" && "After "}
+                    {starship.launch_note === "before" && "pre "}
+                    {starship.launch_note === "after" && "post "}
+                    {starship.launch_note === "approx" && "circa "}
                     {starship.launch_date.slice(0, 4)}
                     <br />
                   </>

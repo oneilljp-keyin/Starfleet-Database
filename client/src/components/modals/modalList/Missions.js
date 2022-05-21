@@ -62,9 +62,9 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                   if (event.dateNote !== "exact") {
                     eventDate = event.date.slice(0, 4).toString();
                     if (event.dateNote === "before") {
-                      eventDate = "Before " + eventDate;
+                      eventDate = "pre " + eventDate;
                     } else if (event.dateNote === "after") {
-                      eventDate = "After " + eventDate;
+                      eventDate = "post " + eventDate;
                     }
                   } else {
                     eventDate = event.date.slice(0, 10);
@@ -117,7 +117,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                         {/* {event.date && event.stardate && eventDate.length > 4 && <br />} */}
                         {event.stardate && event.stardate !== "0" && ` SD ${event.stardate}`}
                       </td>
-                      <td className="h5cell align-top">
+                      <td className="h5cell align-top" style={{ textTransform: "capitalize" }}>
                         {event.name && (
                           <Link to={`/starships/${event.starshipId}`} className="list-link">
                             USS{" "}

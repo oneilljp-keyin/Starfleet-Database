@@ -115,12 +115,15 @@ const PopUpEvents = ({
     delete data["starshipName"];
     delete data["starshipRegistry"];
 
-    if (data.stardate && data.stardate.charAt(5) === ".") {
+    if (data.stardate && (data.stardate.charAt(5) === "." || data.stardate.charAt(6) === ".")) {
       let newDate = StardateConverter(data.stardate);
       data.date = newDate;
     }
 
-    if (data.endStardate && data.endStardate.charAt(5) === ".") {
+    if (
+      data.endStardate &&
+      (data.endStardate.charAt(5) === "." || data.endStardate.charAt(6) === ".")
+    ) {
       let newDate = StardateConverter(data.endStardate);
       data.endDate = newDate;
     }

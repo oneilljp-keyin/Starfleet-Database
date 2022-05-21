@@ -16,7 +16,7 @@ a, a:hover, a:focus { color: #6699ff; }
 strong { color: #ffdd22e6}
 
 h1, .h1cell { font-size: 1.48rem;}
-h2, .h2cell { font-size: 1.38rem; color: #ffdd22e6; text-transform: uppercase; }
+h2, .h2cell { font-size: 1.38rem; color: #ffdd22e6; }
 h3, .h3cell { font-size: 1.28rem; color: #8066af; }
 h4, .h4cell { font-size: 1.18rem; color: #dd8100; }
 h5, .h5cell { font-size: 1.18rem; color: #ffdd22e6; }
@@ -65,7 +65,7 @@ td {text-align: left; padding: 2px 4px 2px 4px !important;}
 }
 .searchContainer { position: relative;  display: inline-block; }
 
-.starship-pics { height: auto; max-width: 300px; }
+.starship-pics { height: auto; max-width: 300px; box-shadow: 2px 2px 10px black; border-radius: 24px;}
 .loading {height: 32px; width: auto;}
 
 .suggestion {
@@ -83,8 +83,8 @@ td {text-align: left; padding: 2px 4px 2px 4px !important;}
 .card-title {margin: 2px 0;}
 
 .load-img {min-width: 45vw; max-width: 325px;}
-.search-list { width: auto; height: 80px; border-radius: 8px; box-shadow: 2px 2px 10px black}
-.service-list { width: auto; height: 60px; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black}
+.search-list { width: auto; height: 80px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
+.service-list { width: auto; height: 60px; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 
 .input-size { max-width: 400px;}
 
@@ -388,7 +388,7 @@ article footer p {
   #main_header hgroup h2 { font-size: 1.5rem; }
   h3, .h3cell { font-size: 1.48rem; color: #8066af; }
   h4, .h4cell { font-size: 1.38rem; color: #dd8100; }
-  h5, .h5cell { font-size: 1.28rem; color: #ffdd22e6; text-transform: uppercase;}
+  h5, .h5cell { font-size: 1.28rem; color: #ffdd22e6; }
   h6, .h6cell { font-size: 1.18rem; color: #ffffffde; }
   .ship_list  { font-size: 1rem; color: #ffffffde; }
 

@@ -5,8 +5,9 @@ import ufpLogo from "../../assets/ufp_logo.png";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 import ModalLauncher from "../modals/ModalLauncher";
 import UseModal from "../modals/UseModal";
+import DefaultImageShip from "./DefaultImageShip.js";
 
-function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, imageType }) {
+function PhotoCarousel({ subjectId, isAuth, shipId, photoRefresh, setPhotoRefresh, imageType }) {
   const [photoArray, setPhotoArray] = useState([]);
   const [picTracker, setPicTracker] = useState([]);
 
@@ -121,7 +122,11 @@ function PhotoCarousel({ subjectId, isAuth, photoRefresh, setPhotoRefresh, image
             })
           ) : (
             <div>
-              <img src={ufpLogo} className="d-block w-100" alt="United Federation of Planets" />
+              <img
+                src={DefaultImageShip(shipId)}
+                className="d-block w-100"
+                alt="United Federation of Planets"
+              />
             </div>
           )}
           {photoArray.length > 1 && (
