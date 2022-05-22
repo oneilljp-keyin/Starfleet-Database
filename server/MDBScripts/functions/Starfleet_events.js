@@ -129,43 +129,6 @@ exports = async function (payload, response) {
       } else {
         responseData = await events.findOne({ _id: BSON.ObjectId(id) });
 
-        //   const pipeline = [
-        //     { $match: { _id: BSON.ObjectId(id), } },
-        //     {
-        //       $lookup: {
-        //         from: "events",
-        //         let: { id: "$_id" },
-        //         pipeline: [
-        //           { $match: { $expr: { $eq: ["$officerId", "$$id"] } } },
-        //           { $sort: { date: 1 } },
-        //         ],
-        //         as: "events",
-        //       },
-        //     },
-        //     { $addFields: { events: "$events" } },
-        //     {
-        //       $lookup: {
-        //         from: "events",
-        //         let: { id: "$_id" },
-        //         pipeline: [
-        //           { $match: { $expr: { $eq: ["$officerId", "$$id"] } } },
-        //           { $project: { "rankLabel": 1, "position": 1, "location": 1, "starshipName": 1, "starshipRegistry": 1, "date": 1, "_id": 0 } },
-        //           { $sort: { date: -1 } },
-        //           { $limit: 1 },
-        //         ],
-        //         as: "promotions",
-        //       },
-        //     },
-        //     {
-        //       $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$promotions", 0 ] }, "$$ROOT" ] } }
-        //     },
-        //     // { $addFields: { promotions: "$promotions"} },
-        //     // { $addFields: { lastRank: "$promotions.rankLabel", } },
-        //     { $project: { "promotions": 0 } },
-        //   ];
-
-        //   responseData = await personnel.aggregate(pipeline).next();
-
         responseData._id = responseData._id.toString();
         if (responseData.officerId) {
           responseData.officerId = responseData.officerId.toString();
@@ -173,17 +136,14 @@ exports = async function (payload, response) {
         if (responseData.starshipId) {
           responseData.starshipId = responseData.starshipId.toString();
         }
+        if (responseData.ship_id) {
+          responseData.ship_id = responseData.ship_id.toString();
+        }
         if (responseData.date) {
           responseData.date = new Date(responseData.date).toISOString();
         }
         delete responseData["__v"];
 
-        //   responseData.events.forEach(event => {
-        //     event.date = new Date(event.date).toISOString();
-        //     event._id = event._id.toString();
-        //     if(event.officerId) {event.officerId = event.officerId.toString();}
-        //     if(event.starshipId) {event.starshipId = event.starshipId.toString();}
-        //   });
       }
       return responseData;
     }
