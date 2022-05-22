@@ -25,9 +25,6 @@ exports = async function (payload, response) {
           }
         } else if (payload.query.category == "Chronology") {
           idType = { type: { $exists: true } };
-          if (payload.query.starship_id) {
-            idQuery = { starshipId: BSON.ObjectId(payload.query.starship_id) };
-          }
         } else{
           idType = { type: payload.query.category };
         }
