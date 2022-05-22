@@ -120,6 +120,9 @@ exports = async function (payload, response) {
           if (event.starshipId) {
             event.starshipId = event.starshipId.toString();
           }
+          if (event.ship_id) {
+            event.ship_id = event.ship_id.toString();
+          }
           if (event.officerId) {
             event.officerId = event.officerId.toString();
           }
