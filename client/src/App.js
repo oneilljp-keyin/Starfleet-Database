@@ -20,8 +20,8 @@ import SignInUpService from "./services/signInUp";
 toast.configure();
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const [adminRole, setAdminRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminRole, setAdminRole] = useState(false);
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
   const [modalClass, setModalClass] = useState("main-modal-body modal-open");

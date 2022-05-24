@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
 import PhotoCarousel from "../hooks/PhotoCarousel";
+import { EventAdder } from "../hooks/HooksAndFunctions";
 
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
@@ -66,9 +67,9 @@ const Officer = (props) => {
     getOfficer(props.match.params.id);
   }, [props.match.params.id, refreshOption]);
 
-  function OpenModal(modalType, id = null, type = "officer", category = "") {
+  function OpenModal(modalType, eventId = null, type = "officer", category = "") {
     setModal(modalType);
-    setEventId(id);
+    setEventId(eventId);
     setImageType(type);
     setCategory(category);
     toggleModal();
@@ -235,99 +236,80 @@ const Officer = (props) => {
           </div>
 
           <div className="m-4 small-hide"></div>
-
-          {/* <div className="d-flex justify-content-center flex-wrap">
-            <div className="lcars_end_cap left_round blue_btn my-0"> </div>
-            <button
-              className="lcars_btn all_square blue_btn my-0 flex-fill"
-              onClick={() => {
-                OpenModal("list", null, "Vessels Assigned", "Assignment");
-              }}
-            >
-              Vessels Assigned ({officer.starshipCount ? `${officer.starshipCount}` : "0"})
-            </button>
-            <button
-              className="lcars_btn all_square blue_btn my-0 flex-fill"
-              onClick={() => {
-                OpenModal("list", null, "Service Record", "Assign-Pro-De");
-              }}
-            >
-              Service Record ({officer.assignCount ? `${officer.assignCount}` : "0"})
-            </button>
-            <div className="small_hide lcars_end_cap right_round blue_btn my-0"> </div>
-            <div className="w-100 small_hide m-1"></div>
-            <div className="small_hide lcars_end_cap left_round blue_btn my-0"> </div>
-            <button
-              className="lcars_btn all_square blue_btn my-0 flex-fill"
-              onClick={() => {
-                OpenModal("list", null, "General Missions", "Mission");
-              }}
-            >
-              Missions ({officer.missionCount ? `${officer.missionCount}` : "0"})
-            </button>
-            <button
-              className="lcars_btn all_square blue_btn my-0 flex-fill"
-              onClick={() => {
-                OpenModal("list", null, "Life Events", "Life Event");
-              }}
-            >
-              Life Events ({officer.lifeEventCount ? `${officer.lifeEventCount}` : "0"})
-            </button>
-            <div className="lcars_end_cap right_round blue_btn my-0"> </div>
-          </div>
-          <div className="m-4 small-hide"></div> */}
           <div className="list-container">
             <div className="lcars_end_cap left_round rose_btn"> </div>
-            <button
-              className="lcars_btn all_square rose_btn"
-              onClick={() => {
-                OpenModal("list", null, "Vessels Assigned", "Assignment");
-              }}
-            >
-              Vessels ({officer.starshipCount ? `${officer.starshipCount}` : "0"})
-            </button>
-            <button
-              className="lcars_btn all_square pink_btn"
-              onClick={() => {
-                OpenModal("list", null, "Service Record", "Assign-Pro-De");
-              }}
-            >
-              Service Record ({officer.assignCount ? `${officer.assignCount}` : "0"})
-            </button>
+            {officer.starshipCount ? (
+              <button
+                className="lcars_btn all_square rose_btn"
+                onClick={() => {
+                  OpenModal("list", null, "Vessels Assigned", "Assignment");
+                }}
+              >
+                Vessels ({officer.starshipCount})
+              </button>
+            ) : (
+              <div className="lcars_btn all_square rose_btn">&nbsp;</div>
+            )}
+            {officer.assignCount || officer.missionCount || officer.lifeEventCount ? (
+              <button
+                className="lcars_btn all_square pink_btn"
+                onClick={() => {
+                  OpenModal("list", null, "Complete Chronology", "Chronology");
+                }}
+              >
+                Chronology (
+                {EventAdder(officer.assignCount, officer.missionCount, officer.lifeEventCount)})
+              </button>
+            ) : (
+              <div className="lcars_btn all_square pink_btn">&nbsp;</div>
+            )}
             <div className="lcars_end_cap right_round pink_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            <button
-              className="lcars_btn all_square orange_btn"
-              onClick={() => {
-                OpenModal("list", null, "General Missions", "Mission");
-              }}
-            >
-              Missions ({officer.missionCount ? `${officer.missionCount}` : "0"})
-            </button>
+            {officer.assignCount ? (
+              <button
+                className="lcars_btn all_square beige_btn"
+                onClick={() => {
+                  OpenModal("list", null, "Service Record", "Assign-Pro-De");
+                }}
+              >
+                Service Record ({officer.assignCount})
+              </button>
+            ) : (
+              <div className="lcars_btn all_square beige_btn">&nbsp;</div>
+            )}
+            <div className="lcars_end_cap right_round beige_btn"> </div>
+
+            <div className=""> </div>
+            <div className=""> </div>
+            {officer.missionCount ? (
+              <button
+                className="lcars_btn all_square orange_btn"
+                onClick={() => {
+                  OpenModal("list", null, "General Missions", "Mission");
+                }}
+              >
+                Missions ({officer.missionCount})
+              </button>
+            ) : (
+              <div className="lcars_btn all_square orange_btn">&nbsp;</div>
+            )}
             <div className="lcars_end_cap right_round orange_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            <button
-              className="lcars_btn all_square blue_btn"
-              onClick={() => {
-                OpenModal("list", null, "Life Events", "Life Event");
-              }}
-            >
-              Life Events ({officer.lifeEventCount ? `${officer.lifeEventCount}` : "0"})
-            </button>
+            {officer.lifeEventCount ? (
+              <button
+                className="lcars_btn all_square blue_btn"
+                onClick={() => {
+                  OpenModal("list", null, "Life Events", "Life Event");
+                }}
+              >
+                Life Events ({officer.lifeEventCount})
+              </button>
+            ) : (
+              <div className="lcars_btn all_square blue_btn">&nbsp;</div>
+            )}
             <div className="lcars_end_cap right_round blue_btn"> </div>
-            {/* <div className=""> </div>
-            <div className=""> </div>
-            <button
-              className="lcars_btn all_square beige_btn"
-              onClick={() => {
-                OpenModal("list", null, "Complete Chronology", "Chronology");
-              }}
-            >
-              Chronology ({officer.totalEventCount ? `${officer.totalEventCount}` : "0"})
-            </button>
-            <div className="lcars_end_cap right_round beige_btn"> </div> */}
           </div>
         </div>
       ) : (

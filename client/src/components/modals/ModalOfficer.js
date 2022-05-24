@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
 
-import StardateConverter from "../hooks/StardateConverter";
+import { StardateConverter } from "../hooks/HooksAndFunctions";
 
 const PopUpOfficer = ({
   isShowing,

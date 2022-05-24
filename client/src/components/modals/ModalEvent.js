@@ -6,7 +6,7 @@ import PersonnelDataService from "../../services/personnel";
 import StarshipsDataService from "../../services/starships";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
-import StardateConverter from "../hooks/StardateConverter";
+import { StardateConverter } from "../hooks/HooksAndFunctions";
 
 const PopUpEvents = ({
   isShowing,

@@ -113,10 +113,10 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
         )}
       </div>
       <div className="row d-flex p-1">
-        {searchQuery.length === 0 ? (
+        {personnel.length === 0 ? (
           <div className="m-auto text-center">
+            {searchQuery.length > 0 ? <h2>NO RESULTS</h2> : <h2>STANDBY</h2>}
             <img className="load-img d-block mx-auto" src={ufp} alt="Loading..." />
-            <h2>Standby</h2>
           </div>
         ) : (
           personnel.map((officer, index) => {

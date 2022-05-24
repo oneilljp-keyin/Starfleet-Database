@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import StarshipsDataService from "../../services/starships";
-import StardateConverter from "../hooks/StardateConverter";
+import { StardateConverter } from "../hooks/HooksAndFunctions";
 
 const PopUpStarship = ({
   isShowing,

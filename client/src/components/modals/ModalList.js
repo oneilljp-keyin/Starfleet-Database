@@ -58,6 +58,16 @@ const PopUpList = ({
                           category={category}
                         />
                       ),
+                      "Complete Chronology": (
+                        <Missions
+                          isAuth={isAuth}
+                          listType={listType}
+                          starshipId={starshipId}
+                          officerId={officerId}
+                          category={category}
+                          subjectName={subjectName}
+                        />
+                      ),
                       "Life Events": (
                         <Missions
                           isAuth={isAuth}
