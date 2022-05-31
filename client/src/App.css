@@ -88,7 +88,7 @@ td {text-align: left; padding: 2px 4px 2px 4px !important;}
 .card-radius {border-radius: 16px;}
 .card-title {margin: 2px 0;}
 
-.load-img {min-width: 45vw; max-width: 325px;}
+.load-img {max-width: 325px;}
 .search-list { width: auto; height: 80px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 .service-list { width: auto; height: 60px; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 

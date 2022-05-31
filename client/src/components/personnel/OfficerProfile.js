@@ -9,6 +9,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 import ma_logo from "../../assets/MemoryAlphaLogo.png";
+import { ButtonFormatter, EditCreateMenu } from "../hooks/HooksAndFunctions";
 
 const Officer = (props) => {
   const [imageType, setImageType] = useState("officer");
@@ -18,6 +19,7 @@ const Officer = (props) => {
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
+  const [buttonOptions, setButtonOptions] = useState({});
 
   useEffect(() => setRefreshOption(false), []);
 
@@ -56,11 +58,18 @@ const Officer = (props) => {
         .then((response) => {
           if (isMounted) {
             setOfficer(response.data);
-            if (response.data.first) {
-              setOfficerName(response.data.first + " " + response.data.surname);
-            } else {
-              setOfficerName(response.data.surname);
-            }
+            let officerName = response.data.first
+              ? response.data.first + " " + response.data.surname
+              : response.data.surname;
+            setOfficerName(officerName);
+            setButtonOptions({
+              modalType: "list",
+              isAuth: props.isAuth,
+              officerId: id,
+              subjectName: officerName,
+              refreshOption: refreshOption,
+              setRefresh: toggleRefresh,
+            });
           }
         })
         .catch((err) => {
@@ -85,52 +94,17 @@ const Officer = (props) => {
 
   return (
     <>
-      <div className="menu-btn_wrapper flex-row d-flex">
-        {officer.memoryAlphaURL && (
-          <div style={{ width: "100%" }} className="text-center">
-            <a
-              href={`https://memory-alpha.fandom.com/wiki/${officer.memoryAlphaURL}`}
-              className="mf-1 list-link"
-              target="_blank"
-            >
-              <img src={ma_logo} alt="Memory Alpha" />
-              <strong className="mx-2">Memory Alpha Link</strong>
-              <i className="fa-solid fa-up-right-from-square" style={{ color: "gray" }}></i>
-            </a>
-          </div>
-        )}
-        <Link to={"/personnel"} className="lcars-btn orange_btn left_round">
-          Search
-        </Link>
-        {props.isAuth && (
-          <>
-            <button
-              className="lcars-btn orange_btn all_square"
-              onClick={() => {
-                OpenModal("officer", officer._id);
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="lcars-btn orange_btn all_square"
-              onClick={() => {
-                OpenModal("photo", officer._id);
-              }}
-            >
-              Upload
-            </button>
-            <button
-              className="lcars-btn orange_btn right_round"
-              onClick={() => {
-                OpenModal("event");
-              }}
-            >
-              Event
-            </button>
-          </>
-        )}
-      </div>
+      {
+        <EditCreateMenu
+          entryType={imageType}
+          officerId={props.match.params.id}
+          isAuth={props.isAuth}
+          photoRefresh={refreshOption}
+          setPhotoRefresh={setRefreshOption}
+          setRefresh={toggleRefresh}
+          subjectName={officerName}
+        />
+      }
 
       {officer ? (
         <div>
@@ -244,79 +218,75 @@ const Officer = (props) => {
           </div>
 
           <div className="m-4 small-hide"></div>
+
           <div className="list-container">
             <div className="lcars_end_cap left_round rose_btn"> </div>
             {officer.starshipCount ? (
-              <button
-                className="lcars-btn all_square rose_btn"
-                onClick={() => {
-                  OpenModal("list", null, "Vessels Assigned", "Assignment");
-                }}
-              >
-                Vessels ({officer.starshipCount})
-              </button>
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="rose"
+                eventType="Assign-Pro-De"
+                categoryLabel="Starship Assignments"
+              />
             ) : (
-              <div className="lcars-btn all_square rose_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="rose" />
             )}
             {officer.assignCount || officer.missionCount || officer.lifeEventCount ? (
-              <button
-                className="lcars-btn all_square pink_btn"
-                onClick={() => {
-                  OpenModal("list", null, "Complete Chronology", "Chronology");
-                }}
-              >
-                Chronology
-              </button>
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="pink"
+                eventType="Chronology"
+                categoryLabel="Complete Chronology"
+              />
             ) : (
-              <div className="lcars-btn all_square pink_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="pink" />
             )}
             <div className="lcars_end_cap right_round pink_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {officer.assignCount ? (
-              <button
-                className="lcars-btn all_square beige_btn"
-                onClick={() => {
-                  OpenModal("list", null, "Service Record", "Assign-Pro-De");
-                }}
-              >
-                Service Record ({officer.assignCount})
-              </button>
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="orange"
+                eventType="Assign-Pro-De"
+                categoryLabel="Service Record"
+              />
             ) : (
-              <div className="lcars-btn all_square beige_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="orange" />
             )}
-            <div className="lcars_end_cap right_round beige_btn"> </div>
+            <div className="lcars_end_cap right_round orange_btn"> </div>
 
             <div className=""> </div>
             <div className=""> </div>
             {officer.missionCount ? (
-              <button
-                className="lcars-btn all_square orange_btn"
-                onClick={() => {
-                  OpenModal("list", null, "General Missions", "Mission");
-                }}
-              >
-                Missions ({officer.missionCount})
-              </button>
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="blue"
+                eventType="Mission"
+                categoryLabel="Mission Debriefs"
+              />
             ) : (
-              <div className="lcars-btn all_square orange_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="blue" />
             )}
-            <div className="lcars_end_cap right_round orange_btn"> </div>
+            <div className="lcars_end_cap right_round blue_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {officer.lifeEventCount ? (
-              <button
-                className="lcars-btn all_square blue_btn"
-                onClick={() => {
-                  OpenModal("list", null, "Life Events", "Life Event");
-                }}
-              >
-                Life Events ({officer.lifeEventCount})
-              </button>
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="beige"
+                eventType="Life Event"
+                categoryLabel="Life Events"
+              />
             ) : (
-              <div className="lcars-btn all_square blue_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="beige" />
             )}
-            <div className="lcars_end_cap right_round blue_btn"> </div>
+            <div className="lcars_end_cap right_round beige_btn"> </div>
           </div>
         </div>
       ) : (
@@ -331,7 +301,6 @@ const Officer = (props) => {
         hide={toggleModal}
         isAuth={props.isAuth}
         officerId={props.match.params.id}
-        starshipId={null}
         eventId={eventId}
         subjectName={officerName}
         type={imageType}

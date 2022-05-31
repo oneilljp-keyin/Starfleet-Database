@@ -77,7 +77,7 @@ const PopUpList = ({
                           subjectName={subjectName}
                         />
                       ),
-                      "Vessels Assigned": (
+                      "Starship Assignments": (
                         <VesselsServed
                           listType={listType}
                           officerId={officerId}

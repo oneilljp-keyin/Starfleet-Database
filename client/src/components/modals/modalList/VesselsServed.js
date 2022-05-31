@@ -36,11 +36,11 @@ const StarshipsList = ({ listType, officerId, category }) => {
         });
     };
 
-    getEvents(officerId, "", category);
+    getEvents(officerId, "", listType);
     return () => {
       isMounted = false;
     };
-  }, [officerId, category]);
+  }, [officerId, listType]);
 
   return (
     <div

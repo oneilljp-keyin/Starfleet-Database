@@ -42,8 +42,6 @@ function LCARSCode(firstPart, secondPart) {
 function RandomButtonColour() {
   const colourArray = ["orange", "red", "beige", "pink", "purple", "rose", "blue", "yellow"];
   const rand = Math.floor(Math.random() * colourArray.length);
-  console.log(rand);
-  console.log(colourArray.at(rand));
   return colourArray.at(rand) + "_btn";
 }
 
@@ -60,7 +58,8 @@ function EditCreateMenu(props) {
   const { isShowingModal, toggleModal } = UseModal();
   const [modal, setModal] = useState(null);
 
-  const linkDestination = "/" + props.entryType + "s";
+  const linkDestination =
+    props.entryType === "starship" ? "/" + props.entryType + "s" : "/personnel";
   const editClass = "lcars-btn d-flex flex-column events-btn";
 
   function OpenModal(modalType) {
@@ -143,9 +142,7 @@ function ButtonFormatter(props) {
         }}
       >
         {buttonStack(newLabel, 3, 6)}
-        {/* {props.active ? categoryLabel : "\u00A0"} */}
       </button>
-      {/* <div className="text-end lcars-hidden w-100">{LCARSCode(3, 6)}</div> */}
       <ModalLauncher
         modal={modal}
         isShowing={isShowingModal}
@@ -153,7 +150,8 @@ function ButtonFormatter(props) {
         hide={toggleModal}
         type={eventType}
         category={categoryLabel}
-        starshipId={props.starshipId}
+        starshipId={props.starshipId || null}
+        officerId={props.officerId || null}
         subjectName={props.subjectName}
         refreshOption={props.refreshOption}
         setRefresh={props.toggleRefresh}
