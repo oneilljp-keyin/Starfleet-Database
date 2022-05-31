@@ -12,17 +12,23 @@ const StarshipsList = ({ listType, officerId, category }) => {
   const [starships, setStarships] = useState({});
 
   useEffect(() => {
+    let isMounted = true;
+
     const getEvents = (oid = "", sid = "", cat = "", sort = 1) => {
       EventsAndPhotosDataService.getEventsByCategory(oid, sid, cat, sort)
         .then((response) => {
-          let sortedStarships = response.data.filter((ship) => ship.starshipId);
-          setStarships(
-            sortedStarships.filter(
-              (element1, index) =>
-                index ===
-                sortedStarships.findIndex((element2) => element2.starshipId === element1.starshipId)
-            )
-          );
+          if (isMounted) {
+            let sortedStarships = response.data.filter((ship) => ship.starshipId);
+            setStarships(
+              sortedStarships.filter(
+                (element1, index) =>
+                  index ===
+                  sortedStarships.findIndex(
+                    (element2) => element2.starshipId === element1.starshipId
+                  )
+              )
+            );
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -31,12 +37,15 @@ const StarshipsList = ({ listType, officerId, category }) => {
     };
 
     getEvents(officerId, "", category);
+    return () => {
+      isMounted = false;
+    };
   }, [officerId, category]);
 
   return (
     <div
       className="d-flex flex-wrap row overflow-y justify-content-evenly"
-      style={{ maxHeight: "calc(100% - 96px)" }}
+      style={{ maxHeight: "calc(100% - 104px)" }}
     >
       {starships.length > 0 ? (
         starships

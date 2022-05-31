@@ -46,10 +46,14 @@ const PopUpEvents = ({
   const [eventInfo, setEventInfo] = useState(initialEventState);
 
   useEffect(() => {
+    let isMounted = true;
+
     const getEvent = async (id) => {
       try {
-        let response = await EventsAndPhotosDataService.getEvent(id);
-        setEventInfo(response.data);
+        if (isMounted) {
+          let response = await EventsAndPhotosDataService.getEvent(id);
+          setEventInfo(response.data);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -58,6 +62,9 @@ const PopUpEvents = ({
       getEvent(eventId);
       setBtnLabel("Update");
     }
+    return () => {
+      isMounted = false;
+    };
   }, [eventId]);
 
   const onChangeEventInfo = (e) => {
@@ -76,10 +83,14 @@ const PopUpEvents = ({
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const retrieveRankLabels = () => {
       PersonnelDataService.getRankLabels()
         .then((response) => {
-          setRankLabels(response.data);
+          if (isMounted) {
+            setRankLabels(response.data);
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -87,14 +98,21 @@ const PopUpEvents = ({
     };
 
     retrieveRankLabels();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
+
     const retrieveStarship = () => {
       StarshipsDataService.find(eventInfo.starshipName)
         .then((response) => {
-          setShipSearchResults(response.data.starships);
-          setSearchOption(false);
+          if (isMounted) {
+            setShipSearchResults(response.data.starships);
+            setSearchOption(false);
+          }
         })
         .catch((err) => {
           console.error(err.message);
@@ -103,6 +121,9 @@ const PopUpEvents = ({
     if (eventInfo.starshipName && eventInfo.starshipName.length > 2 && searchOption) {
       retrieveStarship();
     }
+    return () => {
+      isMounted = false;
+    };
   }, [eventInfo.starshipName, searchOption]);
 
   const saveEvent = () => {
@@ -387,10 +408,10 @@ const PopUpEvents = ({
                     </div>
                   </div>
 
-                  <button className="lcars_btn orange_btn left_round small_btn" onClick={saveEvent}>
+                  <button className="lcars-btn orange_btn left_round small_btn" onClick={saveEvent}>
                     {btnLabel}
                   </button>
-                  <button className="lcars_btn red_btn right_round small_btn" onClick={closeModal}>
+                  <button className="lcars-btn red_btn right_round small_btn" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>

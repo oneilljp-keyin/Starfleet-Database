@@ -12,16 +12,19 @@ const PersonnelList = ({ listType, starshipId, category }) => {
   const [personnel, setPersonnel] = useState({});
 
   useEffect(() => {
+    let isMounted = true;
     const getEvents = (oid = "", sid = "", cat = "", sort = -1) => {
       EventsAndPhotosDataService.getEventsByCategory(oid, sid, cat, sort)
         .then((response) => {
-          setPersonnel(
-            response.data.filter(
-              (element1, index) =>
-                index ===
-                response.data.findIndex((element2) => element2.officerId === element1.officerId)
-            )
-          );
+          if (isMounted) {
+            setPersonnel(
+              response.data.filter(
+                (element1, index) =>
+                  index ===
+                  response.data.findIndex((element2) => element2.officerId === element1.officerId)
+              )
+            );
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -29,13 +32,16 @@ const PersonnelList = ({ listType, starshipId, category }) => {
         });
     };
 
-    getEvents("", starshipId, category);
-  }, [starshipId, category]);
+    getEvents("", starshipId, listType);
+    return () => {
+      isMounted = false;
+    };
+  }, [starshipId, listType]);
 
   return (
     <div
       className="d-flex flex-wrap row overflow-auto justify-content-evenly"
-      style={{ maxHeight: "calc(100% - 96px)" }}
+      style={{ maxHeight: "calc(100% - 104px)" }}
     >
       {personnel.length > 0 ? (
         personnel
@@ -88,7 +94,7 @@ const PersonnelList = ({ listType, starshipId, category }) => {
             );
           })
       ) : (
-        <h2 className="mx-auto my-auto">No {listType} Found</h2>
+        <h2 className="mx-auto my-auto">No {category} Found</h2>
       )}
     </div>
   );

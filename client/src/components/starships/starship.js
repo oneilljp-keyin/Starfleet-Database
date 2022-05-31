@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import StarshipsDataService from "../../services/starships";
@@ -10,7 +9,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 import ma_logo from "../../assets/MemoryAlphaLogo.png";
-import { EventAdder, LCARSCode, ButtonFormatter } from "../hooks/HooksAndFunctions";
+import { ButtonFormatter, EditCreateMenu } from "../hooks/HooksAndFunctions";
 
 const Starships = (props) => {
   const [type, setType] = useState("starship");
@@ -21,6 +20,9 @@ const Starships = (props) => {
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
+  const [buttonOptions, setButtonOptions] = useState({});
+
+  useEffect(() => setRefreshOption(false), []);
 
   function toggleRefresh() {
     setRefreshOption(!refreshOption);
@@ -47,23 +49,34 @@ const Starships = (props) => {
     destruction_date: null,
     destruction_stardate: null,
     destruction_note: null,
-    events: [],
   };
 
   const [starship, setStarship] = useState(initialStarshipsState);
 
   useEffect(() => {
+    let isMounted = true;
+
     const getStarship = (id) => {
       StarshipsDataService.get(id)
         .then((response) => {
-          setStarship(response.data);
-          let starshipName = response.data.name.replace(
-            /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
-            ""
-          );
-          if (response.data.registry) starshipName += " " + response.data.registry;
-          setStarshipName(starshipName);
-          setStarshipId(response.data._id);
+          if (isMounted) {
+            setStarship(response.data);
+            let starshipName = response.data.name.replace(
+              /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
+              ""
+            );
+            if (response.data.registry) starshipName += " " + response.data.registry;
+            setStarshipName(starshipName);
+            setStarshipId(response.data._id);
+            setButtonOptions({
+              modalType: "list",
+              isAuth: props.isAuth,
+              starshipId: id,
+              subjectName: starshipName,
+              refreshOption: refreshOption,
+              setRefresh: toggleRefresh,
+            });
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -72,66 +85,24 @@ const Starships = (props) => {
     };
 
     getStarship(props.match.params.id);
+    return () => {
+      isMounted = false;
+    };
   }, [props.match.params.id, refreshOption]);
-
-  function OpenModal(modalType, id, option = type, category = "") {
-    setModal(modalType);
-    setEventId(id);
-    setType(option);
-    setCategory(category);
-    toggleModal();
-  }
-
-  console.log(props.isAuth);
 
   return (
     <>
-      <div className="menu-btn_wrapper flex-row d-flex">
-        {starship.memoryAlphaURL && (
-          <div style={{ width: "100%" }} className="text-center">
-            <a
-              href={`https://memory-alpha.fandom.com/wiki/${starship.memoryAlphaURL}`}
-              className="mf-1 list-link"
-              target="_blank"
-            >
-              <img src={ma_logo} alt="Memory Alpha" />
-              <strong className="mx-2">Memory Alpha Link</strong>
-              <i className="fa-solid fa-up-right-from-square" style={{ color: "gray" }}></i>
-            </a>
-          </div>
-        )}
-        <Link to={"/starships"} className="a-button lcars_btn orange_btn left_round py-auto">
-          Search
-        </Link>
-        {props.isAuth && (
-          <>
-            <button
-              className="lcars_btn orange_btn all_square"
-              onClick={() => {
-                OpenModal("starship", starship._id);
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="lcars_btn orange_btn all_square"
-              onClick={() => {
-                OpenModal("photo", starship._id);
-              }}
-            >
-              Upload
-            </button>
-            <button
-              className="lcars_btn orange_btn right_round"
-              onClick={() => {
-                OpenModal("event", null);
-              }}
-            >
-              Event
-            </button>
-          </>
-        )}
-      </div>
+      {
+        <EditCreateMenu
+          entryType={type}
+          starshipId={props.match.params.id}
+          isAuth={props.isAuth}
+          photoRefresh={refreshOption}
+          setPhotoRefresh={setRefreshOption}
+          setRefresh={toggleRefresh}
+          subjectName={starshipName}
+        />
+      }
       {starship ? (
         <div>
           <div className="d-flex flex-wrap justify-content-around">
@@ -141,7 +112,7 @@ const Starships = (props) => {
               shipId={starship.ship_id}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
-              imageType={"starship"}
+              imageType="starship"
               className="flex-grow-1 col"
             />
             <div className="m-1 mobile-center">
@@ -156,6 +127,17 @@ const Starships = (props) => {
               )}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
+              {starship.memoryAlphaURL && (
+                <a
+                  href={`https://memory-alpha.fandom.com/wiki/${starship.memoryAlphaURL}`}
+                  className="mf-1 list-link"
+                  target="_blank"
+                >
+                  <img src={ma_logo} alt="Memory Alpha" />
+                  <strong className="mx-1">Memory Alpha</strong>
+                  <i className="fa-solid fa-up-right-from-square" style={{ color: "gray" }}></i>
+                </a>
+              )}
             </div>
             <div className="m-1 mobile-center">
               <p className="text-start">
@@ -220,93 +202,69 @@ const Starships = (props) => {
           <div className="list-container">
             <div className="lcars_end_cap left_round rose_btn"> </div>
             {starship.personnelCount ? (
-              <button
-                className="lcars_btn all_square rose_btn"
-                onClick={() => {
-                  OpenModal("list", null, "Personnel", "Assign-Pro-De");
-                }}
-              >
-                Personnel ({starship.personnelCount})
-              </button>
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="rose"
+                eventType="Assign-Pro-De"
+                categoryLabel="Assigned Personnel"
+              />
             ) : (
-              <div className="lcars_btn all_square rose_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="rose" />
             )}
-            {starship.firstContactCount ? (
-              <button
-                className="lcars_btn all_square pink_btn"
-                onClick={() => {
-                  OpenModal("list", null, "First Contact Missions", "First Contact");
-                }}
-              >
-                First Contact ({starship.firstContactCount})
-              </button>
+            {starship.maintenanceCount || starship.missionCount || starship.firstContactCount ? (
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="pink"
+                eventType="Chronology"
+                categoryLabel="Complete Chronology"
+              />
             ) : (
-              <div className="lcars_btn all_square pink_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="pink" />
             )}
             <div className="lcars_end_cap right_round pink_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            {starship.missionCount ? (
-              <button
-                className="lcars_btn all_square orange_btn"
-                onClick={() => {
-                  OpenModal("list", null, "General Missions", "Mission");
-                }}
-              >
-                Missions ({starship.missionCount})
-              </button>
+            {starship.firstContactCount ? (
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="orange"
+                eventType="First Contact"
+                categoryLabel="First Contact Debriefs"
+              />
             ) : (
-              <div className="lcars_btn all_square orange_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="orange" />
             )}
             <div className="lcars_end_cap right_round orange_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            {starship.maintenanceCount ? (
-              <button
-                className="lcars_btn all_square blue_btn"
-                onClick={() => {
-                  OpenModal("list", null, "Repairs/Upgrades", "Repair Upgrade");
-                }}
-              >
-                Maintenance ({starship.maintenanceCount})
-              </button>
+            {starship.missionCount ? (
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="blue"
+                eventType="Mission"
+                categoryLabel="Mission Debriefs"
+              />
             ) : (
-              <div className="lcars_btn all_square blue_btn">&nbsp;</div>
+              <ButtonFormatter active={false} colour="blue" />
             )}
             <div className="lcars_end_cap right_round blue_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            {/* <div className="lcars_btn all_square beige_btn d-flex flex-column px-1">
-              <div className="text-start" style={{ fontSize: "1rem", paddingLeft: "8px" }}>
-                {starship.firstContactCount ||
-                starship.missionCount ||
-                starship.maintenanceCount ? (
-                  <button
-                    style={{ border: "none", backgroundColor: "#ffffff00" }}
-                    onClick={() => {
-                      OpenModal("list", null, "Complete Chronology", "Chronology");
-                    }}
-                  >
-                    Complete Chronology
-                  </button>
-                ) : (
-                  "\u00A0"
-                )}
-              </div>
-              <div className="text-end" style={{ fontSize: "10px" }}>
-                {LCARSCode(3, 6)}
-              </div>
-            </div> */}
-            {starship.maintenanceCount || starship.missionCount || starship.firstContactCount
-              ? ButtonFormatter(
-                  true,
-                  "beige",
-                  "list",
-                  "Complete Chronology",
-                  "Chronology",
-                  props.isAuth
-                )
-              : ButtonFormatter(false, "beige")}
+            {starship.maintenanceCount ? (
+              <ButtonFormatter
+                {...buttonOptions}
+                active={true}
+                colour="beige"
+                eventType="Maintenance"
+                categoryLabel="Maintenance Logs"
+              />
+            ) : (
+              <ButtonFormatter active={false} colour="beige" />
+            )}
             <div className="lcars_end_cap right_round beige_btn"> </div>
           </div>
         </div>

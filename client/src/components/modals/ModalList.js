@@ -14,7 +14,7 @@ const PopUpList = ({
   officerId,
   starshipId,
   listType,
-  category,
+  category, // Label for display
 }) => {
   const closeModal = () => {
     hide();
@@ -33,24 +33,24 @@ const PopUpList = ({
                     <div className="lcars_end_cap left_round orange_btn"> </div>
                     <div className="d-flex align-items-center ms-2">
                       <span className="h3cell align-self-center">
-                        {subjectName} {listType}
+                        {subjectName} {category}
                       </span>
                     </div>
-                    <div className="lcars_btn all_sqaure beige_btn flex-grow-1 m-2 p-3"> </div>
+                    <div className="lcars-btn all_sqaure beige_btn flex-grow-1 m-2 p-3"> </div>
                     <div className="lcars_end_cap right_round blue_btn"> </div>
                   </div>
 
                   {/* main body */}
                   {
                     {
-                      Personnel: (
+                      "Assigned Personnel": (
                         <PersonnelList
                           listType={listType}
                           starshipId={starshipId}
                           category={category}
                         />
                       ),
-                      "First Contact Missions": (
+                      "First Contact Debriefs": (
                         <Missions
                           isAuth={isAuth}
                           listType={listType}
@@ -84,7 +84,7 @@ const PopUpList = ({
                           category={category}
                         />
                       ),
-                      "General Missions": (
+                      "Mission Debriefs": (
                         <Missions
                           isAuth={isAuth}
                           listType={listType}
@@ -94,7 +94,7 @@ const PopUpList = ({
                           subjectName={subjectName}
                         />
                       ),
-                      "Repairs/Upgrades": (
+                      "Maintenance Logs": (
                         <Missions
                           isAuth={isAuth}
                           listType={listType}
@@ -112,15 +112,15 @@ const PopUpList = ({
                           subjectName={subjectName}
                         />
                       ),
-                    }[listType]
+                    }[category]
                   }
 
                   {/* footer */}
                   <div className="d-flex justify-content-center list-footer">
                     <div className="lcars_end_cap left_round purple_btn"> </div>
-                    <div className="lcars_btn all_sqaure beige_btn flex-grow-1 m-2 p-3"> </div>
+                    <div className="lcars-btn all_sqaure beige_btn flex-grow-1 m-2 p-3"> </div>
                     <button
-                      className="lcars_btn red_btn all_square small_btn me-2 footer-btn"
+                      className="lcars-btn red_btn all_square small_btn me-2 footer-btn"
                       onClick={closeModal}
                     >
                       Close

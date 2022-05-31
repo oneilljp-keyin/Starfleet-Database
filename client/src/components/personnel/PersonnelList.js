@@ -43,7 +43,14 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
   };
 
   useEffect(() => {
-    setPersonnel([]);
+    let isMounted = true;
+
+    if (isMounted) {
+      setPersonnel([]);
+    }
+    return () => {
+      isMounted = false;
+    };
   }, [searchQuery]);
 
   const debounceQuery = useCallback(
@@ -72,11 +79,17 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
   );
 
   useEffect(() => {
-    if (searchQuery.length > 0) {
-      setLoading(true);
-      debounceQuery(searchQuery);
-      sessionStorage.setItem("officerQuery", searchQuery);
+    let isMounted = true;
+    if (isMounted) {
+      if (searchQuery.length > 0) {
+        setLoading(true);
+        debounceQuery(searchQuery);
+        sessionStorage.setItem("officerQuery", searchQuery);
+      }
     }
+    return () => {
+      isMounted = false;
+    };
   }, [searchQuery, pageNumber]);
 
   return (
@@ -106,7 +119,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
       <div className="menu-btn_wrapper d-flex">
         {isAuth && (
           <>
-            <button className="lcars_btn orange_btn all_round" onClick={toggleModal}>
+            <button className="lcars-btn orange_btn all_round" onClick={toggleModal}>
               New Officer Record
             </button>
           </>

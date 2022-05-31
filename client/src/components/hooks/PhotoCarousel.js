@@ -15,15 +15,19 @@ function PhotoCarousel({ subjectId, isAuth, shipId, photoRefresh, setPhotoRefres
   const [photoId, setPhotoId] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const getphotoArray = (id) => {
       EventsAndPhotosDataService.getAllPhotos(id)
         .then((response) => {
-          setPhotoArray(response.data);
-          let array = [];
-          for (let i = 0; i < response.data.length; i++) {
-            array.push(i);
+          if (isMounted) {
+            setPhotoArray(response.data);
+            let array = [];
+            for (let i = 0; i < response.data.length; i++) {
+              array.push(i);
+            }
+            setPicTracker(array);
           }
-          setPicTracker(array);
         })
         .catch((err) => {
           console.error(err);
@@ -31,6 +35,9 @@ function PhotoCarousel({ subjectId, isAuth, shipId, photoRefresh, setPhotoRefres
     };
     getphotoArray(subjectId);
     setPhotoRefresh();
+    return () => {
+      isMounted = false;
+    };
   }, [subjectId, photoRefresh]);
 
   function OpenModal(modalType, id = null, type = "photo") {

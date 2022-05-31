@@ -49,10 +49,14 @@ const PopUpOfficer = ({
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const getPersonnel = async (id) => {
       try {
         let response = await PersonnelDataService.get(id);
-        setOfficerInfo(response.data);
+        if (isMounted) {
+          setOfficerInfo(response.data);
+        }
       } catch (err) {
         console.error(err);
         toast.error(err.message);
@@ -64,6 +68,9 @@ const PopUpOfficer = ({
       setSubmitted(false);
       setBtnLabel("Update");
     }
+    return () => {
+      isMounted = false;
+    };
   }, [edit, submitted, officerId]);
 
   const saveOfficerInfo = () => {
@@ -334,12 +341,12 @@ const PopUpOfficer = ({
                   </div>
 
                   <button
-                    className="lcars_btn orange_btn left_round small_btn"
+                    className="lcars-btn orange_btn left_round small_btn"
                     onClick={saveOfficerInfo}
                   >
                     {btnLabel}
                   </button>
-                  <button className="lcars_btn red_btn right_round small_btn" onClick={closeModal}>
+                  <button className="lcars-btn red_btn right_round small_btn" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>

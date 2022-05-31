@@ -56,10 +56,14 @@ const PopUpStarship = ({
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const getStarship = async (id) => {
       try {
         let response = await StarshipsDataService.get(id);
-        setStarshipInfo(response.data);
+        if (isMounted) {
+          setStarshipInfo(response.data);
+        }
       } catch (err) {
         console.error(err);
         toast.error(err.message);
@@ -70,6 +74,9 @@ const PopUpStarship = ({
       setEdit(true);
       setBtnLabel("Update");
     }
+    return () => {
+      isMounted = false;
+    };
   }, [edit, starshipId]);
 
   const saveStarshipInfo = () => {
@@ -148,10 +155,14 @@ const PopUpStarship = ({
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const retrieveClasses = () => {
       StarshipsDataService.getStarshipClasses()
         .then((response) => {
-          setClasses(["Unknown"].concat(response.data));
+          if (isMounted) {
+            setClasses(["Unknown"].concat(response.data));
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -159,6 +170,9 @@ const PopUpStarship = ({
         });
     };
     retrieveClasses();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const closeModal = () => {
@@ -431,12 +445,12 @@ const PopUpStarship = ({
                   </div>
 
                   <button
-                    className="lcars_btn orange_btn left_round small_btn"
+                    className="lcars-btn orange_btn left_round small_btn"
                     onClick={saveStarshipInfo}
                   >
                     {btnLabel}
                   </button>
-                  <button className="lcars_btn red_btn right_round small_btn" onClick={closeModal}>
+                  <button className="lcars-btn red_btn right_round small_btn" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>

@@ -47,10 +47,14 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   const { isShowingModal, toggleModal } = UseModal();
 
   useEffect(() => {
+    let isMounted = true;
+
     const retrieveClasses = () => {
       StarshipsDataService.getStarshipClasses()
         .then((response) => {
-          setClasses(["All", "Unknown"].concat(response.data));
+          if (isMounted) {
+            setClasses(["All", "Unknown"].concat(response.data));
+          }
         })
         .catch((e) => {
           console.error(e);
@@ -58,6 +62,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
         });
     };
     retrieveClasses();
+    return () => (isMounted = false);
   }, []);
 
   const onChangeSearchName = (e) => {
@@ -71,7 +76,11 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   };
 
   useEffect(() => {
-    setStarships([]);
+    let isMounted = true;
+    if (isMounted) {
+      setStarships([]);
+    }
+    return () => (isMounted = false);
   }, [searchName, searchClass]);
 
   function defaultImage(ship_id) {
@@ -95,31 +104,40 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
   }
 
   useEffect(() => {
+    let isMounted = true;
+
     setLoading(true);
     const ourRequest = axios.CancelToken.source();
     StarshipsDataService.find(searchName, searchClass, pageNumber, ourRequest.token)
       .then((response) => {
-        setStarships((prevStarships) => {
-          return [
-            ...new Set([...prevStarships, ...response.data.starships.map((starship) => starship)]),
-          ];
-        });
-        setHasMore(
-          (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-            response.data.total_results
-        );
-        sessionStorage.setItem("starshipName", searchName);
-        sessionStorage.setItem("starshipClass", searchClass);
-        setLoading(false);
-        setListRefresh(false);
+        if (isMounted) {
+          setStarships((prevStarships) => {
+            return [
+              ...new Set([
+                ...prevStarships,
+                ...response.data.starships.map((starship) => starship),
+              ]),
+            ];
+          });
+          setHasMore(
+            (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
+              response.data.total_results
+          );
+          sessionStorage.setItem("starshipName", searchName);
+          sessionStorage.setItem("starshipClass", searchClass);
+          setLoading(false);
+          setListRefresh(false);
+        }
       })
       .catch((e) => {
         if (axios.isCancel(e)) return;
         console.error(e.message);
         toast.warning(e.message);
       });
-    return () => ourRequest.cancel();
-    // }
+    return () => {
+      ourRequest.cancel();
+      isMounted = false;
+    };
   }, [searchName, searchClass, pageNumber, listRefresh]);
 
   return (
@@ -164,7 +182,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
       <div className="menu-btn_wrapper d-flex">
         {isAuth && (
           <>
-            <button className="lcars_btn orange_btn all_round" onClick={toggleModal}>
+            <button className="lcars-btn orange_btn all_round" onClick={toggleModal}>
               New Starship Record
             </button>
           </>

@@ -3,33 +3,44 @@ import { Link } from "react-router-dom";
 import ModalLauncher from "./modals/ModalLauncher";
 import UseModal from "./modals/UseModal";
 
+import { LCARSCode, RandomButtonColour, buttonStack } from "./hooks/HooksAndFunctions";
+
 function Navbar({ isAuth, logout, setAdmin, setAuth }) {
   const { isShowingModal, toggleModal } = UseModal();
+  const headerButtonClass = "lcars-btn header_btn events-btn";
 
   return (
     <>
       <header id="main_header" className="header">
         <div className="header_inner">
-          <nav>
-            <Link to={"/personnel"} className="lcars_btn purple_btn left_round header_btn">
-              Personnel
+          <nav className="flex-row d-flex">
+            {/* <div className="lcars_end_cap left_round purple_btn"> </div> */}
+            <Link
+              to={"/personnel"}
+              className={`${headerButtonClass} left_round ` + RandomButtonColour()}
+            >
+              {buttonStack("Personnel", 2, 4)}
             </Link>
-            <Link to={"/starships"} className="lcars_btn purple_btn all_sqaure header_btn">
-              Starships
+            <Link
+              to={"/starships"}
+              className={`${headerButtonClass} all_square ` + RandomButtonColour()}
+            >
+              {buttonStack("Starships", 2, 4)}
             </Link>
             {isAuth ? (
               <Link
                 to={"/"}
                 onClick={logout}
-                className="lcars_btn purple_btn right_round header_btn"
+                className={`${headerButtonClass} right_round ` + RandomButtonColour()}
               >
-                Logout
+                {buttonStack("Logout", 2, 4)}
               </Link>
             ) : (
-              <button onClick={toggleModal} className="lcars_btn purple_btn right_round header_btn">
-                Login
+              <button onClick={toggleModal} className={`${headerButtonClass} right_round pink_btn`}>
+                {buttonStack("Login", 2, 4)}
               </button>
             )}
+            {/* <div className="lcars_end_cap right_round purple_btn"> </div> */}
           </nav>
         </div>
       </header>

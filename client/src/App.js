@@ -28,18 +28,21 @@ function App() {
 
   // ---- Get Name and Admin Privileges ---- \\
   useEffect(() => {
+    let isMounted = true;
     async function getProfile() {
       SignInUpService.userInfo()
         .then((response) => {
-          if (!response.data.error) {
-            setName(response.data.name);
-            setAdminRole(response.data.admin);
-            setAuth(true);
-          } else {
-            setAuth(false);
-            setAdminRole(false);
-            setName(null);
-            setUserId(null);
+          if (isMounted) {
+            if (!response.data.error) {
+              setName(response.data.name);
+              setAdminRole(response.data.admin);
+              setAuth(true);
+            } else {
+              setAuth(false);
+              setAdminRole(false);
+              setName(null);
+              setUserId(null);
+            }
           }
         })
         .catch((err) => {
@@ -50,6 +53,9 @@ function App() {
         });
     }
     getProfile();
+    return () => {
+      isMounted = false;
+    };
   }, [isAuthenticated]);
 
   const setAuth = (boolean) => {

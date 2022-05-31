@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
 import PhotoCarousel from "../hooks/PhotoCarousel";
-import { EventAdder } from "../hooks/HooksAndFunctions";
 
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
@@ -19,6 +18,8 @@ const Officer = (props) => {
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
+
+  useEffect(() => setRefreshOption(false), []);
 
   function toggleRefresh() {
     setRefreshOption(!refreshOption);
@@ -48,14 +49,18 @@ const Officer = (props) => {
   const [officer, setOfficer] = useState(initialOfficerState);
 
   useEffect(() => {
+    let isMounted = true;
+
     const getOfficer = (id) => {
       PersonnelDataService.get(id)
         .then((response) => {
-          setOfficer(response.data);
-          if (response.data.first) {
-            setOfficerName(response.data.first + " " + response.data.surname);
-          } else {
-            setOfficerName(response.data.surname);
+          if (isMounted) {
+            setOfficer(response.data);
+            if (response.data.first) {
+              setOfficerName(response.data.first + " " + response.data.surname);
+            } else {
+              setOfficerName(response.data.surname);
+            }
           }
         })
         .catch((err) => {
@@ -65,6 +70,9 @@ const Officer = (props) => {
     };
 
     getOfficer(props.match.params.id);
+    return () => {
+      isMounted = false;
+    };
   }, [props.match.params.id, refreshOption]);
 
   function OpenModal(modalType, eventId = null, type = "officer", category = "") {
@@ -91,13 +99,13 @@ const Officer = (props) => {
             </a>
           </div>
         )}
-        <Link to={"/personnel"} className="lcars_btn orange_btn left_round">
+        <Link to={"/personnel"} className="lcars-btn orange_btn left_round">
           Search
         </Link>
         {props.isAuth && (
           <>
             <button
-              className="lcars_btn orange_btn all_square"
+              className="lcars-btn orange_btn all_square"
               onClick={() => {
                 OpenModal("officer", officer._id);
               }}
@@ -105,7 +113,7 @@ const Officer = (props) => {
               Edit
             </button>
             <button
-              className="lcars_btn orange_btn all_square"
+              className="lcars-btn orange_btn all_square"
               onClick={() => {
                 OpenModal("photo", officer._id);
               }}
@@ -113,7 +121,7 @@ const Officer = (props) => {
               Upload
             </button>
             <button
-              className="lcars_btn orange_btn right_round"
+              className="lcars-btn orange_btn right_round"
               onClick={() => {
                 OpenModal("event");
               }}
@@ -240,7 +248,7 @@ const Officer = (props) => {
             <div className="lcars_end_cap left_round rose_btn"> </div>
             {officer.starshipCount ? (
               <button
-                className="lcars_btn all_square rose_btn"
+                className="lcars-btn all_square rose_btn"
                 onClick={() => {
                   OpenModal("list", null, "Vessels Assigned", "Assignment");
                 }}
@@ -248,27 +256,26 @@ const Officer = (props) => {
                 Vessels ({officer.starshipCount})
               </button>
             ) : (
-              <div className="lcars_btn all_square rose_btn">&nbsp;</div>
+              <div className="lcars-btn all_square rose_btn">&nbsp;</div>
             )}
             {officer.assignCount || officer.missionCount || officer.lifeEventCount ? (
               <button
-                className="lcars_btn all_square pink_btn"
+                className="lcars-btn all_square pink_btn"
                 onClick={() => {
                   OpenModal("list", null, "Complete Chronology", "Chronology");
                 }}
               >
-                Chronology (
-                {EventAdder(officer.assignCount, officer.missionCount, officer.lifeEventCount)})
+                Chronology
               </button>
             ) : (
-              <div className="lcars_btn all_square pink_btn">&nbsp;</div>
+              <div className="lcars-btn all_square pink_btn">&nbsp;</div>
             )}
             <div className="lcars_end_cap right_round pink_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {officer.assignCount ? (
               <button
-                className="lcars_btn all_square beige_btn"
+                className="lcars-btn all_square beige_btn"
                 onClick={() => {
                   OpenModal("list", null, "Service Record", "Assign-Pro-De");
                 }}
@@ -276,7 +283,7 @@ const Officer = (props) => {
                 Service Record ({officer.assignCount})
               </button>
             ) : (
-              <div className="lcars_btn all_square beige_btn">&nbsp;</div>
+              <div className="lcars-btn all_square beige_btn">&nbsp;</div>
             )}
             <div className="lcars_end_cap right_round beige_btn"> </div>
 
@@ -284,7 +291,7 @@ const Officer = (props) => {
             <div className=""> </div>
             {officer.missionCount ? (
               <button
-                className="lcars_btn all_square orange_btn"
+                className="lcars-btn all_square orange_btn"
                 onClick={() => {
                   OpenModal("list", null, "General Missions", "Mission");
                 }}
@@ -292,14 +299,14 @@ const Officer = (props) => {
                 Missions ({officer.missionCount})
               </button>
             ) : (
-              <div className="lcars_btn all_square orange_btn">&nbsp;</div>
+              <div className="lcars-btn all_square orange_btn">&nbsp;</div>
             )}
             <div className="lcars_end_cap right_round orange_btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {officer.lifeEventCount ? (
               <button
-                className="lcars_btn all_square blue_btn"
+                className="lcars-btn all_square blue_btn"
                 onClick={() => {
                   OpenModal("list", null, "Life Events", "Life Event");
                 }}
@@ -307,7 +314,7 @@ const Officer = (props) => {
                 Life Events ({officer.lifeEventCount})
               </button>
             ) : (
-              <div className="lcars_btn all_square blue_btn">&nbsp;</div>
+              <div className="lcars-btn all_square blue_btn">&nbsp;</div>
             )}
             <div className="lcars_end_cap right_round blue_btn"> </div>
           </div>

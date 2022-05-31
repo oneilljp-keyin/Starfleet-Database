@@ -6,17 +6,22 @@ function StarshipsSame({ starshipName = "", starshipClass = "All", starshipId })
   const [starshipsSame, setStarshipsSame] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
+
     let queryName = "";
     if (starshipName) {
       queryName = starshipName.replace(/-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g, "");
     }
     StarshipsDataService.findSame(queryName, starshipClass, 50)
       .then((response) => {
-        setStarshipsSame(response.data);
+        if (isMounted) {
+          setStarshipsSame(response.data);
+        }
       })
       .catch((e) => {
         console.error(e.message);
       });
+    return () => (isMounted = false);
   }, [starshipName, starshipClass]);
 
   return (

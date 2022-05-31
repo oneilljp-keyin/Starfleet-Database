@@ -100,10 +100,14 @@ const PopUpUpload = ({
   };
 
   useEffect(() => {
+    let isMounted = true;
+
     const getEvent = async (id) => {
       try {
         let response = await EventsAndPhotosDataService.getPhotoInfo(id);
-        setPhotoInfo(response.data);
+        if (isMounted) {
+          setPhotoInfo(response.data);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -112,6 +116,9 @@ const PopUpUpload = ({
       getEvent(photoId);
       setEdit(true);
     }
+    return () => {
+      isMounted = false;
+    };
   }, [photoId]);
 
   const deletePhoto = async () => {
@@ -266,21 +273,21 @@ const PopUpUpload = ({
                       </div>
                     </div>
                     <button
-                      className="lcars_btn orange_btn left_round small_btn"
+                      className="lcars-btn orange_btn left_round small_btn"
                       onClick={edit ? updatePhoto : handleOnSubmit}
                     >
                       {edit ? "Update" : "Submit"}
                     </button>
                     {edit && (
                       <button
-                        className="lcars_btn purple_btn all_square small_btn"
+                        className="lcars-btn purple_btn all_square small_btn"
                         onClick={deletePhoto}
                       >
                         Delete
                       </button>
                     )}
                     <button
-                      className="lcars_btn red_btn right_round small_btn"
+                      className="lcars-btn red_btn right_round small_btn"
                       onClick={() => {
                         closeModal();
                       }}

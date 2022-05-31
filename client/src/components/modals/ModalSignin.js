@@ -78,8 +78,8 @@ const SignInPopUp = ({ isShowing, hide, isAuth, modalClass, setAuth, setAdmin })
                         onChange={(e) => onChange(e)}
                       />
                     </div>
-                    <button className="lcars_btn orange_btn left_round small_btn">Login</button>
-                    <button className="lcars_btn red_btn right_round small_btn" onClick={hide}>
+                    <button className="lcars-btn orange_btn left_round small_btn">Login</button>
+                    <button className="lcars-btn red_btn right_round small_btn" onClick={hide}>
                       Cancel
                     </button>
                     <br />

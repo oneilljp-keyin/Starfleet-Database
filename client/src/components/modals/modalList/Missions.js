@@ -11,9 +11,9 @@ import ModalLauncher from "../ModalLauncher";
 function Missions({ listType, officerId, starshipId, category, isAuth, subjectName }) {
   const [starship, setStarship] = useState({});
 
-  const [type, setType] = useState("");
+  const [eventType, setEventType] = useState(listType);
 
-  const [eventCategory, setEventCategory] = useState("");
+  const [categoryLabel, setCategoryLabel] = useState("");
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
@@ -25,10 +25,14 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
   const { isShowingModal, toggleModal } = UseModal();
 
   useEffect(() => {
-    const getEvents = (oid = "", sid = "", cat = "", sort = 1) => {
-      EventsAndPhotosDataService.getEventsByCategory(oid, sid, cat, sort)
+    let isMounted = true;
+
+    const getEvents = (oid = "", sid = "", type = "", sort = 1) => {
+      EventsAndPhotosDataService.getEventsByCategory(oid, sid, type, sort)
         .then((response) => {
-          setStarship(response.data);
+          if (isMounted) {
+            setStarship(response.data);
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -36,14 +40,17 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
         });
     };
 
-    getEvents(officerId, starshipId, category);
+    getEvents(officerId, starshipId, eventType);
+    return () => {
+      isMounted = false;
+    };
   }, [officerId, starshipId, category, refreshOption]);
 
-  function OpenModal(modalType, id, option = type, category = "") {
+  function OpenModal(modalType, id, option = listType, category = "") {
     setModal(modalType);
     setEventId(id);
-    setType(option);
-    setEventCategory(category);
+    setEventType(option);
+    setCategoryLabel(category);
     toggleModal();
   }
 
@@ -51,7 +58,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
     <>
       <div
         className="d-flex flex-wrap row overflow-auto px-2 align-items-start"
-        style={{ height: "calc(100% - 96px)" }}
+        style={{ height: "calc(100% - 104px)" }}
       >
         <table className="table table-borderless w-100">
           <tbody>
@@ -137,9 +144,11 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                       <td className="h4cell align-top">
                         {event.location && <>{event.location}</>}
                       </td>
-                      <td className="h6cell align-top">
-                        {event.type !== "Other" && <>{event.type}</>}
-                      </td>
+                      {listType === "Chronology" && (
+                        <td className="h6cell align-top">
+                          {event.type !== "Other" && <>{event.type}</>}
+                        </td>
+                      )}
                     </tr>
                     {event.notes &&
                       event.notes !== "Assignment" &&
@@ -157,7 +166,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
             ) : (
               <tr>
                 <td colSpan={7} className="text-center align-middle">
-                  <h2 className="mx-auto my-auto">No {listType} Found</h2>
+                  <h2 className="mx-auto my-auto">No {category} Found</h2>
                 </td>
               </tr>
             )}
@@ -173,9 +182,9 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
         starshipId={starshipId}
         eventId={eventId}
         subjectName={subjectName}
-        type={type}
+        type={eventType}
         setRefresh={toggleRefresh}
-        category={eventCategory}
+        category={categoryLabel}
       />
     </>
   );
