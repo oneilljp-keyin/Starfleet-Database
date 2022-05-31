@@ -146,7 +146,7 @@ exports = async function (payload, response) {
               pipeline: [
                 {
                   $match: {
-                    $and: [{ $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Repair Upgrade" }],
+                    $and: [{ $expr: { $eq: ["$starshipId", "$$id"] } }, { type: "Maintenance" }],
                   },
                 },
                 { $count: "maintenanceNum" },
