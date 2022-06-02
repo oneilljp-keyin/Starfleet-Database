@@ -445,12 +445,12 @@ const PopUpStarship = ({
                   </div>
 
                   <button
-                    className="lcars-btn orange_btn left_round small_btn"
+                    className="lcars-btn orange-btn left-round small-btn"
                     onClick={saveStarshipInfo}
                   >
                     {btnLabel}
                   </button>
-                  <button className="lcars-btn red_btn right_round small_btn" onClick={closeModal}>
+                  <button className="lcars-btn red-btn right-round small-btn" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>

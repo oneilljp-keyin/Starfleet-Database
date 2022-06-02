@@ -30,14 +30,14 @@ const PopUpList = ({
                 <div className="list-modal-content-container align-content-center">
                   {/* header */}
                   <div className="d-flex justify-content-center">
-                    <div className="lcars_end_cap left_round orange_btn"> </div>
+                    <div className="lcars-end-cap left-round orange-btn"> </div>
                     <div className="d-flex align-items-center ms-2">
                       <span className="h3cell align-self-center">
                         {subjectName} {category}
                       </span>
                     </div>
-                    <div className="lcars-btn all_sqaure beige_btn flex-grow-1 m-2 p-3"> </div>
-                    <div className="lcars_end_cap right_round blue_btn"> </div>
+                    <div className="lcars-btn all_sqaure beige-btn flex-grow-1 m-2 p-3"> </div>
+                    <div className="lcars-end-cap right-round blue-btn"> </div>
                   </div>
 
                   {/* main body */}
@@ -117,15 +117,15 @@ const PopUpList = ({
 
                   {/* footer */}
                   <div className="d-flex justify-content-center list-footer">
-                    <div className="lcars_end_cap left_round purple_btn"> </div>
-                    <div className="lcars-btn all_sqaure beige_btn flex-grow-1 m-2 p-3"> </div>
+                    <div className="lcars-end-cap left-round purple-btn"> </div>
+                    <div className="lcars-btn all_sqaure beige-btn flex-grow-1 m-2 p-3"> </div>
                     <button
-                      className="lcars-btn red_btn all_square small_btn me-2 footer-btn"
+                      className="lcars-btn red-btn all-square small-btn me-2 footer-btn"
                       onClick={closeModal}
                     >
                       Close
                     </button>
-                    <div className="lcars_end_cap right_round rose_btn"> </div>
+                    <div className="lcars-end-cap right-round rose-btn"> </div>
                   </div>
                 </div>
               </div>

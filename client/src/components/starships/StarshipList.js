@@ -18,7 +18,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 import loadingGIF from "../../assets/loading.gif";
 
-function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
+function StarshipList(props) {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [listRefresh, setListRefresh] = useState(false);
@@ -179,10 +179,10 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
           </select>
         </div>
       </div>
-      <div className="menu-btn_wrapper d-flex">
-        {isAuth && (
+      <div className="menu-btn-wrapper d-flex">
+        {props.isAuth && (
           <>
-            <button className="lcars-btn orange_btn all_round" onClick={toggleModal}>
+            <button className="lcars-btn orange-btn all-round" onClick={toggleModal}>
               New Starship Record
             </button>
           </>
@@ -268,9 +268,7 @@ function StarshipList({ isAuth, userId, admin, modalClass, setModalClass }) {
         modal="starship"
         isShowing={isShowingModal}
         hide={toggleModal}
-        isAuth={isAuth}
-        starshipId={null}
-        subjectName={null}
+        isAuth={props.isAuth}
         setRefresh={setListRefresh}
       />
     </>

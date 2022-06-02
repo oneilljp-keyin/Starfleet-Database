@@ -24,7 +24,6 @@ function App() {
   const [adminRole, setAdminRole] = useState(false);
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [modalClass, setModalClass] = useState("main-modal-body modal-open");
 
   // ---- Get Name and Admin Privileges ---- \\
   useEffect(() => {
@@ -93,9 +92,9 @@ function App() {
             setAdmin={setAdminRole}
             setAuth={setIsAuthenticated}
           />
-          <main className="main_body">
-            <div className="content_wrapper">
-              <div className="content_container align-content-center">
+          <main className="main-body">
+            <div className="content-wrapper">
+              <div className="content-container align-content-center">
                 <Switch>
                   <Route
                     exact
@@ -115,28 +114,13 @@ function App() {
                   <Route
                     exact
                     path={["/personnel"]}
-                    render={(props) => (
-                      <PersonnelList
-                        {...props}
-                        isAuth={isAuthenticated}
-                        userId={userId}
-                        admin={adminRole}
-                        modalClass={modalClass}
-                        setModalClass={setModalClass}
-                      />
-                    )}
+                    render={(props) => <PersonnelList {...props} isAuth={isAuthenticated} />}
                   />
                   <Route
                     exact
                     path="/personnel/:id"
                     render={(props) => (
-                      <Officer
-                        {...props}
-                        isAuth={isAuthenticated}
-                        admin={adminRole}
-                        modalClass={modalClass}
-                        setModalClass={setModalClass}
-                      />
+                      <Officer {...props} isAuth={isAuthenticated} admin={adminRole} />
                     )}
                   />
                   <Route
@@ -148,8 +132,6 @@ function App() {
                         isAuth={isAuthenticated}
                         userId={userId}
                         admin={adminRole}
-                        modalClass={modalClass}
-                        setModalClass={setModalClass}
                       />
                     )}
                   />
@@ -161,8 +143,6 @@ function App() {
                         isAuth={isAuthenticated}
                         admin={adminRole}
                         userId={userId}
-                        modalClass={modalClass}
-                        setModalClass={setModalClass}
                       />
                     )}
                   />

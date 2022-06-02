@@ -24,7 +24,7 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
           <h3 className="text-center">{userName}</h3>
           <h3 className="text-center">{admin && "[You have Administrator priveleges]"}</h3>
         </header>
-        <div className="article_content">
+        <div className="article-content">
           <h1 className="text-center">
             The search features are auto-complete, as you type, the results will come up{" "}
           </h1>
@@ -64,7 +64,7 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
           ) : (
             <Link to={"/signin"}>admin</Link>
           )}
-          <div className="footer_bar"></div>
+          <div className="footer-bar"></div>
         </footer>
       </article>
     </>

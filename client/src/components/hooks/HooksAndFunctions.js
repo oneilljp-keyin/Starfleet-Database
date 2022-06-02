@@ -69,18 +69,15 @@ function EditCreateMenu(props) {
 
   return (
     <>
-      <div className="menu-btn_wrapper flex-row d-flex">
-        {/* <div className="lcars_end_cap left_round orange_btn"> </div> */}
-        <Link
-          to={linkDestination}
-          className={`${editClass} a-button left_round ` + RandomButtonColour()}
-        >
+      <div className="menu-btn-wrapper flex-row d-flex">
+        {/* <div className="lcars-end-cap left-round orange-btn"> </div> */}
+        <Link to={linkDestination} className={`${editClass} a-button left-round green-btn`}>
           {buttonStack("Search", 2, 3)}
         </Link>
         {props.isAuth && (
           <>
             <button
-              className={editClass + " all_square " + RandomButtonColour()}
+              className={editClass + " all-square yellow-btn"}
               onClick={() => {
                 OpenModal(props.entryType);
               }}
@@ -88,7 +85,7 @@ function EditCreateMenu(props) {
               {buttonStack("Edit", 2, 3)}
             </button>
             <button
-              className={editClass + " all_square " + RandomButtonColour()}
+              className={editClass + " all-square rose-btn"}
               onClick={() => {
                 OpenModal("photo");
               }}
@@ -96,7 +93,7 @@ function EditCreateMenu(props) {
               {buttonStack("Upload", 2, 3)}
             </button>
             <button
-              className={editClass + " right_round " + RandomButtonColour()}
+              className={editClass + " right-round pink-btn"}
               onClick={() => {
                 OpenModal("event");
               }}
@@ -105,7 +102,7 @@ function EditCreateMenu(props) {
             </button>
           </>
         )}
-        {/* <div className="lcars_end_cap right_round orange_btn"> </div> */}
+        {/* <div className="lcars-end-cap right-round orange-btn"> </div> */}
       </div>
       <ModalLauncher
         modal={modal}
@@ -130,7 +127,7 @@ function ButtonFormatter(props) {
   const modal = props.modalType;
   const newLabel = props.active ? categoryLabel : "\u00A0";
 
-  let buttonClass = "all_square " + props.colour + "_btn d-flex flex-column events-btn";
+  let buttonClass = "all-square " + props.colour + "-btn d-flex flex-column events-btn";
 
   return (
     <>

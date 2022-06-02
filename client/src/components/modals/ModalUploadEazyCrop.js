@@ -14,13 +14,10 @@ const PopUpUpload = ({
   subjectId,
   photoId,
   setRefresh,
-  setPhotoRefresh,
   imageType,
   modalClass,
-  setModalClass,
 }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-  // const cropSize = { width: 735, height: 350 };
   const [zoom, setZoom] = useState(2);
   const [file, setFile] = useState(null);
   const [isFileSelected, setIsFileSelected] = useState(false);
@@ -186,7 +183,7 @@ const PopUpUpload = ({
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className={modalClass}>
+            <div className="main-modal-body modal-open">
               <div className="modal-bg resize-modal resize-modal-content-wrapper">
                 <div className="resize-modal-content-container align-content-center">
                   <div className="search-form m-auto text-center modal-appear">
@@ -273,21 +270,21 @@ const PopUpUpload = ({
                       </div>
                     </div>
                     <button
-                      className="lcars-btn orange_btn left_round small_btn"
+                      className="lcars-btn orange-btn left-round small-btn"
                       onClick={edit ? updatePhoto : handleOnSubmit}
                     >
                       {edit ? "Update" : "Submit"}
                     </button>
                     {edit && (
                       <button
-                        className="lcars-btn purple_btn all_square small_btn"
+                        className="lcars-btn purple-btn all-square small-btn"
                         onClick={deletePhoto}
                       >
                         Delete
                       </button>
                     )}
                     <button
-                      className="lcars-btn red_btn right_round small_btn"
+                      className="lcars-btn red-btn right-round small-btn"
                       onClick={() => {
                         closeModal();
                       }}

@@ -12,13 +12,10 @@ import ma_logo from "../../assets/MemoryAlphaLogo.png";
 import { ButtonFormatter, EditCreateMenu } from "../hooks/HooksAndFunctions";
 
 const Starships = (props) => {
-  const [type, setType] = useState("starship");
-  const [category, setCategory] = useState(null);
+  const type = "starship";
 
   const [starshipName, setStarshipName] = useState("");
   const [starshipId, setStarshipId] = useState(null);
-  const [eventId, setEventId] = useState(null);
-  const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
   const [buttonOptions, setButtonOptions] = useState({});
 
@@ -61,10 +58,7 @@ const Starships = (props) => {
         .then((response) => {
           if (isMounted) {
             setStarship(response.data);
-            let starshipName = response.data.name.replace(
-              /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
-              ""
-            );
+            let starshipName = response.data.name.replace(/-[ABC]$/g, "");
             if (response.data.registry) starshipName += " " + response.data.registry;
             setStarshipName(starshipName);
             setStarshipId(response.data._id);
@@ -116,15 +110,7 @@ const Starships = (props) => {
               className="flex-grow-1 col"
             />
             <div className="m-1 mobile-center">
-              {starship.name && (
-                <h1>
-                  USS{" "}
-                  {starship.name.replace(
-                    /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
-                    ""
-                  )}
-                </h1>
-              )}
+              {starship.name && <h1>USS {starship.name.replace(/-[A-Z]$/g, "")}</h1>}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
               {starship.memoryAlphaURL && (
@@ -200,7 +186,7 @@ const Starships = (props) => {
           <div className="m-4 small-hide"></div>
 
           <div className="list-container">
-            <div className="lcars_end_cap left_round rose_btn"> </div>
+            <div className="lcars-end-cap left-round rose-btn"> </div>
             {starship.personnelCount ? (
               <ButtonFormatter
                 {...buttonOptions}
@@ -223,7 +209,7 @@ const Starships = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="pink" />
             )}
-            <div className="lcars_end_cap right_round pink_btn"> </div>
+            <div className="lcars-end-cap right-round pink-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {starship.firstContactCount ? (
@@ -237,7 +223,7 @@ const Starships = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="orange" />
             )}
-            <div className="lcars_end_cap right_round orange_btn"> </div>
+            <div className="lcars-end-cap right-round orange-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {starship.missionCount ? (
@@ -251,7 +237,7 @@ const Starships = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="blue" />
             )}
-            <div className="lcars_end_cap right_round blue_btn"> </div>
+            <div className="lcars-end-cap right-round blue-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {starship.maintenanceCount ? (
@@ -265,7 +251,7 @@ const Starships = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="beige" />
             )}
-            <div className="lcars_end_cap right_round beige_btn"> </div>
+            <div className="lcars-end-cap right-round beige-btn"> </div>
           </div>
         </div>
       ) : (
@@ -276,17 +262,14 @@ const Starships = (props) => {
       )}
       <div className="m-4 small-hide"></div>
       <ModalLauncher
-        modal={modal}
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={props.isAuth}
         starshipId={starshipId}
-        eventId={eventId}
         subjectName={starshipName}
         type={type}
         refreshOption={refreshOption}
         setRefresh={toggleRefresh}
-        category={category}
       />
     </>
   );

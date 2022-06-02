@@ -1,5 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
@@ -108,17 +107,17 @@ const Officer = (props) => {
 
       {officer ? (
         <div>
-          <div className="rows d-flex flex-wrap">
+          <div className="d-flex flex-wrap justify-content-around">
             <PhotoCarousel
               subjectId={props.match.params.id}
               isAuth={props.isAuth}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
-              imageType={"officer"}
+              imageType="officer"
               OpenModal={OpenModal}
-              className="col"
+              className="col-md-4"
             />
-            <div className="profile-summary col">
+            <div className="m-1 profile-summary col-md-4">
               <h1>
                 {officer.surname && <>{officer.surname}</>}
                 {officer.first && (
@@ -215,12 +214,25 @@ const Officer = (props) => {
                 </h3>
               )}
             </div>
+            {officer.memoryAlphaURL && (
+              <div className="m-1 mobile-center col-md-4">
+                <a
+                  href={`https://memory-alpha.fandom.com/wiki/${officer.memoryAlphaURL}`}
+                  className="mf-1 list-link"
+                  target="_blank"
+                >
+                  <img src={ma_logo} alt="Memory Alpha" />
+                  <strong className="mx-1">Memory Alpha</strong>
+                  <i className="fa-solid fa-up-right-from-square" style={{ color: "gray" }}></i>
+                </a>
+              </div>
+            )}
           </div>
 
           <div className="m-4 small-hide"></div>
 
           <div className="list-container">
-            <div className="lcars_end_cap left_round rose_btn"> </div>
+            <div className="lcars-end-cap left-round rose-btn"> </div>
             {officer.starshipCount ? (
               <ButtonFormatter
                 {...buttonOptions}
@@ -243,7 +255,7 @@ const Officer = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="pink" />
             )}
-            <div className="lcars_end_cap right_round pink_btn"> </div>
+            <div className="lcars-end-cap right-round pink-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {officer.assignCount ? (
@@ -257,7 +269,7 @@ const Officer = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="orange" />
             )}
-            <div className="lcars_end_cap right_round orange_btn"> </div>
+            <div className="lcars-end-cap right-round orange-btn"> </div>
 
             <div className=""> </div>
             <div className=""> </div>
@@ -272,7 +284,7 @@ const Officer = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="blue" />
             )}
-            <div className="lcars_end_cap right_round blue_btn"> </div>
+            <div className="lcars-end-cap right-round blue-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
             {officer.lifeEventCount ? (
@@ -286,7 +298,7 @@ const Officer = (props) => {
             ) : (
               <ButtonFormatter active={false} colour="beige" />
             )}
-            <div className="lcars_end_cap right_round beige_btn"> </div>
+            <div className="lcars-end-cap right-round beige-btn"> </div>
           </div>
         </div>
       ) : (

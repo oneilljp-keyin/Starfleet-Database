@@ -7,40 +7,34 @@ import { LCARSCode, RandomButtonColour, buttonStack } from "./hooks/HooksAndFunc
 
 function Navbar({ isAuth, logout, setAdmin, setAuth }) {
   const { isShowingModal, toggleModal } = UseModal();
-  const headerButtonClass = "lcars-btn header_btn events-btn";
+  const headerButtonClass = "lcars-btn header-btn events-btn";
 
   return (
     <>
-      <header id="main_header" className="header">
-        <div className="header_inner">
+      <header id="main-header" className="header">
+        <div className="header-inner">
           <nav className="flex-row d-flex">
-            {/* <div className="lcars_end_cap left_round purple_btn"> </div> */}
-            <Link
-              to={"/personnel"}
-              className={`${headerButtonClass} left_round ` + RandomButtonColour()}
-            >
+            {/* <div className="lcars-end-cap left-round purple-btn"> </div> */}
+            <Link to={"/personnel"} className={`${headerButtonClass} left-round blue-btn`}>
               {buttonStack("Personnel", 2, 4)}
             </Link>
-            <Link
-              to={"/starships"}
-              className={`${headerButtonClass} all_square ` + RandomButtonColour()}
-            >
+            <Link to={"/starships"} className={`${headerButtonClass} all-square orange-btn`}>
               {buttonStack("Starships", 2, 4)}
             </Link>
             {isAuth ? (
               <Link
                 to={"/"}
                 onClick={logout}
-                className={`${headerButtonClass} right_round ` + RandomButtonColour()}
+                className={`${headerButtonClass} right-round red-btn`}
               >
                 {buttonStack("Logout", 2, 4)}
               </Link>
             ) : (
-              <button onClick={toggleModal} className={`${headerButtonClass} right_round pink_btn`}>
+              <button onClick={toggleModal} className={`${headerButtonClass} right-round pink-btn`}>
                 {buttonStack("Login", 2, 4)}
               </button>
             )}
-            {/* <div className="lcars_end_cap right_round purple_btn"> </div> */}
+            {/* <div className="lcars-end-cap right-round purple-btn"> </div> */}
           </nav>
         </div>
       </header>

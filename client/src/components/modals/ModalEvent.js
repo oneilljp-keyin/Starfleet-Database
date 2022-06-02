@@ -299,7 +299,7 @@ const PopUpEvents = ({
                         <option value="First Contact">First Contact</option>
                         {officerId && <option value="Life Event">Life Event</option>}
                         <option value="Mission">Mission</option>
-                        <option value="Repair Upgrade">Repairs/Upgrades</option>
+                        <option value="Maintenance">Maintenance</option>
                         {officerId && <option value="Promotion">Promotion</option>}
                         {officerId && <option value="Demotion">Demotion</option>}
                       </select>
@@ -408,10 +408,10 @@ const PopUpEvents = ({
                     </div>
                   </div>
 
-                  <button className="lcars-btn orange_btn left_round small_btn" onClick={saveEvent}>
+                  <button className="lcars-btn orange-btn left-round small-btn" onClick={saveEvent}>
                     {btnLabel}
                   </button>
-                  <button className="lcars-btn red_btn right_round small_btn" onClick={closeModal}>
+                  <button className="lcars-btn red-btn right-round small-btn" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>

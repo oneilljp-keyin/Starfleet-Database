@@ -12,7 +12,7 @@ import PersonnelDataService from "../../services/personnel";
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
-function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
+function PersonnelList(props) {
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
 
@@ -116,10 +116,10 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
         </div>
         <div className="col-2"></div>
       </div>
-      <div className="menu-btn_wrapper d-flex">
-        {isAuth && (
+      <div className="menu-btn-wrapper d-flex">
+        {props.isAuth && (
           <>
-            <button className="lcars-btn orange_btn all_round" onClick={toggleModal}>
+            <button className="lcars-btn orange-btn all-round" onClick={toggleModal}>
               New Officer Record
             </button>
           </>
@@ -171,12 +171,7 @@ function PersonnelList({ isAuth, userId, admin, modalClass, setModalClass }) {
         modal="officer"
         isShowing={isShowingModal}
         hide={toggleModal}
-        isAuth={isAuth}
-        officerId={null}
-        starshipId={null}
-        subjectName={null}
-        imageType={null}
-        setRefresh={null}
+        isAuth={props.isAuth}
       />
     </>
   );

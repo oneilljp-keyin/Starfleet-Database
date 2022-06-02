@@ -66,12 +66,12 @@ const PopUpDelete = ({
                     Confirm Deletion of {recordType[0].toUpperCase() + recordType.slice(1)} Record
                   </h3>
                   <button
-                    className="lcars-btn orange_btn left_round small_btn"
+                    className="lcars-btn orange-btn left-round small-btn"
                     onClick={deleteRecord}
                   >
                     Confirm
                   </button>
-                  <button className="lcars-btn red_btn right_round small_btn" onClick={hide}>
+                  <button className="lcars-btn red-btn right-round small-btn" onClick={hide}>
                     Cancel
                   </button>
                 </div>
