@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 import SignInUpService from "../services/signInUp";
 
 function Signin({ setAuth, setAdmin }) {
-  const history = useHistory();
+  const history = useNavigate();
 
   const [user, setUser] = useState({
     email: "",

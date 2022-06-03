@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 import axios from "axios";
@@ -53,7 +53,7 @@ function PersonnelList(props) {
     };
   }, [searchQuery]);
 
-  const debounceQuery = useCallback(
+  const debounceQuery = useMemo(() =>
     debounce((searchValue) => {
       const ourRequest = axios.CancelToken.source();
       PersonnelDataService.find(searchValue, pageNumber, ourRequest.token)
@@ -65,7 +65,7 @@ function PersonnelList(props) {
           });
           setHasMore(
             (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-              response.data.total_results
+            response.data.total_results
           );
           setLoading(false);
         })
@@ -75,7 +75,7 @@ function PersonnelList(props) {
         });
       return () => ourRequest.cancel();
     }, 500),
-    []
+    [pageNumber]
   );
 
   useEffect(() => {
@@ -90,7 +90,7 @@ function PersonnelList(props) {
     return () => {
       isMounted = false;
     };
-  }, [searchQuery, pageNumber]);
+  }, [searchQuery, pageNumber, debounceQuery]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ModalLauncher from "./modals/ModalLauncher";
 import UseModal from "./modals/UseModal";
 
-import { LCARSCode, RandomButtonColour, buttonStack } from "./hooks/HooksAndFunctions";
+import { buttonStack } from "./hooks/HooksAndFunctions";
 
 function Navbar({ isAuth, logout, setAdmin, setAuth }) {
   const { isShowingModal, toggleModal } = UseModal();

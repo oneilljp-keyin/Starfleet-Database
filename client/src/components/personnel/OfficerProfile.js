@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 import PersonnelDataService from "../../services/personnel";
 import PhotoCarousel from "../hooks/PhotoCarousel";
@@ -11,6 +12,7 @@ import ma_logo from "../../assets/MemoryAlphaLogo.png";
 import { ButtonFormatter, EditCreateMenu } from "../hooks/HooksAndFunctions";
 
 const Officer = (props) => {
+  const { id } = useParams();
   const [imageType, setImageType] = useState("officer");
   const [category, setCategory] = useState(null);
 
@@ -18,15 +20,21 @@ const Officer = (props) => {
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
-  const [buttonOptions, setButtonOptions] = useState({});
-
   useEffect(() => setRefreshOption(false), []);
 
   function toggleRefresh() {
     setRefreshOption(!refreshOption);
   }
-
   const { isShowingModal, toggleModal } = UseModal();
+  const buttonOptions = {
+    modalType: "list",
+    isAuth: props.isAuth,
+    subjectName: officerName,
+    refreshOption: refreshOption,
+    setRefresh: toggleRefresh,
+    officerId: id
+  };
+
 
   const initialOfficerState = {
     _id: null,
@@ -52,8 +60,8 @@ const Officer = (props) => {
   useEffect(() => {
     let isMounted = true;
 
-    const getOfficer = (id) => {
-      PersonnelDataService.get(id)
+    const getOfficer = (officerId) => {
+      PersonnelDataService.get(officerId)
         .then((response) => {
           if (isMounted) {
             setOfficer(response.data);
@@ -61,14 +69,6 @@ const Officer = (props) => {
               ? response.data.first + " " + response.data.surname
               : response.data.surname;
             setOfficerName(officerName);
-            setButtonOptions({
-              modalType: "list",
-              isAuth: props.isAuth,
-              officerId: id,
-              subjectName: officerName,
-              refreshOption: refreshOption,
-              setRefresh: toggleRefresh,
-            });
           }
         })
         .catch((err) => {
@@ -77,11 +77,11 @@ const Officer = (props) => {
         });
     };
 
-    getOfficer(props.match.params.id);
+    getOfficer(id);
     return () => {
       isMounted = false;
     };
-  }, [props.match.params.id, refreshOption]);
+  }, [id, refreshOption]);
 
   function OpenModal(modalType, eventId = null, type = "officer", category = "") {
     setModal(modalType);
@@ -96,7 +96,7 @@ const Officer = (props) => {
       {
         <EditCreateMenu
           entryType={imageType}
-          officerId={props.match.params.id}
+          officerId={id}
           isAuth={props.isAuth}
           photoRefresh={refreshOption}
           setPhotoRefresh={setRefreshOption}
@@ -109,7 +109,7 @@ const Officer = (props) => {
         <div>
           <div className="d-flex flex-wrap justify-content-around">
             <PhotoCarousel
-              subjectId={props.match.params.id}
+              subjectId={id}
               isAuth={props.isAuth}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
@@ -117,7 +117,7 @@ const Officer = (props) => {
               OpenModal={OpenModal}
               className="col-md-4"
             />
-            <div className="m-1 profile-summary col-md-4">
+            <div className="m-1 profile-summary col-md-5">
               <h1>
                 {officer.surname && <>{officer.surname}</>}
                 {officer.first && (
@@ -134,8 +134,8 @@ const Officer = (props) => {
                     {officer.deathDate
                       ? officer.deathDate.slice(0, 4)
                       : officer.endDate
-                      ? officer.endDate.slice(0, 4)
-                      : officer.date.slice(0, 4)}
+                        ? officer.endDate.slice(0, 4)
+                        : officer.date.slice(0, 4)}
                     )
                   </span>
                 )}
@@ -215,11 +215,11 @@ const Officer = (props) => {
               )}
             </div>
             {officer.memoryAlphaURL && (
-              <div className="m-1 mobile-center col-md-4">
+              <div className="m-1 mobile-center col-md-3">
                 <a
                   href={`https://memory-alpha.fandom.com/wiki/${officer.memoryAlphaURL}`}
                   className="mf-1 list-link"
-                  target="_blank"
+                  target="_blank" rel="noreferrer"
                 >
                   <img src={ma_logo} alt="Memory Alpha" />
                   <strong className="mx-1">Memory Alpha</strong>
@@ -312,7 +312,7 @@ const Officer = (props) => {
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={props.isAuth}
-        officerId={props.match.params.id}
+        officerId={id}
         eventId={eventId}
         subjectName={officerName}
         type={imageType}

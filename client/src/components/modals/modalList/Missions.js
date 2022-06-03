@@ -44,7 +44,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
     return () => {
       isMounted = false;
     };
-  }, [officerId, starshipId, category, refreshOption]);
+  }, [officerId, starshipId, category, refreshOption, eventType]);
 
   function OpenModal(modalType, id, option = listType, category = "") {
     setModal(modalType);
@@ -89,9 +89,9 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                       <td
                         rowSpan={
                           event.notes &&
-                          event.notes !== "Assignment" &&
-                          event.notes !== "Promotion" &&
-                          event.notes !== "Demotion"
+                            event.notes !== "Assignment" &&
+                            event.notes !== "Promotion" &&
+                            event.notes !== "Demotion"
                             ? 1
                             : 1
                         }
