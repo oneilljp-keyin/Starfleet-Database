@@ -1,32 +1,47 @@
 const mongoose = require("mongoose");
 
-// Create Schema for user
-const UserSchema = new mongoose.Schema(
+// Create Schema for event
+const EventSchema = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-    },
-    lastName: {
-      type: String,
-    },
-    email: {
+    type: {
       type: String,
       required: true,
-      unique: true,
     },
-    email_is_verified: {
-      type: Boolean,
-      default: false,
+    officerId: {
+      type: mongoose.Schema.Types.ObjectId,
     },
-    password: {
+    rankLabel: {
+      type: String,
+    },
+    starshipId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    starshipName: {
+      type: String,
+    },
+    starshipRegistry: {
+      type: String,
+    },
+    position: {
+      type: String,
+    },
+    location: {
       type: String,
     },
     date: {
       type: Date,
-      default: Date.now,
+    },
+    dateNote: {
+      type: String,
+    },
+    stardate: {
+      type: String,
+    },
+    notes: {
+      type: String,
     },
   },
   { strict: false }
 );
 
-module.exports = User = mongoose.model("users", UserSchema);
+module.exports = LifeEvent = mongoose.model("events", EventSchema);

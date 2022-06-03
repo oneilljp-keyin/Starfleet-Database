@@ -1,0 +1,5 @@
+{
+    "name": "jwtSigningKey",
+    "value": "JWT_TOKEN",
+    "from_secret": true
+}

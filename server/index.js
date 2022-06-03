@@ -10,6 +10,8 @@ if (process.env.NODE_ENV !== "production") {
 const app = require("./server.js");
 const PersonnelDAO = require("./dao/personnelDAO.js");
 const StarshipsDAO = require("./dao/starshipsDAO.js");
+const RankDAO = require("./dao/rankDAO.js");
+const EventsDAO = require("./dao/eventsDAO.js");
 
 const MongoClient = mongodb.MongoClient;
 
@@ -27,6 +29,8 @@ MongoClient.connect(process.env.MONGO_DB_CONNECTION_STRING, {
   .then(async (client) => {
     await PersonnelDAO.injectDB(client);
     await StarshipsDAO.injectDB(client);
+    await RankDAO.injectDB(client);
+    await EventsDAO.injectDB(client);
     app.listen(port, () => {
       console.log(`Listening on Port ${port}`);
     });

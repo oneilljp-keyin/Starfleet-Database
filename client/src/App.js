@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { StrictMode, useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,179 +10,172 @@ import Navbar from "./components/Navbar";
 import SignIn from "./components/SignIn";
 // import SignUp from "./components/SignUp";
 import Landing from "./components/Landing";
-import PersonnelList from "./components/personnel/personnel-list";
-import Officer from "./components/personnel/officer";
-import COUOfficer from "./components/personnel/COUOfficer";
-import StarshipList from "./components/starships/starship-list";
-import Starship from "./components/starships/starship";
+import PersonnelList from "./components/personnel/PersonnelList";
+import Officer from "./components/personnel/OfficerProfile";
+import StarshipList from "./components/starships/StarshipList";
+import Starship from "./components/starships/Starship";
+
+import SignInUpService from "./services/signInUp";
 
 toast.configure();
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminRole, setAdminRole] = useState(false);
-  const [database, setDatabase] = useState("mongo");
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
-  // const [time, setTime] = useState(null);
 
   // ---- Get Name and Admin Privileges ---- \\
-  async function getProfile(userId) {
-    try {
-      const response = await fetch(`http://localhost:8000/api/users/${userId}`, {
-        method: "GET",
-        headers: { token: localStorage.token },
-      });
-
-      const parseData = await response.json();
-
-      setName(parseData.name);
-      setAdminRole(parseData.admin);
-    } catch (err) {
-      console.error(err.message);
+  useEffect(() => {
+    let isMounted = true;
+    async function getProfile() {
+      SignInUpService.userInfo()
+        .then((response) => {
+          if (isMounted) {
+            if (!response.data.error) {
+              setName(response.data.name);
+              setAdminRole(response.data.admin);
+              setAuth(true);
+            } else {
+              setAuth(false);
+              setAdminRole(false);
+              setName(null);
+              setUserId(null);
+            }
+          }
+        })
+        .catch((err) => {
+          setAuth(false);
+          setAdminRole(false);
+          setName(null);
+          setUserId(null);
+        });
     }
-  }
+    getProfile();
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated]);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
 
+  const logout = (e) => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      setAuth(false);
+      toast.success("Logout Successful");
+      setAdminRole(false);
+      setName("");
+    } catch (err) {
+      toast.success(err.message);
+      console.log(err.message);
+    }
+  };
+
   return (
-    <div className="container p-0">
-      <div className="topbar">
-        <div className="time_wrapper">
-          <span className="topbar-title">Starfleet Database at Sector 709</span>
-          {/* <time> {time}</time> */}
-        </div>
-      </div>
-      {/* <Provider store={store}> */}
-      <Navbar
-        isAuth={isAuthenticated}
-        setAuth={setAuth}
-        setAdmin={setAdminRole}
-        setName={setName}
-        // setTime={setTime}
-      />
-      <main className="main_body">
-        <div className="content_wrapper">
-          <div className="content_container align-content-center">
-            <Switch>
-              <Route
-                exact
-                path={["/"]}
-                render={(props) => (
-                  <Landing
-                    {...props}
-                    isAuth={isAuthenticated}
-                    userId={userId}
-                    admin={adminRole}
-                    userName={name}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path={["/personnel"]}
-                render={(props) => (
-                  // !isAuthenticated ? (
-                  //   <Redirect to="/signin" />
-                  // ) :
-                  <PersonnelList
-                    {...props}
-                    isAuth={isAuthenticated}
-                    userId={userId}
-                    admin={adminRole}
-                    setDatabase={setDatabase}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                path="/personnel/:id"
-                render={(props) => (
-                  <Officer
-                    {...props}
-                    isAuth={isAuthenticated}
-                    admin={adminRole}
-                    userId={userId}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                path="/personnel/edit/:id/"
-                render={(props) =>
-                  !isAuthenticated ? (
-                    <Redirect to="/" />
-                  ) : (
-                    <COUOfficer
-                      {...props}
-                      isAuth={isAuthenticated}
-                      admin={adminRole}
-                      userId={userId}
-                      database={database}
-                    />
-                  )
-                }
-              />
-              <Route
-                exact
-                path={["/starships"]}
-                render={(props) => (
-                  // !isAuthenticated ? (
-                  //   <Redirect to="/signin" />
-                  // ) :
-                  <StarshipList
-                    {...props}
-                    isAuth={isAuthenticated}
-                    userId={userId}
-                    admin={adminRole}
-                    setDatabase={setDatabase}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                path="/starships/:id"
-                render={(props) => (
-                  <Starship
-                    {...props}
-                    isAuth={isAuthenticated}
-                    admin={adminRole}
-                    userId={userId}
-                    database={database}
-                  />
-                )}
-              />
-              <Route
-                path="/signin"
-                render={(props) => (
-                  <SignIn
-                    {...props}
-                    setAuth={setAuth}
-                    setUserId={setUserId}
-                    getProfile={getProfile}
-                  />
-                )}
-              />
-              {/* <Route path="/signup" render={(props) => <SignUp {...props} />} /> */}
-            </Switch>
+    <StrictMode>
+      <Router basename="/">
+        <div className="container p-0">
+          <div className="topbar">
+            <div className="title-wrapper">
+              <Link to={"/"} className="topbar-title">
+                Starfleet Database at Sector 709
+              </Link>
+            </div>
           </div>
+          <Navbar
+            isAuth={isAuthenticated}
+            logout={logout}
+            setAdmin={setAdminRole}
+            setAuth={setIsAuthenticated}
+          />
+          <main className="main-body">
+            <div className="content-wrapper">
+              <div className="content-container align-content-center">
+                <Switch>
+                  <Route
+                    exact
+                    path={["/"]}
+                    render={(props) => (
+                      <Landing
+                        {...props}
+                        isAuth={isAuthenticated}
+                        setAuth={setAuth}
+                        admin={adminRole}
+                        setAdmin={setAdminRole}
+                        userName={name}
+                        setName={setName}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={["/personnel"]}
+                    render={(props) => <PersonnelList {...props} isAuth={isAuthenticated} />}
+                  />
+                  <Route
+                    exact
+                    path="/personnel/:id"
+                    render={(props) => (
+                      <Officer {...props} isAuth={isAuthenticated} admin={adminRole} />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={["/starships"]}
+                    render={(props) => (
+                      <StarshipList
+                        {...props}
+                        isAuth={isAuthenticated}
+                        userId={userId}
+                        admin={adminRole}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/starships/:id"
+                    render={(props) => (
+                      <Starship
+                        {...props}
+                        isAuth={isAuthenticated}
+                        admin={adminRole}
+                        userId={userId}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/signin"
+                    render={(props) => (
+                      <SignIn
+                        {...props}
+                        setAuth={setAuth}
+                        setAdmin={setAdminRole}
+                        setUserId={setUserId}
+                      />
+                    )}
+                  />
+                  {/* <Route path="/signup" render={(props) => <SignUp {...props} />} /> */}
+                </Switch>
+              </div>
+            </div>
+          </main>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false}
+          />
         </div>
-      </main>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover={false}
-      />
-      {/* </Provider> */}
-    </div>
+      </Router>
+    </StrictMode>
   );
 }
 

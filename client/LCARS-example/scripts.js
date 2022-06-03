@@ -1,4 +1,4 @@
-const nav = document.getElementById("main_nav");
+const nav = document.getElementById("main-nav");
 const menuBtn = document.getElementById("menu-btn");
 
 // function toggleNav() {}

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 
-const PORT = 8000;
+import SignInUpService from "../services/signInUp";
 
-function Login({ setAuth, setUserId, getProfile }) {
+function Signin({ setAuth, setAdmin }) {
   const history = useHistory();
 
   const [user, setUser] = useState({
@@ -20,32 +20,25 @@ function Login({ setAuth, setUserId, getProfile }) {
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
-    try {
-      const body = { email, password };
-      const response = await fetch(`http://localhost:${PORT}/api/users/login`, {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(body),
+    const body = { email, password };
+    SignInUpService.signIn(body)
+      .then((response) => {
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+          setAuth(true);
+          toast.success("Login Successful");
+          history.push("/");
+        } else {
+          localStorage.removeItem("token");
+          setAuth(false);
+          setAdmin(false);
+          toast.dark(response.data.message);
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        toast.error(err.message);
       });
-
-      const parseRes = await response.json();
-
-      console.log(parseRes);
-
-      if (parseRes.token) {
-        localStorage.setItem("token", parseRes.token);
-        setUserId(parseRes.user_id);
-        setAuth(true);
-        getProfile(parseRes.user_id);
-        toast.success("Login Successful");
-        history.push("/");
-      } else {
-        setAuth(false);
-        toast.dark(parseRes.message);
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
   };
 
   return (
@@ -80,4 +73,4 @@ function Login({ setAuth, setUserId, getProfile }) {
   );
 }
 
-export default Login;
+export default Signin;

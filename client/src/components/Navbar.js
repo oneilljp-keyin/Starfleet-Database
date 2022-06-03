@@ -1,132 +1,50 @@
-import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
 
-function Navbar({ user, isAuth, setAuth, setAdmin, setName, setTime }) {
-  const history = useHistory();
-  // const [btnText, setBtnText] = useState("menu");
-  const [isStarshipSearchActive, setIsStarshipSearchActive] = useState(false);
-  const [isPersonnelSearchActive, setIsPersonnelSearchActive] = useState(false);
-  const [refreshClock, setRefreshClock] = useState(false);
+import ModalLauncher from "./modals/ModalLauncher";
+import UseModal from "./modals/UseModal";
 
-  const logout = (e) => {
-    e.preventDefault();
-    try {
-      localStorage.removeItem("token");
-      setAuth(false);
-      toast.success("Logout Succesful");
-      setAdmin(false);
-      setName("");
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+import { LCARSCode, RandomButtonColour, buttonStack } from "./hooks/HooksAndFunctions";
 
-  // useEffect(() => {
-  //   const d = new Date();
-  //   const hour = d.getHours();
-  //   const minutes = d.getMinutes();
-
-  //   if (hour < 10 && minutes >= 10) {
-  //     setTime("0" + hour.toString() + ":" + minutes.toString());
-  //   } else if (hour >= 10 && minutes < 10) {
-  //     setTime(hour.toString() + ":0" + minutes.toString());
-  //   } else if (hour < 10 && minutes < 10) {
-  //     setTime("0" + hour.toString() + ":0" + minutes.toString());
-  //   } else {
-  //     setTime(hour.toString() + ":" + minutes.toString());
-  //   }
-  //   setRefreshClock(false);
-  // }, [refreshClock, setTime]);
-
-  // setInterval(() => {
-  //   setRefreshClock(true);
-  // }, 60000);
-
-  // const toggleNav = () => {
-  //   setIsActive(!isActive);
-  //   if (btnText === "menu") {
-  //     setBtnText("close");
-  //   } else {
-  //     setBtnText("menu");
-  //   }
-  // };
-
-  const toggleStarshipSearch = () => {
-    setIsStarshipSearchActive(!isStarshipSearchActive);
-  };
-
-  const togglePersonnelSearch = () => {
-    setIsPersonnelSearchActive(!isPersonnelSearchActive);
-  };
+function Navbar({ isAuth, logout, setAdmin, setAuth }) {
+  const { isShowingModal, toggleModal } = UseModal();
+  const headerButtonClass = "lcars-btn header-btn events-btn";
 
   return (
     <>
-      <header id="main_header" className="header">
-        <div className="header_inner">
-          {/* <hgroup className="p-2">
-            <Link to={"/"} className="navbar-brand">
-              <h2 className="text-right">Starfleet Database at Sector 709</h2>
+      <header id="main-header" className="header">
+        <div className="header-inner">
+          <nav className="flex-row d-flex">
+            {/* <div className="lcars-end-cap left-round purple-btn"> </div> */}
+            <Link to={"/personnel"} className={`${headerButtonClass} left-round blue-btn`}>
+              {buttonStack("Personnel", 2, 4)}
             </Link>
-          </hgroup> */}
-
-          {/* <div className="menu-btn_wrapper">
-            <button id="menu-btn" className="material-icons" onClick={toggleNav}>
-              {btnText}
-            </button>
-          </div> */}
-
-          {/* <nav id="main_nav" className={isActive ? "active" : null}> */}
-          <nav id="main_nav" className="active">
-            <ul>
-              <li>
-                <span onClick={togglePersonnelSearch}>
-                  {" "}
-                  <Link to={"/personnel"} className="nav-link">
-                    Personnel
-                  </Link>
-                </span>
-              </li>
-              <li>
-                <span onClick={toggleStarshipSearch}>
-                  {" "}
-                  <Link to={"/starships"} className="nav-link">
-                    Starships
-                  </Link>
-                </span>
-              </li>
-              <li>
-                <span>
-                  {isAuth ? (
-                    <Link
-                      to={"/"}
-                      onClick={logout}
-                      className="nav-link"
-                      style={{ cursor: "pointer" }}
-                    >
-                      Logout
-                    </Link>
-                  ) : (
-                    <Link to={"/signin"} className="nav-link">
-                      Sign In
-                    </Link>
-                  )}
-                </span>
-              </li>
-              {/* {!isAuth ? (
-                <li className="nav-item">
-                  <Link to={"/signup"} className="nav-link">
-                    Sign Up
-                  </Link>
-                </li>
-              ) : (
-                " "
-              )} */}
-            </ul>
+            <Link to={"/starships"} className={`${headerButtonClass} all-square orange-btn`}>
+              {buttonStack("Starships", 2, 4)}
+            </Link>
+            {isAuth ? (
+              <Link
+                to={"/"}
+                onClick={logout}
+                className={`${headerButtonClass} right-round red-btn`}
+              >
+                {buttonStack("Logout", 2, 4)}
+              </Link>
+            ) : (
+              <button onClick={toggleModal} className={`${headerButtonClass} right-round pink-btn`}>
+                {buttonStack("Login", 2, 4)}
+              </button>
+            )}
+            {/* <div className="lcars-end-cap right-round purple-btn"> </div> */}
           </nav>
         </div>
       </header>
+      <ModalLauncher
+        modal={"signin"}
+        isShowing={isShowingModal}
+        hide={toggleModal}
+        setAdmin={setAdmin}
+        setAuth={setAuth}
+      />
     </>
   );
 }

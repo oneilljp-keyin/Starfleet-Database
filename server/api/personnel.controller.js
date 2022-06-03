@@ -1,5 +1,8 @@
 const PersonnelDAO = require("../dao/personnelDAO.js");
+
 const searchHistory = require("../models/SearchHistory");
+const Photo = require("../models/Photo");
+const Officer = require("../models/Officer");
 
 const ObjectId = require("mongodb").ObjectId;
 
@@ -52,13 +55,49 @@ module.exports = class PersonnelController {
     }
   }
 
-  static async apiGetSearchHistory(req, res, next) {
-    let o_id = new ObjectId(req.param.id);
-    // console.log(o_id);
+  static async apiUpdatePersonnel(req, res, next) {
+    let officer_id = req.body._id;
+    let updatedInfo = req.body;
+    delete updatedInfo["_id"];
+    console.log(req.body);
     try {
-      const history = await searchHistory.find({ userId: o_id });
-      // console.log(history);
-      res.send(history);
+      let officer = await PersonnelDAO.updatePersonnelRecord(officer_id, updatedInfo);
+      res.json(officer.message);
+    } catch (err) {
+      console.error(`Update Officer Error: ${err.message}`);
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  static async apiCreateOfficer(req, res, next) {
+    let newRecord = req.body;
+    delete newRecord["_id"];
+    let newOfficer = new Officer(newRecord);
+    console.log(newOfficer);
+    try {
+      await newOfficer.save();
+      res.json("New Officer Record Created");
+    } catch (err) {
+      console.error(`Create Officer Error: ${err.message}`);
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+  static async apiGetRankLabels(req, res, next) {
+    try {
+      let rankLabels = await PersonnelDAO.getRankLabels();
+      res.json(rankLabels);
+    } catch (e) {
+      console.error(`api, ${e}`);
+      res.status(500).json({ error: e });
+    }
+  }
+
+  static async apiGetOfficerPhotos(req, res, next) {
+    let o_id = new ObjectId(req.query.id);
+    try {
+      const photos = await Photo.find({ owner: o_id }).sort({ year: 1 });
+      res.send(photos);
     } catch (err) {
       res.json(err.message);
     }

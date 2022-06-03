@@ -15,10 +15,18 @@ const SearchHistory = require("../models/SearchHistory");
 // Name and privilege retrieval
 router.get("/:id", authorization, (req, res) => {
   o_id = new ObjectId(req.params.id);
-  // console.log(o_id);
   User.findOne({ _id: o_id }).then((user) => {
     res.json(user);
   });
+});
+
+router.get("/is-verify", authorization, async (req, res) => {
+  try {
+    res.json(true);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error, WTF??");
+  }
 });
 
 // // get search history

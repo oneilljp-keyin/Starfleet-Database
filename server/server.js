@@ -3,7 +3,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const passport = require("passport");
 
 const database = require("./api/database.routes.js");
@@ -14,7 +13,12 @@ const app = express();
 MONGO_URI = process.env.MONGO_DB_CONNECTION_STRING;
 
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  })
   .then(console.log(`MongoDB connection for Authorization`))
   .catch((err) => console.log(err.message));
 

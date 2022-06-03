@@ -1,0 +1,176 @@
+[
+  {
+      "rank_id": 1,
+      "label": "Fleet Admiral",
+      "type": "Flag",
+      "abbrev": "F. Adm."
+  },
+  {
+      "rank_id": 2,      
+      "label": "Admiral",
+      "type": "Flag",
+      "abbrev": "Adm."
+  },
+  {
+      "rank_id": 3,      
+      "label": "Vice Admiral",
+      "type": "Flag",
+      "abbrev": "V. Adm."
+  },
+  {
+      "rank_id": 4,
+      "label": "Rear Admiral",
+      "type": "Flag",
+      "abbrev": "R. Adm."
+  },
+  {
+      "rank_id": 5,
+      "label": "Commodore",
+      "type": "Flag",
+      "abbrev": "Cdre."
+  },
+  {
+      "rank_id": 10,
+      "label": "Captain",
+      "type": "Line",
+      "abbrev": "Capt."
+  },
+  {
+      "rank_id": 11,
+      "label": "Commander",
+      "type": "Line",
+      "abbrev": "Cmdr."
+  },
+  {
+      "rank_id": 12,
+      "label": "Lieutenant Commander",
+      "type": "Line",
+      "abbrev": "Lt. Cmdr."
+  },
+  {
+      "rank_id": 13,
+      "label": "Lieutenant",
+      "type": "Line",
+      "abbrev": "Lt."
+  },
+  {
+      "rank_id": 14,
+      "label": "Lieutenant Junior Grade",
+      "type": "Line",
+      "abbrev": "Lt. J.G."
+  },
+  {
+      "rank_id": 15,
+      "label": "Ensign",
+      "type": "Line",
+      "abbrev": "Ens."
+  },
+  {
+      "rank_id": 21,
+      "label": "Midshipmen First Class",
+      "type": "Training",
+      "abbrev": "MID.1st"
+  },
+  {
+      "rank_id": 22,
+      "label": "Midshipmen",
+      "type": "Training",
+      "abbrev": "MID."
+  },
+  {
+      "rank_id": 23,
+      "label": "Officer Candidate",
+      "type": "Training",
+      "abbrev": "O.C."
+  },
+  {
+      "rank_id": 24,
+      "label": "Cadet 4th Class",
+      "type": "Training",
+      "abbrev": "Cdt.4th"
+  },
+  {
+      "rank_id": 25,
+      "label": "Cadet 3rd Class",
+      "type": "Training",
+      "abbrev": "Cdt.3rd"
+  },
+  {
+      "rank_id": 26,
+      "label": "Cadet 2nd Class",
+      "type": "Training",
+      "abbrev": "Cdt.2nd"
+  },
+  {
+      "rank_id": 27,
+      "label": "Cadet 1st Class",
+      "type": "Training",
+      "abbrev": "Cdt.1st"
+  },
+  {
+      "rank_id": 28,
+      "label": "Cadet",
+      "type": "Training",
+      "abbrev": "Cdt."
+  },
+  {
+      "rank_id": 31,
+      "label": "Master Chief Petty Officer",
+      "type": "Enlisted",
+      "abbrev": "M.C.P.O."
+  },
+  {
+      "rank_id": 32,
+      "label": "Senior Chief Petty Officer",
+      "type": "Enlisted",
+      "abbrev": "S.C.P.O."
+  },
+  {
+      "rank_id": 33,
+      "label": "Chief Petty Officer",
+      "type": "Enlisted",
+      "abbrev": "C.P.O."
+  },
+  {
+      "rank_id": 34,
+      "label": "Petty Officer 3rd Class",
+      "type": "Enlisted",
+      "abbrev": "P.O.3rd"
+  },
+  {
+      "rank_id": 35,
+      "label": "Petty Officer 2nd Class",
+      "type": "Enlisted",
+      "abbrev": "P.O.2nd"
+  },
+  {
+      "rank_id": 36,
+      "label": "Petty Officer 1st Class",
+      "type": "Enlisted",
+      "abbrev": "P.O.1st"
+  },
+  {
+      "rank_id": 37,
+      "label": "Crewman 3rd Class",
+      "type": "Enlisted",
+      "abbrev": "C.M.3rd"
+  },
+  {
+      "rank_id": 38,
+      "label": "Crewman 2nd Class",
+      "type": "Enlisted",
+      "abbrev": "C.M.2nd"
+  },
+  {
+      "rank_id": 39,
+      "label": "Crewman 1st Class",
+      "type": "Enlisted",
+      "abbrev": "C.M.1st"
+  },
+  {
+      "rank_id": 40,
+      "label": "Crewman",
+      "type": "Enlisted",
+      "abbrev": "C.M."
+  }
+]

@@ -1,28 +1,35 @@
+import axios from "axios";
 import http from "../http-common";
 
 class PersonnelDataService {
-  getAll(page = 0, db = "mongo") {
-    return http.get(`/personnel?page=${page}&db=${db}`);
+  getAll(page = 0) {
+    return http.get(`/personnel?page=${page}`);
   }
 
-  get(id, db = "mongo") {
-    return http.get(`/personnel/id?id=${id}&db=${db}`);
+  get(id) {
+    return http.get(`/personnel?id=${id}`);
   }
 
-  find(query, by = "name", db = "mongo", userId) {
-    return http.get(`/personnel?${by}=${query}&db=${db}&userId=${userId}`);
+  find(query, pageNumber = "0", cancel) {
+    return http.get(`/personnel?name=${query}&page=${pageNumber}`, {
+      cancelToken: new axios.CancelToken((c) => (cancel = c)),
+    });
   }
 
-  searchHistory(id) {
-    return http.get("/personnel/history/", id);
+  createOfficer(officerInfo) {
+    return http.post("/personnel", officerInfo);
   }
 
-  updatePersonnel(data) {
-    return http.put("/review-edit", data);
+  updateOfficer(officerInfo) {
+    return http.put("/personnel", officerInfo);
   }
 
-  deletePersonnel(id, userID) {
-    return http.delete(`/review-delete?id=${id}`, { data: { user_id: userID } });
+  deleteOfficer(officerId) {
+    return http.delete(`/personnel?id=${officerId}`);
+  }
+
+  getRankLabels() {
+    return axios.get("../ranks.json");
   }
 }
 
