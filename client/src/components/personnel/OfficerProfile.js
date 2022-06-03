@@ -164,9 +164,7 @@ const Officer = (props) => {
                   <span style={{ color: "#FFDD22E6" }}>
                     {!officer.active && <>Last </>}Vessel:{" "}
                   </span>
-                  USS{" "}
-                  {officer.name.replace(/-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g, "")}{" "}
-                  {officer.registry}
+                  USS {officer.name.replace(/-[A-Z]$/g, "")} {officer.registry}
                 </h3>
               )}
               {officer.location &&
@@ -315,7 +313,7 @@ const Officer = (props) => {
         officerId={props.match.params.id}
         eventId={eventId}
         subjectName={officerName}
-        type={imageType}
+        eventType={imageType}
         setRefresh={toggleRefresh}
         category={category}
       />

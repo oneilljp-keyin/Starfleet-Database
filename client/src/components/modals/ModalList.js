@@ -13,7 +13,7 @@ const PopUpList = ({
   subjectName,
   officerId,
   starshipId,
-  listType,
+  eventType,
   category, // Label for display
 }) => {
   const closeModal = () => {
@@ -45,7 +45,7 @@ const PopUpList = ({
                     {
                       "Assigned Personnel": (
                         <PersonnelList
-                          listType={listType}
+                          eventType={eventType}
                           starshipId={starshipId}
                           category={category}
                         />
@@ -53,7 +53,7 @@ const PopUpList = ({
                       "First Contact Debriefs": (
                         <Missions
                           isAuth={isAuth}
-                          listType={listType}
+                          eventType={eventType}
                           starshipId={starshipId}
                           category={category}
                         />
@@ -61,7 +61,7 @@ const PopUpList = ({
                       "Complete Chronology": (
                         <Missions
                           isAuth={isAuth}
-                          listType={listType}
+                          eventType={eventType}
                           starshipId={starshipId}
                           officerId={officerId}
                           category={category}
@@ -71,7 +71,7 @@ const PopUpList = ({
                       "Life Events": (
                         <Missions
                           isAuth={isAuth}
-                          listType={listType}
+                          eventType={eventType}
                           officerId={officerId}
                           category={category}
                           subjectName={subjectName}
@@ -79,7 +79,7 @@ const PopUpList = ({
                       ),
                       "Starship Assignments": (
                         <VesselsServed
-                          listType={listType}
+                          eventType={eventType}
                           officerId={officerId}
                           category={category}
                         />
@@ -87,7 +87,7 @@ const PopUpList = ({
                       "Mission Debriefs": (
                         <Missions
                           isAuth={isAuth}
-                          listType={listType}
+                          eventType={eventType}
                           officerId={officerId}
                           starshipId={starshipId}
                           category={category}
@@ -97,7 +97,7 @@ const PopUpList = ({
                       "Maintenance Logs": (
                         <Missions
                           isAuth={isAuth}
-                          listType={listType}
+                          eventType={eventType}
                           starshipId={starshipId}
                           category={category}
                           subjectName={subjectName}
@@ -106,7 +106,7 @@ const PopUpList = ({
                       "Service Record": (
                         <Missions
                           isAuth={isAuth}
-                          listType={listType}
+                          eventType={eventType}
                           officerId={officerId}
                           category={category}
                           subjectName={subjectName}

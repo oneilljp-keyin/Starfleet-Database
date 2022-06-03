@@ -67,13 +67,7 @@ const StarshipsList = ({ listType, officerId, category }) => {
                     />
                   </div>
                   <div className="col-sm-7 my-auto">
-                    <span className="h5cell">
-                      USS{" "}
-                      {starship.name.replace(
-                        /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
-                        ""
-                      )}
-                    </span>
+                    <span className="h5cell">USS {starship.name.replace(/-[A-Z]$/g, "")}</span>
                     {starship.class && (
                       <>
                         <br />

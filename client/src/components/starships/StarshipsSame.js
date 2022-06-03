@@ -10,7 +10,7 @@ function StarshipsSame({ starshipName = "", starshipClass = "All", starshipId })
 
     let queryName = "";
     if (starshipName) {
-      queryName = starshipName.replace(/-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g, "");
+      queryName = starshipName.replace(/-[A-Z]$/g, "");
     }
     StarshipsDataService.findSame(queryName, starshipClass, 50)
       .then((response) => {
@@ -31,9 +31,7 @@ function StarshipsSame({ starshipName = "", starshipClass = "All", starshipId })
           <div className="card-header text-center" style={{ borderBottom: "1px solid #F9F9F9" }}>
             <span className="h5cell" style={{ textTransform: "capitalize" }}>
               Starships named{" "}
-              <em style={{ textTransform: "uppercase" }}>
-                {starshipName.replace(/-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g, "")}
-              </em>
+              <em style={{ textTransform: "uppercase" }}>{starshipName.replace(/-[A-Z]$/g, "")}</em>
             </span>
           </div>
           <div className="d-flex flex-wrap justify-content-evenly">

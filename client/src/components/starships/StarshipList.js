@@ -246,10 +246,7 @@ function StarshipList(props) {
                     alt={starship.name}
                   />
                   <h5 className="card-title" style={{ textTransform: "capitalize" }}>
-                    {starship.name.replace(
-                      /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
-                      ""
-                    )}
+                    {starship.name.replace(/-[A-Z]$/g, "")}
                   </h5>
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>
                 </div>

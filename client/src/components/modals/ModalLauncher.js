@@ -21,7 +21,7 @@ const ModalLauncher = (props) => {
           eventId={props.eventId}
           subjectName={props.subjectName}
           setRefresh={props.setRefresh}
-          eventType={props.type}
+          eventType={props.eventType}
           modalClass={modalClass}
         />
       );
@@ -35,7 +35,7 @@ const ModalLauncher = (props) => {
           subjectId={subjectId}
           setRefresh={props.setRefresh}
           setPhotoRefresh={props.setPhotoRefresh}
-          imageType={props.type}
+          imageType={props.entryType}
           modalClass={modalClass}
           photoId={props.photoId}
         />
@@ -74,7 +74,7 @@ const ModalLauncher = (props) => {
           starshipId={props.starshipId}
           eventId={props.eventId}
           setRefresh={props.setRefresh}
-          recordType={props.type}
+          recordType={props.eventType}
           modalClass={modalClass}
         />
       );
@@ -98,7 +98,7 @@ const ModalLauncher = (props) => {
           subjectName={props.subjectName}
           officerId={props.officerId}
           starshipId={props.starshipId}
-          listType={props.type}
+          eventType={props.eventType}
           category={props.category}
         />
       );

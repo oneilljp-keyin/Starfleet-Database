@@ -267,7 +267,7 @@ const Starships = (props) => {
         isAuth={props.isAuth}
         starshipId={starshipId}
         subjectName={starshipName}
-        type={type}
+        eventType={type}
         refreshOption={refreshOption}
         setRefresh={toggleRefresh}
       />

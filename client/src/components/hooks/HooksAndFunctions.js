@@ -145,7 +145,7 @@ function ButtonFormatter(props) {
         isShowing={isShowingModal}
         isAuth={props.isAuth}
         hide={toggleModal}
-        type={eventType}
+        eventType={eventType}
         category={categoryLabel}
         starshipId={props.starshipId || null}
         officerId={props.officerId || null}

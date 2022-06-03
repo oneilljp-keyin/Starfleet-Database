@@ -8,10 +8,11 @@ import EventsAndPhotosDataService from "../../../services/eventsAndPhotos";
 import UseModal from "../UseModal";
 import ModalLauncher from "../ModalLauncher";
 
-function Missions({ listType, officerId, starshipId, category, isAuth, subjectName }) {
+function Missions({ eventType, officerId, starshipId, category, isAuth, subjectName }) {
+  console.log(eventType);
   const [starship, setStarship] = useState({});
 
-  const [eventType, setEventType] = useState(listType);
+  const [eventType2, setEventType2] = useState(eventType);
 
   const [categoryLabel, setCategoryLabel] = useState("");
   const [eventId, setEventId] = useState(null);
@@ -28,9 +29,11 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
     let isMounted = true;
 
     const getEvents = (oid = "", sid = "", type = "", sort = 1) => {
+      console.log(oid, sid, type, sort);
       EventsAndPhotosDataService.getEventsByCategory(oid, sid, type, sort)
         .then((response) => {
           if (isMounted) {
+            console.log(response.data);
             setStarship(response.data);
           }
         })
@@ -46,12 +49,13 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
     };
   }, [officerId, starshipId, category, refreshOption]);
 
-  function OpenModal(modalType, id, option = listType, category = "") {
+  function OpenModal(modalType, id, option = eventType, category = "") {
     setModal(modalType);
     setEventId(id);
-    setEventType(option);
+    setEventType2(option);
     setCategoryLabel(category);
     toggleModal();
+    setEventType2(eventType);
   }
 
   return (
@@ -127,12 +131,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                       <td className="h5cell align-top" style={{ textTransform: "capitalize" }}>
                         {event.name && (
                           <Link to={`/starships/${event.starshipId}`} className="list-link">
-                            USS{" "}
-                            {event.name.replace(
-                              /-A$|-B$|-C$|-D$|-E$|-F$|-G$|-H$|-I$|-J$|-K$|-L$|-M$/g,
-                              ""
-                            )}{" "}
-                            {event.registry}
+                            USS {event.name.replace(/-[A-Z]$/g, "")} {event.registry}
                           </Link>
                         )}
                         {event.name && currentRank !== undefined && <br />}
@@ -144,7 +143,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
                       <td className="h4cell align-top">
                         {event.location && <>{event.location}</>}
                       </td>
-                      {listType === "Chronology" && (
+                      {eventType === "Chronology" && (
                         <td className="h6cell align-top">
                           {event.type !== "Other" && <>{event.type}</>}
                         </td>
@@ -182,7 +181,7 @@ function Missions({ listType, officerId, starshipId, category, isAuth, subjectNa
         starshipId={starshipId}
         eventId={eventId}
         subjectName={subjectName}
-        type={eventType}
+        eventType={eventType2}
         setRefresh={toggleRefresh}
         category={categoryLabel}
       />
