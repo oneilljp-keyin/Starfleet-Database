@@ -9,7 +9,6 @@ import UseModal from "../UseModal";
 import ModalLauncher from "../ModalLauncher";
 
 function Missions({ eventType, officerId, starshipId, category, isAuth, subjectName }) {
-  console.log(eventType);
   const [starship, setStarship] = useState({});
 
   const [eventType2, setEventType2] = useState(eventType);
@@ -29,11 +28,9 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
     let isMounted = true;
 
     const getEvents = (oid = "", sid = "", type = "", sort = 1) => {
-      console.log(oid, sid, type, sort);
       EventsAndPhotosDataService.getEventsByCategory(oid, sid, type, sort)
         .then((response) => {
           if (isMounted) {
-            console.log(response.data);
             setStarship(response.data);
           }
         })
@@ -93,9 +90,9 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                       <td
                         rowSpan={
                           event.notes &&
-                            event.notes !== "Assignment" &&
-                            event.notes !== "Promotion" &&
-                            event.notes !== "Demotion"
+                          event.notes !== "Assignment" &&
+                          event.notes !== "Promotion" &&
+                          event.notes !== "Demotion"
                             ? 1
                             : 1
                         }

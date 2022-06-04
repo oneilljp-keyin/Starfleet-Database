@@ -36,15 +36,11 @@ function Register() {
       //   return;
       // }
 
-      console.log(body);
-
       const response = await fetch("http://localhost:8000/api/users/register", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(body),
       });
-
-      console.log(response);
 
       const parseRes = await response.json();
 

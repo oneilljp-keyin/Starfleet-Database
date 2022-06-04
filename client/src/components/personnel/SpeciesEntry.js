@@ -30,8 +30,6 @@ function Login({ setAuth, setUserId, getProfile }) {
 
       const parseRes = await response.json();
 
-      console.log(parseRes);
-
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token);
         setUserId(parseRes.user_id);

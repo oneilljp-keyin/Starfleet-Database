@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 import EventsAndPhotosDataService from "../../../services/eventsAndPhotos";
 
-const PersonnelList = ({ listType, starshipId, category }) => {
+const PersonnelList = ({ eventType, starshipId, category }) => {
   const [personnel, setPersonnel] = useState({});
 
   useEffect(() => {
@@ -32,11 +32,11 @@ const PersonnelList = ({ listType, starshipId, category }) => {
         });
     };
 
-    getEvents("", starshipId, listType);
+    getEvents("", starshipId, eventType);
     return () => {
       isMounted = false;
     };
-  }, [starshipId, listType]);
+  }, [starshipId, eventType]);
 
   return (
     <div
@@ -56,7 +56,7 @@ const PersonnelList = ({ listType, starshipId, category }) => {
               officerName += ", " + officer.first;
             }
             if (officer.rankLabel) {
-              const [label,] = officer.rankLabel.split("-");
+              const [label] = officer.rankLabel.split("-");
               rankLabel = label;
             }
 

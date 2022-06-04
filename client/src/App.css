@@ -81,7 +81,7 @@ td {text-align: left; padding: 2px 4px 2px 4px !important;}
 .card-title {margin: 2px 0;}
 
 .load-img {max-width: 325px;}
-.search-list { width: auto; height: 80px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
+.search-list { width: 100%; height: auto; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 .service-list { width: 100%; height: auto; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 
 .input-size { max-width: 400px;}
@@ -252,6 +252,7 @@ button.logout { color: #121212; background-color: #9999ffe6;
 .blue-btn:hover   { background-color: #7788ff; }
 
 .header-btn       { min-width: 88px; font-size: 0.875em; text-align: center; margin: 4px 4px;}
+.events-btn { border: none;}
 
 /* Button Shapes */
 
@@ -285,7 +286,7 @@ button.logout { color: #121212; background-color: #9999ffe6;
 /* Main Content */
 
 .content-wrapper {
-  position: relative; margin: 1rem 0 1rem 0; background-color: #9999ff9e;
+  position: relative; margin: 1rem 0 0 0; background-color: #9999ff9e;
   border-radius: 2.47rem 0 0 2.47rem; padding-top: 1rem; padding-bottom: 1rem;
 }
 
@@ -419,7 +420,7 @@ article footer p {
 
   .a-button { padding: 8px 24px; }
   .header-btn { min-width: 124px; font-size: 1rem; padding: 8px 24px; margin: 4px 2px; }
-  .events-btn { padding: 0 4px; border: none;}
+  .events-btn { padding: 0 4px; }
 
   .load-img      { max-width: 600px; }
   .officer-pics  { max-height: 256px; max-width: 256px; }

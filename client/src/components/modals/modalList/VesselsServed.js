@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 import EventsAndPhotosDataService from "../../../services/eventsAndPhotos";
 
-const StarshipsList = ({ listType, officerId, category }) => {
+const StarshipsList = ({ eventType, officerId, category }) => {
   const [starships, setStarships] = useState({});
 
   useEffect(() => {
@@ -36,11 +36,11 @@ const StarshipsList = ({ listType, officerId, category }) => {
         });
     };
 
-    getEvents(officerId, "", listType);
+    getEvents(officerId, "", eventType);
     return () => {
       isMounted = false;
     };
-  }, [officerId, listType]);
+  }, [officerId, eventType]);
 
   return (
     <div
@@ -87,7 +87,7 @@ const StarshipsList = ({ listType, officerId, category }) => {
             );
           })
       ) : (
-        <h2 className="mx-auto my-auto">No {listType} Found</h2>
+        <h2 className="mx-auto my-auto">No {category} Found</h2>
       )}
     </div>
   );

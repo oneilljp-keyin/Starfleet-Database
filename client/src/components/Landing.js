@@ -11,7 +11,7 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
       setAdmin(false);
       setName("");
     } catch (err) {
-      toast.success(err.message);
+      toast.error(err.message);
       console.log(err.message);
     }
   };

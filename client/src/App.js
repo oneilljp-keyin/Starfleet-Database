@@ -68,7 +68,7 @@ function App() {
       setAdminRole(false);
       setName("");
     } catch (err) {
-      toast.success(err.message);
+      toast.error(err.message);
       console.log(err.message);
     }
   };
@@ -94,45 +94,31 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={<Landing
-                  isAuth={isAuthenticated}
-                  setAuth={setAuth}
-                  admin={adminRole}
-                  setAdmin={setAdminRole}
-                  userName={name}
-                  setName={setName}
-                />
+                element={
+                  <Landing
+                    isAuth={isAuthenticated}
+                    setAuth={setAuth}
+                    admin={adminRole}
+                    setAdmin={setAdminRole}
+                    userName={name}
+                    setName={setName}
+                  />
                 }
               />
-              <Route
-                path="/personnel"
-                element={<PersonnelList isAuth={isAuthenticated} />}
-              />
+              <Route path="/personnel" element={<PersonnelList isAuth={isAuthenticated} />} />
               <Route
                 path="/personnel/:id"
-                element={
-                  <Officer isAuth={isAuthenticated} admin={adminRole} />
-                }
+                element={<Officer isAuth={isAuthenticated} admin={adminRole} />}
               />
               <Route
                 path="/starships"
-                element={<StarshipList
-
-                  isAuth={isAuthenticated}
-                  userId={userId}
-                  admin={adminRole}
-                />
+                element={
+                  <StarshipList isAuth={isAuthenticated} userId={userId} admin={adminRole} />
                 }
               />
               <Route
                 path="/starships/:id"
-                element={
-                  <Starship
-                    isAuth={isAuthenticated}
-                    admin={adminRole}
-                    userId={userId}
-                  />
-                }
+                element={<Starship isAuth={isAuthenticated} admin={adminRole} userId={userId} />}
               />
               {/* <Route
                 path="/signin"

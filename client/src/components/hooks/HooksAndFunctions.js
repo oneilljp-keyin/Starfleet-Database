@@ -114,6 +114,7 @@ function EditCreateMenu(props) {
         refreshOption={props.refreshOption}
         setRefresh={props.setRefresh}
         subjectName={props.subjectName}
+        entryType={props.entryType}
       />
     </>
   );
