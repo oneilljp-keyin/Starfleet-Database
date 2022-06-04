@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 
-import ufpLogo from "../../assets/ufp_logo.png";
-
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 import ModalLauncher from "../modals/ModalLauncher";
 import UseModal from "../modals/UseModal";
@@ -38,7 +36,7 @@ function PhotoCarousel({ subjectId, isAuth, shipId, photoRefresh, setPhotoRefres
     return () => {
       isMounted = false;
     };
-  }, [subjectId, photoRefresh]);
+  }, [subjectId, photoRefresh, setPhotoRefresh]);
 
   function OpenModal(modalType, id = null, type = "photo") {
     setPhotoId(id);

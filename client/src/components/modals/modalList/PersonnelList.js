@@ -48,7 +48,6 @@ const PersonnelList = ({ listType, starshipId, category }) => {
           .sort((a, b) => a.surname.localeCompare(b.surname))
           .map((officer) => {
             let officerName;
-            let rankAbbrev;
             let rankLabel;
             if (officer.surname !== "undefined") {
               officerName = officer.surname;
@@ -57,9 +56,8 @@ const PersonnelList = ({ listType, starshipId, category }) => {
               officerName += ", " + officer.first;
             }
             if (officer.rankLabel) {
-              const [label, abbrev] = officer.rankLabel.split("-");
+              const [label,] = officer.rankLabel.split("-");
               rankLabel = label;
-              rankAbbrev = abbrev;
             }
 
             return (

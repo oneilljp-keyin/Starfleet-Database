@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // import PropTypes from "prop-types";
@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 // import { registerUser } from "../actions/authActions";
 
 function Register() {
-  let history = useHistory();
+  let history = useNavigate();
 
   const [inputs, setInputs] = useState({
     name: "",

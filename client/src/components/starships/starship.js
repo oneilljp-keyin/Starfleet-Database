@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 import StarshipsDataService from "../../services/starships";
 import PhotoCarousel from "../hooks/PhotoCarousel";
@@ -12,12 +13,12 @@ import ma_logo from "../../assets/MemoryAlphaLogo.png";
 import { ButtonFormatter, EditCreateMenu } from "../hooks/HooksAndFunctions";
 
 const Starships = (props) => {
+  const { id } = useParams();
   const type = "starship";
+  const isAuth = props.isAuth;
 
   const [starshipName, setStarshipName] = useState("");
-  const [starshipId, setStarshipId] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
-  const [buttonOptions, setButtonOptions] = useState({});
 
   useEffect(() => setRefreshOption(false), []);
 
@@ -26,6 +27,15 @@ const Starships = (props) => {
   }
 
   const { isShowingModal, toggleModal } = UseModal();
+
+  const buttonOptions = {
+    modalType: "list",
+    isAuth: isAuth,
+    starshipId: id,
+    subjectName: starshipName,
+    refreshOption: refreshOption,
+    setRefresh: toggleRefresh,
+  };
 
   const initialStarshipsState = {
     _id: null,
@@ -53,23 +63,14 @@ const Starships = (props) => {
   useEffect(() => {
     let isMounted = true;
 
-    const getStarship = (id) => {
-      StarshipsDataService.get(id)
+    const getStarship = (starshipId) => {
+      StarshipsDataService.get(starshipId)
         .then((response) => {
           if (isMounted) {
             setStarship(response.data);
             let starshipName = response.data.name.replace(/-[ABC]$/g, "");
             if (response.data.registry) starshipName += " " + response.data.registry;
             setStarshipName(starshipName);
-            setStarshipId(response.data._id);
-            setButtonOptions({
-              modalType: "list",
-              isAuth: props.isAuth,
-              starshipId: id,
-              subjectName: starshipName,
-              refreshOption: refreshOption,
-              setRefresh: toggleRefresh,
-            });
           }
         })
         .catch((err) => {
@@ -78,18 +79,18 @@ const Starships = (props) => {
         });
     };
 
-    getStarship(props.match.params.id);
+    getStarship(id);
     return () => {
       isMounted = false;
     };
-  }, [props.match.params.id, refreshOption]);
+  }, [id, refreshOption]);
 
   return (
     <>
       {
         <EditCreateMenu
           entryType={type}
-          starshipId={props.match.params.id}
+          starshipId={id}
           isAuth={props.isAuth}
           photoRefresh={refreshOption}
           setPhotoRefresh={setRefreshOption}
@@ -101,7 +102,7 @@ const Starships = (props) => {
         <div>
           <div className="d-flex flex-wrap justify-content-around">
             <PhotoCarousel
-              subjectId={props.match.params.id}
+              subjectId={id}
               isAuth={props.isAuth}
               shipId={starship.ship_id}
               photoRefresh={refreshOption}
@@ -117,7 +118,7 @@ const Starships = (props) => {
                 <a
                   href={`https://memory-alpha.fandom.com/wiki/${starship.memoryAlphaURL}`}
                   className="mf-1 list-link"
-                  target="_blank"
+                  target="_blank" rel="noreferrer"
                 >
                   <img src={ma_logo} alt="Memory Alpha" />
                   <strong className="mx-1">Memory Alpha</strong>
@@ -264,8 +265,8 @@ const Starships = (props) => {
       <ModalLauncher
         isShowing={isShowingModal}
         hide={toggleModal}
-        isAuth={props.isAuth}
-        starshipId={starshipId}
+        isAuth={isAuth}
+        starshipId={id}
         subjectName={starshipName}
         eventType={type}
         refreshOption={refreshOption}

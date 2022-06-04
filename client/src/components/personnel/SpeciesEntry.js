@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
 const PORT = 8000;
 
 function Login({ setAuth, setUserId, getProfile }) {
-  const history = useHistory();
+  const history = useNavigate();
 
   const [user, setUser] = useState({
     email: "",
