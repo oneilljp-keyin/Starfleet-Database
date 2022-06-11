@@ -32,9 +32,8 @@ const Officer = (props) => {
     subjectName: officerName,
     refreshOption: refreshOption,
     setRefresh: toggleRefresh,
-    officerId: id
+    officerId: id,
   };
-
 
   const initialOfficerState = {
     _id: null,
@@ -134,8 +133,8 @@ const Officer = (props) => {
                     {officer.deathDate
                       ? officer.deathDate.slice(0, 4)
                       : officer.endDate
-                        ? officer.endDate.slice(0, 4)
-                        : officer.date.slice(0, 4)}
+                      ? officer.endDate.slice(0, 4)
+                      : officer.date.slice(0, 4)}
                     )
                   </span>
                 )}
@@ -217,7 +216,8 @@ const Officer = (props) => {
                 <a
                   href={`https://memory-alpha.fandom.com/wiki/${officer.memoryAlphaURL}`}
                   className="mf-1 list-link"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <img src={ma_logo} alt="Memory Alpha" />
                   <strong className="mx-1">Memory Alpha</strong>

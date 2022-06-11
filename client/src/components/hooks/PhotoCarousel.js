@@ -163,8 +163,9 @@ function PhotoCarousel({ subjectId, isAuth, shipId, photoRefresh, setPhotoRefres
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={isAuth}
+        subjectId={subjectId}
         photoId={photoId}
-        imageType={"photo"}
+        imageType={imageType}
         setRefresh={setPhotoRefresh}
       />
     </>

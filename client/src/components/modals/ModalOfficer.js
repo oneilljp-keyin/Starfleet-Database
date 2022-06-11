@@ -6,15 +6,7 @@ import PersonnelDataService from "../../services/personnel";
 
 import { StardateConverter } from "../hooks/HooksAndFunctions";
 
-const PopUpOfficer = ({
-  isShowing,
-  hide,
-  isAuth,
-  officerId,
-  subjectName,
-  setRefresh,
-  modalClass,
-}) => {
+const PopUpOfficer = (props) => {
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const initialOfficerState = {
@@ -62,8 +54,8 @@ const PopUpOfficer = ({
         toast.error(err.message);
       }
     };
-    if (officerId) {
-      getPersonnel(officerId);
+    if (props.officerId) {
+      getPersonnel(props.officerId);
       setEdit(true);
       setSubmitted(false);
       setBtnLabel("Update");
@@ -71,7 +63,7 @@ const PopUpOfficer = ({
     return () => {
       isMounted = false;
     };
-  }, [edit, submitted, officerId]);
+  }, [edit, submitted, props.officerId]);
 
   const saveOfficerInfo = () => {
     let data = officerInfo;
@@ -107,13 +99,13 @@ const PopUpOfficer = ({
       data.deathDate = newDate;
     }
     if (edit) {
-      data._id = officerId;
+      data._id = props.officerId;
       PersonnelDataService.updateOfficer(data)
         .then((response) => {
           setSubmitted(true);
-          setRefresh();
+          props.setRefresh();
           toast.success(response.data.message);
-          hide();
+          props.hide();
         })
         .catch((err) => {
           console.error(err);
@@ -125,7 +117,7 @@ const PopUpOfficer = ({
         .then((response) => {
           toast.success(response.data);
           setOfficerInfo(initialOfficerState);
-          hide();
+          props.hide();
         })
         .catch((err) => {
           console.error(err);
@@ -136,19 +128,19 @@ const PopUpOfficer = ({
 
   const closeModal = () => {
     setOfficerInfo(initialOfficerState);
-    hide();
+    props.hide();
   };
 
-  return isShowing && isAuth
+  return props.isShowing && props.isAuth
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div id="main-modal-body" className={modalClass}>
+            <div id="main-modal-body" className={props.modalClass}>
               <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
-                    {btnLabel} Profile {subjectName ? ` - ${subjectName}` : null}
+                    {btnLabel} Profile {props.subjectName ? ` - ${props.subjectName}` : null}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
                     <div className="form-floating col-sm-6">

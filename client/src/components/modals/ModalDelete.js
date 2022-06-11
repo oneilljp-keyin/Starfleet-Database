@@ -6,45 +6,35 @@ import PersonnelDataService from "../../services/personnel";
 import StarshipsDataService from "../../services/starships";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
-const PopUpDelete = ({
-  isShowing,
-  hide,
-  isAuth,
-  officerId,
-  starshipId,
-  eventId,
-  setRefresh,
-  recordType,
-  modalClass,
-}) => {
+const PopUpDelete = (props) => {
   const deleteRecord = () => {
-    if (recordType === "officer") {
-      PersonnelDataService.deleteOfficer(officerId)
+    if (props.recordType === "officer") {
+      PersonnelDataService.deleteOfficer(props.officerId)
         .then((response) => {
-          setRefresh();
-          hide();
+          props.setRefresh();
+          props.hide();
           toast.success(response.data.message);
         })
         .catch((err) => {
           toast.warning(err.message);
           console.error(err);
         });
-    } else if (recordType === "starship") {
-      StarshipsDataService.deleteStarship(starshipId)
+    } else if (props.recordType === "starship") {
+      StarshipsDataService.deleteStarship(props.starshipId)
         .then((response) => {
-          setRefresh();
-          hide();
+          props.setRefresh();
+          props.hide();
           toast.success(response.data.message);
         })
         .catch((err) => {
           toast.warning(err.message);
           console.error(err);
         });
-    } else if (recordType === "event") {
-      EventsAndPhotosDataService.deleteEvent(eventId)
+    } else if (props.recordType === "event") {
+      EventsAndPhotosDataService.deleteEvent(props.eventId)
         .then((response) => {
-          setRefresh();
-          hide();
+          props.setRefresh();
+          props.hide();
           toast.success(response.data.message);
         })
         .catch((err) => {
@@ -54,16 +44,17 @@ const PopUpDelete = ({
     }
   };
 
-  return isShowing && isAuth
+  return props.isShowing && props.isAuth
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className={modalClass}>
+            <div className={props.modalClass}>
               <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
-                    Confirm Deletion of {recordType[0].toUpperCase() + recordType.slice(1)} Record
+                    Confirm Deletion of{" "}
+                    {props.recordType[0].toUpperCase() + props.recordType.slice(1)} Record
                   </h3>
                   <button
                     className="lcars-btn orange-btn left-round small-btn"
@@ -71,7 +62,7 @@ const PopUpDelete = ({
                   >
                     Confirm
                   </button>
-                  <button className="lcars-btn red-btn right-round small-btn" onClick={hide}>
+                  <button className="lcars-btn red-btn right-round small-btn" onClick={props.hide}>
                     Cancel
                   </button>
                 </div>

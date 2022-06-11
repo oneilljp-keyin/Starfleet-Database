@@ -11,97 +11,19 @@ const ModalLauncher = (props) => {
 
   switch (props.modal) {
     case "event":
-      return (
-        <ModalEvent
-          isShowing={props.isShowing}
-          hide={props.hide}
-          isAuth={props.isAuth}
-          officerId={props.officerId}
-          starshipId={props.starshipId}
-          eventId={props.eventId}
-          subjectName={props.subjectName}
-          setRefresh={props.setRefresh}
-          eventType={props.eventType}
-          modalClass={modalClass}
-        />
-      );
+      return <ModalEvent {...props} modalClass={modalClass} />;
     case "photo":
-      let subjectId = props.type === "starship" ? props.starshipId : props.officerId;
-      return (
-        <ModalUploadEazyCrop
-          isShowing={props.isShowing}
-          hide={props.hide}
-          isAuth={props.isAuth}
-          subjectId={subjectId}
-          setRefresh={props.setRefresh}
-          setPhotoRefresh={props.setPhotoRefresh}
-          imageType={props.entryType}
-          modalClass={modalClass}
-          photoId={props.photoId}
-        />
-      );
+      return <ModalUploadEazyCrop {...props} />;
     case "officer":
-      return (
-        <ModalOfficer
-          isShowing={props.isShowing}
-          hide={props.hide}
-          isAuth={props.isAuth}
-          officerId={props.officerId}
-          subjectName={props.subjectName}
-          setRefresh={props.setRefresh}
-          modalClass={modalClass}
-        />
-      );
+      return <ModalOfficer {...props} modalClass={modalClass} />;
     case "starship":
-      return (
-        <ModalStarship
-          isShowing={props.isShowing}
-          hide={props.hide}
-          isAuth={props.isAuth}
-          starshipId={props.starshipId}
-          subjectName={props.subjectName}
-          setRefresh={props.setRefresh}
-          modalClass={modalClass}
-        />
-      );
+      return <ModalStarship {...props} modalClass={modalClass} />;
     case "delete":
-      return (
-        <ModalDelete
-          isShowing={props.isShowing}
-          hide={props.hide}
-          isAuth={props.isAuth}
-          officerId={props.officerId}
-          starshipId={props.starshipId}
-          eventId={props.eventId}
-          setRefresh={props.setRefresh}
-          recordType={props.eventType}
-          modalClass={modalClass}
-        />
-      );
+      return <ModalDelete {...props} modalClass={modalClass} />;
     case "signin":
-      return (
-        <ModalSignin
-          isShowing={props.isShowing}
-          hide={props.hide}
-          modalClass={modalClass}
-          setAuth={props.setAuth}
-          setAdmin={props.setAdmin}
-        />
-      );
+      return <ModalSignin {...props} modalClass={modalClass} />;
     case "list":
-      return (
-        <ModalList
-          isShowing={props.isShowing}
-          isAuth={props.isAuth}
-          hide={props.hide}
-          modalClass={modalClass}
-          subjectName={props.subjectName}
-          officerId={props.officerId}
-          starshipId={props.starshipId}
-          eventType={props.eventType}
-          category={props.category}
-        />
-      );
+      return <ModalList {...props} modalClass={modalClass} />;
     default:
       return "";
   }

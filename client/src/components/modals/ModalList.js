@@ -5,27 +5,17 @@ import PersonnelList from "./modalList/PersonnelList";
 import VesselsServed from "./modalList/VesselsServed";
 import Missions from "./modalList/Missions";
 
-const PopUpList = ({
-  isShowing,
-  isAuth,
-  hide,
-  modalClass,
-  subjectName,
-  officerId,
-  starshipId,
-  eventType,
-  category, // Label for display
-}) => {
+const PopUpList = (props) => {
   const closeModal = () => {
-    hide();
+    props.hide();
   };
 
-  return isShowing
+  return props.isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className={modalClass}>
+            <div className={props.modalClass}>
               <div className="modal-bg list-modal list-modal-content-wrapper">
                 <div className="list-modal-content-container align-content-center">
                   {/* header */}
@@ -33,7 +23,7 @@ const PopUpList = ({
                     <div className="lcars-end-cap left-round orange-btn"> </div>
                     <div className="d-flex align-items-center ms-2">
                       <span className="h3cell align-self-center">
-                        {subjectName} {category}
+                        {props.subjectName} {props.category}
                       </span>
                     </div>
                     <div className="lcars-btn all_sqaure beige-btn flex-grow-1 m-2 p-3"> </div>
@@ -43,76 +33,15 @@ const PopUpList = ({
                   {/* main body */}
                   {
                     {
-                      "Assigned Personnel": (
-                        <PersonnelList
-                          eventType={eventType}
-                          starshipId={starshipId}
-                          category={category}
-                        />
-                      ),
-                      "First Contact Debriefs": (
-                        <Missions
-                          isAuth={isAuth}
-                          eventType={eventType}
-                          starshipId={starshipId}
-                          category={category}
-                        />
-                      ),
-                      "Complete Chronology": (
-                        <Missions
-                          isAuth={isAuth}
-                          eventType={eventType}
-                          starshipId={starshipId}
-                          officerId={officerId}
-                          category={category}
-                          subjectName={subjectName}
-                        />
-                      ),
-                      "Life Events": (
-                        <Missions
-                          isAuth={isAuth}
-                          eventType={eventType}
-                          officerId={officerId}
-                          category={category}
-                          subjectName={subjectName}
-                        />
-                      ),
-                      "Starship Assignments": (
-                        <VesselsServed
-                          eventType={eventType}
-                          officerId={officerId}
-                          category={category}
-                        />
-                      ),
-                      "Mission Debriefs": (
-                        <Missions
-                          isAuth={isAuth}
-                          eventType={eventType}
-                          officerId={officerId}
-                          starshipId={starshipId}
-                          category={category}
-                          subjectName={subjectName}
-                        />
-                      ),
-                      "Maintenance Logs": (
-                        <Missions
-                          isAuth={isAuth}
-                          eventType={eventType}
-                          starshipId={starshipId}
-                          category={category}
-                          subjectName={subjectName}
-                        />
-                      ),
-                      "Service Record": (
-                        <Missions
-                          isAuth={isAuth}
-                          eventType={eventType}
-                          officerId={officerId}
-                          category={category}
-                          subjectName={subjectName}
-                        />
-                      ),
-                    }[category]
+                      "Assigned Personnel": <PersonnelList {...props} />,
+                      "First Contact Debriefs": <Missions {...props} />,
+                      "Complete Chronology": <Missions {...props} />,
+                      "Life Events": <Missions {...props} />,
+                      "Starship Assignments": <VesselsServed {...props} />,
+                      "Mission Debriefs": <Missions {...props} />,
+                      "Maintenance Logs": <Missions {...props} />,
+                      "Service Record": <Missions {...props} />,
+                    }[props.category]
                   }
 
                   {/* footer */}

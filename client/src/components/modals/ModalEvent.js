@@ -8,18 +8,7 @@ import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
 import { StardateConverter } from "../hooks/HooksAndFunctions";
 
-const PopUpEvents = ({
-  isShowing,
-  hide,
-  isAuth,
-  officerId,
-  starshipId,
-  eventId,
-  subjectName,
-  setRefresh,
-  eventType,
-  modalClass,
-}) => {
+const PopUpEvents = (props) => {
   const [rankLabels, setRankLabels] = useState([]);
   const [shipSearchResults, setShipSearchResults] = useState([]);
   const [btnLabel, setBtnLabel] = useState("Enter");
@@ -27,12 +16,13 @@ const PopUpEvents = ({
 
   const initialEventState = {
     type: "Other",
-    officerId: officerId,
-    starshipId: starshipId,
+    officerId: props.officerId,
+    starshipId: props.starshipId,
     starshipName: null,
     starshipRegistry: null,
     location: null,
     rankLabel: null,
+    provisional: false,
     position: null,
     date: null,
     dateNote: "approx",
@@ -58,18 +48,23 @@ const PopUpEvents = ({
         console.error(err);
       }
     };
-    if (eventId) {
-      getEvent(eventId);
+    if (props.eventId) {
+      getEvent(props.eventId);
       setBtnLabel("Update");
     }
     return () => {
       isMounted = false;
     };
-  }, [eventId]);
+  }, [props.eventId]);
 
   const onChangeEventInfo = (e) => {
     setEventInfo({ ...eventInfo, [e.target.name]: e.target.value });
     if (e.target.name === "starshipName") setSearchOption(true);
+  };
+
+  const handleChangeChk = (e) => {
+    console.log("This is it", e);
+    setEventInfo({ ...eventInfo, [e.target.name]: e.target.checked });
   };
 
   const onClickStarship = (id, name, registry) => {
@@ -150,12 +145,12 @@ const PopUpEvents = ({
     }
 
     if (btnLabel === "Update") {
-      data._id = eventId;
+      data._id = props.eventId;
       EventsAndPhotosDataService.updateEvent(data)
         .then((response) => {
-          setRefresh();
+          props.setRefresh();
           setEventInfo(initialEventState);
-          hide();
+          props.hide();
           setBtnLabel("Enter");
           toast.success(response.data.message);
         })
@@ -164,7 +159,7 @@ const PopUpEvents = ({
           console.error(err);
         });
     } else {
-      if (officerId === "starship") {
+      if (props.entryType === "starship") {
         delete data["officerId"];
         delete data["rankLabel"];
         delete data["position"];
@@ -172,8 +167,8 @@ const PopUpEvents = ({
       EventsAndPhotosDataService.insertEvent(data)
         .then((response) => {
           toast.success(response.data.message);
-          hide();
-          setRefresh();
+          props.hide();
+          props.setRefresh();
           setEventInfo(initialEventState);
           setBtnLabel("Enter");
         })
@@ -187,19 +182,19 @@ const PopUpEvents = ({
   const closeModal = () => {
     setEventInfo(initialEventState);
     setBtnLabel("Enter");
-    hide();
+    props.hide();
   };
 
-  return isShowing && isAuth
+  return props.isShowing && props.isAuth
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className={modalClass}>
+            <div className={props.modalClass}>
               <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
-                    {btnLabel} Event for {subjectName}
+                    {btnLabel} Event for {props.subjectName}
                   </h3>
                   <div className="d-flex row my-1 mx-2 form-group">
                     <div className="form-floating col-sm-4">
@@ -295,17 +290,17 @@ const PopUpEvents = ({
                         onChange={(e) => onChangeEventInfo(e)}
                       >
                         <option value="Other">Other</option>
-                        {officerId && <option value="Assignment">Assignment</option>}
+                        {props.officerId && <option value="Assignment">Assignment</option>}
                         <option value="First Contact">First Contact</option>
-                        {officerId && <option value="Life Event">Life Event</option>}
+                        {props.officerId && <option value="Life Event">Life Event</option>}
                         <option value="Mission">Mission</option>
                         <option value="Maintenance">Maintenance</option>
-                        {officerId && <option value="Promotion">Promotion</option>}
-                        {officerId && <option value="Demotion">Demotion</option>}
+                        {props.officerId && <option value="Promotion">Promotion</option>}
+                        {props.officerId && <option value="Demotion">Demotion</option>}
                       </select>
                       <label htmlFor="eventType">Event Type</label>
                     </div>
-                    {officerId && (
+                    {props.officerId && (
                       <>
                         {" "}
                         <div className="col-sm-4 form-floating searchContainer my-1 p-0">
@@ -343,7 +338,9 @@ const PopUpEvents = ({
                       </>
                     )}
                     <div
-                      className={officerId ? "form-floating col-sm-4" : "form-floating col-sm-8"}
+                      className={
+                        props.officerId ? "form-floating col-sm-4" : "form-floating col-sm-8"
+                      }
                     >
                       <input
                         className="form-control form-control-lg my-1"
@@ -357,10 +354,10 @@ const PopUpEvents = ({
                       <label htmlFor="eventLocation">Galatic Location</label>
                     </div>
 
-                    {officerId && (
+                    {props.officerId && (
                       <>
                         {/* <div className="w-100"></div> */}
-                        <div className="form-floating col-sm-6">
+                        <div className="form-floating col-sm-5">
                           <select
                             className="form-control my-1"
                             name="rankLabel"
@@ -378,7 +375,24 @@ const PopUpEvents = ({
                           </select>
                           <label htmlFor="rankLabel">Rank</label>
                         </div>
-                        <div className="form-floating col-sm-6">
+                        <div
+                          className="col-sm-2 form-check align-items-center m-auto"
+                          style={{ paddingLeft: "2rem" }}
+                        >
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="provisional"
+                            name="provisional"
+                            checked={setEventInfo.provisional || ""}
+                            onChange={(e) => handleChangeChk(e)}
+                            // style={{ margin: "0 2px 0 0" }}
+                          />
+                          <label className="form-check-label" htmlFor="provisional">
+                            Provisional
+                          </label>
+                        </div>
+                        <div className="form-floating col-sm-5">
                           <input
                             className="form-control form-control-lg my-1"
                             type="text"

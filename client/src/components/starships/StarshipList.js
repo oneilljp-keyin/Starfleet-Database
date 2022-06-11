@@ -237,7 +237,7 @@ function StarshipList(props) {
                   <strong style={{ margin: "0", color: "#8066af" }}>{dateString}</strong>
                   <br />
                   <img
-                    className="search-list"
+                    className="search-list starship-search"
                     src={
                       starship.starshipPicUrl[0]
                         ? starship.starshipPicUrl[0]

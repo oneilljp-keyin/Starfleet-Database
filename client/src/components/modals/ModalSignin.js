@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import SignInUpService from "../../services/signInUp";
 import loading from "../../assets/loading.gif";
 
-const SignInPopUp = ({ isShowing, hide, isAuth, modalClass, setAuth, setAdmin }) => {
+const SignInPopUp = (props) => {
   const initialUser = {
     email: "",
     password: "",
@@ -27,15 +27,15 @@ const SignInPopUp = ({ isShowing, hide, isAuth, modalClass, setAuth, setAdmin })
       .then((response) => {
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
-          setAuth(true);
+          props.setAuth(true);
           toast.dark("Login Successful");
           setUser(initialUser);
           setIsLoading(false);
-          hide();
+          props.hide();
         } else {
           localStorage.removeItem("token");
-          setAuth(false);
-          setAdmin(false);
+          props.setAuth(false);
+          props.setAdmin(false);
           setIsLoading(false);
           toast.dark(response.data.message);
         }
@@ -46,12 +46,12 @@ const SignInPopUp = ({ isShowing, hide, isAuth, modalClass, setAuth, setAdmin })
       });
   };
 
-  return isShowing && !isAuth
+  return props.isShowing && !props.isAuth
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
           <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className={modalClass}>
+            <div className={props.modalClass}>
               <div className="modal-bg events-modal modal-content-wrapper login-modal">
                 <div className="events-modal-container align-content-center">
                   <h1 className="text-center">Sign-In</h1>
@@ -79,7 +79,10 @@ const SignInPopUp = ({ isShowing, hide, isAuth, modalClass, setAuth, setAdmin })
                       />
                     </div>
                     <button className="lcars-btn orange-btn left-round small-btn">Login</button>
-                    <button className="lcars-btn red-btn right-round small-btn" onClick={hide}>
+                    <button
+                      className="lcars-btn red-btn right-round small-btn"
+                      onClick={props.hide}
+                    >
                       Cancel
                     </button>
                     <br />

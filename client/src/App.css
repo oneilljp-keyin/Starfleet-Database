@@ -18,12 +18,12 @@ strong { color: #ffcc33e6}
 h1, .h1cell { font-size: 1.48rem;}
 h2, .h2cell { font-size: 1.38rem; color: #ffcc33e6; }
 h3, .h3cell { font-size: 1.28rem; color: #cc77ffe6; }
-h4, .h4cell { font-size: 1.18rem; color: #ff7700e6; }
+h4, .h4cell { font-size: 1rem; color: #ff7700e6; }
 h5, .h5cell { font-size: 1.18rem; color: #ffcc33e6; }
-h6, .h6cell { font-size: 1rem; color: #ffffffde; }
+h6, .h6cell { font-size: 0.75rem; color: #ffffffde; }
 .h6cell { text-align: justify; text-justify: inter-word; font-weight: 300; }
 .profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
-.h3cell, .h4cell, .h5cell { font-size: 1rem; }
+.h3cell, .h4cell, .h5cell { font-size: 0.75rem; }
 .pre {font-size: small;}
 
 .topbar-title { font-size: 1rem; color: #ffcc33e6;
@@ -40,7 +40,8 @@ label {color: #6d6d6d; }
 .cc-bg { background-color: #55555588; border-radius: 1em; left: 4px; width: 96%;}
 .left-delete { position: absolute; top: 4px; left: 4px; width: 40px; height: 40px;}
 .middle { opacity: 1; text-align: center; }
-.officer-pics { max-height: 120px; max-width: 120px; }
+.officer-pics { max-height: 240px; max-width: 240px; }
+.officer-pics img { border-radius: 16px; }
 /* ---------------------------------------------------------------------- */
 
 /* ---- Background colour of event list on officer profile -------------- */
@@ -81,8 +82,10 @@ td {text-align: left; padding: 2px 4px 2px 4px !important;}
 .card-title {margin: 2px 0;}
 
 .load-img {max-width: 325px;}
-.search-list { width: 100%; height: auto; border-radius: 8px; box-shadow: 2px 2px 10px black; }
-.service-list { width: 100%; height: auto; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
+.search-list { height: auto; border-radius: 8px; box-shadow: 2px 2px 10px black; }
+.personnel-search { width: 75%; max-height: 120px;}
+.starship-search { width: 100%;}
+.service-list { width: calc(100% - 16px); height: auto; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 
 .input-size { max-width: 400px;}
 
@@ -423,7 +426,7 @@ article footer p {
   .events-btn { padding: 0 4px; }
 
   .load-img      { max-width: 600px; }
-  .officer-pics  { max-height: 256px; max-width: 256px; }
+  /* .officer-pics  { max-height: 256px; max-width: 256px; } */
   .starship-pics { height: auto; width: 50vw; max-width: 352px; }
 
   .list-footer { position: absolute; bottom: 0; width: calc(100% - 16px);}
@@ -580,7 +583,7 @@ article footer p {
 /* ------------------------------------------------------------------------------------ */
 
 @media screen and (max-width: 639px) {
-  .row {margin: 0 auto;}
+  /* .row {margin: 0 auto;} */
   .list-cards {width: calc(50% - 8px); margin: 4px 0; padding: 4px; font-size: 1rem; border-radius: 16px;}
   .list-cards .h3cell, .list-cards .h5cell, .list-cards .h6cell {font-size: 1rem; text-transform: capitalize;}
   .list-link { text-decoration: none; }

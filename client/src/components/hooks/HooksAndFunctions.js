@@ -56,21 +56,20 @@ function buttonStack(label, first, second) {
 
 function EditCreateMenu(props) {
   const { isShowingModal, toggleModal } = UseModal();
-  const [modal, setModal] = useState(null);
+  const [modalType, setModalType] = useState(null);
 
   const linkDestination =
     props.entryType === "starship" ? "/" + props.entryType + "s" : "/personnel";
   const editClass = "lcars-btn d-flex flex-column events-btn";
 
   function OpenModal(modalType) {
-    setModal(modalType);
+    setModalType(modalType);
     toggleModal();
   }
 
   return (
     <>
       <div className="menu-btn-wrapper flex-row d-flex">
-        {/* <div className="lcars-end-cap left-round orange-btn"> </div> */}
         <Link to={linkDestination} className={`${editClass} a-button left-round green-btn`}>
           {buttonStack("Search", 2, 3)}
         </Link>
@@ -102,15 +101,14 @@ function EditCreateMenu(props) {
             </button>
           </>
         )}
-        {/* <div className="lcars-end-cap right-round orange-btn"> </div> */}
       </div>
       <ModalLauncher
-        modal={modal}
+        modal={modalType}
         isShowing={isShowingModal}
         isAuth={props.isAuth}
         hide={toggleModal}
-        starshipId={props.starshipId || null}
-        officerId={props.officerId || null}
+        starshipId={props.starshipId}
+        officerId={props.officerId}
         refreshOption={props.refreshOption}
         setRefresh={props.setRefresh}
         subjectName={props.subjectName}
@@ -148,8 +146,8 @@ function ButtonFormatter(props) {
         hide={toggleModal}
         eventType={eventType}
         category={categoryLabel}
-        starshipId={props.starshipId || null}
-        officerId={props.officerId || null}
+        starshipId={props.starshipId}
+        officerId={props.officerId}
         subjectName={props.subjectName}
         refreshOption={props.refreshOption}
         setRefresh={props.toggleRefresh}

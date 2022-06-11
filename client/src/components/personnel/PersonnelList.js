@@ -53,28 +53,32 @@ function PersonnelList(props) {
     };
   }, [searchQuery]);
 
-  const debounceQuery = useMemo(() =>
-    debounce((searchValue) => {
-      const ourRequest = axios.CancelToken.source();
-      PersonnelDataService.find(searchValue, pageNumber, ourRequest.token)
-        .then((response) => {
-          setPersonnel((prevPersonnel) => {
-            return [
-              ...new Set([...prevPersonnel, ...response.data.personnel.map((officer) => officer)]),
-            ];
+  const debounceQuery = useMemo(
+    () =>
+      debounce((searchValue) => {
+        const ourRequest = axios.CancelToken.source();
+        PersonnelDataService.find(searchValue, pageNumber, ourRequest.token)
+          .then((response) => {
+            setPersonnel((prevPersonnel) => {
+              return [
+                ...new Set([
+                  ...prevPersonnel,
+                  ...response.data.personnel.map((officer) => officer),
+                ]),
+              ];
+            });
+            setHasMore(
+              (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
+                response.data.total_results
+            );
+            setLoading(false);
+          })
+          .catch((e) => {
+            if (axios.isCancel(e)) return;
+            toast.warning(e.message);
           });
-          setHasMore(
-            (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-            response.data.total_results
-          );
-          setLoading(false);
-        })
-        .catch((e) => {
-          if (axios.isCancel(e)) return;
-          toast.warning(e.message);
-        });
-      return () => ourRequest.cancel();
-    }, 500),
+        return () => ourRequest.cancel();
+      }, 500),
     [pageNumber]
   );
 
@@ -152,10 +156,10 @@ function PersonnelList(props) {
                 key={uuidv4()}
                 ref={personnel.length === index + 1 ? lastOfficerRef : null}
               >
-                <div className="card text-center bg-dark">
+                <div className="card card-radius text-center bg-dark">
                   <div className="card-body">
                     <img
-                      className="search-list"
+                      className="search-list personnel-search"
                       src={officer.officerPicUrl[0] ? officer.officerPicUrl[0] : gray}
                       alt={officerName}
                     />

@@ -69,7 +69,7 @@ function App() {
       setName("");
     } catch (err) {
       toast.error(err.message);
-      console.log(err.message);
+      console.error(err.message);
     }
   };
 
@@ -93,7 +93,7 @@ function App() {
           <div className="content-container align-content-center">
             <Routes>
               <Route
-                path="/"
+                path="/*"
                 element={
                   <Landing
                     isAuth={isAuthenticated}

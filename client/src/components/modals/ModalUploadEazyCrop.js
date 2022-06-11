@@ -7,16 +7,7 @@ import Cropper from "react-easy-crop";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 import { getCroppedImg } from "../../utils/getCroppedImage";
 
-const PopUpUpload = ({
-  isShowing,
-  hide,
-  isAuth,
-  subjectId,
-  photoId,
-  setRefresh,
-  imageType,
-  modalClass,
-}) => {
+const PopUpUpload = (props) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(2);
   const [file, setFile] = useState(null);
@@ -25,12 +16,13 @@ const PopUpUpload = ({
   const [croppedArea, setCroppedArea] = useState(null);
 
   const [edit, setEdit] = useState(false);
+  const subjectId = props.entryType === "officer" ? props.officerId : props.starshipId;
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedArea(croppedAreaPixels);
   }, []);
 
-  let aspect = imageType === "starship" ? 21 / 10 : 1;
+  let aspect = props.imageType === "starship" || props.entryType === "starship" ? 21 / 10 : 1;
 
   const showCroppedImage = useCallback(async () => {
     try {
@@ -89,11 +81,11 @@ const PopUpUpload = ({
 
   const closeModal = () => {
     setPhotoInfo(initialPhotoState);
-    setRefresh();
+    props.setRefresh();
     setFile(null);
     setIsFileSelected(false);
     setCroppedArea(null);
-    hide();
+    props.hide();
   };
 
   useEffect(() => {
@@ -109,18 +101,18 @@ const PopUpUpload = ({
         console.error(err);
       }
     };
-    if (photoId) {
-      getEvent(photoId);
+    if (props.photoId) {
+      getEvent(props.photoId);
       setEdit(true);
     }
     return () => {
       isMounted = false;
     };
-  }, [photoId]);
+  }, [props.photoId]);
 
   const deletePhoto = async () => {
     try {
-      let response = await EventsAndPhotosDataService.deletePhoto(photoId);
+      let response = await EventsAndPhotosDataService.deletePhoto(props.photoId);
       // setPhotoRefresh();
       toast.dark(response.data.message);
       closeModal();
@@ -178,7 +170,7 @@ const PopUpUpload = ({
     }
   };
 
-  return isShowing && isAuth
+  return props.isShowing && props.isAuth
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="modal-overlay" />
@@ -225,7 +217,7 @@ const PopUpUpload = ({
                           name="title"
                           id="imageTitle"
                           placeholder="Image Title"
-                          value={photoInfo.title}
+                          value={photoInfo.title || ""}
                           onChange={(e) => onChangeEvent(e)}
                         />
                         <label htmlFor="imageTitle">Image Title</label>
@@ -237,7 +229,7 @@ const PopUpUpload = ({
                           name="year"
                           id="imageYear"
                           placeholder="Year"
-                          value={photoInfo.year}
+                          value={photoInfo.year || ""}
                           onChange={(e) => onChangeEvent(e)}
                         />
                         <label htmlFor="imageYear">Year</label>
@@ -249,7 +241,7 @@ const PopUpUpload = ({
                           name="description"
                           id="imageDescription"
                           placeholder="Image Description"
-                          value={photoInfo.description}
+                          value={photoInfo.description || ""}
                           onChange={(e) => onChangeEvent(e)}
                         />
                         <label htmlFor="imageDescription">Description</label>
