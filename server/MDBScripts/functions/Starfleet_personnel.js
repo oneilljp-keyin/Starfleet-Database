@@ -85,6 +85,7 @@ exports = async function (payload, response) {
                   $project: {
                     rankLabel: 1,
                     position: 1,
+                    provisional: 1,
                     location: 1,
                     date: 1,
                     endDate: 1,
