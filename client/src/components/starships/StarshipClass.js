@@ -35,7 +35,7 @@ function Login({ setAuth, setUserId, getProfile }) {
         setUserId(parseRes.user_id);
         setAuth(true);
         getProfile(parseRes.user_id);
-        toast.success("Login Successful");
+        toast.dark("Login Successful");
         history.push("/");
       } else {
         setAuth(false);

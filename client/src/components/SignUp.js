@@ -45,7 +45,7 @@ function Register() {
       const parseRes = await response.json();
 
       if (parseRes.message) {
-        toast.success(parseRes.message);
+        toast.dark(parseRes.message);
         setTimeout(() => {
           history.push("/signin");
         }, 3500);

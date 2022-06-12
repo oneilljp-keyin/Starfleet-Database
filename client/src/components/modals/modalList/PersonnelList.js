@@ -83,6 +83,7 @@ const PersonnelList = ({ eventType, starshipId, category }) => {
                         <span className="h3cell">{rankLabel}</span>
                       </>
                     )}
+                    {officer.provisional && <> <span style={{ fontSize: "0.75rem", color: "#FFFFFFDE" }}>[Provisional]</span></>}
                     <br />
                     {officer.position && <span className="h6cell">{officer.position}</span>}
                   </div>

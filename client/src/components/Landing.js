@@ -7,7 +7,7 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
     try {
       localStorage.removeItem("token");
       setAuth(false);
-      toast.success("Logout Successful");
+      toast.dark("Logout Successful");
       setAdmin(false);
       setName("");
     } catch (err) {

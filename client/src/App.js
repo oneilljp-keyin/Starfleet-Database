@@ -64,7 +64,7 @@ function App() {
     try {
       localStorage.removeItem("token");
       setAuth(false);
-      toast.success("Logout Successful");
+      toast.dark("Logout Successful");
       setAdminRole(false);
       setName("");
     } catch (err) {

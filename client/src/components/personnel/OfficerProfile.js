@@ -9,7 +9,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 import ma_logo from "../../assets/MemoryAlphaLogo.png";
-import { ButtonFormatter, EditCreateMenu } from "../hooks/HooksAndFunctions";
+import { ButtonFormatter, EditCreateMenu, EventAdder } from "../hooks/HooksAndFunctions";
 
 const Officer = (props) => {
   const { id } = useParams();
@@ -133,8 +133,8 @@ const Officer = (props) => {
                     {officer.deathDate
                       ? officer.deathDate.slice(0, 4)
                       : officer.endDate
-                      ? officer.endDate.slice(0, 4)
-                      : officer.date.slice(0, 4)}
+                        ? officer.endDate.slice(0, 4)
+                        : officer.date.slice(0, 4)}
                     )
                   </span>
                 )}
@@ -148,6 +148,7 @@ const Officer = (props) => {
                     if (index === 0) rankLabel = label;
                     return rankLabel;
                   })}
+                  {officer.provisional && <> <span style={{ fontSize: "0.75rem", color: "#FFFFFFDE" }}>[Provisional]</span></>}
                 </h3>
               )}
               {officer.position && (
@@ -238,6 +239,7 @@ const Officer = (props) => {
                 colour="rose"
                 eventType="Assign-Pro-De"
                 categoryLabel="Starship Assignments"
+                count={officer.starshipCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="rose" />
@@ -249,6 +251,7 @@ const Officer = (props) => {
                 colour="pink"
                 eventType="Chronology"
                 categoryLabel="Complete Chronology"
+                count={EventAdder(officer.assignCount, officer.missionCount, officer.lifeEventCount)}
               />
             ) : (
               <ButtonFormatter active={false} colour="pink" />
@@ -263,6 +266,7 @@ const Officer = (props) => {
                 colour="orange"
                 eventType="Assign-Pro-De"
                 categoryLabel="Service Record"
+                count={officer.assignCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="orange" />
@@ -278,6 +282,7 @@ const Officer = (props) => {
                 colour="blue"
                 eventType="Mission"
                 categoryLabel="Mission Debriefs"
+                count={officer.missionCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="blue" />
@@ -292,6 +297,7 @@ const Officer = (props) => {
                 colour="beige"
                 eventType="Life Event"
                 categoryLabel="Life Events"
+                count={officer.lifeEventCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="beige" />

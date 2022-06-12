@@ -45,10 +45,12 @@ function RandomButtonColour() {
   return colourArray.at(rand) + "_btn";
 }
 
-function buttonStack(label, first, second) {
+function buttonStack(label, count, first, second) {
+  let newLabel = label;
+  if (count) { newLabel += ` [${count}]` }
   return (
     <>
-      <div className="lcars-btn-top lcars-btn-link w-100">{label}</div>
+      <div className="lcars-btn-top lcars-btn-link w-100">{newLabel}</div>
       <div className="text-end lcars-hidden w-100">{LCARSCode(first, second)}</div>
     </>
   );
@@ -71,7 +73,7 @@ function EditCreateMenu(props) {
     <>
       <div className="menu-btn-wrapper flex-row d-flex">
         <Link to={linkDestination} className={`${editClass} a-button left-round green-btn`}>
-          {buttonStack("Search", 2, 3)}
+          {buttonStack("Search", null, 2, 3)}
         </Link>
         {props.isAuth && (
           <>
@@ -81,7 +83,7 @@ function EditCreateMenu(props) {
                 OpenModal(props.entryType);
               }}
             >
-              {buttonStack("Edit", 2, 3)}
+              {buttonStack("Edit", null, 2, 3)}
             </button>
             <button
               className={editClass + " all-square rose-btn"}
@@ -89,7 +91,7 @@ function EditCreateMenu(props) {
                 OpenModal("photo");
               }}
             >
-              {buttonStack("Upload", 2, 3)}
+              {buttonStack("Upload", null, 2, 3)}
             </button>
             <button
               className={editClass + " right-round pink-btn"}
@@ -97,7 +99,7 @@ function EditCreateMenu(props) {
                 OpenModal("event");
               }}
             >
-              {buttonStack("Event", 2, 3)}
+              {buttonStack("Event", null, 2, 3)}
             </button>
           </>
         )}
@@ -122,7 +124,7 @@ function ButtonFormatter(props) {
   const { isShowingModal, toggleModal } = UseModal();
 
   const eventType = props.eventType;
-  const categoryLabel = props.categoryLabel;
+  let categoryLabel = props.categoryLabel;
   const modal = props.modalType;
   const newLabel = props.active ? categoryLabel : "\u00A0";
 
@@ -137,7 +139,7 @@ function ButtonFormatter(props) {
           toggleModal();
         }}
       >
-        {buttonStack(newLabel, 3, 6)}
+        {buttonStack(newLabel, props.count, 3, 6)}
       </button>
       <ModalLauncher
         modal={modal}
@@ -156,6 +158,15 @@ function ButtonFormatter(props) {
   );
 }
 
+function EventAdder(first, secound, third) {
+  let total = 0;
+  if (first) total += parseInt(first);
+  if (secound) total += parseInt(secound);
+  if (third) total += parseInt(third);
+  return total;
+}
+
+
 export {
   StardateConverter,
   LCARSCode,
@@ -163,4 +174,5 @@ export {
   EditCreateMenu,
   RandomButtonColour,
   buttonStack,
+  EventAdder
 };

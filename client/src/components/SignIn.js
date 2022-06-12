@@ -26,7 +26,7 @@ function Signin({ setAuth, setAdmin }) {
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
           setAuth(true);
-          toast.success("Login Successful");
+          toast.dark("Login Successful");
           history.push("/");
         } else {
           localStorage.removeItem("token");

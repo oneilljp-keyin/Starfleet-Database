@@ -10,7 +10,7 @@ import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
 
 import ma_logo from "../../assets/MemoryAlphaLogo.png";
-import { ButtonFormatter, EditCreateMenu } from "../hooks/HooksAndFunctions";
+import { ButtonFormatter, EditCreateMenu, EventAdder } from "../hooks/HooksAndFunctions";
 
 const Starships = (props) => {
   const { id } = useParams();
@@ -195,6 +195,7 @@ const Starships = (props) => {
                 colour="rose"
                 eventType="Assign-Pro-De"
                 categoryLabel="Assigned Personnel"
+                count={starship.personnelCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="rose" />
@@ -206,6 +207,7 @@ const Starships = (props) => {
                 colour="pink"
                 eventType="Chronology"
                 categoryLabel="Complete Chronology"
+                count={EventAdder(starship.maintenanceCount, starship.missionCount, starship.firstContactCount)}
               />
             ) : (
               <ButtonFormatter active={false} colour="pink" />
@@ -220,6 +222,7 @@ const Starships = (props) => {
                 colour="orange"
                 eventType="First Contact"
                 categoryLabel="First Contact Debriefs"
+                count={starship.firstContactCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="orange" />
@@ -234,6 +237,7 @@ const Starships = (props) => {
                 colour="blue"
                 eventType="Mission"
                 categoryLabel="Mission Debriefs"
+                count={starship.missionCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="blue" />
@@ -248,6 +252,7 @@ const Starships = (props) => {
                 colour="beige"
                 eventType="Maintenance"
                 categoryLabel="Maintenance Logs"
+                count={starship.maintenanceCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="beige" />

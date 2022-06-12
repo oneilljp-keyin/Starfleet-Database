@@ -72,6 +72,7 @@ const PopUpOfficer = (props) => {
     delete data["starshipId"];
     delete data["location"];
     delete data["rankLabel"];
+    delete data["provisional"];
     delete data["position"];
     delete data["date"];
     delete data["starshipCount"];
@@ -104,7 +105,7 @@ const PopUpOfficer = (props) => {
         .then((response) => {
           setSubmitted(true);
           props.setRefresh();
-          toast.success(response.data.message);
+          toast.dark(response.data.message);
           props.hide();
         })
         .catch((err) => {
@@ -115,7 +116,7 @@ const PopUpOfficer = (props) => {
       delete data["_id"];
       PersonnelDataService.createOfficer(data)
         .then((response) => {
-          toast.success(response.data);
+          toast.dark(response.data);
           setOfficerInfo(initialOfficerState);
           props.hide();
         })
@@ -133,221 +134,221 @@ const PopUpOfficer = (props) => {
 
   return props.isShowing && props.isAuth
     ? ReactDOM.createPortal(
-        <React.Fragment>
-          <div className="modal-overlay" />
-          <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div id="main-modal-body" className={props.modalClass}>
-              <div className="modal-bg events-modal modal-content-wrapper">
-                <div className="events-modal-container align-content-center">
-                  <h3>
-                    {btnLabel} Profile {props.subjectName ? ` - ${props.subjectName}` : null}
-                  </h3>
-                  <div className="d-flex row my-1 mx-2 form-group">
-                    <div className="form-floating col-sm-6">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        name="serial"
-                        id="serial"
-                        placeholder="Starfleet Serial Number"
-                        value={officerInfo.serial || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="serial">Starfleet Serial #</label>
-                    </div>
-                    <div className="col-sm-6 form-check align-items-center m-auto">
-                      <input
-                        className="form-check-input ms-1"
-                        type="checkbox"
-                        id="active"
-                        name="active"
-                        checked={officerInfo.active || ""}
-                        onChange={(e) => handleChangeChk(e)}
-                        style={{ transform: "scale(1.8)" }}
-                      />
-                      <label className="form-check-label" htmlFor="active">
-                        Active in Starfleet
-                      </label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        autoFocus
-                        name="surname"
-                        id="surname"
-                        placeholder="Surname"
-                        value={officerInfo.surname || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="surname">Surname</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        name="first"
-                        id="first"
-                        placeholder="First Name"
-                        value={officerInfo.first || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="first">First Name</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        name="middle"
-                        id="middle"
-                        placeholder="Middle Name"
-                        value={officerInfo.middle || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="middle">Middle Name</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        name="postNom"
-                        id="postNom"
-                        placeholder="Post Nominals"
-                        value={officerInfo.postNom || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="postNom">Post Nominals</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-sm my-1"
-                        type="date"
-                        name="birthDate"
-                        id="birthDate"
-                        value={officerInfo.birthDate ? officerInfo.birthDate.slice(0, 10) : ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="birthDate">Date of Birth</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-lg my-1"
-                        type="text"
-                        name="birthStardate"
-                        id="birthStardate"
-                        placeholder="Stardate of Birth"
-                        value={officerInfo.birthStardate || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathStardate">Stardate</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <select
-                        className="form-control form-control-sm my-1"
-                        name="birthDateNote"
-                        id="birthDateNote"
-                        value={officerInfo.birthDateNote || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      >
-                        <option>Exact Date</option>
-                        <option value="approx">Approximate Date</option>
-                        <option value="before">Before This Date</option>
-                        <option value="after">After This Date</option>
-                      </select>
-                      <label htmlFor="birthDateNote">Date Note</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        name="birthPlace"
-                        id="birthPlace"
-                        placeholder="Place Of Birth"
-                        value={officerInfo.birthPlace || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="birthPlace">Place of Birth</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-sm my-1"
-                        type="date"
-                        name="deathDate"
-                        id="deathDate"
-                        value={officerInfo.deathDate ? officerInfo.deathDate.slice(0, 10) : ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathDate">Date of Death</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-lg my-1"
-                        type="text"
-                        name="deathStardate"
-                        id="deathStardate"
-                        placeholder="Stardate of Death"
-                        value={officerInfo.deathStardate || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathStardate">Stardate of Death</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <select
-                        className="form-control form-control-sm my-1"
-                        name="deathDateNote"
-                        id="deathDateNote"
-                        value={officerInfo.deathDateNote || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      >
-                        <option>Exact Date</option>
-                        <option value="approx">Approximate Date</option>
-                        <option value="before">Before This Date</option>
-                        <option value="after">After This Date</option>
-                      </select>
-                      <label htmlFor="deathDateNote">Date Note</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        name="deathPlace"
-                        id="deathPlace"
-                        placeholder="Place Of Death"
-                        value={officerInfo.deathPlace || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathPlace">Place of Death</label>
-                    </div>
-                    <div className="form-floating col-sm-12">
-                      <input
-                        className="form-control form-control-md my-1"
-                        type="text"
-                        name="memoryAlphaURL"
-                        id="memoryAlphaURL"
-                        placeholder="Memory Alpha Link"
-                        value={officerInfo.memoryAlphaURL || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathPlace">Memory Alpha Link</label>
-                    </div>
+      <React.Fragment>
+        <div className="modal-overlay" />
+        <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
+          <div id="main-modal-body" className={props.modalClass}>
+            <div className="modal-bg events-modal modal-content-wrapper">
+              <div className="events-modal-container align-content-center">
+                <h3>
+                  {btnLabel} Profile {props.subjectName ? ` - ${props.subjectName}` : null}
+                </h3>
+                <div className="d-flex row my-1 mx-2 form-group">
+                  <div className="form-floating col-sm-6">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      name="serial"
+                      id="serial"
+                      placeholder="Starfleet Serial Number"
+                      value={officerInfo.serial || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="serial">Starfleet Serial #</label>
                   </div>
-
-                  <button
-                    className="lcars-btn orange-btn left-round small-btn"
-                    onClick={saveOfficerInfo}
-                  >
-                    {btnLabel}
-                  </button>
-                  <button className="lcars-btn red-btn right-round small-btn" onClick={closeModal}>
-                    Cancel
-                  </button>
+                  <div className="col-sm-6 form-check align-items-center m-auto">
+                    <input
+                      className="form-check-input ms-1"
+                      type="checkbox"
+                      id="active"
+                      name="active"
+                      checked={officerInfo.active || ""}
+                      onChange={(e) => handleChangeChk(e)}
+                      style={{ transform: "scale(1.8)" }}
+                    />
+                    <label className="form-check-label" htmlFor="active">
+                      Active in Starfleet
+                    </label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      autoFocus
+                      name="surname"
+                      id="surname"
+                      placeholder="Surname"
+                      value={officerInfo.surname || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="surname">Surname</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      name="first"
+                      id="first"
+                      placeholder="First Name"
+                      value={officerInfo.first || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="first">First Name</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      name="middle"
+                      id="middle"
+                      placeholder="Middle Name"
+                      value={officerInfo.middle || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="middle">Middle Name</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      name="postNom"
+                      id="postNom"
+                      placeholder="Post Nominals"
+                      value={officerInfo.postNom || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="postNom">Post Nominals</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-sm my-1"
+                      type="date"
+                      name="birthDate"
+                      id="birthDate"
+                      value={officerInfo.birthDate ? officerInfo.birthDate.slice(0, 10) : ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="birthDate">Date of Birth</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-lg my-1"
+                      type="text"
+                      name="birthStardate"
+                      id="birthStardate"
+                      placeholder="Stardate of Birth"
+                      value={officerInfo.birthStardate || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="deathStardate">Stardate</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <select
+                      className="form-control form-control-sm my-1"
+                      name="birthDateNote"
+                      id="birthDateNote"
+                      value={officerInfo.birthDateNote || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    >
+                      <option>Exact Date</option>
+                      <option value="approx">Approximate Date</option>
+                      <option value="before">Before This Date</option>
+                      <option value="after">After This Date</option>
+                    </select>
+                    <label htmlFor="birthDateNote">Date Note</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      name="birthPlace"
+                      id="birthPlace"
+                      placeholder="Place Of Birth"
+                      value={officerInfo.birthPlace || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="birthPlace">Place of Birth</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-sm my-1"
+                      type="date"
+                      name="deathDate"
+                      id="deathDate"
+                      value={officerInfo.deathDate ? officerInfo.deathDate.slice(0, 10) : ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="deathDate">Date of Death</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-lg my-1"
+                      type="text"
+                      name="deathStardate"
+                      id="deathStardate"
+                      placeholder="Stardate of Death"
+                      value={officerInfo.deathStardate || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="deathStardate">Stardate of Death</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <select
+                      className="form-control form-control-sm my-1"
+                      name="deathDateNote"
+                      id="deathDateNote"
+                      value={officerInfo.deathDateNote || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    >
+                      <option>Exact Date</option>
+                      <option value="approx">Approximate Date</option>
+                      <option value="before">Before This Date</option>
+                      <option value="after">After This Date</option>
+                    </select>
+                    <label htmlFor="deathDateNote">Date Note</label>
+                  </div>
+                  <div className="form-floating col-sm-3">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      name="deathPlace"
+                      id="deathPlace"
+                      placeholder="Place Of Death"
+                      value={officerInfo.deathPlace || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="deathPlace">Place of Death</label>
+                  </div>
+                  <div className="form-floating col-sm-12">
+                    <input
+                      className="form-control form-control-md my-1"
+                      type="text"
+                      name="memoryAlphaURL"
+                      id="memoryAlphaURL"
+                      placeholder="Memory Alpha Link"
+                      value={officerInfo.memoryAlphaURL || ""}
+                      onChange={(e) => onChangeOfficerInfo(e)}
+                    />
+                    <label htmlFor="deathPlace">Memory Alpha Link</label>
+                  </div>
                 </div>
+
+                <button
+                  className="lcars-btn orange-btn left-round small-btn"
+                  onClick={saveOfficerInfo}
+                >
+                  {btnLabel}
+                </button>
+                <button className="lcars-btn red-btn right-round small-btn" onClick={closeModal}>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
-        </React.Fragment>,
-        document.body
-      )
+        </div>
+      </React.Fragment>,
+      document.body
+    )
     : null;
 };
 export default PopUpOfficer;

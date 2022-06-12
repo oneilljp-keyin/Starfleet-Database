@@ -90,9 +90,9 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                       <td
                         rowSpan={
                           event.notes &&
-                          event.notes !== "Assignment" &&
-                          event.notes !== "Promotion" &&
-                          event.notes !== "Demotion"
+                            event.notes !== "Assignment" &&
+                            event.notes !== "Promotion" &&
+                            event.notes !== "Demotion"
                             ? 1
                             : 1
                         }
@@ -122,7 +122,6 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                       </td>
                       <td className="h3cell align-top">
                         {event.date && `${eventDate}`}
-                        {/* {event.date && event.stardate && eventDate.length > 4 && <br />} */}
                         {event.stardate && event.stardate !== "0" && ` SD ${event.stardate}`}
                       </td>
                       <td className="h5cell align-top" style={{ textTransform: "capitalize" }}>
@@ -133,6 +132,7 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                         )}
                         {event.name && currentRank !== undefined && <br />}
                         {currentRank !== undefined && <>{currentRank}</>}
+                        {event.provisional && <> <span style={{ fontSize: "0.75rem", color: "#FFFFFFDE" }}>[Provisional]</span></>}
                         {((event.name && event.position) ||
                           (currentRank !== undefined && event.position)) && <br />}
                         {event.position && <>{event.position}</>}
