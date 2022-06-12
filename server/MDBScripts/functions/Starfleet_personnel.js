@@ -290,7 +290,7 @@ exports = async function (payload, response) {
 
       try {
         await personnel.updateOne({ _id: BSON.ObjectId(officerId) }, { $set: updatedInfo });
-        return { message: "Record " + officerName + " Updated Successfully" };
+        return { message: "Record of " + officerName + " Updated Successfully" };
         // return updatedInfo;
       } catch (err) {
         console.error(`Record Update Failed ${err.message}`);
