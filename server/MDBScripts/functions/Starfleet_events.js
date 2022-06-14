@@ -112,6 +112,7 @@ exports = async function (payload, response) {
         responseData.forEach((event) => {
           event._id = event._id.toString();
           if (event.date) { event.date = new Date(event.date).toISOString(); }
+          if (event.endDate) { event.endDate = new Date(event.endDate).toISOString(); }
           if (event.starshipId) { event.starshipId = event.starshipId.toString(); }
           if (event.ship_id) { event.ship_id = event.ship_id.toString(); }
           if (event.officerId) { event.officerId = event.officerId.toString(); }
@@ -126,6 +127,7 @@ exports = async function (payload, response) {
         if (responseData.starshipId) { responseData.starshipId = responseData.starshipId.toString(); }
         if (responseData.ship_id) { responseData.ship_id = responseData.ship_id.toString(); }
         if (responseData.date) { responseData.date = new Date(responseData.date).toISOString(); }
+        if (responseData.endDate) { responseData.endDate = new Date(responseData.endDate).toISOString(); }
         delete responseData["__v"];
       }
       return responseData;
