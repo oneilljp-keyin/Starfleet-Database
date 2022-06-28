@@ -277,7 +277,7 @@ exports = async function (payload, response) {
       const updatedInfo = EJSON.parse(payload.body.text());
       const officerId = updatedInfo._id;
       let officerName;
-      if (updatedInfo.first != null) officerName = updatedInfo.first;
+      if (updatedInfo.first && updatedInfo.first != undefined) officerName = updatedInfo.first;
       if (updatedInfo.first != null && updatedInfo.surname != null) officerName += " ";
       if (updatedInfo.surname != null) officerName += updatedInfo.surname;
       if (updatedInfo.birthDate) {
