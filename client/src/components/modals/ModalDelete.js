@@ -7,8 +7,9 @@ import StarshipsDataService from "../../services/starships";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
 const PopUpDelete = (props) => {
+  console.log(props);
   const deleteRecord = () => {
-    if (props.recordType === "officer") {
+    if (props.eventType === "officer") {
       PersonnelDataService.deleteOfficer(props.officerId)
         .then((response) => {
           props.setRefresh();
@@ -19,7 +20,7 @@ const PopUpDelete = (props) => {
           toast.warning(err.message);
           console.error(err);
         });
-    } else if (props.recordType === "starship") {
+    } else if (props.eventType === "starship") {
       StarshipsDataService.deleteStarship(props.starshipId)
         .then((response) => {
           props.setRefresh();
@@ -30,7 +31,7 @@ const PopUpDelete = (props) => {
           toast.warning(err.message);
           console.error(err);
         });
-    } else if (props.recordType === "event") {
+    } else if (props.eventType === "event") {
       EventsAndPhotosDataService.deleteEvent(props.eventId)
         .then((response) => {
           props.setRefresh();
@@ -54,7 +55,7 @@ const PopUpDelete = (props) => {
               <div className="events-modal-container align-content-center">
                 <h3>
                   Confirm Deletion of{" "}
-                  {props.recordType[0].toUpperCase() + props.recordType.slice(1)} Record
+                  {props.eventType.toUpperCase()} Record
                 </h3>
                 <button
                   className="lcars-btn orange-btn left-round small-btn"

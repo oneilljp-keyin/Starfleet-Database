@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
 import moment from "moment";
 import randomString from "random-string";
+
 import ModalLauncher from "../modals/ModalLauncher";
 import UseModal from "../modals/UseModal";
+
+import loading from "../../assets/loading.gif";
+import sc2250 from "../../assets/sc-2250s.png"
+import sc2360 from "../../assets/sc-2360s.png"
+import sc2400 from "../../assets/sc-2400s.png"
 
 function StardateConverter(stardate) {
   let year;
@@ -19,7 +24,7 @@ function StardateConverter(stardate) {
 
   let day;
 
-  // year 1 will be 2323 = (2364-41)
+  // year 1 will be 2323
   const newYear = 2323 + year;
   if (newYear % 4 === 0) {
     day = 366 * dayIndex;
@@ -55,6 +60,13 @@ function buttonStack(label, count, first, second) {
     </>
   );
 }
+
+const defaultImage = () => {
+  const array = [sc2250, sc2360, sc2400];
+  const random = Math.floor((Math.random() * 3));
+  return (<img className="load-img d-block mx-auto" src={array[random]} alt="Loading..." />)
+}
+
 
 function EditCreateMenu(props) {
   const { isShowingModal, toggleModal } = UseModal();
@@ -166,6 +178,9 @@ function EventAdder(first, secound, third) {
   return total;
 }
 
+function Loading() {
+  return <img src={loading} className="loading" alt="loading..." />;
+}
 
 export {
   StardateConverter,
@@ -174,5 +189,7 @@ export {
   EditCreateMenu,
   RandomButtonColour,
   buttonStack,
-  EventAdder
+  EventAdder,
+  Loading,
+  defaultImage
 };

@@ -6,13 +6,14 @@ import PersonnelDataService from "../../services/personnel";
 import StarshipsDataService from "../../services/starships";
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 
-import { StardateConverter } from "../hooks/HooksAndFunctions";
+import { StardateConverter, Loading } from "../hooks/HooksAndFunctions";
 
 const PopUpEvents = (props) => {
   const [rankLabels, setRankLabels] = useState([]);
   const [shipSearchResults, setShipSearchResults] = useState([]);
   const [btnLabel, setBtnLabel] = useState("Enter");
   const [searchOption, setSearchOption] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const initialEventState = {
     type: "Other",
@@ -121,6 +122,7 @@ const PopUpEvents = (props) => {
   }, [eventInfo.starshipName, searchOption]);
 
   const saveEvent = () => {
+    setisLoading(true);
     let data = eventInfo;
     Object.keys(data).forEach((key) => {
       if (data[key] === null || data[key] === "" || data[key] === undefined) {
@@ -176,6 +178,7 @@ const PopUpEvents = (props) => {
           console.error(err);
         });
     }
+    setisLoading(false);
   };
 
   const closeModal = () => {
@@ -195,10 +198,10 @@ const PopUpEvents = (props) => {
                 <h3>
                   {btnLabel} Event for {props.subjectName}
                 </h3>
-                <div className="d-flex row my-1 mx-2 form-group">
+                <div className="d-flex row mx-2 form-group">
                   <div className="form-floating col-sm-4">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="date"
                       name="date"
                       id="eventDate"
@@ -210,7 +213,7 @@ const PopUpEvents = (props) => {
                   {/* Stardate */}
                   <div className="form-floating col-sm-4">
                     <input
-                      className="form-control form-control-lg my-1"
+                      className="form-control form-control-lg"
                       type="text"
                       name="stardate"
                       id="eventStardate"
@@ -224,7 +227,7 @@ const PopUpEvents = (props) => {
                   {/* Note about event date (exact, approx, before or after) */}
                   <div className="form-floating col-sm-4">
                     <select
-                      className="form-control my-1"
+                      className="form-control"
                       name="dateNote"
                       id="dateNote"
                       value={eventInfo.dateNote || "approx"}
@@ -240,7 +243,7 @@ const PopUpEvents = (props) => {
                   {/* End Date of Event */}
                   <div className="form-floating col-sm-4">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="date"
                       name="endDate"
                       id="eventEndDate"
@@ -252,7 +255,7 @@ const PopUpEvents = (props) => {
                   {/* End Stardate */}
                   <div className="form-floating col-sm-4">
                     <input
-                      className="form-control form-control-lg my-1"
+                      className="form-control form-control-lg"
                       type="text"
                       name="endStardate"
                       id="eventEndStardate"
@@ -266,7 +269,7 @@ const PopUpEvents = (props) => {
                   {/* Note about event date (exact, approx, before or after) */}
                   <div className="form-floating col-sm-4">
                     <select
-                      className="form-control my-1"
+                      className="form-control"
                       name="endDateNote"
                       id="endDateNote"
                       value={eventInfo.endDateNote || "approx"}
@@ -282,7 +285,7 @@ const PopUpEvents = (props) => {
                   {/* <div className="w-100"></div> */}
                   <div className="form-floating col-sm-4">
                     <select
-                      className="form-control my-1"
+                      className="form-control"
                       name="type"
                       id="eventType"
                       value={eventInfo.type || ""}
@@ -302,7 +305,7 @@ const PopUpEvents = (props) => {
                   {props.officerId && (
                     <>
                       {" "}
-                      <div className="col-sm-4 form-floating searchContainer my-1 p-0">
+                      <div className="col-sm-4 form-floating searchContainer p-0">
                         <input
                           className="form-control form-control-lg"
                           type="text"
@@ -342,7 +345,7 @@ const PopUpEvents = (props) => {
                     }
                   >
                     <input
-                      className="form-control form-control-lg my-1"
+                      className="form-control form-control-lg"
                       type="text"
                       name="location"
                       id="eventLocation"
@@ -358,7 +361,7 @@ const PopUpEvents = (props) => {
                       {/* <div className="w-100"></div> */}
                       <div className="form-floating col-sm-5">
                         <select
-                          className="form-control my-1"
+                          className="form-control"
                           name="rankLabel"
                           id="rankLabel"
                           value={eventInfo.rankLabel || ""}
@@ -376,7 +379,7 @@ const PopUpEvents = (props) => {
                       </div>
                       <div
                         className="col-sm-2 form-check align-items-center m-auto"
-                        style={{ paddingLeft: "2rem" }}
+                        style={{ paddingLeft: "3em" }}
                       >
                         <input
                           className="form-check-input"
@@ -385,7 +388,6 @@ const PopUpEvents = (props) => {
                           name="provisional"
                           checked={eventInfo.provisional || ""}
                           onChange={(e) => handleChangeChk(e)}
-                        // style={{ margin: "0 2px 0 0" }}
                         />
                         <label className="form-check-label" htmlFor="provisional">
                           Provisional
@@ -393,7 +395,7 @@ const PopUpEvents = (props) => {
                       </div>
                       <div className="form-floating col-sm-5">
                         <input
-                          className="form-control form-control-lg my-1"
+                          className="form-control form-control-lg"
                           type="text"
                           name="position"
                           id="officerPosition"
@@ -405,10 +407,9 @@ const PopUpEvents = (props) => {
                       </div>
                     </>
                   )}
-                  {/* <div className="w-100"></div> */}
                   <div className="form-floating col-sm-12">
                     <textarea
-                      className="col form-control form-control-lg my-1"
+                      className="col form-control form-control-lg"
                       style={{ height: "100%" }}
                       type="text"
                       name="notes"
@@ -427,6 +428,7 @@ const PopUpEvents = (props) => {
                 <button className="lcars-btn red-btn right-round small-btn" onClick={closeModal}>
                   Cancel
                 </button>
+                {isLoading ? <Loading /> : null}
               </div>
             </div>
           </div>

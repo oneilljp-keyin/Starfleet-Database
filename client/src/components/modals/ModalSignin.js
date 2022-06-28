@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { toast } from "react-toastify";
 
 import SignInUpService from "../../services/signInUp";
-import loading from "../../assets/loading.gif";
+import { Loading } from "../hooks/HooksAndFunctions";
 
 const SignInPopUp = (props) => {
   const initialUser = {
@@ -48,53 +48,53 @@ const SignInPopUp = (props) => {
 
   return props.isShowing && !props.isAuth
     ? ReactDOM.createPortal(
-        <React.Fragment>
-          <div className="modal-overlay" />
-          <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className={props.modalClass}>
-              <div className="modal-bg events-modal modal-content-wrapper login-modal">
-                <div className="events-modal-container align-content-center">
-                  <h1 className="text-center">Sign-In</h1>
-                  <form className="text-center" onSubmit={onSubmitForm}>
-                    <div className="row my-2 justify-content-center">
-                      <input
-                        type="text"
-                        className="form-control m-2 input-size"
-                        id="email"
-                        name="email"
-                        placeholder="Email"
-                        required
-                        value={user.email}
-                        onChange={(e) => onChange(e)}
-                      />
-                      <input
-                        type="password"
-                        className="form-control m-2 input-size"
-                        id="password"
-                        name="password"
-                        placeholder="Password"
-                        required
-                        value={user.password}
-                        onChange={(e) => onChange(e)}
-                      />
-                    </div>
-                    <button className="lcars-btn orange-btn left-round small-btn">Login</button>
-                    <button
-                      className="lcars-btn red-btn right-round small-btn"
-                      onClick={props.hide}
-                    >
-                      Cancel
-                    </button>
-                    <br />
-                    {isLoading ? <img src={loading} className="loading" alt="loading..." /> : null}
-                  </form>
-                </div>
+      <React.Fragment>
+        <div className="modal-overlay" />
+        <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
+          <div className={props.modalClass}>
+            <div className="modal-bg events-modal modal-content-wrapper login-modal">
+              <div className="events-modal-container align-content-center">
+                <h1 className="text-center">Sign-In</h1>
+                <form className="text-center" onSubmit={onSubmitForm}>
+                  <div className="row my-2 justify-content-center">
+                    <input
+                      type="text"
+                      className="form-control m-2 input-size"
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      required
+                      value={user.email}
+                      onChange={(e) => onChange(e)}
+                    />
+                    <input
+                      type="password"
+                      className="form-control m-2 input-size"
+                      id="password"
+                      name="password"
+                      placeholder="Password"
+                      required
+                      value={user.password}
+                      onChange={(e) => onChange(e)}
+                    />
+                  </div>
+                  <button className="lcars-btn orange-btn left-round small-btn">Login</button>
+                  <button
+                    className="lcars-btn red-btn right-round small-btn"
+                    onClick={props.hide}
+                  >
+                    Cancel
+                  </button>
+                  <br />
+                  {isLoading ? <Loading /> : null}
+                </form>
               </div>
             </div>
           </div>
-        </React.Fragment>,
-        document.body
-      )
+        </div>
+      </React.Fragment>,
+      document.body
+    )
     : null;
 };
 export default SignInPopUp;

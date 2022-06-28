@@ -4,6 +4,7 @@ import ModalLauncher from "./modals/ModalLauncher";
 import UseModal from "./modals/UseModal";
 
 import { buttonStack } from "./hooks/HooksAndFunctions";
+import DataCascade from "./hooks/DataCascade";
 
 function Navbar({ isAuth, logout, setAdmin, setAuth }) {
   const { isShowingModal, toggleModal } = UseModal();
@@ -13,8 +14,8 @@ function Navbar({ isAuth, logout, setAdmin, setAuth }) {
     <>
       <header id="main-header" className="header">
         <div className="header-inner">
-          <nav className="flex-row d-flex">
-            {/* <div className="lcars-end-cap left-round purple-btn"> </div> */}
+          <nav className="flex-row d-flex w-100 justify-content-end">
+            <DataCascade />
             <Link to={"/personnel"} className={`${headerButtonClass} left-round blue-btn`}>
               {buttonStack("Personnel", null, 2, 4)}
             </Link>

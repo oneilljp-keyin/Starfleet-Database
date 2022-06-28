@@ -38,9 +38,7 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
             <li>In the Personnel section, results will appear as you type.</li>
             <li>
               In the Starship section, you can search by name or class, if the name is empty
-              <br />
               select a class to bring up starships of that class, where you can narrow them down
-              <br />
               by name if you wish.
             </li>
           </ul>
@@ -67,6 +65,7 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
           <div className="footer-bar"></div>
         </footer>
       </article>
+      <p>This is a font test</p>
     </>
   );
 }

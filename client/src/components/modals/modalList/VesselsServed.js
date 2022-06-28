@@ -45,7 +45,7 @@ const StarshipsList = ({ eventType, officerId, category }) => {
   return (
     <div
       className="d-flex flex-wrap row overflow-y justify-content-evenly"
-      style={{ maxHeight: "calc(100% - 104px)" }}
+      style={{ maxHeight: "calc(100% - 7em)" }}
     >
       {starships.length > 0 ? (
         starships

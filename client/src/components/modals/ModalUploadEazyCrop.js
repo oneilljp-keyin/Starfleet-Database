@@ -6,12 +6,15 @@ import Cropper from "react-easy-crop";
 
 import EventsAndPhotosDataService from "../../services/eventsAndPhotos";
 import { getCroppedImg } from "../../utils/getCroppedImage";
+import { Loading } from "../hooks/HooksAndFunctions";
 
 const PopUpUpload = (props) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(2);
   const [file, setFile] = useState(null);
   const [isFileSelected, setIsFileSelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => setIsLoading(false), []);
   const [cropperSrc, setCropperSrc] = useState(null);
   const [croppedArea, setCroppedArea] = useState(null);
 
@@ -89,6 +92,7 @@ const PopUpUpload = (props) => {
   };
 
   useEffect(() => {
+    setIsLoading(false);
     let isMounted = true;
 
     const getEvent = async (id) => {
@@ -111,6 +115,7 @@ const PopUpUpload = (props) => {
   }, [props.photoId]);
 
   const deletePhoto = async () => {
+    setIsLoading(true);
     try {
       let response = await EventsAndPhotosDataService.deletePhoto(props.photoId);
       // setPhotoRefresh();
@@ -119,9 +124,11 @@ const PopUpUpload = (props) => {
     } catch (err) {
       console.error(err);
     }
+    setIsLoading(false);
   };
 
   const updatePhoto = async () => {
+    setIsLoading(true);
     let data = photoInfo;
     Object.keys(data).forEach((key) => {
       if (data[key] === null || data[key] === "" || data[key] === undefined) {
@@ -137,9 +144,11 @@ const PopUpUpload = (props) => {
     } catch (err) {
       console.error(err);
     }
+    setIsLoading(false);
   };
 
   const handleOnSubmit = async () => {
+    setIsLoading(true);
     try {
       const { title, year, description } = photoInfo;
       if (title.trim() !== "" && description.trim() !== "" && year.trim() !== "") {
@@ -168,6 +177,7 @@ const PopUpUpload = (props) => {
     } catch (error) {
       error.response && toast.error(error.response.data);
     }
+    setIsLoading(false);
   };
 
   return props.isShowing && props.isAuth
@@ -175,7 +185,7 @@ const PopUpUpload = (props) => {
       <React.Fragment>
         <div className="modal-overlay" />
         <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-          <div className="main-modal-body modal-open">
+          <div className="modal-open">
             <div className="modal-bg resize-modal resize-modal-content-wrapper">
               <div className="resize-modal-content-container align-content-center">
                 <div className="search-form m-auto text-center modal-appear">
@@ -212,7 +222,7 @@ const PopUpUpload = (props) => {
                   <div className="d-flex row form-group mx-2">
                     <div className="form-floating col-6">
                       <input
-                        className="form-control form-control-sm my-1"
+                        className="form-control form-control-sm"
                         type="text"
                         name="title"
                         id="imageTitle"
@@ -224,7 +234,7 @@ const PopUpUpload = (props) => {
                     </div>
                     <div className="form-floating col-6">
                       <input
-                        className="form-control form-control-sm my-1"
+                        className="form-control form-control-sm"
                         type="text"
                         name="year"
                         id="imageYear"
@@ -236,7 +246,7 @@ const PopUpUpload = (props) => {
                     </div>
                     <div className="form-floating col-12">
                       <input
-                        className="form-control form-control-sm my-1"
+                        className="form-control form-control-sm"
                         type="text"
                         name="description"
                         id="imageDescription"
@@ -283,6 +293,7 @@ const PopUpUpload = (props) => {
                   >
                     Cancel
                   </button>
+                  {isLoading ? <Loading /> : null}
                 </div>
               </div>
             </div>

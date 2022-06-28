@@ -5,12 +5,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
-import ufp from "../../assets/ufp.png";
 import gray from "../../assets/insignia_gray.png";
 
 import PersonnelDataService from "../../services/personnel";
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
+
+import { defaultImage } from "../hooks/HooksAndFunctions";
 
 function PersonnelList(props) {
   const [loading, setLoading] = useState(true);
@@ -69,7 +70,7 @@ function PersonnelList(props) {
             });
             setHasMore(
               (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-                response.data.total_results
+              response.data.total_results
             );
             setLoading(false);
           })
@@ -95,6 +96,8 @@ function PersonnelList(props) {
       isMounted = false;
     };
   }, [searchQuery, pageNumber, debounceQuery]);
+
+  const setDefaultImage = useMemo(() => defaultImage(), [])
 
   return (
     <>
@@ -133,7 +136,7 @@ function PersonnelList(props) {
         {personnel.length === 0 ? (
           <div className="m-auto text-center">
             {searchQuery.length > 0 ? <h2>NO RESULTS</h2> : <h2>STANDBY</h2>}
-            <img className="load-img d-block mx-auto" src={ufp} alt="Loading..." />
+            {setDefaultImage}
           </div>
         ) : (
           personnel.map((officer, index) => {

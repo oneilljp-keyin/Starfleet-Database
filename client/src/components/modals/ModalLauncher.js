@@ -7,7 +7,7 @@ import ModalSignin from "../modals/ModalSignin";
 import ModalList from "../modals/ModalList";
 
 const ModalLauncher = (props) => {
-  const modalClass = "main-modal-body modal-open";
+  const modalClass = "modal-open";
 
   switch (props.modal) {
     case "event":

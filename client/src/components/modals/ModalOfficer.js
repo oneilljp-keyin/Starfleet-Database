@@ -4,11 +4,13 @@ import { toast } from "react-toastify";
 
 import PersonnelDataService from "../../services/personnel";
 
-import { StardateConverter } from "../hooks/HooksAndFunctions";
+import { StardateConverter, Loading } from "../hooks/HooksAndFunctions";
 
 const PopUpOfficer = (props) => {
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const initialOfficerState = {
     _id: "",
     surname: "",
@@ -66,6 +68,7 @@ const PopUpOfficer = (props) => {
   }, [edit, submitted, props.officerId]);
 
   const saveOfficerInfo = () => {
+    setIsLoading(true);
     let data = officerInfo;
     delete data["name"];
     delete data["registry"];
@@ -125,6 +128,7 @@ const PopUpOfficer = (props) => {
           toast.warning(err.message);
         });
     }
+    setIsLoading(false);
   };
 
   const closeModal = () => {
@@ -143,10 +147,10 @@ const PopUpOfficer = (props) => {
                 <h3>
                   {btnLabel} Profile {props.subjectName ? ` - ${props.subjectName}` : null}
                 </h3>
-                <div className="d-flex row my-1 mx-2 form-group">
+                <div className="d-flex row form-group">
                   <div className="form-floating col-sm-6">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       name="serial"
                       id="serial"
@@ -172,7 +176,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       autoFocus
                       name="surname"
@@ -185,7 +189,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       name="first"
                       id="first"
@@ -197,7 +201,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       name="middle"
                       id="middle"
@@ -209,7 +213,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       name="postNom"
                       id="postNom"
@@ -221,7 +225,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-sm my-1"
+                      className="form-control form-control-sm"
                       type="date"
                       name="birthDate"
                       id="birthDate"
@@ -232,7 +236,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-lg my-1"
+                      className="form-control form-control-lg"
                       type="text"
                       name="birthStardate"
                       id="birthStardate"
@@ -244,7 +248,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <select
-                      className="form-control form-control-sm my-1"
+                      className="form-control form-control-sm"
                       name="birthDateNote"
                       id="birthDateNote"
                       value={officerInfo.birthDateNote || ""}
@@ -259,7 +263,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       name="birthPlace"
                       id="birthPlace"
@@ -271,7 +275,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-sm my-1"
+                      className="form-control form-control-sm"
                       type="date"
                       name="deathDate"
                       id="deathDate"
@@ -282,7 +286,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-lg my-1"
+                      className="form-control form-control-lg"
                       type="text"
                       name="deathStardate"
                       id="deathStardate"
@@ -294,7 +298,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <select
-                      className="form-control form-control-sm my-1"
+                      className="form-control form-control-sm"
                       name="deathDateNote"
                       id="deathDateNote"
                       value={officerInfo.deathDateNote || ""}
@@ -309,7 +313,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-3">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       name="deathPlace"
                       id="deathPlace"
@@ -321,7 +325,7 @@ const PopUpOfficer = (props) => {
                   </div>
                   <div className="form-floating col-sm-12">
                     <input
-                      className="form-control form-control-md my-1"
+                      className="form-control form-control-md"
                       type="text"
                       name="memoryAlphaURL"
                       id="memoryAlphaURL"
@@ -342,6 +346,7 @@ const PopUpOfficer = (props) => {
                 <button className="lcars-btn red-btn right-round small-btn" onClick={closeModal}>
                   Cancel
                 </button>
+                {isLoading ? <Loading /> : null}
               </div>
             </div>
           </div>
