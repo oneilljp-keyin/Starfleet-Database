@@ -278,8 +278,8 @@ exports = async function (payload, response) {
       const officerId = updatedInfo._id;
       let officerName;
       // if (updatedInfo.first != null) officerName = updatedInfo.first;
-      if (updatedInfo.first != null && updatedInfo.surname != null) officerName += " ";
-      if (updatedInfo.surname != null) officerName += updatedInfo.surname;
+      // if (updatedInfo.first != null && updatedInfo.surname != null) officerName += " ";
+      if (updatedInfo.surname != null) officerName = updatedInfo.surname;
       if (updatedInfo.birthDate) {
         updatedInfo.birthDate = new Date(updatedInfo.birthDate);
       }
