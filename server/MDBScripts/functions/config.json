@@ -5,19 +5,17 @@
         "run_as_system": true
     },
     {
-        "name": "Register",
+        "name": "Starfleet_events",
         "private": false,
         "run_as_system": true
     },
     {
-        "name": "user_login",
+        "name": "user_authorization",
         "private": false
     },
     {
-        "name": "Starfleet_starships",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
+        "name": "user_login",
+        "private": false
     },
     {
         "name": "Starfleet_ranks",
@@ -26,22 +24,24 @@
         "disable_arg_logs": true
     },
     {
-        "name": "user_authorization",
-        "private": false
-    },
-    {
-        "name": "Starfleet_classes",
+        "name": "Starfleet_personnel",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
     },
     {
-        "name": "Starfleet_events",
+        "name": "Starfleet_starships",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "Register",
         "private": false,
         "run_as_system": true
     },
     {
-        "name": "Starfleet_personnel",
+        "name": "Starfleet_classes",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true

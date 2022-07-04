@@ -2,7 +2,7 @@ exports = async function (payload, response) {
   // payload contains {query, headers, body}
   const events = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("events");
   const id = payload.query.id;
-  const eventSort = { date: parseInt(payload.query.sort) } || { date: -1 };
+  const eventSort = { date: parseInt(payload.query.sort) } || { date: 1 };
 
   let responseData = { message: "Something Went Wrong in the 'events' function" };
 
