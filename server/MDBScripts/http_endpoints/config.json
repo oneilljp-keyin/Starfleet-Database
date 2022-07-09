@@ -1,28 +1,8 @@
 [
     {
-        "route": "/Starfleet/classes",
-        "http_method": "GET",
-        "function_name": "Starfleet_classes",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
         "route": "/Starfleet/register",
         "http_method": "*",
         "function_name": "Register",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/login",
-        "http_method": "*",
-        "function_name": "Login",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,
@@ -50,17 +30,6 @@
         "disabled": false
     },
     {
-        "route": "/Starfleet/update",
-        "http_method": "PUT",
-        "function_name": "modifiy_script",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false,
-        "return_type": "EJSON"
-    },
-    {
         "route": "/Starfleet/events",
         "http_method": "*",
         "function_name": "Starfleet_events",
@@ -79,6 +48,37 @@
         "fetch_custom_user_data": false,
         "create_user_on_auth": false,
         "disabled": false
+    },
+    {
+        "route": "/Starfleet/classes",
+        "http_method": "GET",
+        "function_name": "Starfleet_classes",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/login",
+        "http_method": "*",
+        "function_name": "Login",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/update",
+        "http_method": "PUT",
+        "function_name": "modifiy_script",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false,
+        "return_type": "EJSON"
     },
     {
         "route": "/Starfleet/photos",

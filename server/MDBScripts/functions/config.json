@@ -1,9 +1,14 @@
 [
     {
-        "name": "Starfleet_classes",
+        "name": "Starfleet_starships",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
+    },
+    {
+        "name": "Register",
+        "private": false,
+        "run_as_system": true
     },
     {
         "name": "Starfleet_ranks",
@@ -12,17 +17,7 @@
         "disable_arg_logs": true
     },
     {
-        "name": "user_authorization",
-        "private": false
-    },
-    {
-        "name": "Starfleet_personnel",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "Starfleet_starships",
+        "name": "Starfleet_classes",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
@@ -37,12 +32,19 @@
         "run_as_system": true
     },
     {
-        "name": "Login",
+        "name": "Starfleet_personnel",
         "private": false,
-        "run_as_system": true
+        "run_as_system": true,
+        "disable_arg_logs": true
     },
     {
-        "name": "Register",
+        "name": "modifiy_script",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "Login",
         "private": false,
         "run_as_system": true
     },
@@ -53,9 +55,7 @@
         "disable_arg_logs": true
     },
     {
-        "name": "modifiy_script",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
+        "name": "user_authorization",
+        "private": false
     }
 ]
