@@ -4,13 +4,13 @@
             "bsonType": "objectId"
         },
         "date": {
-            "bsonType": "object"
+            "bsonType": "date"
         },
         "dateNote": {
             "bsonType": "string"
         },
         "endDate": {
-            "bsonType": "object"
+            "bsonType": "date"
         },
         "endDateNote": {
             "bsonType": "string"

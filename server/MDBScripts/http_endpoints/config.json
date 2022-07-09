@@ -1,8 +1,8 @@
 [
     {
-        "route": "/Starfleet/ranks",
-        "http_method": "GET",
-        "function_name": "Starfleet_ranks",
+        "route": "/Starfleet/events",
+        "http_method": "*",
+        "function_name": "Starfleet_events",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,
@@ -60,9 +60,9 @@
         "disabled": false
     },
     {
-        "route": "/Starfleet/starships",
-        "http_method": "*",
-        "function_name": "Starfleet_starships",
+        "route": "/Starfleet/ranks",
+        "http_method": "GET",
+        "function_name": "Starfleet_ranks",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,
@@ -70,9 +70,9 @@
         "disabled": false
     },
     {
-        "route": "/Starfleet/events",
+        "route": "/Starfleet/starships",
         "http_method": "*",
-        "function_name": "Starfleet_events",
+        "function_name": "Starfleet_starships",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,
