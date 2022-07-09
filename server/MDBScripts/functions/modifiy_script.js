@@ -12,6 +12,7 @@ exports = async function (payload, response) {
   try {
     if (stardate) {
       await events.updateMany({ stardate: stardate }, { $set: { "date" : date} });
+      await events.updateMany({ stardate: endStardate }, { $set: { "endDate" : date} });
     }
     if (stardate) {
       return { message: "Records Updated Successfully" };
