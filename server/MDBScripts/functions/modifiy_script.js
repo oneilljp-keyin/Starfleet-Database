@@ -29,5 +29,5 @@ exports = async function (payload, response) {
   // }
 
   // return responseData;
-  return updatedInfo;
+  return {stardate, date, endStardate, endDate};
 };
