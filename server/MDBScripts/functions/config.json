@@ -12,15 +12,6 @@
         "disable_arg_logs": true
     },
     {
-        "name": "user_login",
-        "private": false
-    },
-    {
-        "name": "Login",
-        "private": false,
-        "run_as_system": true
-    },
-    {
         "name": "Register",
         "private": false,
         "run_as_system": true
@@ -35,13 +26,11 @@
         "private": false
     },
     {
-        "name": "Starfleet_classes",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
+        "name": "user_login",
+        "private": false
     },
     {
-        "name": "Starfleet_personnel",
+        "name": "Starfleet_classes",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
@@ -56,5 +45,16 @@
         "name": "modifiy_script",
         "private": false,
         "disable_arg_logs": true
+    },
+    {
+        "name": "Starfleet_personnel",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "Login",
+        "private": false,
+        "run_as_system": true
     }
 ]
