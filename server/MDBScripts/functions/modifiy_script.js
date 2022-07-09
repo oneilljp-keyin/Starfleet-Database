@@ -8,18 +8,13 @@ exports = async function (payload, response) {
 
   let stardate = updatedInfo.stardate ? updatedInfo.stardate : null;
   let date = updatedInfo.date ? new Date(updatedInfo.date): null;
+  
 
   try {
-    if (stardate) {
-     await events.updateMany({ stardate: stardate }, { $set: { "date" : date} });
-     await events.updateMany({ endStardate: stardate }, { $set: { "endDate" : date} });
-    }
-    if (stardate) {
-      // return { message: "Records Updated Successfully" };
-      return { stardateUpdate, endStardateUpdate };
-    } else {
-      return { message: "No records to Update" };
-    }
+   const stardateUpdate = await events.updateMany({ stardate: stardate }, { $set: { "date" : date} });
+   const endStardateUpdate = await events.updateMany({ endStardate: stardate }, { $set: { "endDate" : date} });
+    // return { message: "Records Updated Successfully" };
+    return { stardateUpdate, endStardateUpdate };
   } catch (err) {
     console.error(`Record Update Failed ${err.message}`);
     return { message: `Record Update Failed ${err.message}` };
