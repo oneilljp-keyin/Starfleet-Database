@@ -19,7 +19,7 @@
     "required": [
         "abbrev",
         "label",
-        "rand_id",
+        "rank_id",
         "type"
     ],
     "title": "rank"
