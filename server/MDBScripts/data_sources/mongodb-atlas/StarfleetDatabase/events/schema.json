@@ -1,0 +1,55 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "date": {
+            "bsonType": "object"
+        },
+        "dateNote": {
+            "bsonType": "string"
+        },
+        "endDate": {
+            "bsonType": "object"
+        },
+        "endDateNote": {
+            "bsonType": "string"
+        },
+        "endStardate": {
+            "bsonType": "string"
+        },
+        "location": {
+            "bsonType": "string"
+        },
+        "notes": {
+            "bsonType": "string"
+        },
+        "officerId": {
+            "bsonType": "objectId"
+        },
+        "position": {
+            "bsonType": "string"
+        },
+        "provisional": {
+            "bsonType": "bool",
+            "default": false
+        },
+        "rankLabel": {
+            "bsonType": "string"
+        },
+        "stardate": {
+            "bsonType": "string"
+        },
+        "starshipId": {
+            "bsonType": "objectId"
+        },
+        "type": {
+            "bsonType": "string",
+            "default": "Assignment"
+        }
+    },
+    "required": [
+        "type"
+    ],
+    "title": "event"
+}
