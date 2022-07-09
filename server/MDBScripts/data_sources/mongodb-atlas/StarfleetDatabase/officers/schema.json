@@ -50,7 +50,7 @@
             "bsonType": "string"
         },
         "species_id": {
-            "bsonType": "string"
+            "bsonType": "int"
         },
         "surname": {
             "bsonType": "string"

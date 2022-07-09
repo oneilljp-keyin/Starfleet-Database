@@ -6,13 +6,13 @@
         "disable_arg_logs": true
     },
     {
+        "name": "user_login",
+        "private": false
+    },
+    {
         "name": "Starfleet_events",
         "private": false,
         "run_as_system": true
-    },
-    {
-        "name": "user_authorization",
-        "private": false
     },
     {
         "name": "Starfleet_personnel",
@@ -31,16 +31,6 @@
         "run_as_system": true
     },
     {
-        "name": "user_login",
-        "private": false
-    },
-    {
-        "name": "modifiy_script",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
-    },
-    {
         "name": "Starfleet_photos",
         "private": false,
         "run_as_system": true,
@@ -57,5 +47,15 @@
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
+    },
+    {
+        "name": "modifiy_script",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "user_authorization",
+        "private": false
     }
 ]
