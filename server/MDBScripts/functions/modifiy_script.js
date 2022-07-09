@@ -18,7 +18,7 @@ exports = async function (payload, response) {
       // return { message: "Records Updated Successfully" };
       return { stardateUpdate, endStardateUpdate };
     } else {
-      return { message: "No Info to Update" };
+      return { message: "No records to Update" };
     }
   } catch (err) {
     console.error(`Record Update Failed ${err.message}`);
