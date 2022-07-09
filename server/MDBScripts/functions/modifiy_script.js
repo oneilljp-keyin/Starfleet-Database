@@ -13,7 +13,7 @@ exports = async function (payload, response) {
    const stardateUpdate = await events.updateMany({ stardate: stardate }, { $set: { "date" : date} });
    const endStardateUpdate = await events.updateMany({ endStardate: stardate }, { $set: { "endDate" : date} });
     // return { message: "Records Updated Successfully" };
-    return (stardateUpdate, endStardateUpdate);
+    return (stardateUpdate);
   } catch (err) {
     console.error(`Record Update Failed ${err.message}`);
     return { message: `Record Update Failed ${err.message}` };
