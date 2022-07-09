@@ -1,0 +1,32 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "description": {
+            "bsonType": "string"
+        },
+        "owner": {
+            "bsonType": "objectId"
+        },
+        "primary": {
+            "bsonType": "bool"
+        },
+        "title": {
+            "bsonType": "string"
+        },
+        "url": {
+            "bsonType": "string"
+        },
+        "year": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "owner",
+        "title",
+        "url",
+        "year"
+    ],
+    "title": "photo"
+}
