@@ -1,8 +1,5 @@
 {
     "properties": {
-        "__v": {
-            "bsonType": "int"
-        },
         "_id": {
             "bsonType": "objectId"
         },
@@ -10,6 +7,15 @@
             "bsonType": "date"
         },
         "dateNote": {
+            "bsonType": "string"
+        },
+        "endDate": {
+            "bsonType": "date"
+        },
+        "endDateNote": {
+            "bsonType": "string"
+        },
+        "endStardate": {
             "bsonType": "string"
         },
         "location": {
@@ -24,6 +30,10 @@
         "position": {
             "bsonType": "string"
         },
+        "provisional": {
+            "bsonType": "bool",
+            "default": false
+        },
         "rankLabel": {
             "bsonType": "string"
         },
@@ -33,14 +43,9 @@
         "starshipId": {
             "bsonType": "objectId"
         },
-        "starshipName": {
-            "bsonType": "string"
-        },
-        "starshipRegistry": {
-            "bsonType": "string"
-        },
         "type": {
-            "bsonType": "string"
+            "bsonType": "string",
+            "default": "Assignment"
         }
     },
     "required": [

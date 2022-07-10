@@ -1,0 +1,26 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "abbrev": {
+            "bsonType": "string"
+        },
+        "label": {
+            "bsonType": "string"
+        },
+        "rank_id": {
+            "bsonType": "int"
+        },
+        "type": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "abbrev",
+        "label",
+        "rank_id",
+        "type"
+    ],
+    "title": "rank"
+}

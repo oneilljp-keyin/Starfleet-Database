@@ -1,0 +1,63 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "active": {
+            "bsonType": "bool",
+            "default": true
+        },
+        "birthDate": {
+            "bsonType": "date"
+        },
+        "birthDateNote": {
+            "bsonType": "string"
+        },
+        "birthPlace": {
+            "bsonType": "string"
+        },
+        "birthStardate": {
+            "bsonType": "string"
+        },
+        "deathDate": {
+            "bsonType": "date"
+        },
+        "deathDateNote": {
+            "bsonType": "string"
+        },
+        "deathNote": {
+            "bsonType": "string"
+        },
+        "deathPlace": {
+            "bsonType": "string"
+        },
+        "deathStardate": {
+            "bsonType": "string"
+        },
+        "first": {
+            "bsonType": "string"
+        },
+        "memoryAlphaURL": {
+            "bsonType": "string"
+        },
+        "middle": {
+            "bsonType": "string"
+        },
+        "postNom": {
+            "bsonType": "string"
+        },
+        "serial": {
+            "bsonType": "string"
+        },
+        "species_id": {
+            "bsonType": "int"
+        },
+        "surname": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "surname"
+    ],
+    "title": "officer"
+}

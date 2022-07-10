@@ -1,0 +1,68 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "class": {
+            "bsonType": "string"
+        },
+        "commission_date": {
+            "bsonType": "date"
+        },
+        "commission_note": {
+            "bsonType": "string"
+        },
+        "commission_stardate": {
+            "bsonType": "string"
+        },
+        "decommission_date": {
+            "bsonType": "date"
+        },
+        "decommission_note": {
+            "bsonType": "string"
+        },
+        "decommission_stardate": {
+            "bsonType": "string"
+        },
+        "descommission_stardate": {
+            "bsonType": "string"
+        },
+        "destruction_date": {
+            "bsonType": "date"
+        },
+        "destruction_note": {
+            "bsonType": "string"
+        },
+        "destruction_stardate": {
+            "bsonType": "string"
+        },
+        "launch_date": {
+            "bsonType": "date"
+        },
+        "launch_note": {
+            "bsonType": "string"
+        },
+        "launch_stardate": {
+            "bsonType": "string"
+        },
+        "memoryAlphaURL": {
+            "bsonType": "string"
+        },
+        "name": {
+            "bsonType": "string"
+        },
+        "registry": {
+            "bsonType": "string"
+        },
+        "ship_id": {
+            "bsonType": "int"
+        },
+        "shipyard": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "ship_id"
+    ],
+    "title": "starship"
+}

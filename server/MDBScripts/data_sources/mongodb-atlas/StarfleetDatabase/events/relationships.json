@@ -1,1 +1,8 @@
-{}
+{
+    "officerId": {
+        "ref": "#/relationship/mongodb-atlas/StarfleetDatabase/officers",
+        "source_key": "officerId",
+        "foreign_key": "_id",
+        "is_list": false
+    }
+}
