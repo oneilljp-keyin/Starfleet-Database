@@ -142,11 +142,10 @@ function PersonnelList(props) {
           personnel.map((officer, index) => {
             let officerName;
             let officerId = officer.personnel_id ? officer.personnel_id : officer._id;
-            if (officer.surname !== "undefined") {
-              officerName = officer.surname;
-            }
-            if (officer.first) {
-              officerName += ", " + officer.first;
+            if (officer.surname !== "undefined") officerName = officer.surname;
+            if (officer.first && officer.first !== " ") {
+              if (officer.species_id !== 51) officerName += ","
+              officerName += " " + officer.first;
             }
             if (officer.middle) {
               let middleI = officer.middle.slice(0, 1);

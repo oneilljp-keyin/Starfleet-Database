@@ -206,7 +206,7 @@ const Starships = (props) => {
                 active={true}
                 colour="pink"
                 eventType="Chronology"
-                categoryLabel="Complete Chronology"
+                categoryLabel="Chronology"
                 count={EventAdder(starship.maintenanceCount, starship.missionCount, starship.firstContactCount)}
               />
             ) : (

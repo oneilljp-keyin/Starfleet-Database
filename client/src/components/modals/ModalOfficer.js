@@ -13,21 +13,21 @@ const PopUpOfficer = (props) => {
 
   const initialOfficerState = {
     _id: "",
-    surname: "",
+    active: true,
+    birthDate: "",
+    birthDateNote: "",
+    birthPlace: "",
+    birthStardate: "",
+    deathDate: "",
+    deathDateNote: "",
+    deathPlace: "",
+    deathStardate: "",
     first: "",
+    memoryAlphaURL: "",
     middle: "",
     postNom: "",
-    birthDate: "",
-    birthStardate: "",
-    birthPlace: "",
-    birthDateNote: "",
-    deathDate: "",
-    deathStardate: "",
-    deathPlace: "",
-    deathDateNote: "",
     serial: "",
-    active: true,
-    memoryAlphaURL: "",
+    surname: "",
   };
 
   const [officerInfo, setOfficerInfo] = useState(initialOfficerState);

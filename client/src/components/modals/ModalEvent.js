@@ -16,7 +16,7 @@ const PopUpEvents = (props) => {
   const [isLoading, setisLoading] = useState(false);
 
   const initialEventState = {
-    type: "Other",
+    type: "Assignment",
     officerId: props.officerId,
     starshipId: props.starshipId,
     starshipName: null,
@@ -288,10 +288,9 @@ const PopUpEvents = (props) => {
                       className="form-control"
                       name="type"
                       id="eventType"
-                      value={eventInfo.type || ""}
+                      value={eventInfo.type || "Assignment"}
                       onChange={(e) => onChangeEventInfo(e)}
                     >
-                      <option value="Other">Other</option>
                       {props.officerId && <option value="Assignment">Assignment</option>}
                       <option value="First Contact">First Contact</option>
                       {props.officerId && <option value="Life Event">Life Event</option>}

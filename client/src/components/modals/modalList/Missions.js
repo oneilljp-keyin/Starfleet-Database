@@ -77,7 +77,7 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                     eventDate = event.date.slice(0, 10);
                   }
                 }
-                if (event.endDate) {
+                if (event.endDate && event.date.slice(0, 4).toString() !== event.endDate.slice(0, 4).toString()) {
                   eventDate += "-"
                   if (event.endDateNote !== "exact") {
                     if (event.endDateNote === "before") {
@@ -134,9 +134,9 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                       </td>
                       <td className="h3cell align-top">
                         {event.date && `${eventDate}`}
-                        {event.date && event.stardate && event.stardate !== "0" && <br />}
-                        {event.stardate && event.stardate !== "0" && `SD ${event.stardate}`}
-                        {event.endStardate && event.endStardate !== "0" && `-${event.endStardate}`}
+                        {event.date && event.stardate && event.stardate !== "0" && <><br />SD </>}
+                        {event.stardate && event.stardate !== "0" && `${event.stardate}`}
+                        {event.stardate && event.stardate !== "0" && event.endStardate && event.endStardate !== "0" && event.stardate !== event.endStardate && `-${event.endStardate}`}
                       </td>
                       <td className="h5cell align-top" style={{ textTransform: "capitalize" }}>
                         {event.name && (

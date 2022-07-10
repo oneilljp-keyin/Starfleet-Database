@@ -86,7 +86,7 @@ td {text-align: left; padding: 0.125em 0.25em 0.125em 0.25em !important;}
 .card-title {margin: 0.125em 0;}
 
 .load-img {max-width: 20em;}
-.search-list { height: auto; border-radius: 8px; box-shadow: 2px 2px 10px black; }
+.search-list { height: auto; border-radius: 1em; box-shadow: 2px 2px 10px black; }
 .personnel-search { width: 75%; max-width: 6em;}
 .starship-search { width: 100%;}
 .service-list { width: calc(100% - 16px); height: auto; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
@@ -536,14 +536,30 @@ article footer p {
 
 /* ------------------------------- Changes for Larger Screens ----------------------------------------------------- */
 
-@media screen and (min-width: 1440px) { body { font-size: 1.125rem;} }
-@media screen and (min-width: 1680px) { body { font-size: 1.250rem;} }
-@media screen and (min-width: 1920px) { body { font-size: 1.375rem;} }
-@media screen and (min-width: 2160px) { body { font-size: 1.500rem;} }
-@media screen and (min-width: 2400px) { body { font-size: 1.625rem;} }
-@media screen and (min-width: 2640px) { body { font-size: 1.750rem;} }
-@media screen and (min-width: 2880px) { body { font-size: 1.875rem;} }
-@media screen and (min-width: 3120px) { body { font-size: 2.000rem;} }
+@media screen and (min-width: 1096px) and (min-height: 680px)  { body { font-size: 1.125rem;} }
+@media screen and (min-width: 1224px) and (min-height: 856px)  { body { font-size: 1.250rem;} }
+@media screen and (min-width: 1344px) and (min-height: 944px)  { body { font-size: 1.375rem;} }
+@media screen and (min-width: 1464px) and (min-height: 1024px) { body { font-size: 1.500rem;} }
+@media screen and (min-width: 1584px) and (min-height: 1112px) { body { font-size: 1.625rem;} }
+@media screen and (min-width: 1704px) and (min-height: 1194px) { body { font-size: 1.750rem;} }
+@media screen and (min-width: 1824px) and (min-height: 1280px) { body { font-size: 1.875rem;} }
+@media screen and (min-width: 1944px) and (min-height: 1368px) { body { font-size: 2.000rem;} }
+@media screen and (min-width: 2064px) and (min-height: 1448px) { body { font-size: 2.125rem;} }
+@media screen and (min-width: 2184px) and (min-height: 1536px) { body { font-size: 2.250rem;} }
+@media screen and (min-width: 2304px) and (min-height: 1616px) { body { font-size: 2.375rem;} }
+@media screen and (min-width: 2424px) and (min-height: 1704px) { body { font-size: 2.500rem;} }
+@media screen and (min-width: 2544px) and (min-height: 1784px) { body { font-size: 2.625rem;} }
+@media screen and (min-width: 2664px) and (min-height: 1872px) { body { font-size: 2.750rem;} }
+@media screen and (min-width: 2784px) and (min-height: 1952px) { body { font-size: 2.875rem;} }
+@media screen and (min-width: 2904px) and (min-height: 2040px) { body { font-size: 3.000rem;} }
+@media screen and (min-width: 3024px) and (min-height: 2128px) { body { font-size: 3.125rem;} }
+@media screen and (min-width: 3144px) and (min-height: 2208px) { body { font-size: 3.250rem;} }
+@media screen and (min-width: 3264px) and (min-height: 2296px) { body { font-size: 3.375rem;} }
+@media screen and (min-width: 3384px) and (min-height: 2376px) { body { font-size: 3.500rem;} }
+@media screen and (min-width: 3504px) and (min-height: 2464px) { body { font-size: 3.625rem;} }
+@media screen and (min-width: 3624px) and (min-height: 2544px) { body { font-size: 3.750rem;} }
+@media screen and (min-width: 3744px) and (min-height: 2632px) { body { font-size: 3.875rem;} }
+@media screen and (min-width: 3864px) and (min-height: 2712px) { body { font-size: 4.000rem;} }
 
 /* ------------------------------- Changes for Smaller Screens ----------------------------------------------------- */
 

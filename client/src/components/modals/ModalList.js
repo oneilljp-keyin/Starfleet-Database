@@ -35,7 +35,7 @@ const PopUpList = (props) => {
                   {
                     "Assigned Personnel": <PersonnelList {...props} />,
                     "First Contact Debriefs": <Missions {...props} />,
-                    "Complete Chronology": <Missions {...props} />,
+                    "Chronology": <Missions {...props} />,
                     "Life Events": <Missions {...props} />,
                     "Starship Assignments": <VesselsServed {...props} />,
                     "Mission Debriefs": <Missions {...props} />,

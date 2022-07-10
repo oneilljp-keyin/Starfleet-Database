@@ -65,7 +65,6 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
           <div className="footer-bar"></div>
         </footer>
       </article>
-      <p>This is a font test</p>
     </>
   );
 }

@@ -41,6 +41,7 @@ const Officer = (props) => {
     first: null,
     middle: null,
     postNom: null,
+    species_id: null,
     birthDate: null,
     birthStardate: null,
     birthPlace: null,
@@ -64,9 +65,9 @@ const Officer = (props) => {
         .then((response) => {
           if (isMounted) {
             setOfficer(response.data);
-            let officerName = response.data.first
-              ? response.data.first + " " + response.data.surname
-              : response.data.surname;
+            let officerName = !response.data.first
+              ? response.data.surname
+              : response.data.species_id === "51" ? response.data.surname + " " + response.data.first : response.data.first + " " + response.data.surname;
             setOfficerName(officerName);
           }
         })
@@ -119,7 +120,7 @@ const Officer = (props) => {
             <div className="m-1 profile-summary col-md-5">
               <h1>
                 {officer.surname && <>{officer.surname}</>}
-                {officer.first && (
+                {officer.first && officer.first !== " " && (
                   <>
                     {officer.species_id !== "51" && <>,</>} {officer.first}
                   </>
@@ -250,7 +251,7 @@ const Officer = (props) => {
                 active={true}
                 colour="pink"
                 eventType="Chronology"
-                categoryLabel="Complete Chronology"
+                categoryLabel="Chronology"
                 count={EventAdder(officer.assignCount, officer.missionCount, officer.lifeEventCount)}
               />
             ) : (
