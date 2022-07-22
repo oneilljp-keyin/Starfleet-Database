@@ -74,7 +74,7 @@ exports = async function (payload, response) {
                   $match: {
                     $and: [
                       { $expr: { $eq: ["$officerId", "$$id"] } },
-                      { $or: [{ type: "Assignment" }, { type: "Promotion" }] },
+                      { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] },
                       { position: { $ne: "Retired" } },
                     ],
                   },
