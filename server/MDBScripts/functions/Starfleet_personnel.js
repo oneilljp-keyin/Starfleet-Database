@@ -38,7 +38,7 @@ exports = async function (payload, response) {
               as: "officerPics",
             },
           },
-          { $sort: { surname: 1 } },
+          { $sort: { surname: 1, first: 1, middle: 1 } },
           { $addFields: { officerPicUrl: "$officerPics.url" } },
           { $project: { officerPics: 0 } },
           { $skip: page * personnelPerPage },
