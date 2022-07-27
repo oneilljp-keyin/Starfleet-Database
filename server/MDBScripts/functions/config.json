@@ -1,16 +1,6 @@
 [
     {
-        "name": "user_login",
-        "private": false
-    },
-    {
         "name": "Starfleet_classes",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "Starfleet_ranks",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
@@ -22,7 +12,7 @@
         "disable_arg_logs": true
     },
     {
-        "name": "Starfleet_personnel",
+        "name": "Starfleet_ranks",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
@@ -34,11 +24,11 @@
         "disable_arg_logs": true
     },
     {
-        "name": "user_authorization",
+        "name": "user_login",
         "private": false
     },
     {
-        "name": "Login",
+        "name": "Register",
         "private": false,
         "run_as_system": true
     },
@@ -48,7 +38,17 @@
         "run_as_system": true
     },
     {
-        "name": "Register",
+        "name": "Starfleet_personnel",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "user_authorization",
+        "private": false
+    },
+    {
+        "name": "Login",
         "private": false,
         "run_as_system": true
     },
