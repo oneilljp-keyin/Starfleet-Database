@@ -31,7 +31,7 @@ exports = async function (payload, response) {
               pipeline: [
                 { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
                 // { $match: { $expr: { $eq: ["$owner", "$$id"] } } },
-                { $project: { _id: 0, title: 0, description: 0, owner: 0, sortName: {"$toLower": "$surname"}} },
+                { $project: { _id: 0, title: 0, description: 0, owner: 0, sortName: {$toLower: "$surname"}} },
                 // { $sort: { year: -1 } },
                 // { $limit: 1 },
               ],
