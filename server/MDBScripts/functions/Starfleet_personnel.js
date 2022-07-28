@@ -38,6 +38,7 @@ exports = async function (payload, response) {
               as: "officerPics",
             },
           },
+          { $sort: { surname: 1, first: 1, middle: 1 } },
           { $addFields: { officerPicUrl: "$officerPics.url" } },
           { $project: { officerPics: 0 } },
           { $skip: page * personnelPerPage },
@@ -74,7 +75,7 @@ exports = async function (payload, response) {
                   $match: {
                     $and: [
                       { $expr: { $eq: ["$officerId", "$$id"] } },
-                      { $or: [{ type: "Assignment" }, { type: "Promotion" }] },
+                      { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] },
                       { position: { $ne: "Retired" } },
                     ],
                   },
