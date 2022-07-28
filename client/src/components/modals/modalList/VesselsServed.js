@@ -67,19 +67,11 @@ const StarshipsList = ({ eventType, officerId, category }) => {
                     />
                   </div>
                   <div className="col-sm-7 my-auto">
-                    <span className="h5cell">USS {starship.name.replace(/-[A-Z]$/g, "")}</span>
-                    {starship.class && (
-                      <>
-                        <br />
-                        <span className="h3cell">{starship.class} Class</span>
-                      </>
-                    )}
-                    {starship.registry && (
-                      <>
-                        <br />
-                        <span className="h6cell">{starship.registry}</span>
-                      </>
-                    )}{" "}
+                    {!starship.name.includes("NCC-") && <span className="h5cell">USS {starship.name.replace(/-[A-Z]$/g, "")}</span>}
+                    {starship.name && starship.name !== "NCC-31810" && starship.class && <br />}
+                    {starship.class && <span className="h3cell">{starship.class} Class</span>}
+                    {((starship.name && !starship.name.includes("NCC-")) || starship.class) && <br />}
+                    {starship.registry && <span className="h6cell">{starship.registry}</span>}{" "}
                   </div>
                 </div>
               </Link>

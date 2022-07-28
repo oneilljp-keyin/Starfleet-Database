@@ -11,6 +11,7 @@ import d2280 from "../../assets/insignia_2280s_wide.png";
 import d2340 from "../../assets/insignia_2340s_wide.png";
 import d2370 from "../../assets/insignia_2370s_wide.png";
 import d2390 from "../../assets/insignia_2390s_wide.png";
+import d2800 from "../../assets/insignia_2800s_wide.png";
 import d3100 from "../../assets/insignia_3100s_wide.png";
 
 import StarshipsDataService from "../../services/starships";
@@ -96,8 +97,10 @@ function StarshipList(props) {
       return d2340;
     } else if (ship_id < 82000) {
       return d2370;
-    } else if (ship_id < 200000) {
+    } else if (ship_id < 150000) {
       return d2390;
+    } else if (ship_id < 300000) {
+      return d2800;
     } else {
       return d3100;
     }
@@ -121,7 +124,7 @@ function StarshipList(props) {
           });
           setHasMore(
             (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-              response.data.total_results
+            response.data.total_results
           );
           sessionStorage.setItem("starshipName", searchName);
           sessionStorage.setItem("starshipClass", searchClass);

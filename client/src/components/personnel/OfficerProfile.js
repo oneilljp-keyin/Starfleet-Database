@@ -165,12 +165,14 @@ const Officer = (props) => {
                   <span style={{ color: "#FFDD22E6" }}>
                     {!officer.active && <>Last </>}Vessel:{" "}
                   </span>
-                  USS {officer.name.replace(/-[A-Z]$/g, "")} {officer.registry}
+                  {!officer.name.includes("NCC-") && <>USS {officer.name.replace(/-[A-Z]$/g, "")} </>}
+                  {officer.registry}
                 </h3>
               )}
               {officer.location &&
-                (!officer.name || officer.surname.includes("Sisko")) &&
-                (!officer.position || !officer.position.includes("etired")) && (
+                // (!officer.name || officer.surname.includes("Sisko")) &&
+                // (!officer.position || !officer.position.includes("etired")) &&
+                (
                   <h3 style={{ textTransform: "capitalize" }}>
                     <span style={{ color: "#FFDD22E6" }}> Location: </span>
                     {officer.location}

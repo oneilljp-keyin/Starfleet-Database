@@ -141,7 +141,8 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                       <td className="h5cell align-top" style={{ textTransform: "capitalize" }}>
                         {event.name && (
                           <Link to={`/starships/${event.starshipId}`} className="list-link">
-                            USS {event.name.replace(/-[A-Z]$/g, "")} {event.registry}
+                            {!event.name.includes("NCC-") && <>USS {event.name.replace(/-[A-Z]$/g, "")} </>}
+                            {event.registry}
                           </Link>
                         )}
                         {event.name && currentRank !== undefined && <br />}
@@ -149,11 +150,9 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                         {event.provisional && <> <span style={{ fontSize: "0.75rem", color: "#FFFFFFDE" }}>[Provisional]</span></>}
                         {event.name && currentRank === undefined && <br />}
                         {currentRank !== undefined && event.position && " - "}
-
                         {event.position && <>{event.position}</>}
-                      </td>
-                      <td className="h4cell align-top">
-                        {event.location && <>{event.location}</>}
+                        {(event.name || currentRank !== undefined || event.position) && <br />}
+                        {event.location && <span className="h4cell">{event.location}</span>}
                       </td>
                       {eventType === "Chronology" && (
                         <td className="h6cell align-top">

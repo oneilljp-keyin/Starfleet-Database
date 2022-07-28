@@ -187,10 +187,11 @@ button.logout { color: #121212; background-color: #9999ffe6;
                 display: block; margin: 0.5em 0 1em 1em; padding: 1em;
                 text-decoration: none; text-align: right; border-radius: 1em 0 0 1em; }
 
-.list-link {text-decoration: none; color: inherit;}
-.search-cards {text-decoration: none; margin: 0.5em 0;}
-.same-ships { width: 45%; min-width: 19em; border-radius: 0.625em;
-              border: 0.063em solid #ffca92e6; box-shadow: 0.125em 0.125em 0.625em black;}
+.list-link      { text-decoration: none; color: inherit;}
+.list-link-same { text-decoration: none; color: inherit; padding: 0 0.5em; }
+.search-cards   { text-decoration: none; margin: 0.5em 0;}
+.same-ships     { width: 45%; min-width: 19em; border-radius: 0.625em;
+                  border: 0.063em solid #ffca92e6; box-shadow: 0.125em 0.125em 0.625em black; }
 
 .mobile-center {text-align: center;}
 
@@ -364,6 +365,7 @@ article footer p {
   
   .profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
   .h3cell, .h4cell, .h5cell { font-size: 1.18em; }
+  td.h5cell > .h4cell {font-size: 1em;}
 
   .footer-bar  { height: 1em; border-radius: 0.5em; }
 

@@ -111,7 +111,7 @@ const Starships = (props) => {
               className="flex-grow-1 col"
             />
             <div className="m-1 mobile-center">
-              {starship.name && <h1>USS {starship.name.replace(/-[A-Z]$/g, "")}</h1>}
+              {starship.name && !starship.name.includes("NCC-") && <h1>USS {starship.name.replace(/-[A-Z]$/g, "")}</h1>}
               {starship.registry && <h2>{starship.registry}</h2>}
               {starship.class && <h3>{starship.class} Class</h3>}
               {starship.memoryAlphaURL && (

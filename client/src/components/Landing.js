@@ -47,8 +47,8 @@ function Landing({ isAuth, setAuth, admin, setAdmin, userName, setName }) {
             <a href="http://memory-alpha.fandom.com" target="_blank" rel="noreferrer">
               Memory Alpha
             </a>
-            . If you want more detailed information, a visit there is recommended. I will eventually
-            include direct links for easier access.
+            . If you want more detailed information, a visit there is recommended. Direct links are
+            being included as I update information.
           </h2>
         </div>
         <footer className="justify-content-between">

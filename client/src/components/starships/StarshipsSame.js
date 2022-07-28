@@ -39,7 +39,7 @@ function StarshipsSame({ starshipName = "", starshipClass = "All", starshipId })
               .filter((ship) => ship._id !== starshipId)
               .map((starship, index) => {
                 return (
-                  <Link to={`/starships/${starship._id}`} className="px-1 list-link" key={index}>
+                  <Link to={`/starships/${starship._id}`} className="list-link-same" key={index}>
                     {starship.registry ? starship.registry : starship.name}
                   </Link>
                 );
@@ -61,7 +61,7 @@ function StarshipsSame({ starshipName = "", starshipClass = "All", starshipId })
                 .filter((ship) => ship._id !== starshipId)
                 .map((starship, index) => {
                   return (
-                    <Link to={`/starships/${starship._id}`} className="px-1 list-link" key={index}>
+                    <Link to={`/starships/${starship._id}`} className="list-link-same" key={index}>
                       {starship.name}
                     </Link>
                   );
