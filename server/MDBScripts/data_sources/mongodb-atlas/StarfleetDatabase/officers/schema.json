@@ -34,12 +34,6 @@
         "deathStardate": {
             "bsonType": "string"
         },
-        "department": {
-            "bsonType": "string"
-        },
-        "division": {
-            "bsonType": "string"
-        },
         "first": {
             "bsonType": "string"
         },
