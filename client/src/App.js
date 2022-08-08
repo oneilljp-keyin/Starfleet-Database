@@ -16,12 +16,14 @@ import StarshipList from "./components/starships/StarshipList";
 import Starship from "./components/starships/starship";
 
 import SignInUpService from "./services/signInUp";
+import { BackToTopFunction } from "./components/hooks/HooksAndFunctions";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminRole, setAdminRole] = useState(false);
   const [name, setName] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [showButton, setShowButton] = useState(false);
 
   // ---- Get Name and Admin Privileges ---- \\
   useEffect(() => {
@@ -54,6 +56,17 @@ function App() {
       isMounted = false;
     };
   }, [isAuthenticated]);
+
+  // The back-to-top button is hidden at the beginning
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 200) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    });
+  }, []);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -135,6 +148,7 @@ function App() {
           </div>
         </div>
       </main>
+      {showButton && <BackToTopFunction />}
       <ToastContainer
         position="bottom-center"
         autoClose={3000}

@@ -124,7 +124,7 @@ function StarshipList(props) {
           });
           setHasMore(
             (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-            response.data.total_results
+              response.data.total_results
           );
           sessionStorage.setItem("starshipName", searchName);
           sessionStorage.setItem("starshipClass", searchClass);

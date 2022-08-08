@@ -70,7 +70,7 @@ function PersonnelList(props) {
             });
             setHasMore(
               (parseInt(response.data.page) + parseInt(1)) * response.data.entries_per_page <
-              response.data.total_results
+                response.data.total_results
             );
             setLoading(false);
           })
@@ -79,7 +79,7 @@ function PersonnelList(props) {
             toast.warning(e.message);
           });
         return () => ourRequest.cancel();
-      }, 500),
+      }, 1000),
     [pageNumber]
   );
 
@@ -97,7 +97,7 @@ function PersonnelList(props) {
     };
   }, [searchQuery, pageNumber, debounceQuery]);
 
-  const setDefaultImage = useMemo(() => defaultImage(), [])
+  const setDefaultImage = useMemo(() => defaultImage(), []);
 
   return (
     <>
@@ -144,7 +144,7 @@ function PersonnelList(props) {
             let officerId = officer.personnel_id ? officer.personnel_id : officer._id;
             if (officer.surname !== "undefined") officerName = officer.surname;
             if (officer.first && officer.first !== " ") {
-              if (officer.species_id !== "51") officerName += ","
+              if (officer.species_id !== "51") officerName += ",";
               officerName += " " + officer.first;
             }
             if (officer.middle) {

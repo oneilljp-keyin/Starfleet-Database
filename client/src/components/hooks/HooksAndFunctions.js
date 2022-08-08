@@ -7,9 +7,9 @@ import ModalLauncher from "../modals/ModalLauncher";
 import UseModal from "../modals/UseModal";
 
 import loading from "../../assets/loading.gif";
-import sc2250 from "../../assets/sc-2250s.png"
-import sc2360 from "../../assets/sc-2360s.png"
-import sc2400 from "../../assets/sc-2400s.png"
+import sc2250 from "../../assets/sc-2250s.png";
+import sc2360 from "../../assets/sc-2360s.png";
+import sc2400 from "../../assets/sc-2400s.png";
 
 function StardateConverter(stardate) {
   let year;
@@ -52,7 +52,9 @@ function RandomButtonColour() {
 
 function buttonStack(label, count, first, second) {
   let newLabel = label;
-  if (count) { newLabel += ` [${count}]` }
+  if (count) {
+    newLabel += ` [${count}]`;
+  }
   return (
     <>
       <div className="lcars-btn-top lcars-btn-link w-100">{newLabel}</div>
@@ -63,10 +65,22 @@ function buttonStack(label, count, first, second) {
 
 const defaultImage = () => {
   const array = [sc2250, sc2360, sc2400];
-  const random = Math.floor((Math.random() * 3));
-  return (<img className="load-img d-block mx-auto" src={array[random]} alt="Loading..." />)
-}
+  const random = Math.floor(Math.random() * 3);
+  return <img className="load-img d-block mx-auto" src={array[random]} alt="Loading..." />;
+};
 
+function BackToTopFunction() {
+  return (
+    <button
+      className="go-to-top orange-btn all-round lcars-btn"
+      onClick={() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      }}
+    >
+      Back to Search
+    </button>
+  );
+}
 
 function EditCreateMenu(props) {
   const { isShowingModal, toggleModal } = UseModal();
@@ -191,5 +205,6 @@ export {
   buttonStack,
   EventAdder,
   Loading,
-  defaultImage
+  defaultImage,
+  BackToTopFunction,
 };

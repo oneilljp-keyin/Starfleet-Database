@@ -85,27 +85,27 @@
   },
   {
       "rank_id": 24,
-      "label": "Cadet 4th Class",
+      "label": "Cadet 1st Class",
       "type": "Training",
-      "abbrev": "Cdt.4th"
+      "abbrev": "Cdt.1st"
   },
   {
       "rank_id": 25,
-      "label": "Cadet 3rd Class",
-      "type": "Training",
-      "abbrev": "Cdt.3rd"
-  },
-  {
-      "rank_id": 26,
       "label": "Cadet 2nd Class",
       "type": "Training",
       "abbrev": "Cdt.2nd"
   },
   {
-      "rank_id": 27,
-      "label": "Cadet 1st Class",
+      "rank_id": 26,
+      "label": "Cadet 3rd Class",
       "type": "Training",
-      "abbrev": "Cdt.1st"
+      "abbrev": "Cdt.3rd"
+  },
+  {
+      "rank_id": 27,
+      "label": "Cadet 4th Class",
+      "type": "Training",
+      "abbrev": "Cdt.4th"
   },
   {
       "rank_id": 28,
@@ -133,9 +133,9 @@
   },
   {
       "rank_id": 34,
-      "label": "Petty Officer 3rd Class",
+      "label": "Petty Officer 1st Class",
       "type": "Enlisted",
-      "abbrev": "P.O.3rd"
+      "abbrev": "P.O.1st"
   },
   {
       "rank_id": 35,
@@ -145,15 +145,15 @@
   },
   {
       "rank_id": 36,
-      "label": "Petty Officer 1st Class",
+      "label": "Petty Officer 3rd Class",
       "type": "Enlisted",
-      "abbrev": "P.O.1st"
+      "abbrev": "P.O.3rd"
   },
   {
       "rank_id": 37,
-      "label": "Crewman 3rd Class",
+      "label": "Crewman 1st Class",
       "type": "Enlisted",
-      "abbrev": "C.M.3rd"
+      "abbrev": "C.M.1st"
   },
   {
       "rank_id": 38,
@@ -163,9 +163,9 @@
   },
   {
       "rank_id": 39,
-      "label": "Crewman 1st Class",
+      "label": "Crewman 3rd Class",
       "type": "Enlisted",
-      "abbrev": "C.M.1st"
+      "abbrev": "C.M.3rd"
   },
   {
       "rank_id": 40,

@@ -239,7 +239,14 @@ button.logout { color: #121212; background-color: #9999ffe6;
 .blue-btn:hover   { background-color: #7788ff; }
 
 .header-btn       { min-width: 6em; font-size: 0.875em; text-align: center; margin: 0.25em 0.25em;}
-.events-btn { border: none;}
+.events-btn       { border: none;}
+
+/* ----------------------------- Return To Top Button ----------------------------- */
+.go-to-top { display: block; position: fixed; bottom: 24px; right: 8px; z-index: 100; background-color: #ff7700;}
+
+.go-to-top:active { background-color: #ff7700; box-shadow: 1px 1px #121212;
+                    transform: translateY(4px); }
+/* -------------------------------------------------------------------------------- */
 
 /* Button Shapes */
 
