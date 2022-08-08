@@ -34,6 +34,12 @@
         "deathStardate": {
             "bsonType": "string"
         },
+        "department": {
+            "bsonType": "string"
+        },
+        "division": {
+            "bsonType": "string"
+        },
         "first": {
             "bsonType": "string"
         },
@@ -51,6 +57,10 @@
         },
         "species_id": {
             "bsonType": "int"
+        },
+        "status": {
+            "bsonType": "string",
+            "default": "Active"
         },
         "surname": {
             "bsonType": "string"
