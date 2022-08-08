@@ -4,5 +4,11 @@
         "source_key": "officerId",
         "foreign_key": "_id",
         "is_list": false
+    },
+    "starshipId": {
+        "ref": "#/relationship/mongodb-atlas/StarfleetDatabase/starships",
+        "source_key": "starshipId",
+        "foreign_key": "_id",
+        "is_list": false
     }
 }
