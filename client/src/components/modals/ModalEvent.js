@@ -111,6 +111,7 @@ const PopUpEvents = (props) => {
         })
         .catch((err) => {
           console.error(err.message);
+          toast.error(err.message);
         });
     };
     if (eventInfo.starshipName && eventInfo.starshipName.length > 2 && searchOption) {
