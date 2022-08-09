@@ -52,6 +52,10 @@
         "species_id": {
             "bsonType": "int"
         },
+        "status": {
+            "bsonType": "string",
+            "default": "Active"
+        },
         "surname": {
             "bsonType": "string"
         }
