@@ -6,7 +6,7 @@ exports = async function(payload, response) {
     const collection = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("starships");
 
     try {
-      classes = await collection.distinct("class",{"class": { $regex: "^" + payload.query.query + ".*", $options: "i" }});
+      classes = await collection.distinct("class",{"class": { $regex: "^" + payload.query.search + ".*", $options: "i" }});
       return classes;
     } catch (e) {
       console.error(`Unable to get classes, ${e}`);
