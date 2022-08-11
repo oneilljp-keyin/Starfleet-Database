@@ -1,0 +1,34 @@
+[
+  {
+    "officialName": "United Fedration of Planets",
+    "shortName": "Federation",
+    "abbrev": "UFP",
+    "founded": 2161
+  },
+  {
+    "officialName": "Coalition of Planets",
+    "shortName": "Coalition",
+    "abbrev": "COP",
+    "founded": 2155,
+    "dissolved": 2161
+  },
+  {
+    "officialName": "United Earth",
+    "shortName": "Earth",
+    "abbrev": "UN",
+    "founded": 2150
+  },
+  {
+    "officialName": "Vulcan High Command",
+    "shortName": "Vulcan",
+    "abbrev": "VHC",
+    "founded": 1957,
+    "foundedNote": "before"
+  },
+  {
+    "officialName": "Tellarite Government",
+    "shortName": "Tellarite",
+    "founded": 1957,
+    "foundedNote": "before"
+  }
+]

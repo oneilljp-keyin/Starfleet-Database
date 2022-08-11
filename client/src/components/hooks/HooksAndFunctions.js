@@ -69,6 +69,13 @@ const defaultImage = () => {
   return <img className="load-img d-block mx-auto" src={array[random]} alt="Loading..." />;
 };
 
+const dateOptions = [
+  { label: "Exact", value: "exact" },
+  { label: "Approximate", value: "approx" },
+  { label: "Before", value: "before" },
+  { label: "After", value: "after" },
+];
+
 function BackToTopFunction() {
   return (
     <button
@@ -207,4 +214,5 @@ export {
   Loading,
   defaultImage,
   BackToTopFunction,
+  dateOptions,
 };

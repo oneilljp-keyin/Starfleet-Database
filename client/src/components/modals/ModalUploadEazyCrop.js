@@ -59,7 +59,7 @@ const PopUpUpload = (props) => {
     };
     fileReader.readAsDataURL(uploadedFile);
 
-    setIsFileSelected(uploadedFile.name.match(/\.(jpeg|jpg|png)$/));
+    setIsFileSelected(uploadedFile.name.match(/\.(jpeg|jpg|png)$/i));
   };
 
   const onChangeEvent = (e) => {
@@ -182,126 +182,126 @@ const PopUpUpload = (props) => {
 
   return props.isShowing && props.isAuth
     ? ReactDOM.createPortal(
-      <React.Fragment>
-        <div className="modal-overlay" />
-        <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-          <div className="modal-open">
-            <div className="modal-bg resize-modal resize-modal-content-wrapper">
-              <div className="resize-modal-content-container align-content-center">
-                <div className="search-form m-auto text-center modal-appear">
-                  {!isFileSelected && !edit ? (
-                    <Dropzone onDrop={onDrop}>
-                      {({ getRootProps, getInputProps }) => (
-                        <div {...getRootProps({ className: "drop-zone" })} ref={dropRef}>
-                          <input {...getInputProps()} />
-                          <p className="text-center m-0">
-                            Drag &amp; drop OR click <strong>HERE</strong> to select
-                          </p>
-                        </div>
-                      )}
-                    </Dropzone>
-                  ) : photoInfo.url && edit ? (
-                    <img
-                      src={`${photoInfo.url}`}
-                      className="d-block drop-zone mx-auto"
-                      alt={photoInfo.title}
-                    />
-                  ) : (
-                    <div className="cropper">
-                      <Cropper
-                        image={cropperSrc}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={aspect}
-                        onCropChange={setCrop}
-                        onCropComplete={onCropComplete}
-                        onZoomChange={setZoom}
+        <React.Fragment>
+          <div className="modal-overlay" />
+          <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
+            <div className="modal-open">
+              <div className="modal-bg resize-modal resize-modal-content-wrapper">
+                <div className="resize-modal-content-container align-content-center">
+                  <div className="search-form m-auto text-center modal-appear">
+                    {!isFileSelected && !edit ? (
+                      <Dropzone onDrop={onDrop}>
+                        {({ getRootProps, getInputProps }) => (
+                          <div {...getRootProps({ className: "drop-zone" })} ref={dropRef}>
+                            <input {...getInputProps()} />
+                            <p className="text-center m-0">
+                              Drag &amp; drop OR click <strong>HERE</strong> to select
+                            </p>
+                          </div>
+                        )}
+                      </Dropzone>
+                    ) : photoInfo.url && edit ? (
+                      <img
+                        src={`${photoInfo.url}`}
+                        className="d-block drop-zone mx-auto"
+                        alt={photoInfo.title}
                       />
+                    ) : (
+                      <div className="cropper">
+                        <Cropper
+                          image={cropperSrc}
+                          crop={crop}
+                          zoom={zoom}
+                          aspect={aspect}
+                          onCropChange={setCrop}
+                          onCropComplete={onCropComplete}
+                          onZoomChange={setZoom}
+                        />
+                      </div>
+                    )}
+                    <div className="d-flex row form-group mx-2">
+                      <div className="form-floating col-6">
+                        <input
+                          className="form-control form-control-sm"
+                          type="text"
+                          name="title"
+                          id="imageTitle"
+                          placeholder="Image Title"
+                          value={photoInfo.title || ""}
+                          onChange={(e) => onChangeEvent(e)}
+                        />
+                        <label htmlFor="imageTitle">Image Title</label>
+                      </div>
+                      <div className="form-floating col-6">
+                        <input
+                          className="form-control form-control-sm"
+                          type="text"
+                          name="year"
+                          id="imageYear"
+                          placeholder="Year"
+                          value={photoInfo.year || ""}
+                          onChange={(e) => onChangeEvent(e)}
+                        />
+                        <label htmlFor="imageYear">Year</label>
+                      </div>
+                      <div className="form-floating col-12">
+                        <input
+                          className="form-control form-control-sm"
+                          type="text"
+                          name="description"
+                          id="imageDescription"
+                          placeholder="Image Description"
+                          value={photoInfo.description || ""}
+                          onChange={(e) => onChangeEvent(e)}
+                        />
+                        <label htmlFor="imageDescription">Description</label>
+                      </div>
+                      <div className="col-sm-4 form-check align-items-center m-auto">
+                        <input
+                          className="form-check-input ms-1"
+                          type="checkbox"
+                          id="primary"
+                          name="primary"
+                          checked={photoInfo.primary || ""}
+                          onChange={(e) => handleChangeChk(e)}
+                          style={{ transform: "scale(1.8)" }}
+                        />
+                        <label className="form-check-label" htmlFor="primary">
+                          Primary Photo
+                        </label>
+                      </div>
                     </div>
-                  )}
-                  <div className="d-flex row form-group mx-2">
-                    <div className="form-floating col-6">
-                      <input
-                        className="form-control form-control-sm"
-                        type="text"
-                        name="title"
-                        id="imageTitle"
-                        placeholder="Image Title"
-                        value={photoInfo.title || ""}
-                        onChange={(e) => onChangeEvent(e)}
-                      />
-                      <label htmlFor="imageTitle">Image Title</label>
-                    </div>
-                    <div className="form-floating col-6">
-                      <input
-                        className="form-control form-control-sm"
-                        type="text"
-                        name="year"
-                        id="imageYear"
-                        placeholder="Year"
-                        value={photoInfo.year || ""}
-                        onChange={(e) => onChangeEvent(e)}
-                      />
-                      <label htmlFor="imageYear">Year</label>
-                    </div>
-                    <div className="form-floating col-12">
-                      <input
-                        className="form-control form-control-sm"
-                        type="text"
-                        name="description"
-                        id="imageDescription"
-                        placeholder="Image Description"
-                        value={photoInfo.description || ""}
-                        onChange={(e) => onChangeEvent(e)}
-                      />
-                      <label htmlFor="imageDescription">Description</label>
-                    </div>
-                    <div className="col-sm-4 form-check align-items-center m-auto">
-                      <input
-                        className="form-check-input ms-1"
-                        type="checkbox"
-                        id="primary"
-                        name="primary"
-                        checked={photoInfo.primary || ""}
-                        onChange={(e) => handleChangeChk(e)}
-                        style={{ transform: "scale(1.8)" }}
-                      />
-                      <label className="form-check-label" htmlFor="primary">
-                        Primary Photo
-                      </label>
-                    </div>
-                  </div>
-                  <button
-                    className="lcars-btn orange-btn left-round small-btn"
-                    onClick={edit ? updatePhoto : handleOnSubmit}
-                  >
-                    {edit ? "Update" : "Submit"}
-                  </button>
-                  {edit && (
                     <button
-                      className="lcars-btn purple-btn all-square small-btn"
-                      onClick={deletePhoto}
+                      className="lcars-btn orange-btn left-round small-btn"
+                      onClick={edit ? updatePhoto : handleOnSubmit}
                     >
-                      Delete
+                      {edit ? "Update" : "Submit"}
                     </button>
-                  )}
-                  <button
-                    className="lcars-btn red-btn right-round small-btn"
-                    onClick={() => {
-                      closeModal();
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  {isLoading ? <Loading /> : null}
+                    {edit && (
+                      <button
+                        className="lcars-btn purple-btn all-square small-btn"
+                        onClick={deletePhoto}
+                      >
+                        Delete
+                      </button>
+                    )}
+                    <button
+                      className="lcars-btn red-btn right-round small-btn"
+                      onClick={() => {
+                        closeModal();
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    {isLoading ? <Loading /> : null}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </React.Fragment>,
-      document.body
-    )
+        </React.Fragment>,
+        document.body
+      )
     : null;
 };
 export default PopUpUpload;
