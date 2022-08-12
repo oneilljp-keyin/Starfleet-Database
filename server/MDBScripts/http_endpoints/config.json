@@ -1,28 +1,8 @@
 [
     {
-        "route": "/Starfleet/register",
-        "http_method": "*",
-        "function_name": "Register",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
         "route": "/Starfleet/ranks",
         "http_method": "GET",
         "function_name": "Starfleet_ranks",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/login",
-        "http_method": "*",
-        "function_name": "Login",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,
@@ -51,6 +31,47 @@
         "return_type": "EJSON"
     },
     {
+        "route": "/Starfleet/Systems",
+        "http_method": "*",
+        "function_name": "Systems",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false,
+        "return_type": "JSON"
+    },
+    {
+        "route": "/Starfleet/photos",
+        "http_method": "*",
+        "function_name": "Starfleet_photos",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/register",
+        "http_method": "*",
+        "function_name": "Register",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/login",
+        "http_method": "*",
+        "function_name": "Login",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
         "route": "/Starfleet/events",
         "http_method": "*",
         "function_name": "Starfleet_events",
@@ -71,30 +92,9 @@
         "disabled": false
     },
     {
-        "route": "/Starfleet/Systems",
-        "http_method": "*",
-        "function_name": "Systems",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false,
-        "return_type": "JSON"
-    },
-    {
         "route": "/Starfleet/classes",
         "http_method": "GET",
         "function_name": "Starfleet_classes",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/photos",
-        "http_method": "*",
-        "function_name": "Starfleet_photos",
         "validation_method": "NO_VALIDATION",
         "respond_result": true,
         "fetch_custom_user_data": false,
