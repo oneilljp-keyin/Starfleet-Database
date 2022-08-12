@@ -248,12 +248,7 @@ exports = async function (payload, response) {
     }
     case "POST": {
       const newSystem = EJSON.parse(payload.body.text());
-      if (newSystem.founded) {
-        newSystem.founded = new Date(newSystem.founded);
-      }
-      if (newSystem.dissolved) {
-        newSystem.dissolved = new Date(newSystem.dissolved);
-      }
+      if (newSystem.numOfPlanets) newSystem.numOfPlanets = parseInt(newSystem.numOfPlanets);
 
       try {
         await systems.insertOne(newSystem);
@@ -278,12 +273,8 @@ exports = async function (payload, response) {
       const updatedInfo = EJSON.parse(payload.body.text());
       const systemId = updatedInfo._id;
       const systemName = updatedInfo.name;
-      if (updatedInfo.founded) {
-        updatedInfo.founded = new Date(updatedInfo.founded);
-      }
-      if (updatedInfo.dissolved) {
-        updatedInfo.dissolved = new Date(updatedInfo.dissolved);
-      }
+      if (updatedInfo.numOfPlanets) updatedInfo.numOfPlanets = parseInt(updatedInfo.numOfPlanets);
+
       delete updatedInfo["_id"];
 
       try {
