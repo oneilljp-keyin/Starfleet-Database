@@ -10,6 +10,15 @@ import loading from "../../assets/loading.gif";
 import sc2250 from "../../assets/sc-2250s.png";
 import sc2360 from "../../assets/sc-2360s.png";
 import sc2400 from "../../assets/sc-2400s.png";
+import d2150 from "../../assets/insignia_2150s_wide.png";
+import d2250 from "../../assets/insignia_2250s_wide.png";
+import d2260 from "../../assets/insignia_2260s_wide.png";
+import d2280 from "../../assets/insignia_2280s_wide.png";
+import d2340 from "../../assets/insignia_2340s_wide.png";
+import d2370 from "../../assets/insignia_2370s_wide.png";
+import d2390 from "../../assets/insignia_2390s_wide.png";
+import d2800 from "../../assets/insignia_2800s_wide.png";
+import d3100 from "../../assets/insignia_3100s_wide.png";
 
 function StardateConverter(stardate) {
   let year;
@@ -68,6 +77,28 @@ const defaultImage = () => {
   const random = Math.floor(Math.random() * 3);
   return <img className="load-img d-block mx-auto" src={array[random]} alt="Loading..." />;
 };
+
+const defaultShipImage = (ship_id) => {
+  if (ship_id < 500) {
+    return d2150;
+  } else if (ship_id < 1500) {
+    return d2250;
+  } else if (ship_id < 2000) {
+    return d2260;
+  } else if (ship_id < 40000) {
+    return d2280;
+  } else if (ship_id < 74000) {
+    return d2340;
+  } else if (ship_id < 82000) {
+    return d2370;
+  } else if (ship_id < 150000) {
+    return d2390;
+  } else if (ship_id < 300000) {
+    return d2800;
+  } else {
+    return d3100;
+  }
+}
 
 const dateOptions = [
   { label: "Exact", value: "exact" },
@@ -215,4 +246,5 @@ export {
   defaultImage,
   BackToTopFunction,
   dateOptions,
+  defaultShipImage
 };

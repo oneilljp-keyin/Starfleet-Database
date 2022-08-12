@@ -4,6 +4,7 @@ import ModalEvent from "../modals/ModalEvent";
 import ModalUploadEazyCrop from "../modals/ModalUploadEazyCrop";
 import ModalDelete from "../modals/ModalDelete";
 import ModalSignin from "../modals/ModalSignin";
+import ModalSystem from "../modals/ModalSystem";
 import ModalList from "../modals/ModalList";
 
 const ModalLauncher = (props) => {
@@ -14,7 +15,7 @@ const ModalLauncher = (props) => {
       return <ModalEvent {...props} modalClass={modalClass} />;
     case "photo":
       return <ModalUploadEazyCrop {...props} />;
-    case "officer":
+    case "personnel":
       return <ModalOfficer {...props} modalClass={modalClass} />;
     case "starship":
       return <ModalStarship {...props} modalClass={modalClass} />;
@@ -22,6 +23,8 @@ const ModalLauncher = (props) => {
       return <ModalDelete {...props} modalClass={modalClass} />;
     case "signin":
       return <ModalSignin {...props} modalClass={modalClass} />;
+    case "systems":
+      return <ModalSystem {...props} modalClass={modalClass} />;
     case "list":
       return <ModalList {...props} modalClass={modalClass} />;
     default:

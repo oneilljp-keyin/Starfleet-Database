@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 
 import StarshipsDataService from "../../services/starships";
 import PhotoCarousel from "../hooks/PhotoCarousel";
-import StarshipsSame from "./StarshipsSame";
 
 import UseModal from "../modals/UseModal";
 import ModalLauncher from "../modals/ModalLauncher";
@@ -174,14 +173,6 @@ const Starships = (props) => {
                 )}
               </p>
             </div>
-          </div>
-          <div className="d-flex justify-content-around flex-wrap">
-            {starship.name && (
-              <StarshipsSame starshipName={starship.name} starshipId={starship._id} />
-            )}
-            {starship.class && (
-              <StarshipsSame starshipClass={starship.class} starshipId={starship._id} />
-            )}
           </div>
 
           <div className="m-4 small-hide"></div>

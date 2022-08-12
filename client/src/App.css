@@ -88,7 +88,7 @@ td {text-align: left; padding: 0.125em 0.25em 0.125em 0.25em !important;}
 .load-img {max-width: 20em;}
 .search-list { height: auto; border-radius: 1em; box-shadow: 2px 2px 10px black; }
 .personnel-search { width: 75%; max-width: 6em;}
-.starship-search { width: 100%;}
+.starships-search { width: 100%;}
 .service-list { width: calc(100% - 16px); height: auto; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 
 .input-size { max-width: 25em;}

@@ -36,7 +36,7 @@ class StarshipsDataService {
     return http.delete(`/starships?id=${starshipId}`);
   }
 
-  getStarshipClasses(query) {
+  getStarshipClasses(query = "") {
     return http.get(`/classes?search=${query}`);
   }
 }

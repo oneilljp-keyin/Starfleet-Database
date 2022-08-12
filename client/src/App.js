@@ -14,8 +14,8 @@ import PersonnelList from "./components/personnel/PersonnelList";
 import Officer from "./components/personnel/OfficerProfile";
 import StarshipList from "./components/starships/StarshipList";
 import Starship from "./components/starships/Starship";
-import SystemsList from "./components/starships/SystemsList";
-import Systems from "./components/starships/Systems";
+import List from "./components/SearchList";
+import Systems from "./components/systems/System";
 
 import SignInUpService from "./services/signInUp";
 import { BackToTopFunction } from "./components/hooks/HooksAndFunctions";
@@ -128,7 +128,7 @@ function App() {
               <Route
                 path="/starships"
                 element={
-                  <StarshipList isAuth={isAuthenticated} userId={userId} admin={adminRole} />
+                  <List isAuth={isAuthenticated} userId={userId} admin={adminRole} listCategory="starships"/>
                 }
               />
               <Route
@@ -137,7 +137,7 @@ function App() {
               />
               <Route
                 path="/systems"
-                element={<SystemsList isAuth={isAuthenticated} userId={userId} admin={adminRole} />}
+                element={<List isAuth={isAuthenticated} userId={userId} admin={adminRole} listCategory="systems" />}
               />
               <Route
                 path="/systems/:id"
