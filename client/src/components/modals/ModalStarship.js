@@ -48,10 +48,10 @@ const PopUpStarship = (props) => {
     if (e.target.name === "class") setSearchOption(true);
   };
 
-  const onClickClass = (class) => {
+  const onClickClass = (shipClass) => {
     setStarshipInfo({
       ...starshipInfo,
-      class: class
+      class: shipClass
     });
     setClasses([]);
   };

@@ -242,8 +242,8 @@ function StarshipList(props) {
                   <img
                     className="search-list starship-search"
                     src={
-                      starship.starshipPicUrl[0]
-                        ? starship.starshipPicUrl[0]
+                      starship.picUrl[0]
+                        ? starship.picUrl[0]
                         : defaultImage(starship.ship_id)
                     }
                     alt={starship.name}
