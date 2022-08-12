@@ -40,7 +40,7 @@ exports = async function (payload, response) {
         let resultsList = await systems.aggregate(pipeline).toArray();
 
         resultsList.forEach((result) => {
-          result._id = officer._id.toString();
+          result._id = result._id.toString();
           if (result.numOfPlanets) result.numOfPlanets = result.numOfPlanets.toString();
         });
 
