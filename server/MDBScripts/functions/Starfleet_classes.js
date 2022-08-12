@@ -8,10 +8,12 @@ exports = async function(payload, response) {
     try {
       if (searchQuery && searchQuery !== undefined && searchQuery !== "") {
         classes = await collection.distinct("class",{ class: { $regex: "^" + searchQuery + ".*", $options: "i" }});
+        return "yes there's a query " + searchQuery;
       } else {
         classes = await collection.distinct("class");
+        return "no query " + searchQuery;
       }
-      return classes;
+      // return classes;
     } catch (e) {
       console.error(`Unable to get classes, ${e}`);
       return classes;
