@@ -47,8 +47,8 @@ exports = async function (payload, response) {
         responseData = {
           results: resultsList,
           page: page.toString(),
-          entries_per_page: personnelPerPage.toString(),
-          total_results: await personnel.count(query).then((num) => num.toString()),
+          entries_per_page: systemsPerPage.toString(),
+          total_results: await systems.count(query).then((num) => num.toString()),
         };
       } else {
       //   const pipeline = [
