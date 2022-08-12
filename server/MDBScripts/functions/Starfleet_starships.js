@@ -44,7 +44,7 @@ exports = async function (payload, response) {
               as: "starshipPics",
             },
           },
-          { $addFields: { starshipPicUrl: "$starshipPics.url" } },
+          { $addFields: { picUrl: "$starshipPics.url" } },
           { $project: { starshipPics: 0 } },
           { $sort: { ship_id: 1 } },
           { $skip: page * starshipsPerPage },

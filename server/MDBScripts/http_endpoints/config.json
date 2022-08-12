@@ -10,26 +10,6 @@
         "disabled": false
     },
     {
-        "route": "/Starfleet/personnel",
-        "http_method": "*",
-        "function_name": "Starfleet_personnel",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
-        "route": "/Starfleet/starships",
-        "http_method": "*",
-        "function_name": "Starfleet_starships",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
-    },
-    {
         "route": "/Starfleet/Systems",
         "http_method": "*",
         "function_name": "Systems",
@@ -39,16 +19,6 @@
         "create_user_on_auth": false,
         "disabled": false,
         "return_type": "JSON"
-    },
-    {
-        "route": "/Starfleet/login",
-        "http_method": "*",
-        "function_name": "Login",
-        "validation_method": "NO_VALIDATION",
-        "respond_result": true,
-        "fetch_custom_user_data": false,
-        "create_user_on_auth": false,
-        "disabled": false
     },
     {
         "route": "/Starfleet/events",
@@ -100,5 +70,35 @@
         "create_user_on_auth": false,
         "disabled": false,
         "return_type": "EJSON"
+    },
+    {
+        "route": "/Starfleet/personnel",
+        "http_method": "*",
+        "function_name": "Starfleet_personnel",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/starships",
+        "http_method": "*",
+        "function_name": "Starfleet_starships",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
+    },
+    {
+        "route": "/Starfleet/login",
+        "http_method": "*",
+        "function_name": "Login",
+        "validation_method": "NO_VALIDATION",
+        "respond_result": true,
+        "fetch_custom_user_data": false,
+        "create_user_on_auth": false,
+        "disabled": false
     }
 ]
