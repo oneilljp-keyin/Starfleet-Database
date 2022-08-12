@@ -7,62 +7,49 @@ exports = async function (payload, response) {
   let responseData = { message: "Something Went Wrong in the 'systems' Function" };
 
   switch (context.request.httpMethod) {
-    // Get a list of starships (search by name or class if search value provided) or by _id for individual
+    // Get a list of systems (search by name) or by _id for individual
     case "GET": {
       if (!id) {
-        // const { personnelPerPage = 10, page = 0 } = payload.query;
-        // let query = {};
+        const { systemsPerPage = 10, page = 0 } = payload.query;
+        let query = {};
 
-        // if (payload.query.name) {
-        //   query = {
-        //     $or: [
-        //       { surname: { $regex: payload.query.name, $options: "i" } },
-        //       { first: { $regex: payload.query.name, $options: "i" } },
-        //     ],
-        //   };
-        // }
+        if (payload.query.name) {
+          query = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
+        }
 
-        // const pipeline = [
-        //   { $match: query },
-        //   {
-        //     $lookup: {
-        //       from: "photos",
-        //       let: { id: "$_id" },
-        //       pipeline: [
-        //         { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
-        //         // { $match: { $expr: { $eq: ["$owner", "$$id"] } } },
-        //         { $project: { _id: 0, title: 0, description: 0, owner: 0 } },
-        //         // { $sort: { year: -1 } },
-        //         // { $limit: 1 },
-        //       ],
-        //       as: "officerPics",
-        //     },
-        //   },
-        //   { $sort: { surname: 1, first: 1, middle: 1 } },
-        //   { $addFields: { officerPicUrl: "$officerPics.url" } },
-        //   { $project: { officerPics: 0 } },
-        //   { $skip: page * personnelPerPage },
-        //   { $limit: personnelPerPage },
-        // ];
+        const pipeline = [
+          { $match: query },
+          {
+            $lookup: {
+              from: "photos",
+              let: { id: "$_id" },
+              pipeline: [
+                { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
+                { $project: { _id: 0, title: 0, description: 0, owner: 0 } },
+              ],
+              as: "pics",
+            },
+          },
+          { $sort: { name: 1 } },
+          { $addFields: { picUrl: "$pics.url" } },
+          { $project: { pics: 0 } },
+          { $skip: page * systemsPerPage },
+          { $limit: systemsPerPage },
+        ];
 
-        // let personnelList = await personnel.aggregate(pipeline).toArray();
+        let resultsList = await systems.aggregate(pipeline).toArray();
 
-        // personnelList.forEach((officer) => {
-        //   officer._id = officer._id.toString();
-        //   if (officer.birthDate) {
-        //     officer.birthDate = new Date(officer.birthDate).toISOString();
-        //   }
-        //   if (officer.deathDate) {
-        //     officer.deathDate = new Date(officer.deathDate).toISOString();
-        //   }
-        // });
+        resultsList.forEach((result) => {
+          result._id = officer._id.toString();
+          if (result.numOfPlanets) result.numOfPlanets = result.numOfPlanets.toString();
+        });
 
-        // responseData = {
-        //   personnel: personnelList,
-        //   page: page.toString(),
-        //   entries_per_page: personnelPerPage.toString(),
-        //   total_results: await personnel.count(query).then((num) => num.toString()),
-        // };
+        responseData = {
+          results: resultsList,
+          page: page.toString(),
+          entries_per_page: personnelPerPage.toString(),
+          total_results: await personnel.count(query).then((num) => num.toString()),
+        };
       } else {
       //   const pipeline = [
       //     { $match: { _id: BSON.ObjectId(id) } },
