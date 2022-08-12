@@ -1,6 +1,6 @@
 // This function is the webhook's request handler.
 exports = async function(payload, response) {
-    const searchQuery = payload.query.search
+    const searchQuery = payload.query.search || "";
     let classes = [];
     
     const collection = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("starships");
