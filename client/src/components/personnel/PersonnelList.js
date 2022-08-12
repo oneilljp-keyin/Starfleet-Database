@@ -162,7 +162,7 @@ function PersonnelList(props) {
                   <div className="card-body">
                     <img
                       className="search-list personnel-search"
-                      src={officer.officerPicUrl[0] ? officer.officerPicUrl[0] : gray}
+                      src={officer.picUrl[0] ? officer.picUrl[0] : gray}
                       alt={officerName}
                     />
                     <h5 className="card-title">{officerName}</h5>
