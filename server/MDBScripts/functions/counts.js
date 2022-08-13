@@ -7,7 +7,7 @@ exports = async function (payload, response) {
   let responseData = { message: "Something Went Wrong in the 'starship' Function" };
   
   responseData = {
-    total_entries: await collectionToCount.count().then((num) => num.toString()),
+    count: await collectionToCount.count().then((num) => num.toString()),
   };
   
   return responseData;

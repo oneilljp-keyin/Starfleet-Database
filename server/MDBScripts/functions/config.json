@@ -1,6 +1,27 @@
 [
     {
-        "name": "Starfleet_photos",
+        "name": "Starfleet_personnel",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "Register",
+        "private": false,
+        "run_as_system": true
+    },
+    {
+        "name": "Starfleet_classes",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "user_login",
+        "private": false
+    },
+    {
+        "name": "modifiy_script",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
@@ -11,24 +32,10 @@
         "run_as_system": true
     },
     {
-        "name": "counts",
+        "name": "Starfleet_photos",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
-    },
-    {
-        "name": "modifiy_script",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "user_authorization",
-        "private": false
-    },
-    {
-        "name": "user_login",
-        "private": false
     },
     {
         "name": "Starfleet_ranks",
@@ -43,9 +50,10 @@
         "disable_arg_logs": true
     },
     {
-        "name": "Systems",
+        "name": "counts",
         "private": false,
-        "run_as_system": true
+        "run_as_system": true,
+        "disable_arg_logs": true
     },
     {
         "name": "Login",
@@ -53,20 +61,12 @@
         "run_as_system": true
     },
     {
-        "name": "Register",
+        "name": "Systems",
         "private": false,
         "run_as_system": true
     },
     {
-        "name": "Starfleet_classes",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
-    },
-    {
-        "name": "Starfleet_personnel",
-        "private": false,
-        "run_as_system": true,
-        "disable_arg_logs": true
+        "name": "user_authorization",
+        "private": false
     }
 ]
