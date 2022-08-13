@@ -1,5 +1,5 @@
 exports = async function (payload, response) {
-  const category = payload.query.category
+  const category = payload.query.category === "personnel" ? "officers" :payload.query.category ;
   const collectionToCount = context.services
     .get("mongodb-atlas")
     .db("StarfleetDatabase")
