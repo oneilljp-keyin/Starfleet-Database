@@ -45,7 +45,7 @@ exports = async function (payload, response) {
         });
 
         responseData = {
-          results: resultsList,
+          systems: resultsList,
           page: page.toString(),
           entries_per_page: systemsPerPage.toString(),
           total_results: await systems.count(query).then((num) => num.toString()),
