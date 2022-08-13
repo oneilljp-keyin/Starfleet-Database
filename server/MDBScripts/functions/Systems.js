@@ -236,6 +236,10 @@ exports = async function (payload, response) {
     case "POST": {
       const newSystem = EJSON.parse(payload.body.text());
       if (newSystem.numOfPlanets) newSystem.numOfPlanets = parseInt(newSystem.numOfPlanets);
+      if (newSystem.starTypes) {
+        const newStarTypes = newSystem.starTypes.map(a => a.value);
+        newSystem.starTypes = newStarTypes;
+      }
 
       try {
         await systems.insertOne(newSystem);
