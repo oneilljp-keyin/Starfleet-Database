@@ -51,185 +51,185 @@ exports = async function (payload, response) {
           total_results: await systems.count(query).then((num) => num.toString()),
         };
       } else {
-      //   const pipeline = [
-      //     { $match: { _id: BSON.ObjectId(id) } },
-      //     {
-      //       $lookup: {
-      //         from: "events",
-      //         let: { id: "$_id" },
-      //         pipeline: [
-      //           {
-      //             $match: {
-      //               $and: [
-      //                 { $expr: { $eq: ["$officerId", "$$id"] } },
-      //                 { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] },
-      //                 { position: { $ne: "Retired" } },
-      //               ],
-      //             },
-      //           },
-      //           { $sort: { date: -1 } },
-      //           { $limit: 1 },
-      //           {
-      //             $project: {
-      //               rankLabel: 1,
-      //               position: 1,
-      //               provisional: 1,
-      //               location: 1,
-      //               date: 1,
-      //               endDate: 1,
-      //               starshipId: 1,
-      //               _id: 0,
-      //             },
-      //           },
-      //           {
-      //             $lookup: {
-      //               from: "starships",
-      //               let: { id: "$starshipId" },
-      //               pipeline: [
-      //                 { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
-      //                 { $project: { _id: 0, name: 1, registry: 1 } },
-      //               ],
-      //               as: "starshipInfo",
-      //             },
-      //           },
-      //           {
-      //             $replaceRoot: {
-      //               newRoot: { $mergeObjects: [{ $arrayElemAt: ["$starshipInfo", 0] }, "$$ROOT"] },
-      //             },
-      //           },
-      //           { $project: { starshipInfo: 0 } },
-      //         ],
-      //         as: "lastAssignment",
-      //       },
-      //     },
-      //     {
-      //       $replaceRoot: {
-      //         newRoot: { $mergeObjects: [{ $arrayElemAt: ["$lastAssignment", 0] }, "$$ROOT"] },
-      //       },
-      //     },
-      //     { $project: { lastAssignment: 0 } },
+        const pipeline = [
+          { $match: { _id: BSON.ObjectId(id) } },
+          {
+            $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $and: [
+                      { $expr: { $eq: ["$systemId", "$$id"] } },
+                      { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] },
+                      { position: { $ne: "Retired" } },
+                    ],
+                  },
+                },
+                { $sort: { date: -1 } },
+                { $limit: 1 },
+                {
+                  $project: {
+                    rankLabel: 1,
+                    position: 1,
+                    provisional: 1,
+                    location: 1,
+                    date: 1,
+                    endDate: 1,
+                    starshipId: 1,
+                    _id: 0,
+                  },
+                },
+                {
+                  $lookup: {
+                    from: "starships",
+                    let: { id: "$starshipId" },
+                    pipeline: [
+                      { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
+                      { $project: { _id: 0, name: 1, registry: 1 } },
+                    ],
+                    as: "starshipInfo",
+                  },
+                },
+                {
+                  $replaceRoot: {
+                    newRoot: { $mergeObjects: [{ $arrayElemAt: ["$starshipInfo", 0] }, "$$ROOT"] },
+                  },
+                },
+                { $project: { starshipInfo: 0 } },
+              ],
+              as: "lastAssignment",
+            },
+          },
+          {
+            $replaceRoot: {
+              newRoot: { $mergeObjects: [{ $arrayElemAt: ["$lastAssignment", 0] }, "$$ROOT"] },
+            },
+          },
+          { $project: { lastAssignment: 0 } },
 
-      //     // Count number of starships assigned
-      //     {
-      //       $lookup: {
-      //         from: "events",
-      //         let: { id: "$_id" },
-      //         pipeline: [
-      //           {
-      //             $match: {
-      //               $and: [
-      //                 { $expr: { $eq: ["$officerId", "$$id"] } },
-      //                 { type: "Assignment" },
-      //                 { starshipId: { $exists: true } },
-      //               ],
-      //             },
-      //           },
-      //           { $group: { _id: "$starshipId" } },
-      //           { $count: "vesslesNum" },
-      //         ],
-      //         as: "starshipAssignments",
-      //       },
-      //     },
-      //     { $addFields: { starshipCount: "$starshipAssignments.vesslesNum" } },
-      //     { $project: { starshipAssignments: 0 } },
+          // Count number of starships assigned
+          {
+            $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $and: [
+                      { $expr: { $eq: ["$systemId", "$$id"] } },
+                      { type: "Assignment" },
+                      { starshipId: { $exists: true } },
+                    ],
+                  },
+                },
+                { $group: { _id: "$starshipId" } },
+                { $count: "vesslesNum" },
+              ],
+              as: "starshipAssignments",
+            },
+          },
+          { $addFields: { starshipCount: "$starshipAssignments.vesslesNum" } },
+          { $project: { starshipAssignments: 0 } },
 
-      //     // Count number of Assignments, Promotions and Demotions
-      //     {
-      //       $lookup: {
-      //         from: "events",
-      //         let: { id: "$_id" },
-      //         pipeline: [
-      //           {
-      //             $match: {
-      //               $and: [
-      //                 { $expr: { $eq: ["$officerId", "$$id"] } },
-      //                 {
-      //                   $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }],
-      //                 },
-      //               ],
-      //             },
-      //           },
-      //           { $count: "AssignProDeNum" },
-      //         ],
-      //         as: "Assign-Pro-De",
-      //       },
-      //     },
-      //     { $addFields: { assignCount: "$Assign-Pro-De.AssignProDeNum" } },
-      //     { $project: { "Assign-Pro-De": 0 } },
+          // Count number of Assignments, Promotions and Demotions
+          {
+            $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $and: [
+                      { $expr: { $eq: ["$systemId", "$$id"] } },
+                      {
+                        $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }],
+                      },
+                    ],
+                  },
+                },
+                { $count: "AssignProDeNum" },
+              ],
+              as: "Assign-Pro-De",
+            },
+          },
+          { $addFields: { assignCount: "$Assign-Pro-De.AssignProDeNum" } },
+          { $project: { "Assign-Pro-De": 0 } },
 
-      //     // Count number of general missions
-      //     {
-      //       $lookup: {
-      //         from: "events",
-      //         let: { id: "$_id" },
-      //         pipeline: [
-      //           {
-      //             $match: {
-      //               $and: [{ $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Mission" }],
-      //             },
-      //           },
-      //           { $count: "generalNum" },
-      //         ],
-      //         as: "generalMissions",
-      //       },
-      //     },
-      //     { $addFields: { missionCount: "$generalMissions.generalNum" } },
-      //     { $project: { generalMissions: 0 } },
+          // Count number of general missions
+          {
+            $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $and: [{ $expr: { $eq: ["$systemId", "$$id"] } }, { type: "Mission" }],
+                  },
+                },
+                { $count: "generalNum" },
+              ],
+              as: "generalMissions",
+            },
+          },
+          { $addFields: { missionCount: "$generalMissions.generalNum" } },
+          { $project: { generalMissions: 0 } },
 
-      //     // Count number of Life Events
-      //     {
-      //       $lookup: {
-      //         from: "events",
-      //         let: { id: "$_id" },
-      //         pipeline: [
-      //           {
-      //             $match: {
-      //               $and: [{ $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Life Event" }],
-      //             },
-      //           },
-      //           { $count: "lifeEventsNum" },
-      //         ],
-      //         as: "lifeEvents",
-      //       },
-      //     },
-      //     { $addFields: { lifeEventCount: "$lifeEvents.lifeEventsNum" } },
-      //     { $project: { lifeEvents: 0 } },
-      //   ];
+          // Count number of Life Events
+          {
+            $lookup: {
+              from: "events",
+              let: { id: "$_id" },
+              pipeline: [
+                {
+                  $match: {
+                    $and: [{ $expr: { $eq: ["$systemId", "$$id"] } }, { type: "Life Event" }],
+                  },
+                },
+                { $count: "lifeEventsNum" },
+              ],
+              as: "lifeEvents",
+            },
+          },
+          { $addFields: { lifeEventCount: "$lifeEvents.lifeEventsNum" } },
+          { $project: { lifeEvents: 0 } },
+        ];
 
-      //   responseData = await personnel.aggregate(pipeline).next();
+        responseData = await personnel.aggregate(pipeline).next();
 
-      //   responseData._id = responseData._id.toString();
-      //   if (responseData.starshipId) {
-      //     responseData.starshipId = responseData.starshipId.toString();
-      //   }
-      //   if (responseData.species_id) {
-      //     responseData.species_id = responseData.species_id.toString();
-      //   }
-      //   if (responseData.birthDate) {
-      //     responseData.birthDate = new Date(responseData.birthDate).toISOString();
-      //   }
-      //   if (responseData.deathDate) {
-      //     responseData.deathDate = new Date(responseData.deathDate).toISOString();
-      //   }
-      //   if (responseData.date) {
-      //     responseData.date = new Date(responseData.date).toISOString();
-      //   }
-      //   if (responseData.endDate) {
-      //     responseData.endDate = new Date(responseData.endDate).toISOString();
-      //   }
+        responseData._id = responseData._id.toString();
+        if (responseData.starshipId) {
+          responseData.starshipId = responseData.starshipId.toString();
+        }
+        if (responseData.species_id) {
+          responseData.species_id = responseData.species_id.toString();
+        }
+        if (responseData.birthDate) {
+          responseData.birthDate = new Date(responseData.birthDate).toISOString();
+        }
+        if (responseData.deathDate) {
+          responseData.deathDate = new Date(responseData.deathDate).toISOString();
+        }
+        if (responseData.date) {
+          responseData.date = new Date(responseData.date).toISOString();
+        }
+        if (responseData.endDate) {
+          responseData.endDate = new Date(responseData.endDate).toISOString();
+        }
 
-      //   if (responseData.starshipCount) {
-      //     responseData.starshipCount = responseData.starshipCount.toString();
-      //   }
-      //   if (responseData.assignCount) {
-      //     responseData.assignCount = responseData.assignCount.toString();
-      //   }
-      //   if (responseData.missionCount) {
-      //     responseData.missionCount = responseData.missionCount.toString();
-      //   }
-      //   if (responseData.lifeEventCount) {
-      //     responseData.lifeEventCount = responseData.lifeEventCount.toString();
-      //   }
+        if (responseData.starshipCount) {
+          responseData.starshipCount = responseData.starshipCount.toString();
+        }
+        if (responseData.assignCount) {
+          responseData.assignCount = responseData.assignCount.toString();
+        }
+        if (responseData.missionCount) {
+          responseData.missionCount = responseData.missionCount.toString();
+        }
+        if (responseData.lifeEventCount) {
+          responseData.lifeEventCount = responseData.lifeEventCount.toString();
+        }
       }
       return responseData;
     }
