@@ -196,7 +196,7 @@ exports = async function (payload, response) {
           { $project: { lifeEvents: 0 } },
         ];
 
-        responseData = await personnel.aggregate(pipeline).next();
+        responseData = await systems.aggregate(pipeline).next();
 
         responseData._id = responseData._id.toString();
         if (responseData.starshipId) {
