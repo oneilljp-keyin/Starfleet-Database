@@ -85,14 +85,14 @@ exports = async function (payload, response) {
             },
             // Option #2
             { $addFields: {
-              "starships1": {
+              "starships": {
                 $map: { 
-                  input: "$starships2",
+                  input: "$starships",
                   as: "shipInfo",
                   in: {
                     $mergeObjects: [
                       "$$shipInfo",
-                      { name: { $arrayElemAt: ["info.name", { $indexOfArray: ["info._id", "$$starships3.starshipId"] }] }}
+                      { name: { $arrayElemAt: ["info.name", { $indexOfArray: ["info._id", "$starships.starshipId"] }] }}
                     ]
                   }
                 }
