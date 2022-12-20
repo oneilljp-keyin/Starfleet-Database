@@ -84,15 +84,15 @@ exports = async function (payload, response) {
               },
             },
             // Option #2
-            { "$addFields": {
-              "starships": {
-                "$map": { 
-                  "input": "$starships",
-                  "as": "shipInfo",
-                  "in": {
-                    "$mergeObjects": [
+            { $addFields: {
+              starships: {
+                $map: { 
+                  input: "$starships",
+                  as: "shipInfo",
+                  in: {
+                    $mergeObjects: [
                       "$$shipInfo",
-                      { "name": { "$arrayElemAt": ["info.name", { "$indexOfArray": ["info._id", "$$starships.starshipId"] }] }}
+                      { name: { $arrayElemAt: ["info.name", { $indexOfArray: ["info._id", "$$starships.starshipId"] }] }}
                     ]
                   }
                 }
