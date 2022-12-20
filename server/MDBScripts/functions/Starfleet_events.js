@@ -13,15 +13,15 @@ exports = async function (payload, response) {
         let idType = {};
 
         if (payload.query.officer_id) {
-          idQuery = { officerId: BSON.ObjectId(payload.query.officer_id) };
+          idQuery = { "officers.officerId": BSON.ObjectId(payload.query.officer_id) };
         } else {
-          idQuery = { $and: [{ starshipId: BSON.ObjectId(payload.query.starship_id) }, { officerId: { $exists: false } }] };
+          idQuery = { $and: [{ starshipId: BSON.ObjectId(payload.query.starship_id) }, { officers: { $exists: false } }] };
         }
 
         if (payload.query.category == "Assign-Pro-De") {
           idType = { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] };
           if (payload.query.starship_id) {
-            idQuery = { starshipId: BSON.ObjectId(payload.query.starship_id) };
+            idQuery = { "starships.starshipId": BSON.ObjectId(payload.query.starship_id) };
           }
         } else if (payload.query.category == "Chronology") {
           idType = { type: { $exists: true } };
@@ -113,9 +113,16 @@ exports = async function (payload, response) {
           event._id = event._id.toString();
           if (event.date) { event.date = new Date(event.date).toISOString(); }
           if (event.endDate) { event.endDate = new Date(event.endDate).toISOString(); }
-          if (event.starshipId) { event.starshipId = event.starshipId.toString(); }
-          if (event.ship_id) { event.ship_id = event.ship_id.toString(); }
-          if (event.officerId) { event.officerId = event.officerId.toString(); }
+          if (event.starships) {
+            for (let i = 0; i < event.starships.length; i++) {
+              event.starships[i].starshipId = event.starships[i].starshipId.toString();
+            }
+          }
+          if (event.officers) {
+            for (let i = 0; i < event.officers.length; i++) {
+              event.officers[i].starshipId = event.officers[i].starshipId.toString();
+            }
+          }
         });
 
         return responseData;
@@ -123,9 +130,14 @@ exports = async function (payload, response) {
         responseData = await events.findOne({ _id: BSON.ObjectId(id) });
 
         responseData._id = responseData._id.toString();
-        if (responseData.officerId) { responseData.officerId = responseData.officerId.toString(); }
-        if (responseData.starshipId) { responseData.starshipId = responseData.starshipId.toString(); }
-        if (responseData.ship_id) { responseData.ship_id = responseData.ship_id.toString(); }
+        if (responseData.officers) {
+          responseData.officers.forEach(officer => officer.officerId = officer.officerId.toString());
+        }
+        if (responseData.starships) {
+          for (let i = 0; i < responseData.starships.length; i++) {
+            responseData.starships[i].starshipId = responseData.starships[i].starshipId.toString();
+          }
+        }
         if (responseData.date) { responseData.date = new Date(responseData.date).toISOString(); }
         if (responseData.endDate) { responseData.endDate = new Date(responseData.endDate).toISOString(); }
         delete responseData["__v"];
