@@ -92,7 +92,7 @@ exports = async function (payload, response) {
                   in: {
                     $mergeObjects: [
                       "$$shipInfo",
-                      { name: { $arrayElemAt: ["info.name", { $indexOfArray: ["info._id", "$$starships._id"] }] }}
+                      { name: { $arrayElemAt: ["info.name", { $indexOfArray: ["info._id", "$$starships.starshipId"] }] }}
                     ]
                   }
                 }
