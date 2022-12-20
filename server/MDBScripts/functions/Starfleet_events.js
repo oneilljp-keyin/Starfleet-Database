@@ -74,10 +74,10 @@ exports = async function (payload, response) {
             {
               $lookup: {
                 from: "starships",
-                let: { id: "$starships.starshipId" },
+                let: { id: "$starships.starship" },
                 pipeline: [
                   { $unwind: "$starships" },
-                  { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
+                  { $match: { $expr: { $in: ["$_id", "$$id"] } } },
                   { $project: { _id: 0, name: 1, registry: 1, class: 1, ship_id: 1 } },
                 ],
                 as: "info",
@@ -86,7 +86,7 @@ exports = async function (payload, response) {
             { $sort: eventSort },
             {
               $replaceRoot: {
-                starships: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT.starships"] },
+                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
               },
             },
             { $project: { info: 0, __v: 0, officerId: 0 } },
