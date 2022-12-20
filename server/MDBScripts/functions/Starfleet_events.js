@@ -86,7 +86,7 @@ exports = async function (payload, response) {
             { $sort: eventSort },
             {
               $replaceRoot: {
-                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+                starships: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT.starships"] },
               },
             },
             { $project: { info: 0, __v: 0, officerId: 0 } },
