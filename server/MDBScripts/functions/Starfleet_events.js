@@ -116,7 +116,7 @@ exports = async function (payload, response) {
           if (event.ship_id) { event.ship_id = event.ship_id.toString(); }
           if (event.starships) {
             for (let i = 0; i < event.starships.length; i++) {
-              // event.starships[i].starshipId = event.starships[i].starshipId.toString();
+              event.starships[i].starshipId = event.starships[i].starshipId.toString();
             }
           }
           if (event.officers) {
@@ -132,11 +132,11 @@ exports = async function (payload, response) {
 
         responseData._id = responseData._id.toString();
         if (responseData.officers) {
-          // responseData.officers.forEach(officer => officer.officerId = officer.officerId.toString());
+          responseData.officers.forEach(officer => officer.officerId = officer.officerId.toString());
         }
         if (responseData.starships) {
           for (let i = 0; i < responseData.starships.length; i++) {
-            // responseData.starships[i].starshipId = responseData.starships[i].starshipId.toString();
+            responseData.starships[i].starshipId = responseData.starships[i].starshipId.toString();
           }
         }
         if (responseData.ship_id) { responseData.ship_id = responseData.ship_id.toString(); }
