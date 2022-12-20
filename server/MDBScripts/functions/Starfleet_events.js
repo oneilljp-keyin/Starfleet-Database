@@ -15,7 +15,7 @@ exports = async function (payload, response) {
         if (payload.query.officer_id) {
           idQuery = { "officers.officerId": BSON.ObjectId(payload.query.officer_id) };
         } else {
-          idQuery = { $and: [{ starshipId: BSON.ObjectId(payload.query.starship_id) }, { officers: { $exists: false } }] };
+          idQuery = { $and: [{ "starships.starshipId": BSON.ObjectId(payload.query.starship_id) }, { officers: { $exists: false } }] };
         }
 
         if (payload.query.category == "Assign-Pro-De") {
@@ -115,12 +115,12 @@ exports = async function (payload, response) {
           if (event.endDate) { event.endDate = new Date(event.endDate).toISOString(); }
           if (event.starships) {
             for (let i = 0; i < event.starships.length; i++) {
-              event.starships[i].starshipId = event.starships[i].starshipId.toString();
+              // event.starships[i].starshipId = event.starships[i].starshipId.toString();
             }
           }
           if (event.officers) {
             for (let i = 0; i < event.officers.length; i++) {
-              event.officers[i].starshipId = event.officers[i].starshipId.toString();
+              // event.officers[i].starshipId = event.officers[i].starshipId.toString();
             }
           }
         });
@@ -131,11 +131,11 @@ exports = async function (payload, response) {
 
         responseData._id = responseData._id.toString();
         if (responseData.officers) {
-          responseData.officers.forEach(officer => officer.officerId = officer.officerId.toString());
+          // responseData.officers.forEach(officer => officer.officerId = officer.officerId.toString());
         }
         if (responseData.starships) {
           for (let i = 0; i < responseData.starships.length; i++) {
-            responseData.starships[i].starshipId = responseData.starships[i].starshipId.toString();
+            // responseData.starships[i].starshipId = responseData.starships[i].starshipId.toString();
           }
         }
         if (responseData.date) { responseData.date = new Date(responseData.date).toISOString(); }
