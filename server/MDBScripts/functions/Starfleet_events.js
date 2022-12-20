@@ -85,7 +85,7 @@ exports = async function (payload, response) {
             },
             // Option #2
             { $addFields: {
-              starships: {
+              "starships": {
                 $map: { 
                   input: "$starships",
                   as: "shipInfo",
