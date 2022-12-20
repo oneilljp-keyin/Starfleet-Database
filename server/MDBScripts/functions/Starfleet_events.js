@@ -71,24 +71,39 @@ exports = async function (payload, response) {
         } else {
           pipeline = [
             { $match: query },
+            { $unwind: "$starships" },
             {
               $lookup: {
                 from: "starships",
                 let: { id: "$starships.starshipId" },
                 pipeline: [
-                  { $unwind: "$starships" },
-                  { $match: { $expr: { $in: ["$_id", "$$id"] } } },
+                  { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
                   { $project: { _id: 0, name: 1, registry: 1, class: 1, ship_id: 1 } },
                 ],
                 as: "info",
               },
             },
+            { $unwind: "$info" },
+            { $addFields: {
+              "starships.ship_id": "info.ship_id",
+              "starships.name": "info.name",
+              "starships.registry": "info.registry",
+              "starships.class": "info.class"
+            } },
+            { $group: {
+              starshipId: "$starshipId",
+              starships: { $push: "$starships"},
+              ship_id: { $first: "$ship_id"},
+              name: { $first: "$name"},
+              registry: { $first: "$registry"},
+              class: { $first: "$class"},
+            } },
             { $sort: eventSort },
-            {
-              $replaceRoot: {
-                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
-              },
-            },
+            // {
+            //   $replaceRoot: {
+            //     newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+            //   },
+            // },
             { $project: { info: 0, __v: 0, officerId: 0 } },
             {
               $lookup: {
