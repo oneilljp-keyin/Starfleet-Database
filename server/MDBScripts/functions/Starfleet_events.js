@@ -71,7 +71,7 @@ exports = async function (payload, response) {
         } else {
           pipeline = [
             { $match: query },
-            { $unwind: "$starships" },
+            // { $unwind: "$starships" },
             {
               $lookup: {
                 from: "starships",
@@ -83,21 +83,37 @@ exports = async function (payload, response) {
                 as: "info",
               },
             },
-            { $unwind: "$info" },
-            { $addFields: {
-              "starships.ship_id": "info.ship_id",
-              "starships.name": "info.name",
-              "starships.registry": "info.registry",
-              "starships.class": "info.class"
-            } },
-            { $group: {
-              starshipId: "$starshipId",
-              starships: { $push: "$starships"},
-              ship_id: { $first: "$ship_id"},
-              name: { $first: "$name"},
-              registry: { $first: "$registry"},
-              class: { $first: "$class"},
-            } },
+            // Option #2
+            { "$addFields": {
+              "starships": {
+                "$map": { 
+                  "input": "$starships",
+                  "as": "shipInfo",
+                  "in": {
+                    "$mergeObjects": [
+                      "$$shipInfo",
+                      { "name": { "$arrayElemAt": ["info.name", { "$indexOfArray": ["info._id", "$$starships.starshipId"] }] }}
+                    ]
+                  }
+                }
+              }
+            }},
+            // Option #1 - using unwind, error about starshipId must be accumalator object??
+            // { $unwind: "$info" },
+            // { $addFields: {
+            //   "starships.ship_id": "info.ship_id",
+            //   "starships.name": "info.name",
+            //   "starships.registry": "info.registry",
+            //   "starships.class": "info.class"
+            // } },
+            // { $group: {
+            //   starshipId: "$starshipId",
+            //   starships: { $push: "$starships"},
+            //   ship_id: { $first: "$ship_id"},
+            //   name: { $first: "$name"},
+            //   registry: { $first: "$registry"},
+            //   class: { $first: "$class"},
+            // } },
             { $sort: eventSort },
             // {
             //   $replaceRoot: {
