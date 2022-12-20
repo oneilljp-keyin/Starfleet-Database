@@ -74,8 +74,9 @@ exports = async function (payload, response) {
             {
               $lookup: {
                 from: "starships",
-                let: { id: "$starshipId" },
+                let: { id: "$starships.starshipId" },
                 pipeline: [
+                  { $unwind: "$starships" },
                   { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
                   { $project: { _id: 0, name: 1, registry: 1, class: 1, ship_id: 1 } },
                 ],
@@ -132,7 +133,9 @@ exports = async function (payload, response) {
 
         responseData._id = responseData._id.toString();
         if (responseData.officers) {
-          responseData.officers.forEach(officer => officer.officerId = officer.officerId.toString());
+          for (let i = 0; i < responseData.officers.length; i++) {
+            responseData.officers[i].officerId = responseData.officers[i].officerId.toString();
+          }
         }
         if (responseData.starships) {
           for (let i = 0; i < responseData.starships.length; i++) {
