@@ -121,7 +121,7 @@ exports = async function (payload, response) {
           }
           if (event.officers) {
             for (let i = 0; i < event.officers.length; i++) {
-              event.officers[i].starshipId = event.officers[i].starshipId.toString();
+              event.officers[i].officerId = event.officers[i].officerId.toString();
             }
           }
         });
