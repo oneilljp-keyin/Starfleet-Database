@@ -52,13 +52,15 @@ exports = async function (payload, response) {
 
       // Check password
       const isMatch = passwordHash.verify(password, userCheck.password);
-
+      let expireDate = new Date();
+      expireDate.setDate(expireDate.getDate() + 365);
+      
       if (isMatch) {
         // User matched
         // Create JWT payload
         let tokenPayload = {
           _id: userCheck._id,
-          exp: new Date("2022-12-31"),
+          exp: expireDate,
           iat: new Date(),
         };
 
