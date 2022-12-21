@@ -148,10 +148,13 @@ exports = async function (payload, response) {
           event._id = event._id.toString();
           if (event.date) { event.date = new Date(event.date).toISOString(); }
           if (event.endDate) { event.endDate = new Date(event.endDate).toISOString(); }
+          if (event.officerId) { event.officerId = event.officerId.toString(); }
+          if (event.starshipId) { event.starshipId = event.starshipId.toString(); }
           if (event.ship_id) { event.ship_id = event.ship_id.toString(); }
           if (event.starships) {
             for (let i = 0; i < event.starships.length; i++) {
               event.starships[i].starshipId = event.starships[i].starshipId.toString();
+              event.starships[i].ship_id = event.starships[i].ship_id.toString();
             }
           }
           if (event.officers) {
@@ -176,6 +179,8 @@ exports = async function (payload, response) {
             responseData.starships[i].starshipId = responseData.starships[i].starshipId.toString();
           }
         }
+        if (responseData.officerId) { responseData.officerId = responseData.officerId.toString(); }
+        if (responseData.starshipId) { responseData.starshipId = responseData.starshipId.toString(); }
         if (responseData.ship_id) { responseData.ship_id = responseData.ship_id.toString(); }
         if (responseData.date) { responseData.date = new Date(responseData.date).toISOString(); }
         if (responseData.endDate) { responseData.endDate = new Date(responseData.endDate).toISOString(); }
