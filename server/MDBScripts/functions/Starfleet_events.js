@@ -123,7 +123,7 @@ exports = async function (payload, response) {
             //     newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
             //   },
             // },
-            { $project: { __v: 0, officerId: 0 } },
+            { $project: { info: 0, __v: 0, officerId: 0 } },
             {
               $lookup: {
                 from: "photos",
