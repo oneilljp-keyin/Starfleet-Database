@@ -127,15 +127,29 @@ exports = async function (payload, response) {
             {
               $lookup: {
                 from: "photos",
-                let: { id: "$starshipId" },
+                let: { id: "$$starships.starshipId" },
                 pipeline: [
-                  { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
+                  { $match: { $and: [{ $expr: { $in: ["$owner", "$$id"] } }, { primary: true }] } },
                   { $project: { _id: 0, url: 1 } },
                 ],
                 as: "starshipPics",
               },
             },
-            { $addFields: { starshipPicUrl: "$starshipPics.url" } },
+            // { $addFields: { starshipPicUrl: "$starshipPics.url" } },
+            { $addFields: {
+              "starships": {
+                $map: { 
+                  input: "starships",
+                  as: "starshipInfo",
+                  in: {
+                    $mergeObjects: [
+                      "$$starshipInfo",
+                      { starshipPicUrl: { $arrayElemAt: ["starshipInfo.url", { $indexOfArray: ["$starshipPics._id", "$$starshipInfo.starshipId"] }] }}
+                    ]
+                  }
+                }
+              }
+            }},
             { $project: { starshipPics: 0 } },
           ];
         }
