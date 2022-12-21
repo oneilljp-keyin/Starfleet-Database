@@ -84,20 +84,20 @@ exports = async function (payload, response) {
               },
             },
             // Option #2
-            { $addFields: {
-              "starships": {
-                $map: { 
-                  input: "$starships",
-                  as: "shipInfo",
-                  in: {
-                    $mergeObjects: [
-                      "$$shipInfo",
-                      { name: { $arrayElemAt: ["$info.name", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }}
-                    ]
-                  }
-                }
-              }
-            }},
+            // { $addFields: {
+            //   "starships": {
+            //     $map: { 
+            //       input: "$starships",
+            //       as: "shipInfo",
+            //       in: {
+            //         $mergeObjects: [
+            //           "$$shipInfo",
+            //           { name: { $arrayElemAt: ["$info.name", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }}
+            //         ]
+            //       }
+            //     }
+            //   }
+            // }},
             // Option #1 - using unwind, error about starshipId must be accumalator object??
             // { $unwind: "$info" },
             // { $addFields: {
