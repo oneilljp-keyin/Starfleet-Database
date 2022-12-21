@@ -92,8 +92,8 @@ exports = async function (payload, response) {
                   in: {
                     $mergeObjects: [
                       "$$shipInfo",
-                      { name: { $arrayElemAt: ["$info.name", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
-                      { registry: { $arrayElemAt: ["$info.regisgtry", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }}
+                      { name: { $arrayElemAt: ["$info.name", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] },
+                        registry: { $arrayElemAt: ["$info.regisgtry", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }}
                     ]
                   }
                 }
