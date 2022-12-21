@@ -139,7 +139,7 @@ exports = async function (payload, response) {
             { $addFields: {
               "starships": {
                 $map: { 
-                  input: "starships",
+                  input: "$starships",
                   as: "shipPic",
                   in: {
                     $mergeObjects: [
