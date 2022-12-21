@@ -130,7 +130,7 @@ exports = async function (payload, response) {
                 let: { id: "$$starships.starshipId" },
                 pipeline: [
                   { $match: { $and: [{ $expr: { $in: ["$owner", "$$id"] } }, { primary: true }] } },
-                  { $project: { _id: 0, url: 1 } },
+                  { $project: {url: 1 } },
                 ],
                 as: "starshipPics",
               },
