@@ -144,7 +144,7 @@ exports = async function (payload, response) {
                   in: {
                     $mergeObjects: [
                       "$$shipPic",
-                      { starshipPicUrl: { $arrayElemAt: ["$shipPic.url", { $indexOfArray: ["$starshipPics._id", "$$shipPic.starshipId"] }] }}
+                      { starshipPicUrl: { $arrayElemAt: ["$starshipPics.url", { $indexOfArray: ["$starshipPics._id", "$$shipPic.starshipId"] }] }}
                     ]
                   }
                 }
