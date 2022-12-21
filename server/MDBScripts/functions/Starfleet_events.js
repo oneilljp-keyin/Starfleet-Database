@@ -75,7 +75,7 @@ exports = async function (payload, response) {
             {
               $lookup: {
                 from: "starships",
-                let: { id: "$starships.starshipId" },
+                let: { id: "$starships" },
                 pipeline: [
                   { $match: { $expr: { $in: ["$_id", "$$id"] } } },
                   { $project: { _id: 1, name: 1, registry: 1, class: 1, ship_id: 1 } },
