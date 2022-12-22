@@ -70,7 +70,7 @@ exports = async function (payload, response) {
           ];
         } else {
           pipeline = [
-            { $match: query }
+            { $match: query },
             // {
             //   $lookup: {
             //     from: "starships",
@@ -99,7 +99,7 @@ exports = async function (payload, response) {
             //     }
             //   }
             // }},
-            // { $sort: eventSort },
+            { $sort: eventSort }
             // { $project: { info: 0, __v: 0, officerId: 0 } },
             // {
             //   $lookup: {
