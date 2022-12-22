@@ -136,7 +136,7 @@ exports = async function (payload, response) {
         let responseData = await events.aggregate(pipeline).toArray();
 
         responseData.forEach((event) => {
-          event._id = event._id.toString();
+          if (event._id) { event._id = event._id.toString(); }
           if (event.date) { event.date = new Date(event.date).toISOString(); }
           if (event.endDate) { event.endDate = new Date(event.endDate).toISOString(); }
           if (event.officerId) { event.officerId = event.officerId.toString(); }
