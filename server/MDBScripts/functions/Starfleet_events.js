@@ -71,62 +71,36 @@ exports = async function (payload, response) {
         } else {
           pipeline = [
             { $match: query },
-            {
+{
               $lookup: {
                 from: "starships",
-                let: { id: "$starships.starshipId" },
+                let: { id: "$starshipId" },
                 pipeline: [
-                  { $match: { $expr: { $in: ["$_id", "$$id"] } } },
-                  { $project: { _id: 1, name: 1, registry: 1, class: 1, ship_id: 1 } },
+                  { $match: { $expr: { $eq: ["$_id", "$$id"] } } },
+                  { $project: { _id: 0, name: 1, registry: 1, class: 1, ship_id: 1 } },
                 ],
                 as: "info",
               },
             },
-            { $addFields: {
-              "starships": {
-                $map: { 
-                  input: "$starships",
-                  as: "shipInfo",
-                  in: {
-                    $mergeObjects: [
-                      "$$shipInfo",
-                      { name: { $arrayElemAt: ["$info.name", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
-                      { ship_id: { $arrayElemAt: ["$info.ship_id", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
-                      { registry: { $arrayElemAt: ["$info.registry", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
-                      { class: { $arrayElemAt: ["$info.class", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }}
-                    ]
-                  }
-                }
-              }
-            }},
             { $sort: eventSort },
+            {
+              $replaceRoot: {
+                newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+              },
+            },
             { $project: { info: 0, __v: 0, officerId: 0 } },
             {
               $lookup: {
                 from: "photos",
-                let: { id: "$starships.starshipId" },
+                let: { id: "$starshipId" },
                 pipeline: [
-                  { $match: { $and: [{ $expr: { $in: ["$owner", "$$id"] } }, { primary: true }] } },
-                  { $project: {url: 1 } },
+                  { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
+                  { $project: { _id: 0, url: 1 } },
                 ],
                 as: "starshipPics",
               },
             },
-            // { $addFields: { starshipPicUrl: "$starshipPics.url" } },
-            { $addFields: {
-              "starships": {
-                $map: { 
-                  input: "$starships",
-                  as: "shipPic",
-                  in: {
-                    $mergeObjects: [
-                      "$$shipPic",
-                      { starshipPicUrl: { $arrayElemAt: ["$starshipPics.url", { $indexOfArray: ["$starshipPics._id", "$$shipPic.starshipId"] }] }}
-                    ]
-                  }
-                }
-              }
-            }},
+            { $addFields: { starshipPicUrl: "$starshipPics.url" } },
             { $project: { starshipPics: 0 } },
           ];
         }
