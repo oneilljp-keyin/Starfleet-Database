@@ -70,87 +70,64 @@ exports = async function (payload, response) {
           ];
         } else {
           pipeline = [
-            { $match: query },
-            // { $unwind: "$starships" },
-            {
-              $lookup: {
-                from: "starships",
-                let: { id: "$starships.starshipId" },
-                pipeline: [
-                  { $match: { $expr: { $in: ["$_id", "$$id"] } } },
-                  { $project: { _id: 1, name: 1, registry: 1, class: 1, ship_id: 1 } },
-                ],
-                as: "info",
-              },
-            },
-            // Option #2
-            { $addFields: {
-              "starships": {
-                $map: { 
-                  input: "$starships",
-                  as: "shipInfo",
-                  in: {
-                    $mergeObjects: [
-                      "$$shipInfo",
-                      { name: { $arrayElemAt: ["$info.name", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
-                      { ship_id: { $arrayElemAt: ["$info.ship_id", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
-                      { registry: { $arrayElemAt: ["$info.registry", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
-                      { class: { $arrayElemAt: ["$info.class", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }}
-                    ]
-                  }
-                }
-              }
-            }},
-            // Option #1 - using unwind, error about starshipId must be accumalator object??
-            // { $unwind: "$info" },
-            // { $addFields: {
-            //   "starships.ship_id": "info.ship_id",
-            //   "starships.name": "info.name",
-            //   "starships.registry": "info.registry",
-            //   "starships.class": "info.class"
-            // } },
-            // { $group: {
-            //   starshipId: "$starshipId",
-            //   starships: { $push: "$starships"},
-            //   ship_id: { $first: "$ship_id"},
-            //   name: { $first: "$name"},
-            //   registry: { $first: "$registry"},
-            //   class: { $first: "$class"},
-            // } },
-            { $sort: eventSort },
+            { $match: query }
             // {
-            //   $replaceRoot: {
-            //     newRoot: { $mergeObjects: [{ $arrayElemAt: ["$info", 0] }, "$$ROOT"] },
+            //   $lookup: {
+            //     from: "starships",
+            //     let: { id: "$starships.starshipId" },
+            //     pipeline: [
+            //       { $match: { $expr: { $in: ["$_id", "$$id"] } } },
+            //       { $project: { _id: 1, name: 1, registry: 1, class: 1, ship_id: 1 } },
+            //     ],
+            //     as: "info",
             //   },
             // },
-            { $project: { info: 0, __v: 0, officerId: 0 } },
-            {
-              $lookup: {
-                from: "photos",
-                let: { id: "$starships.starshipId" },
-                pipeline: [
-                  { $match: { $and: [{ $expr: { $in: ["$owner", "$$id"] } }, { primary: true }] } },
-                  { $project: {url: 1 } },
-                ],
-                as: "starshipPics",
-              },
-            },
-            // { $addFields: { starshipPicUrl: "$starshipPics.url" } },
-            { $addFields: {
-              "starships": {
-                $map: { 
-                  input: "$starships",
-                  as: "shipPic",
-                  in: {
-                    $mergeObjects: [
-                      "$$shipPic",
-                      { starshipPicUrl: { $arrayElemAt: ["$starshipPics.url", { $indexOfArray: ["$starshipPics._id", "$$shipPic.starshipId"] }] }}
-                    ]
-                  }
-                }
-              }
-            }},
-            { $project: { starshipPics: 0 } },
+            // { $addFields: {
+            //   "starships": {
+            //     $map: { 
+            //       input: "$starships",
+            //       as: "shipInfo",
+            //       in: {
+            //         $mergeObjects: [
+            //           "$$shipInfo",
+            //           { name: { $arrayElemAt: ["$info.name", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
+            //           { ship_id: { $arrayElemAt: ["$info.ship_id", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
+            //           { registry: { $arrayElemAt: ["$info.registry", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }},
+            //           { class: { $arrayElemAt: ["$info.class", { $indexOfArray: ["$info._id", "$$shipInfo.starshipId"] }] }}
+            //         ]
+            //       }
+            //     }
+            //   }
+            // }},
+            // { $sort: eventSort },
+            // { $project: { info: 0, __v: 0, officerId: 0 } },
+            // {
+            //   $lookup: {
+            //     from: "photos",
+            //     let: { id: "$starships.starshipId" },
+            //     pipeline: [
+            //       { $match: { $and: [{ $expr: { $in: ["$owner", "$$id"] } }, { primary: true }] } },
+            //       { $project: {url: 1 } },
+            //     ],
+            //     as: "starshipPics",
+            //   },
+            // },
+            // // { $addFields: { starshipPicUrl: "$starshipPics.url" } },
+            // { $addFields: {
+            //   "starships": {
+            //     $map: { 
+            //       input: "$starships",
+            //       as: "shipPic",
+            //       in: {
+            //         $mergeObjects: [
+            //           "$$shipPic",
+            //           { starshipPicUrl: { $arrayElemAt: ["$starshipPics.url", { $indexOfArray: ["$starshipPics._id", "$$shipPic.starshipId"] }] }}
+            //         ]
+            //       }
+            //     }
+            //   }
+            // }},
+            // { $project: { starshipPics: 0 } },
           ];
         }
 
