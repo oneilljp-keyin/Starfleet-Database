@@ -40,6 +40,8 @@ exports = async function (payload, response) {
         }
 
         let query = { $and: [nameQuery, classQuery, timeQuery] };
+        
+        return query;
 
         const pipeline = [
           { $match: query },
@@ -48,7 +50,7 @@ exports = async function (payload, response) {
               from: "photos",
               let: { id: "$_id" },
               pipeline: [
-                { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
+                { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
                 { $project: { _id: 0, title: 0, description: 0, owner: 0 } },
                 { $sort: { year: -1 } },
                 { $limit: 1 },
