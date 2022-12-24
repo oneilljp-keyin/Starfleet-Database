@@ -14,7 +14,7 @@ exports = async function (payload, response) {
         starshipsPerPage = parseInt(starshipsPerPage);
         let nameQuery = {};
         let classQuery = {};
-        let timeQuery = { ship_id: { $gte: 0 } };
+        let timeQuery = { ship_id: { $gte: 2500 } };
 
         if (payload.query.name) {
           nameQuery = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
