@@ -35,7 +35,7 @@ exports = async function (payload, response) {
           { "32nd": { ship_id: { $gte: 110000 } } },
         ];
         
-        if (!payload.query.timeframe || payload.query.timeframe === "All") {
+        if (!payload.query.timeframe && payload.query.timeframe !== "All") {
           timeQuery = timeFrameOptions[payload.query.timeframe];
         }
 
