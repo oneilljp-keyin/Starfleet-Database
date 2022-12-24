@@ -43,7 +43,7 @@ exports = async function (payload, response) {
 
         timeQuery = { $and: [ { ship_id: { $gte: startTimeFrame } }, { ship_id: { $lt: endTimeFrame } } ] };
 
-        let query = { $and: [ameQuery, classQuery, timeQuery] };
+        let query = { $and: [nameQuery, classQuery, timeQuery] };
         
         const pipeline = [
           { $match: query },
