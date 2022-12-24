@@ -87,7 +87,7 @@ exports = async function (payload, response) {
           page: page.toString(),
           entries_per_page: starshipsPerPage.toString(),
           total_results: await starships.count(query).then((num) => num.toString()),
-          search_queries: payload.query.name + ", " + payload.query.class + ". " + payload.query.timeframe,
+          search_queries: query,
         };
       } else {
         const pipeline = [
