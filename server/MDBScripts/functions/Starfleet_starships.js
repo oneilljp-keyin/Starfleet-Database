@@ -14,8 +14,8 @@ exports = async function (payload, response) {
         starshipsPerPage = parseInt(starshipsPerPage);
         let nameQuery = {};
         let classQuery = {};
-        let startTimeFrame = 0;
-        let endTimeFrame = 999999;
+        // let startTimeFrame = 0;
+        // let endTimeFrame = 999999;
 
         if (payload.query.name) {
           nameQuery = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
@@ -29,21 +29,21 @@ exports = async function (payload, response) {
           classQuery = { class: { $eq: payload.query.class } };
         }
         
-        if (payload.query.timeframe === "22nd") {
-          endTimeFrame = 400;
-        } else if (payload.query.timeframe === "23rd") {
-          startTimeFrame = 400; 
-          endTimeFrame = 2500;
-        } else if (payload.query.timeframe === "24th") {
-          startTimeFrame = 2500; 
-          endTimeFrame = 110000;
-        } else {
-          startTimeFrame = 110000;
-        }
+        // if (payload.query.timeframe === "22nd") {
+        //   endTimeFrame = 400;
+        // } else if (payload.query.timeframe === "23rd") {
+        //   startTimeFrame = 400; 
+        //   endTimeFrame = 2500;
+        // } else if (payload.query.timeframe === "24th") {
+        //   startTimeFrame = 2500; 
+        //   endTimeFrame = 110000;
+        // } else {
+        //   startTimeFrame = 110000;
+        // }
 
-        timeQuery = { $and: [ { ship_id: { $gte: startTimeFrame } }, { ship_id: { $lt: endTimeFrame } } ] };
+        // timeQuery = { $and: [ { ship_id: { $gte: startTimeFrame } }, { ship_id: { $lt: endTimeFrame } } ] };
 
-        let query = { $and: [nameQuery, classQuery, timeQuery] };
+        let query = { $and: [nameQuery, classQuery] };
         
         const pipeline = [
           { $match: query },
