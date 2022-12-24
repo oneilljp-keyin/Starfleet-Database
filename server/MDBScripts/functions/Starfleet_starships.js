@@ -41,8 +41,6 @@ exports = async function (payload, response) {
 
         let query = { $and: [nameQuery, classQuery, timeQuery] };
         
-        return query;
-
         const pipeline = [
           { $match: query },
           {
