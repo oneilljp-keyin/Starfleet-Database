@@ -37,7 +37,7 @@ exports = async function (payload, response) {
         } else if (payload.query.timeframe === "24th") {
           startTimeFrame = 2500; 
           endTimeFrame = 110000;
-        } else {
+        } else if (payload.query.timeframe === "32nd") {
           startTimeFrame = 110000;
         }
 
