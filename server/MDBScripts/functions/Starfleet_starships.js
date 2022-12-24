@@ -14,6 +14,7 @@ exports = async function (payload, response) {
         starshipsPerPage = parseInt(starshipsPerPage);
         let nameQuery = {};
         let classQuery = {};
+        let timeQuery = { ship_id: { $gte: 0 } };
 
         if (payload.query.name) {
           nameQuery = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
@@ -26,8 +27,19 @@ exports = async function (payload, response) {
         } else {
           classQuery = { class: { $eq: payload.query.class } };
         }
+        
+        const timeFrameOptions = [
+          { "22nd": { $and: [ { ship_id: { $gte: 0      } }, { ship_id: { $lt: 400    } } ] } },
+          { "23rd": { $and: [ { ship_id: { $gte: 400    } }, { ship_id: { $lt: 2500   } } ] } },
+          { "24rd": { $and: [ { ship_id: { $gte: 2500   } }, { ship_id: { $lt: 110000 } } ] } },
+          { "32nd": { ship_id: { $gte: 110000 } } },
+        ];
+        
+        if (!payload.query.timeFrame || payload.query.timeFrame === "All") {
+          timeQuery = timeFrameOptions[payload.query.timeFrame];
+        }
 
-        let query = { $and: [nameQuery, classQuery] };
+        let query = { $and: [nameQuery, classQuery, timeQuery] };
 
         const pipeline = [
           { $match: query },
