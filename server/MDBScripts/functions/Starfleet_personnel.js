@@ -215,7 +215,7 @@ exports = async function (payload, response) {
                 { $match: { $expr: { $in: ["$_id", "$$id"] } } },
                 { $project: { _id: 0, surname: 1, first: 1, middle: 1 } }
               ],
-              as: "info"
+              as: "relationships"
             },
           },
           { $addFields: {
@@ -226,9 +226,10 @@ exports = async function (payload, response) {
                 in: { 
                   $mergeObjects: [
                     "$$relationshipsInfo", 
-                      { surname: { $arrayElemAt: [ "$info.surname", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { first:   { $arrayElemAt: [ "$info.first",   { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { middle:  { $arrayElemAt: [ "$info.middle",  { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } }
+                      { officerId: { $arrayElemAt: [ "$relationships._id", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+                      { surname: { $arrayElemAt: [ "$relationships.surname", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+                      { first:   { $arrayElemAt: [ "$relationships.first",   { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+                      { middle:  { $arrayElemAt: [ "$relationships.middle",  { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } }
           ]}}}}},
         ];
 
