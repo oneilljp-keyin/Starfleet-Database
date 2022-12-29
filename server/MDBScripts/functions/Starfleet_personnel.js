@@ -218,10 +218,17 @@ exports = async function (payload, response) {
               as: "info"
             },
           },
-          {$addFields: { "relationships": {$map: { $input: "$relationships", as: "relationshipsInfo", in: { $mergeObjects: ["$$relationshipsInfo", 
-            {surname: {$arrayElemAt: ["$info.surname", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
-            {first: {$arrayElemAt: ["$info.first", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
-            {middle: {$arrayElemAt: ["$info.middle", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
+          { $addFields: {
+            "relationships": {
+              $map: { 
+                $input: "$relationships", 
+                as: "relationshipsInfo", 
+                in: { 
+                  $mergeObjects: [
+                    "$$relationshipsInfo", 
+                      { surname: { $arrayElemAt: [ "$info.surname", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+                      { first:   { $arrayElemAt: [ "$info.first",   { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+                      { middle:  { $arrayElemAt: [ "$info.middle",  { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } }
           ]}}}}},
         ];
 
