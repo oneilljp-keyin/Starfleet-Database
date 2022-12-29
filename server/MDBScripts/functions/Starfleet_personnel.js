@@ -223,7 +223,6 @@ exports = async function (payload, response) {
             {first: {$arrayElemAt: ["$info.first", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
             {middle: {$arrayElemAt: ["$info.middle", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
           ]}}}}},
-          {$project: {info: 0}}
         ];
 
         responseData = await personnel.aggregate(pipeline).next();
