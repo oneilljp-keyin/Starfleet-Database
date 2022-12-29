@@ -213,7 +213,7 @@ exports = async function (payload, response) {
               let: {id: "$relationships.officerId"},
               pipeline : [
                 { $match: { $expr: { $in: ["$_id", "$$id"] } } },
-                { $project: { $_id: 0, surname: 1, first: 1, middle: 1 } }
+                { $project: { _id: 0, surname: 1, first: 1, middle: 1 } }
               ],
               as: "info"
             },
