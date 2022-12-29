@@ -207,6 +207,23 @@ exports = async function (payload, response) {
           },
           { $addFields: { lifeEventCount: "$lifeEvents.lifeEventsNum" } },
           { $project: { lifeEvents: 0 } },
+                    {
+            $lookup: {
+              from: "officers",
+              let: {id: "$relationships.officerId"},
+              pipeline : [
+                { $match: { $expr: { $in: ["$_id", "$$id"] } } },
+                { $project: { $_id: 0, surname: 1, first: 1, middle: 1 } }
+              ],
+              as: "info"
+            },
+          },
+          {$addFields: { "relationships": {$map: { $input: "$relationships", as: "relationshipsInfo", in: { $mergeObjects: ["$$relationshipsInfo", 
+            {surname: {$arrayElemAt: ["$info.surname", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
+            {first: {$arrayElemAt: ["$info.first", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
+            {middle: {$arrayElemAt: ["$info.middle", { $indexOfArray: ["$info._id", "$$relationshipsInfo.officerId"]}]}},
+          ]}}}}},
+          {$project: {info: 0}}
         ];
 
         responseData = await personnel.aggregate(pipeline).next();
