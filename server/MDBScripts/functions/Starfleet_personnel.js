@@ -221,7 +221,7 @@ exports = async function (payload, response) {
           { $addFields: {
             "relationships": {
               $map: { 
-                $input: "$relationships", 
+                input: "$relationships", 
                 as: "relationshipsInfo", 
                 in: { 
                   $mergeObjects: [
