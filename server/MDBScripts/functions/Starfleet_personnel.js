@@ -207,30 +207,30 @@ exports = async function (payload, response) {
           },
           { $addFields: { lifeEventCount: "$lifeEvents.lifeEventsNum" } },
           { $project: { lifeEvents: 0 } },
-                    {
-            $lookup: {
-              from: "officers",
-              let: {id: "$relationships.officerId"},
-              pipeline : [
-                { $match: { $expr: { $in: ["$_id", "$$id"] } } },
-                { $project: { _id: 0, surname: 1, first: 1, middle: 1 } }
-              ],
-              as: "relationships"
-            },
-          },
-          { $addFields: {
-            "relationships": {
-              $map: { 
-                input: "$relationships", 
-                as: "relationshipsInfo", 
-                in: { 
-                  $mergeObjects: [
-                    "$$relationshipsInfo", 
-                      { officerId: { $arrayElemAt: [ "$relationships._id", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { surname: { $arrayElemAt: [ "$relationships.surname", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { first:   { $arrayElemAt: [ "$relationships.first",   { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { middle:  { $arrayElemAt: [ "$relationships.middle",  { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } }
-          ]}}}}},
+          // {
+          //   $lookup: {
+          //     from: "officers",
+          //     let: {id: "$relationships.officerId"},
+          //     pipeline : [
+          //       { $match: { $expr: { $in: ["$_id", "$$id"] } } },
+          //       { $project: { _id: 0, surname: 1, first: 1, middle: 1 } }
+          //     ],
+          //     as: "relationships"
+          //   },
+          // },
+          // { $addFields: {
+          //   "relationships": {
+          //     $map: { 
+          //       input: "$relationships", 
+          //       as: "relationshipsInfo", 
+          //       in: { 
+          //         $mergeObjects: [
+          //           "$$relationshipsInfo", 
+          //             { officerId: { $arrayElemAt: [ "$relationships._id", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+          //             { surname: { $arrayElemAt: [ "$relationships.surname", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+          //             { first:   { $arrayElemAt: [ "$relationships.first",   { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
+          //             { middle:  { $arrayElemAt: [ "$relationships.middle",  { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } }
+          // ]}}}}},
         ];
 
         responseData = await personnel.aggregate(pipeline).next();
