@@ -27,7 +27,15 @@ function StarshipList(props) {
   const [starships, setStarships] = useState([]);
   const [searchName, setSearchName] = useState(sessionStorage.starshipName || "");
   const [searchClass, setSearchClass] = useState(sessionStorage.starshipClass || "");
+  const [searchTimeFrame, setSearchTimeFrame] = useState(sessionStorage.timeFrame || "All");
   const [classes, setClasses] = useState(["All", "Unknown"]);
+
+  const timeFrameOptions = [
+    { label: "2101-2200", value: "22nd" },
+    { label: "2201-2300", value: "23rd" },
+    { label: "2301-3000", value: "24th" },
+    { label: "3001-3200", value: "32nd" },
+  ];
 
   const [pageNumber, setPageNumber] = useState(0);
   const observer = useRef();
@@ -76,13 +84,18 @@ function StarshipList(props) {
     setPageNumber(0);
   };
 
+  const onChangeSearchTimeFrame = (e) => {
+    setSearchTimeFrame(e.target.value);
+    setPageNumber(0);
+  };
+
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
       setStarships([]);
     }
     return () => (isMounted = false);
-  }, [searchName, searchClass]);
+  }, [searchName, searchClass, searchTimeFrame]);
 
   function defaultImage(ship_id) {
     if (ship_id < 500) {
@@ -111,7 +124,13 @@ function StarshipList(props) {
 
     setLoading(true);
     const ourRequest = axios.CancelToken.source();
-    StarshipsDataService.find(searchName, searchClass, pageNumber, ourRequest.token)
+    StarshipsDataService.find(
+      searchName,
+      searchClass,
+      pageNumber,
+      searchTimeFrame,
+      ourRequest.token
+    )
       .then((response) => {
         if (isMounted) {
           setStarships((prevStarships) => {
@@ -128,6 +147,7 @@ function StarshipList(props) {
           );
           sessionStorage.setItem("starshipName", searchName);
           sessionStorage.setItem("starshipClass", searchClass);
+          sessionStorage.setItem("timeFrame", searchTimeFrame);
           setLoading(false);
           setListRefresh(false);
         }
@@ -141,7 +161,7 @@ function StarshipList(props) {
       ourRequest.cancel();
       isMounted = false;
     };
-  }, [searchName, searchClass, pageNumber, listRefresh]);
+  }, [searchName, searchClass, searchTimeFrame, pageNumber, listRefresh]);
 
   return (
     <>
@@ -160,6 +180,7 @@ function StarshipList(props) {
             onClick={() => {
               setSearchName("");
               setSearchClass("");
+              setSearchTimeFrame("");
             }}
           >
             <i className="fa-solid fa-xmark"></i>
@@ -168,7 +189,7 @@ function StarshipList(props) {
             name="searchClass"
             value={searchClass}
             onChange={onChangeSearchClass}
-            className="col-4 select-center"
+            className="col-3 select-center"
           >
             {classes.map((shipClass) => {
               return (
@@ -176,6 +197,23 @@ function StarshipList(props) {
                   {`   `}
                   {shipClass.substring(0, 20)}
                   {" Class"}
+                </option>
+              );
+            })}
+          </select>
+          <select
+            name="searchTimeFrame"
+            value={searchTimeFrame}
+            onChange={onChangeSearchTimeFrame}
+            className="col-3 select-center"
+          >
+            <option value="all" key={uuidv4()}>
+              Time Frame
+            </option>
+            {timeFrameOptions.map(({ label, value }) => {
+              return (
+                <option value={value} key={uuidv4()}>
+                  {label}
                 </option>
               );
             })}
@@ -241,11 +279,7 @@ function StarshipList(props) {
                   <br />
                   <img
                     className="search-list starship-search"
-                    src={
-                      starship.picUrl[0]
-                        ? starship.picUrl[0]
-                        : defaultImage(starship.ship_id)
-                    }
+                    src={starship.picUrl[0] ? starship.picUrl[0] : defaultImage(starship.ship_id)}
                     alt={starship.name}
                   />
                   <h5 className="card-title" style={{ textTransform: "capitalize" }}>

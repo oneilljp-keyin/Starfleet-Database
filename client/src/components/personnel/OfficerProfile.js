@@ -67,7 +67,9 @@ const Officer = (props) => {
             setOfficer(response.data);
             let officerName = !response.data.first
               ? response.data.surname
-              : response.data.species_id === "51" ? response.data.surname + " " + response.data.first : response.data.first + " " + response.data.surname;
+              : response.data.species_id === "51"
+              ? response.data.surname + " " + response.data.first
+              : response.data.first + " " + response.data.surname;
             setOfficerName(officerName);
           }
         })
@@ -118,7 +120,7 @@ const Officer = (props) => {
               className="col-md-4"
             />
             <div className="m-1 profile-summary col-md-5">
-              <h1>
+              <h1 style={{ lineHeight: "0.75" }}>
                 {officer.surname && <>{officer.surname}</>}
                 {officer.first && officer.first !== " " && (
                   <>
@@ -128,14 +130,13 @@ const Officer = (props) => {
                 {officer.middle && <> {officer.middle}</>}
                 {officer.postNom && <>, {officer.postNom}</>}
                 {officer.date && (
-                  <span style={{ fontSize: "1.18rem" }}>
-                    {" "}
-                    (As of{" "}
+                  <span style={{ fontSize: "0.5em" }}>
+                    <br />({officer.status} as of{" "}
                     {officer.deathDate
                       ? officer.deathDate.slice(0, 4)
                       : officer.endDate
-                        ? officer.endDate.slice(0, 4)
-                        : officer.date.slice(0, 4)}
+                      ? officer.endDate.slice(0, 4)
+                      : officer.date.slice(0, 4)}
                     )
                   </span>
                 )}
@@ -143,19 +144,30 @@ const Officer = (props) => {
               {officer.serial && <h2>{officer.serial}</h2>}
               {officer.rankLabel && (
                 <h3 style={{ textTransform: "capitalize" }}>
-                  <span style={{ color: "#FFDD22E6" }}>{!officer.active && <>Last </>}Rank: </span>
+                  <span style={{ color: "#FFDD22E6" }}>
+                    {((officer.active && officer.active === false) ||
+                      (officer.status && officer.status !== "active")) && <>Last </>}
+                    Rank:{" "}
+                  </span>
                   {officer.rankLabel.split("-").map((label, index) => {
                     let rankLabel;
                     if (index === 0) rankLabel = label;
                     return rankLabel;
                   })}
-                  {officer.provisional && <> <span style={{ fontSize: "0.75rem", color: "#FFFFFFDE" }}>[Provisional]</span></>}
+                  {officer.provisional && (
+                    <>
+                      {" "}
+                      <span style={{ fontSize: "0.75em", color: "#FFFFFFDE" }}>[Provisional]</span>
+                    </>
+                  )}
                 </h3>
               )}
               {officer.position && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>
-                    {!officer.active && <>Last </>}Position:{" "}
+                    {((officer.active && officer.active === false) ||
+                      (officer.status && officer.status !== "active")) && <>Last </>}
+                    Position:{" "}
                   </span>
                   {officer.position}
                 </h3>
@@ -163,21 +175,24 @@ const Officer = (props) => {
               {officer.name && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>
-                    {!officer.active && <>Last </>}Vessel:{" "}
+                    {((officer.active && officer.active === false) ||
+                      (officer.status && officer.status !== "active")) && <>Last </>}
+                    Vessel:{" "}
                   </span>
-                  {!officer.name.includes("NCC-") && <>USS {officer.name.replace(/-[A-Z]$/g, "")} </>}
+                  {!officer.name.includes("NCC-") && (
+                    <>USS {officer.name.replace(/-[A-Z]$/g, "")} </>
+                  )}
                   {officer.registry}
                 </h3>
               )}
-              {officer.location &&
+              {officer.location && (
                 // (!officer.name || officer.surname.includes("Sisko")) &&
                 // (!officer.position || !officer.position.includes("etired")) &&
-                (
-                  <h3 style={{ textTransform: "capitalize" }}>
-                    <span style={{ color: "#FFDD22E6" }}> Location: </span>
-                    {officer.location}
-                  </h3>
-                )}
+                <h3 style={{ textTransform: "capitalize" }}>
+                  <span style={{ color: "#FFDD22E6" }}> Location: </span>
+                  {officer.location}
+                </h3>
+              )}
               {officer.birthDate && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>Birth: </span>
@@ -254,7 +269,11 @@ const Officer = (props) => {
                 colour="pink"
                 eventType="Chronology"
                 categoryLabel="Chronology"
-                count={EventAdder(officer.assignCount, officer.missionCount, officer.lifeEventCount)}
+                count={EventAdder(
+                  officer.assignCount,
+                  officer.missionCount,
+                  officer.lifeEventCount
+                )}
               />
             ) : (
               <ButtonFormatter active={false} colour="pink" />
