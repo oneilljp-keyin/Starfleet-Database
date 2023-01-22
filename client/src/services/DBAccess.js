@@ -13,26 +13,29 @@ class DataService {
   find(category, nameQuery, classQuery="All", pageNumber = "0", cancel) {
     let query = `/${category}?name=${nameQuery}&page=${pageNumber}`;
     if (category === "starships") (query += `&class=${classQuery}&starshipsPerPage=50`);
-    console.log(query);
     return http.get(query, {
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     });
   }
 
-  create(category, systemInfo) {
-    return http.post(`/${category}`, systemInfo);
+  create(category, subjectInfo) {
+    return http.post(`/${category}`, subjectInfo);
   }
 
-  update(category, systemInfo) {
-    return http.put(`/${category}`, systemInfo);
+  update(category, subjectInfo) {
+    return http.put(`/${category}`, subjectInfo);
   }
 
-  delete(category, systemId) {
-    return http.delete(`/${category}?id=${systemId}`);
+  delete(category, subjectId) {
+    return http.delete(`/${category}?id=${subjectId}`);
   }
 
   getStarshipClasses(query = "") {
     return http.get(`/classes?search=${query}`);
+  }
+
+  getCategoryCount(category) {
+    return http.get(`/counts?category=${category}`);
   }
 }
 

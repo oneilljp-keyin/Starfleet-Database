@@ -85,9 +85,9 @@ td {text-align: left; padding: 0.125em 0.25em 0.125em 0.25em !important;}
 .card-radius {border-radius: 1em;}
 .card-title {margin: 0.125em 0;}
 
-.load-img {max-width: 20em;}
+.load-img {max-width: 25em;}
 .search-list { height: auto; border-radius: 1em; box-shadow: 2px 2px 10px black; }
-.personnel-search { width: 75%; max-width: 6em;}
+.personnel-search, .systems-search { width: 75%; max-width: 6em;}
 .starships-search { width: 100%;}
 .service-list { width: calc(100% - 16px); height: auto; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
 
@@ -387,10 +387,10 @@ article footer p {
   .lcars-btn-link { height: auto; padding-left: 0.5em; }
 
   .a-button   { padding: 0.5em 1.5em; }
-  .header-btn { min-width: 8em; font-size: 1em; padding: 0.5em 1.5em; margin: 0.25em 0.125em; }
+  .header-btn { min-width: 6em; font-size: 1em; padding: 0.5em 1.5em; margin: 0.25em 0.125em; }
   .events-btn { padding: 0 0.25em; }
 
-  .load-img      { max-width: 25em; }
+  .load-img      { width: 40em; }
   .starship-pics { height: auto; width: 50vw; max-width: 22em; }
 
   .list-footer { width: calc(100% - 1em);}

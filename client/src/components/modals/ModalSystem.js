@@ -2,63 +2,62 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
+import MultiSelect from  'react-select';
 
-import PersonnelDataService from "../../services/personnel";
+import DataService from "../../services/DBAccess";
 
-import { StardateConverter, Loading, dateOptions } from "../hooks/HooksAndFunctions";
+import { Loading, NumberDropDown, quadrants, starTypes } from "../hooks/HooksAndFunctions";
 
-const PopUpOfficer = (props) => {
+const PopUpSystems = (props) => {
+  const category = props.entryType;
+  const subjectId = props.systemId;
+
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const initialOfficerState = {
-    _id: "",
-    active: true,
-    birthDate: "",
-    birthDateNote: "",
-    birthPlace: "",
-    birthStardate: "",
-    deathDate: "",
-    deathDateNote: "",
-    deathPlace: "",
-    deathStardate: "",
-    first: "",
-    memoryAlphaURL: "",
-    middle: "",
-    postNom: "",
-    serial: "",
-    surname: "",
+  const initialState = {
+    name: null,
+    starTypes: null,
+    sectorName: null,
+    sectorNum: null,
+    quadrant: null,
+    numOfPlanets: null,
+    government: null,
+    notes: null,
+    memoryAlphaURL: null,
   };
 
-  const [officerInfo, setOfficerInfo] = useState(initialOfficerState);
+  const [subjectInfo, setSubjectInfo] = useState(initialState);
 
   let [btnLabel, setBtnLabel] = useState("Create");
 
-  const onChangeOfficerInfo = (e) => {
-    setOfficerInfo({ ...officerInfo, [e.target.name]: e.target.value });
+  const onChangeSubjectInfo = (e) => {
+    setSubjectInfo({ ...subjectInfo, [e.target.name]: e.target.value });
   };
 
-  const handleChangeChk = (e) => {
-    setOfficerInfo({ ...officerInfo, [e.target.name]: e.target.checked });
+  const onChangeStarTypes = (e) => {
+    setSubjectInfo({ ...subjectInfo, starTypes: e });
   };
 
   useEffect(() => {
     let isMounted = true;
 
-    const getPersonnel = async (id) => {
+    const getInfo = async (category, id) => {
       try {
-        let response = await PersonnelDataService.get(id);
+        let response = await DataService.getOne(category, id);
         if (isMounted) {
-          setOfficerInfo(response.data);
+          const updateStarTypes = response.data.starTypes.map(a => ({label: `${a}-Type`, value: a }));
+          response.data.starTypes = updateStarTypes;
+          setSubjectInfo(response.data);
         }
       } catch (err) {
         console.error(err);
         toast.error(err.message);
       }
     };
-    if (props.officerId) {
-      getPersonnel(props.officerId);
+    if (subjectId) {
+      getInfo(category, subjectId);
       setEdit(true);
       setSubmitted(false);
       setBtnLabel("Update");
@@ -66,46 +65,19 @@ const PopUpOfficer = (props) => {
     return () => {
       isMounted = false;
     };
-  }, [edit, submitted, props.officerId]);
+  }, [edit, submitted, subjectId, category]);
 
-  const saveOfficerInfo = () => {
+  const savesubjectInfo = () => {
     setIsLoading(true);
-    let data = officerInfo;
-    delete data["name"];
-    delete data["registry"];
-    delete data["starshipId"];
-    delete data["location"];
-    delete data["rankLabel"];
-    delete data["provisional"];
-    delete data["position"];
-    delete data["date"];
-    delete data["starshipCount"];
-    delete data["assignCount"];
-    delete data["missionCount"];
-    delete data["lifeEventCount"];
-    delete data["endDate"];
+    let data = subjectInfo;
     Object.keys(data).forEach((key) => {
       if (data[key] === "" || data[key] === null || data[key] === undefined) {
         delete data[key];
       }
     });
-    if (
-      data.birthStardate &&
-      (data.birthStardate.charAt(5) === "." || data.birthStardate.charAt(6) === ".")
-    ) {
-      let newDate = StardateConverter(data.birthStardate);
-      data.birthDate = newDate;
-    }
-    if (
-      data.deathStardate &&
-      (data.deathStardate.charAt(5) === "." || data.deathStardate.charAt(6) === ".")
-    ) {
-      let newDate = StardateConverter(data.deathStardate);
-      data.deathDate = newDate;
-    }
     if (edit) {
-      data._id = props.officerId;
-      PersonnelDataService.updateOfficer(data)
+      data._id = props.subjectId;
+      DataService.update(category, data)
         .then((response) => {
           setSubmitted(true);
           props.setRefresh();
@@ -118,10 +90,10 @@ const PopUpOfficer = (props) => {
         });
     } else {
       delete data["_id"];
-      PersonnelDataService.createOfficer(data)
+      DataService.create(category, data)
         .then((response) => {
           toast.dark(response.data);
-          setOfficerInfo(initialOfficerState);
+          setSubjectInfo(initialState);
           props.hide();
         })
         .catch((err) => {
@@ -133,9 +105,15 @@ const PopUpOfficer = (props) => {
   };
 
   const closeModal = () => {
-    setOfficerInfo(initialOfficerState);
     props.hide();
   };
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderStyle: "none"
+    })
+  }
 
   return props.isShowing && props.isAuth
     ? ReactDOM.createPortal(
@@ -146,203 +124,132 @@ const PopUpOfficer = (props) => {
               <div className="modal-bg events-modal modal-content-wrapper">
                 <div className="events-modal-container align-content-center">
                   <h3>
-                    {btnLabel} Profile {props.subjectName ? ` - ${props.subjectName}` : null}
+                    {btnLabel} Star System {props.subjectName ? ` - ${props.subjectName}` : " Entry"}
                   </h3>
                   <div className="d-flex row form-group">
-                    <div className="form-floating col-sm-6">
+                    <div className="form-floating col-sm-5">
                       <input
-                        className="form-control form-control-md"
-                        type="text"
-                        name="serial"
-                        id="serial"
-                        placeholder="Starfleet Serial Number"
-                        value={officerInfo.serial || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="serial">Starfleet Serial #</label>
-                    </div>
-                    <div className="col-sm-6 form-check align-items-center m-auto">
-                      <input
-                        className="form-check-input ms-1"
-                        type="checkbox"
-                        id="active"
-                        name="active"
-                        checked={officerInfo.active || ""}
-                        onChange={(e) => handleChangeChk(e)}
-                        style={{ transform: "scale(1.8)" }}
-                      />
-                      <label className="form-check-label" htmlFor="active">
-                        Active in Starfleet
-                      </label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md"
+                        className="form-control form-control-md text-center"
                         type="text"
                         autoFocus
-                        name="surname"
-                        id="surname"
-                        placeholder="Surname"
-                        value={officerInfo.surname || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
+                        name="name"
+                        id="name"
+                        placeholder="System Name"
+                        value={subjectInfo.name || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
                       />
-                      <label htmlFor="surname">Surname</label>
+                      <label htmlFor="surname">System Name</label>
                     </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md"
-                        type="text"
-                        name="first"
-                        id="first"
-                        placeholder="First Name"
-                        value={officerInfo.first || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
+                    <div className="form-floating col-sm-5" name="starTypes">
+                      <MultiSelect 
+                        isMulti 
+                        onChange={onChangeStarTypes} 
+                        options={starTypes} 
+                        value={subjectInfo.starTypes}
+                        placeholder=""
+                        isSearchable={true} 
+                        className="form-control form-control-sm px-0"
+                        styles={customStyles}
                       />
-                      <label htmlFor="first">First Name</label>
+                      <label htmlFor="starTypes">Star Types</label>
                     </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md"
-                        type="text"
-                        name="middle"
-                        id="middle"
-                        placeholder="Middle Name"
-                        value={officerInfo.middle || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="middle">Middle Name</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md"
-                        type="text"
-                        name="postNom"
-                        id="postNom"
-                        placeholder="Post Nominals"
-                        value={officerInfo.postNom || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="postNom">Post Nominals</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-sm"
-                        type="date"
-                        name="birthDate"
-                        id="birthDate"
-                        value={officerInfo.birthDate ? officerInfo.birthDate.slice(0, 10) : ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="birthDate">Date of Birth</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-lg"
-                        type="text"
-                        name="birthStardate"
-                        id="birthStardate"
-                        placeholder="Stardate of Birth"
-                        value={officerInfo.birthStardate || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathStardate">Stardate</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
+                    <div className="form-floating col-sm-2">
                       <select
-                        className="form-control form-control-sm"
-                        name="birthDateNote"
-                        id="birthDateNote"
-                        value={officerInfo.birthDateNote || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
+                        className="form-control form-control-sm text-center"
+                        name="numOfPlanets"
+                        id="numOfPlanets"
+                        placeholder="# of Planets"
+                        value={subjectInfo.numOfPlanets || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
                       >
-                        {dateOptions.map(({ label, value }) => (
+                        <option key={1000} value={null}>Unknown</option>
+                        <NumberDropDown num={20} />
+                      </select>
+                      <label htmlFor="numOfPlanets"># of Planets</label>
+                    </div>
+                    <div className="form-floating col-sm-2">
+                      <input
+                        className="form-control form-control-md text-center"
+                        type="text"
+                        name="sectorName"
+                        id="sectorName"
+                        placeholder="Sector Name"
+                        value={subjectInfo.sectorName || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
+                      />
+                      <label htmlFor="sectorName">Sector Name</label>
+                    </div>
+                    <div className="form-floating col-sm-2">
+                      <input
+                        className="form-control form-control-md text-center"
+                        type="text"
+                        name="sectorNum"
+                        id="sectorNum"
+                        placeholder="Sector Number"
+                        value={subjectInfo.sectorNum || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
+                      />
+                      <label htmlFor="sectorNum">Sector #</label>
+                    </div>
+                    <div className="form-floating col-sm-4">
+                      <select
+                        className="form-control form-control-sm text-center"
+                        name="quadrant"
+                        id="quadrant"
+                        placeholder="Quadrant"
+                        value={subjectInfo.quadrant || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
+                      >
+                        {quadrants.map(({ label, value }) => (
                           <option key={uuidv4()} value={value}>
                             {label}
                           </option>
                         ))}
                       </select>
-                      <label htmlFor="birthDateNote">Date Note</label>
+                      <label htmlFor="quadrant">Locaton in Galaxy</label>
                     </div>
-                    <div className="form-floating col-sm-3">
+                    <div className="form-floating col-sm-4">
                       <input
-                        className="form-control form-control-md"
+                        className="form-control form-control-md text-center"
                         type="text"
-                        name="birthPlace"
-                        id="birthPlace"
-                        placeholder="Place Of Birth"
-                        value={officerInfo.birthPlace || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
+                        name="government"
+                        id="government"
+                        placeholder="Government"
+                        value={subjectInfo.government || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
                       />
-                      <label htmlFor="birthPlace">Place of Birth</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-sm"
-                        type="date"
-                        name="deathDate"
-                        id="deathDate"
-                        value={officerInfo.deathDate ? officerInfo.deathDate.slice(0, 10) : ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathDate">Date of Death</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-lg"
-                        type="text"
-                        name="deathStardate"
-                        id="deathStardate"
-                        placeholder="Stardate of Death"
-                        value={officerInfo.deathStardate || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathStardate">Stardate of Death</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <select
-                        className="form-control form-control-sm"
-                        name="deathDateNote"
-                        id="deathDateNote"
-                        value={officerInfo.deathDateNote || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      >
-                        {dateOptions.map(({ label, value }) => (
-                          <option key={uuidv4()} value={value}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
-                      <label htmlFor="deathDateNote">Date Note</label>
-                    </div>
-                    <div className="form-floating col-sm-3">
-                      <input
-                        className="form-control form-control-md"
-                        type="text"
-                        name="deathPlace"
-                        id="deathPlace"
-                        placeholder="Place Of Death"
-                        value={officerInfo.deathPlace || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
-                      />
-                      <label htmlFor="deathPlace">Place of Death</label>
+                      <label htmlFor="government">Government</label>
                     </div>
                     <div className="form-floating col-sm-12">
                       <input
-                        className="form-control form-control-md"
+                        className="form-control form-control-md text-center"
                         type="text"
                         name="memoryAlphaURL"
                         id="memoryAlphaURL"
                         placeholder="Memory Alpha Link"
-                        value={officerInfo.memoryAlphaURL || ""}
-                        onChange={(e) => onChangeOfficerInfo(e)}
+                        value={subjectInfo.memoryAlphaURL || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
                       />
-                      <label htmlFor="deathPlace">Memory Alpha Link</label>
+                      <label htmlFor="memoryAlphaURL">Memory Alpha Link</label>
+                    </div>
+                    <div className="form-floating col-sm-12">
+                      <textarea
+                        className="col form-control form-control-lg"
+                        style={{ height: "100%" }}
+                        type="text"
+                        name="notes"
+                        id="notes"
+                        placeholder="Notes"
+                        value={subjectInfo.notes || ""}
+                        onChange={(e) => onChangeSubjectInfo(e)}
+                      />
+                      <label htmlFor="notes">Notes</label>
                     </div>
                   </div>
 
                   <button
                     className="lcars-btn orange-btn left-round small-btn"
-                    onClick={saveOfficerInfo}
+                    onClick={savesubjectInfo}
                   >
                     {btnLabel}
                   </button>
@@ -359,4 +266,4 @@ const PopUpOfficer = (props) => {
       )
     : null;
 };
-export default PopUpOfficer;
+export default PopUpSystems;

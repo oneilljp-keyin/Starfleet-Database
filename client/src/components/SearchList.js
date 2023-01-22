@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
 import gray from "../assets/insignia_gray.png";
+import graySun from "../assets/sun.png";
 
 import DataService from "../services/DBAccess";
 import UseModal from "./modals/UseModal";
@@ -20,9 +21,16 @@ function SearchList(props) {
   const [hasMore, setHasMore] = useState(false);
   const [listRefresh, setListRefresh] = useState(false);
 
+  const [categoryCount, setCategoryCount] = useState();
+  const [searchCount, setSearchCount] = useState();
   const [resultsList, setResultsList] = useState([]);
   const [classes, setClasses] = useState(["All", "Unknown"]);
-  const [searchQuery, setSearchQuery] = useState(sessionStorage.getItem(listCategory + "Query") || "");
+  const [searchQuery, setSearchQuery] = useState("");
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) setSearchQuery(sessionStorage.getItem(listCategory + "Query") || "");
+    return () => (isMounted = false);
+  }, [listCategory])
   const [searchClass, setSearchClass] = useState(sessionStorage.getItem(listCategory + "Class") || "All");
 
   const [pageNumber, setPageNumber] = useState(0);
@@ -55,9 +63,30 @@ function SearchList(props) {
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted) (setResultsList([]));
+    if (isMounted) {
+      setResultsList([]);
+    }
     return () => (isMounted = false);
-  }, [searchQuery, searchClass]);
+  }, [searchQuery, searchClass, listCategory]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const categoryCounts = (category) => {
+      DataService.getCategoryCount(category)
+        .then((response) => {
+          if (isMounted) {
+            setCategoryCount(response.data.count)
+          }
+        }).catch((e) => {
+          console.error(e);
+          toast.error(e.message);
+        });
+    };
+    if (isMounted) {
+      categoryCounts(listCategory);
+    }
+    return () => (isMounted = false);
+  }, [listCategory])
 
   useEffect(() => {
     let isMounted = true;
@@ -74,7 +103,7 @@ function SearchList(props) {
           toast.error(e.message);
         });
     };
-    if (listCategory === "starships") retrieveClasses();
+    if (listCategory === "starships" && isMounted) retrieveClasses();
     return () => (isMounted = false);
   }, [listCategory]);
 
@@ -97,6 +126,7 @@ function SearchList(props) {
               response.data.total_results
             );
             setLoading(false);
+            setSearchCount(response.data.total_results);
           })
           .catch((e) => {
             if (axios.isCancel(e)) return;
@@ -134,7 +164,7 @@ function SearchList(props) {
           <input
             type="text"
             className="form-control"
-            placeholder="Search By Name"
+            placeholder={"Search " + listCategory[0].toUpperCase() + listCategory.substring(1) + " By Name"}
             value={searchQuery}
             onChange={onChangeSearchQuery}
           />
@@ -144,6 +174,7 @@ function SearchList(props) {
             onClick={() => {
               setSearchQuery("");
               setSearchClass("All");
+              setSearchCount(0);
             }}
           >
             <i className="fa-solid fa-xmark"></i>
@@ -179,17 +210,20 @@ function SearchList(props) {
         )}
       </div>
       <div className="row d-flex p-1">
+      <div className="m-auto text-center">
+        {resultsList.length > 0 && <h2>Search Complete ... {searchCount} Record{resultsList.length !== 1 && "s"} Found</h2>}
+      </div>
         {resultsList.length === 0 ? (
           <div className="m-auto text-center">
-            {searchQuery.length > 0 ? <h2>NO RESULTS</h2> : <h2>STANDBY</h2>}
+            {searchQuery.length > 0 ? <h2>NO RESULTS</h2> : <h2>STANDBY ... {categoryCount} Records Available</h2>}
             {setDefaultImage}
           </div>
         ) : (
           resultsList.map((result, index) => {
             let subjectName;
-            let subjectId;
+            let subjectId = result._id;
             if (listCategory === "personnel") {
-              subjectId = result.personnel_id ? result.personnel_id : result._id;
+              // subjectId = result.personnel_id ? result.personnel_id : result._id;
               if (result.surname !== "undefined") subjectName = result.surname;
               if (result.first && result.first !== " ") {
                 if (result.species_id !== "51") subjectName += ",";
@@ -200,10 +234,11 @@ function SearchList(props) {
                 subjectName += " " + middleI + ".";
               }
             } else if (listCategory === "starships") {
-              subjectName = result.name.replace(/-[A-Z]$/g, "");
-              subjectId = result.starship_id ? result.starship_id : result._id;
+              subjectName = result.name ? result.name.replace(/-[A-Z]$/g, "") : null;
+              // subjectId = result.starship_id ? result.starship_id : result._id;
             } else {
               subjectName = result.name;
+              // subjectId = result.system_id ? result.starship_id : result._id;
             }
             return (
               <Link
@@ -216,7 +251,7 @@ function SearchList(props) {
                   <div className="card-body">
                     <img
                       className={`search-list ${listCategory}-search`}
-                      src={result.picUrl[0] ? result.picUrl[0] : listCategory === "starships" ? defaultShipImage(result.ship_id) : gray}
+                      src={result.picUrl[0] ? result.picUrl[0] : listCategory === "starships" ? defaultShipImage(result.ship_id) : listCategory === "systems" ? graySun : gray}
                       alt={subjectName}
                     />
                     <h5 className="card-title">{subjectName}</h5>
@@ -227,11 +262,11 @@ function SearchList(props) {
             );
           })
         )}
-        {loading ? (
-          <div className="w-100 text-center">
+          <div className="w-100 text-center" style={{height: "75px"}}>
+          {loading ? (
             <img src={loadingGIF} className="loading" alt="loading..." />
+            ) : null}
           </div>
-        ) : null}
 
       </div>
       <ModalLauncher

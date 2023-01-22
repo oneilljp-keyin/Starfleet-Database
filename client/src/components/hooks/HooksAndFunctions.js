@@ -107,6 +107,43 @@ const dateOptions = [
   { label: "After", value: "after" },
 ];
 
+const quadrants = [
+  { label: "Milky Way", value: "MW" },
+  { label: "Alpha/Beta", value: "AB" },
+  { label: "Alpha", value: "A" },
+  { label: "Beta", value: "B" },
+  { label: "Delta", value: "D" },
+  { label: "Gamma", value: "G" },
+];
+
+const starTypes = [
+  { label: "Unknown", value: null },
+  { label: "O-Type", value: "O" },
+  { label: "B-Type", value: "B" },
+  { label: "A-Type", value: "A" },
+  { label: "F-Type", value: "F" },
+  { label: "G-Type", value: "G" },
+  { label: "K-Type", value: "K" },
+  { label: "M-Type", value: "M" },
+]
+
+const statusTypes = [
+  { label: "Unknown", value: null },
+  { label: "Active", value: "active" },
+  { label: "Retired", value: "retired" },
+  { label: "Deceased", value: "deceased" },
+  { label: "Killed-In-Action", value: "kia" },
+  { label: "Mising-In-Action", value: "mia" },
+]
+
+const NumberDropDown = (props) => {
+  const dropDown = [];
+  for (let i = 0; i <= props.num; i++) {
+    dropDown.push(<option key={i} value={i}>{i}</option>);
+  }
+  return dropDown;
+}
+
 function BackToTopFunction() {
   return (
     <button
@@ -124,8 +161,6 @@ function EditCreateMenu(props) {
   const { isShowingModal, toggleModal } = UseModal();
   const [modalType, setModalType] = useState(null);
 
-  const linkDestination =
-    props.entryType === "starship" ? "/" + props.entryType + "s" : "/personnel";
   const editClass = "lcars-btn d-flex flex-column events-btn";
 
   function OpenModal(modalType) {
@@ -136,7 +171,7 @@ function EditCreateMenu(props) {
   return (
     <>
       <div className="menu-btn-wrapper flex-row d-flex">
-        <Link to={linkDestination} className={`${editClass} a-button left-round green-btn`}>
+        <Link to={`/${props.entryType}`} className={`${editClass} a-button left-round green-btn`}>
           {buttonStack("Search", null, 2, 3)}
         </Link>
         {props.isAuth && (
@@ -175,6 +210,7 @@ function EditCreateMenu(props) {
         hide={toggleModal}
         starshipId={props.starshipId}
         officerId={props.officerId}
+        systemId={props.systemId}
         refreshOption={props.refreshOption}
         setRefresh={props.setRefresh}
         subjectName={props.subjectName}
@@ -245,6 +281,10 @@ export {
   Loading,
   defaultImage,
   BackToTopFunction,
+  defaultShipImage,
+  NumberDropDown,
   dateOptions,
-  defaultShipImage
+  quadrants,
+  starTypes,
+  statusTypes,
 };

@@ -3,32 +3,35 @@ import ReactDOM from "react-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
-import PersonnelDataService from "../../services/personnel";
+import DataService from "../../services/DBAccess";
 
-import { StardateConverter, Loading, dateOptions } from "../hooks/HooksAndFunctions";
+import { StardateConverter, Loading, dateOptions, statusTypes } from "../hooks/HooksAndFunctions";
 
 const PopUpOfficer = (props) => {
+  const category = props.category || props.entryType;
+
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const initialOfficerState = {
-    _id: "",
+    _id: null,
     active: true,
-    birthDate: "",
-    birthDateNote: "",
-    birthPlace: "",
-    birthStardate: "",
-    deathDate: "",
-    deathDateNote: "",
-    deathPlace: "",
-    deathStardate: "",
-    first: "",
-    memoryAlphaURL: "",
-    middle: "",
-    postNom: "",
-    serial: "",
-    surname: "",
+    status: null,
+    birthDate: null,
+    birthDateNote: null,
+    birthPlace: null,
+    birthStardate: null,
+    deathDate: null,
+    deathDateNote: null,
+    deathPlace: null,
+    deathStardate: null,
+    first: null,
+    memoryAlphaURL: null,
+    middle: null,
+    postNom: null,
+    serial: null,
+    surname: null,
   };
 
   const [officerInfo, setOfficerInfo] = useState(initialOfficerState);
@@ -39,16 +42,16 @@ const PopUpOfficer = (props) => {
     setOfficerInfo({ ...officerInfo, [e.target.name]: e.target.value });
   };
 
-  const handleChangeChk = (e) => {
-    setOfficerInfo({ ...officerInfo, [e.target.name]: e.target.checked });
-  };
+  // const handleChangeChk = (e) => {
+  //   setOfficerInfo({ ...officerInfo, [e.target.name]: e.target.checked });
+  // };
 
   useEffect(() => {
     let isMounted = true;
 
-    const getPersonnel = async (id) => {
+    const getPersonnel = async (cat, id) => {
       try {
-        let response = await PersonnelDataService.get(id);
+        let response = await DataService.getOne(cat, id);
         if (isMounted) {
           setOfficerInfo(response.data);
         }
@@ -58,7 +61,7 @@ const PopUpOfficer = (props) => {
       }
     };
     if (props.officerId) {
-      getPersonnel(props.officerId);
+      getPersonnel(category, props.officerId);
       setEdit(true);
       setSubmitted(false);
       setBtnLabel("Update");
@@ -66,7 +69,7 @@ const PopUpOfficer = (props) => {
     return () => {
       isMounted = false;
     };
-  }, [edit, submitted, props.officerId]);
+  }, [edit, submitted, props.officerId, category]);
 
   const saveOfficerInfo = () => {
     setIsLoading(true);
@@ -105,7 +108,7 @@ const PopUpOfficer = (props) => {
     }
     if (edit) {
       data._id = props.officerId;
-      PersonnelDataService.updateOfficer(data)
+      DataService.update(category, data)
         .then((response) => {
           setSubmitted(true);
           props.setRefresh();
@@ -118,7 +121,7 @@ const PopUpOfficer = (props) => {
         });
     } else {
       delete data["_id"];
-      PersonnelDataService.createOfficer(data)
+      DataService.create(category, data)
         .then((response) => {
           toast.dark(response.data);
           setOfficerInfo(initialOfficerState);
@@ -149,6 +152,7 @@ const PopUpOfficer = (props) => {
                     {btnLabel} Profile {props.subjectName ? ` - ${props.subjectName}` : null}
                   </h3>
                   <div className="d-flex row form-group">
+                  {/* <div className="col-sm-3"></div> */}
                     <div className="form-floating col-sm-6">
                       <input
                         className="form-control form-control-md"
@@ -161,20 +165,23 @@ const PopUpOfficer = (props) => {
                       />
                       <label htmlFor="serial">Starfleet Serial #</label>
                     </div>
-                    <div className="col-sm-6 form-check align-items-center m-auto">
-                      <input
-                        className="form-check-input ms-1"
-                        type="checkbox"
-                        id="active"
-                        name="active"
-                        checked={officerInfo.active || ""}
-                        onChange={(e) => handleChangeChk(e)}
-                        style={{ transform: "scale(1.8)" }}
-                      />
-                      <label className="form-check-label" htmlFor="active">
-                        Active in Starfleet
-                      </label>
+                    <div className="form-floating col-sm-3">
+                      <select
+                        className="form-control form-control-sm"
+                        name="status"
+                        id="status"
+                        value={officerInfo.status || "active"}
+                        onChange={(e) => onChangeOfficerInfo(e)}
+                      >
+                        {statusTypes.map(({ label, value }) => (
+                          <option key={uuidv4()} value={value}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                      <label htmlFor="status">Current Status</label>
                     </div>
+                    <div className="col-sm-3"></div>
                     <div className="form-floating col-sm-3">
                       <input
                         className="form-control form-control-md"

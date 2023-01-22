@@ -22,6 +22,9 @@ function Navbar({ isAuth, logout, setAdmin, setAuth }) {
             <Link to={"/starships"} className={`${headerButtonClass} all-square orange-btn`}>
               {buttonStack("Starships", null, 2, 4)}
             </Link>
+            <Link to={"/systems"} className={`${headerButtonClass} all-square yellow-btn`}>
+              {buttonStack("Systems", null, 2, 4)}
+            </Link>
             {isAuth ? (
               <Link
                 to={"/"}

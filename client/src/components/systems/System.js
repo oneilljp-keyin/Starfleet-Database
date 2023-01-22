@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
-import StarshipsDataService from "../../services/starships";
+import DataService from "../../services/DBAccess";
 import PhotoCarousel from "../hooks/PhotoCarousel";
 
 import UseModal from "../modals/UseModal";
@@ -11,12 +11,12 @@ import ModalLauncher from "../modals/ModalLauncher";
 import ma_logo from "../../assets/MemoryAlphaLogo.png";
 import { ButtonFormatter, EditCreateMenu, EventAdder } from "../hooks/HooksAndFunctions";
 
-const Starships = (props) => {
+const Systems = (props) => {
   const { id } = useParams();
-  const type = "starship";
+  const category = props.listCategory;
   const isAuth = props.isAuth;
 
-  const [starshipName, setStarshipName] = useState("");
+  const [systemName, setSystemName] = useState("");
   const [refreshOption, setRefreshOption] = useState(false);
 
   useEffect(() => setRefreshOption(false), []);
@@ -30,46 +30,37 @@ const Starships = (props) => {
   const buttonOptions = {
     modalType: "list",
     isAuth: isAuth,
-    starshipId: id,
-    subjectName: starshipName,
+    SystemId: id,
+    subjectName: systemName,
     refreshOption: refreshOption,
     setRefresh: toggleRefresh,
   };
 
-  const initialStarshipsState = {
+  const initialState = {
     _id: null,
-    ship_id: null,
     name: null,
-    registry: null,
-    class: null,
-    shipyard: null,
-    launch_date: null,
-    launch_stardate: null,
-    launch_note: null,
-    commission_date: null,
-    commission_stardate: null,
-    commission_note: null,
-    decommission_date: null,
-    decommission_stardate: null,
-    decommission_note: null,
-    destruction_date: null,
-    destruction_stardate: null,
-    destruction_note: null,
+    starTypes: null,
+    sectorName: null,
+    sectorNum: null,
+    quadrant: null,
+    numOfPlanets: null,
+    government: null,
+    notes: null,
+    memoryAlphaURL: null,
   };
 
-  const [starship, setStarship] = useState(initialStarshipsState);
+  const [system, setSystem] = useState(initialState);
 
   useEffect(() => {
     let isMounted = true;
 
-    const getStarship = (starshipId) => {
-      StarshipsDataService.get(starshipId)
+    const getSystem = (category, subjectId) => {
+      DataService.getOne(category, subjectId)
         .then((response) => {
           if (isMounted) {
-            setStarship(response.data);
-            let starshipName = response.data.name.replace(/-[ABC]$/g, "");
-            if (response.data.registry) starshipName += " " + response.data.registry;
-            setStarshipName(starshipName);
+            setSystem(response.data);
+            let systemName = response.data.name;
+            setSystemName(systemName);
           }
         })
         .catch((err) => {
@@ -78,44 +69,40 @@ const Starships = (props) => {
         });
     };
 
-    getStarship(id);
+    getSystem(category, id);
     return () => {
       isMounted = false;
     };
-  }, [id, refreshOption]);
+  }, [id, refreshOption, category]);
 
   return (
     <>
       {
         <EditCreateMenu
-          entryType={type}
-          starshipId={id}
+          entryType={category}
+          systemId={id}
           isAuth={props.isAuth}
-          photoRefresh={refreshOption}
-          setPhotoRefresh={setRefreshOption}
+          refreshOption={refreshOption}
           setRefresh={toggleRefresh}
-          subjectName={starshipName}
+          subjectName={systemName}
         />
       }
-      {starship ? (
+      {system ? (
         <div>
           <div className="d-flex flex-wrap justify-content-around">
             <PhotoCarousel
               subjectId={id}
               isAuth={props.isAuth}
-              shipId={starship.ship_id}
               photoRefresh={refreshOption}
               setPhotoRefresh={setRefreshOption}
-              imageType="starship"
+              imageType={category}
               className="flex-grow-1 col"
             />
             <div className="m-1 mobile-center">
-              {starship.name && !starship.name.includes("NCC-") && <h1>USS {starship.name.replace(/-[A-Z]$/g, "")}</h1>}
-              {starship.registry && <h2>{starship.registry}</h2>}
-              {starship.class && <h3>{starship.class} Class</h3>}
-              {starship.memoryAlphaURL && (
+            <h1>{system.name && system.name}</h1>
+              {system.memoryAlphaURL && (
                 <a
-                  href={`https://memory-alpha.fandom.com/wiki/${starship.memoryAlphaURL}`}
+                  href={`https://memory-alpha.fandom.com/wiki/${system.memoryAlphaURL}`}
                   className="mf-1 list-link"
                   target="_blank" rel="noreferrer"
                 >
@@ -126,79 +113,79 @@ const Starships = (props) => {
               )}
             </div>
             <div className="m-1 mobile-center">
-              <p className="text-start">
-                {starship.shipyard && (
+              {/* <p className="text-start">
+                {system.shipyard && (
                   <>
                     <strong>Shipyard: </strong>
-                    {starship.shipyard}
+                    {system.shipyard}
                     <br />
                   </>
                 )}
-                {starship.launch_date && (
+                {system.launch_date && (
                   <>
                     <strong>Launch: </strong>
-                    {starship.launch_note === "before" && "pre "}
-                    {starship.launch_note === "after" && "post "}
-                    {starship.launch_note === "approx" && "circa "}
-                    {starship.launch_date.slice(0, 4)}
+                    {system.launch_note === "before" && "pre "}
+                    {system.launch_note === "after" && "post "}
+                    {system.launch_note === "approx" && "circa "}
+                    {system.launch_date.slice(0, 4)}
                     <br />
                   </>
                 )}
-                {starship.commission_date && (
+                {system.commission_date && (
                   <>
                     <strong>Commission: </strong>
-                    {starship.commission_note === "before" && "Before "}
-                    {starship.commission_note === "after" && "After "}
-                    {starship.commission_date.slice(0, 4)}
+                    {system.commission_note === "before" && "Before "}
+                    {system.commission_note === "after" && "After "}
+                    {system.commission_date.slice(0, 4)}
                     <br />
                   </>
                 )}
-                {starship.decommission_date && (
+                {system.decommission_date && (
                   <>
                     <strong>Decommission: </strong>
-                    {starship.decommission_note === "before" && "Before "}
-                    {starship.decommission_note === "after" && "After "}
-                    {starship.decommission_date.slice(0, 4)}
+                    {system.decommission_note === "before" && "Before "}
+                    {system.decommission_note === "after" && "After "}
+                    {system.decommission_date.slice(0, 4)}
                     <br />
                   </>
                 )}
-                {starship.destruction_date && (
+                {system.destruction_date && (
                   <>
                     <strong>Destruction: </strong>
-                    {starship.destruction_note === "before" && "Before "}
-                    {starship.destruction_note === "after" && "After "}
-                    {starship.destruction_date.slice(0, 4)}
+                    {system.destruction_note === "before" && "Before "}
+                    {system.destruction_note === "after" && "After "}
+                    {system.destruction_date.slice(0, 4)}
                     <br />
                   </>
                 )}
-              </p>
-            </div>
+                </p> */}
+                </div>
           </div>
 
           <div className="m-4 small-hide"></div>
 
           <div className="list-container">
             <div className="lcars-end-cap left-round rose-btn"> </div>
-            {starship.personnelCount ? (
+            {system.personnelCount ? (
               <ButtonFormatter
                 {...buttonOptions}
                 active={true}
                 colour="rose"
                 eventType="Assign-Pro-De"
                 categoryLabel="Assigned Personnel"
-                count={starship.personnelCount}
+                count={system.personnelCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="rose" />
             )}
-            {starship.maintenanceCount || starship.missionCount || starship.firstContactCount ? (
+            {system.maintenanceCount || system.missionCount || system.firstContactCount ? (
               <ButtonFormatter
                 {...buttonOptions}
                 active={true}
                 colour="pink"
                 eventType="Chronology"
                 categoryLabel="Chronology"
-                count={EventAdder(starship.maintenanceCount, starship.missionCount, starship.firstContactCount)}
+                count={EventAdder(system.maintenanceCount, system.missionCount, system.firstContactCount)}
               />
             ) : (
               <ButtonFormatter active={false} colour="pink" />
@@ -206,14 +193,14 @@ const Starships = (props) => {
             <div className="lcars-end-cap right-round pink-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            {starship.firstContactCount ? (
+            {system.firstContactCount ? (
               <ButtonFormatter
                 {...buttonOptions}
                 active={true}
                 colour="orange"
                 eventType="First Contact"
                 categoryLabel="First Contact Debriefs"
-                count={starship.firstContactCount}
+                count={system.firstContactCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="orange" />
@@ -221,14 +208,14 @@ const Starships = (props) => {
             <div className="lcars-end-cap right-round orange-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            {starship.missionCount ? (
+            {system.missionCount ? (
               <ButtonFormatter
                 {...buttonOptions}
                 active={true}
                 colour="blue"
                 eventType="Mission"
                 categoryLabel="Mission Debriefs"
-                count={starship.missionCount}
+                count={system.missionCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="blue" />
@@ -236,14 +223,14 @@ const Starships = (props) => {
             <div className="lcars-end-cap right-round blue-btn"> </div>
             <div className=""> </div>
             <div className=""> </div>
-            {starship.maintenanceCount ? (
+            {system.maintenanceCount ? (
               <ButtonFormatter
                 {...buttonOptions}
                 active={true}
                 colour="beige"
                 eventType="Maintenance"
                 categoryLabel="Maintenance Logs"
-                count={starship.maintenanceCount}
+                count={system.maintenanceCount}
               />
             ) : (
               <ButtonFormatter active={false} colour="beige" />
@@ -254,7 +241,7 @@ const Starships = (props) => {
       ) : (
         <div>
           <br />
-          <p>No Starship Selected</p>
+          <p>No System Selected</p>
         </div>
       )}
       <div className="m-4 small-hide"></div>
@@ -262,9 +249,9 @@ const Starships = (props) => {
         isShowing={isShowingModal}
         hide={toggleModal}
         isAuth={isAuth}
-        starshipId={id}
-        subjectName={starshipName}
-        eventType={type}
+        systemId={id}
+        subjectName={systemName}
+        eventType={category}
         refreshOption={refreshOption}
         setRefresh={toggleRefresh}
       />
@@ -272,4 +259,4 @@ const Starships = (props) => {
   );
 };
 
-export default Starships;
+export default Systems;
