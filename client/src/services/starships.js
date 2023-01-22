@@ -10,10 +10,13 @@ class StarshipsDataService {
     return http.get(`/starships?id=${id}`);
   }
 
-  find(nameQuery, classQuery = "All", pageNumber = "0", cancel) {
-    return http.get(`/starships?name=${nameQuery}&class=${classQuery}&page=${pageNumber}`, {
-      cancelToken: new axios.CancelToken((c) => (cancel = c)),
-    });
+  find(nameQuery, classQuery = "All", pageNumber = "0", timeFrame = "All", cancel) {
+    return http.get(
+      `/starships?name=${nameQuery}&class=${classQuery}&page=${pageNumber}&timeframe=${timeFrame}`,
+      {
+        cancelToken: new axios.CancelToken((c) => (cancel = c)),
+      }
+    );
   }
 
   findSame(nameQuery, classQuery = "All") {

@@ -1,25 +1,20 @@
 exports = async function (payload, response) {
-  const personnel = context.services
+  const systems = context.services
     .get("mongodb-atlas")
     .db("StarfleetDatabase")
-    .collection("officers");
+    .collection("systems");
   const id = payload.query.id;
-  let responseData = { message: "Something Went Wrong in the 'personnel' Function" };
+  let responseData = { message: "Something Went Wrong in the 'systems' Function" };
 
   switch (context.request.httpMethod) {
-    // Get a list of starships (search by name or class if search value provided) or by _id for individual
+    // Get a list of systems (search by name) or by _id for individual
     case "GET": {
       if (!id) {
-        const { personnelPerPage = 10, page = 0 } = payload.query;
+        const { systemsPerPage = 10, page = 0 } = payload.query;
         let query = {};
 
         if (payload.query.name) {
-          query = {
-            $or: [
-              { surname: { $regex: payload.query.name, $options: "i" } },
-              { first: { $regex: payload.query.name, $options: "i" } },
-            ],
-          };
+          query = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
         }
 
         const pipeline = [
@@ -30,38 +25,30 @@ exports = async function (payload, response) {
               let: { id: "$_id" },
               pipeline: [
                 { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
-                // { $match: { $expr: { $eq: ["$owner", "$$id"] } } },
                 { $project: { _id: 0, title: 0, description: 0, owner: 0 } },
-                // { $sort: { year: -1 } },
-                // { $limit: 1 },
               ],
-              as: "officerPics",
+              as: "pics",
             },
           },
-          { $sort: { surname: 1, first: 1, middle: 1 } },
-          { $addFields: { picUrl: "$officerPics.url" } },
-          { $project: { officerPics: 0 } },
-          { $skip: page * personnelPerPage },
-          { $limit: personnelPerPage },
+          { $sort: { name: 1 } },
+          { $addFields: { picUrl: "$pics.url" } },
+          { $project: { pics: 0 } },
+          { $skip: page * systemsPerPage },
+          { $limit: systemsPerPage },
         ];
 
-        let personnelList = await personnel.aggregate(pipeline).toArray();
+        let resultsList = await systems.aggregate(pipeline).toArray();
 
-        personnelList.forEach((officer) => {
-          officer._id = officer._id.toString();
-          if (officer.birthDate) {
-            officer.birthDate = new Date(officer.birthDate).toISOString();
-          }
-          if (officer.deathDate) {
-            officer.deathDate = new Date(officer.deathDate).toISOString();
-          }
+        resultsList.forEach((result) => {
+          result._id = result._id.toString();
+          if (result.numOfPlanets) result.numOfPlanets = result.numOfPlanets.toString();
         });
 
         responseData = {
-          personnel: personnelList,
+          systems: resultsList,
           page: page.toString(),
-          entries_per_page: personnelPerPage.toString(),
-          total_results: await personnel.count(query).then((num) => num.toString()),
+          entries_per_page: systemsPerPage.toString(),
+          total_results: await systems.count(query).then((num) => num.toString()),
         };
       } else {
         const pipeline = [
@@ -74,7 +61,7 @@ exports = async function (payload, response) {
                 {
                   $match: {
                     $and: [
-                      { $expr: { $eq: ["$officerId", "$$id"] } },
+                      { $expr: { $eq: ["$systemId", "$$id"] } },
                       { $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }] },
                       { position: { $ne: "Retired" } },
                     ],
@@ -131,7 +118,7 @@ exports = async function (payload, response) {
                 {
                   $match: {
                     $and: [
-                      { $expr: { $eq: ["$officerId", "$$id"] } },
+                      { $expr: { $eq: ["$systemId", "$$id"] } },
                       { type: "Assignment" },
                       { starshipId: { $exists: true } },
                     ],
@@ -155,7 +142,7 @@ exports = async function (payload, response) {
                 {
                   $match: {
                     $and: [
-                      { $expr: { $eq: ["$officerId", "$$id"] } },
+                      { $expr: { $eq: ["$systemId", "$$id"] } },
                       {
                         $or: [{ type: "Assignment" }, { type: "Promotion" }, { type: "Demotion" }],
                       },
@@ -178,7 +165,7 @@ exports = async function (payload, response) {
               pipeline: [
                 {
                   $match: {
-                    $and: [{ $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Mission" }],
+                    $and: [{ $expr: { $eq: ["$systemId", "$$id"] } }, { type: "Mission" }],
                   },
                 },
                 { $count: "generalNum" },
@@ -197,7 +184,7 @@ exports = async function (payload, response) {
               pipeline: [
                 {
                   $match: {
-                    $and: [{ $expr: { $eq: ["$officerId", "$$id"] } }, { type: "Life Event" }],
+                    $and: [{ $expr: { $eq: ["$systemId", "$$id"] } }, { type: "Life Event" }],
                   },
                 },
                 { $count: "lifeEventsNum" },
@@ -207,33 +194,9 @@ exports = async function (payload, response) {
           },
           { $addFields: { lifeEventCount: "$lifeEvents.lifeEventsNum" } },
           { $project: { lifeEvents: 0 } },
-                    {
-            $lookup: {
-              from: "officers",
-              let: {id: "$relationships.officerId"},
-              pipeline : [
-                { $match: { $expr: { $in: ["$_id", "$$id"] } } },
-                { $project: { _id: 0, surname: 1, first: 1, middle: 1 } }
-              ],
-              as: "relationships"
-            },
-          },
-          { $addFields: {
-            "relationships": {
-              $map: { 
-                input: "$relationships", 
-                as: "relationshipsInfo", 
-                in: { 
-                  $mergeObjects: [
-                    "$$relationshipsInfo", 
-                      { officerId: { $arrayElemAt: [ "$relationships._id", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { surname: { $arrayElemAt: [ "$relationships.surname", { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { first:   { $arrayElemAt: [ "$relationships.first",   { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } },
-                      { middle:  { $arrayElemAt: [ "$relationships.middle",  { $indexOfArray: [ "$info._id", "$$relationshipsInfo.officerId" ] } ] } }
-          ]}}}}},
         ];
 
-        responseData = await personnel.aggregate(pipeline).next();
+        responseData = await systems.aggregate(pipeline).next();
 
         responseData._id = responseData._id.toString();
         if (responseData.starshipId) {
@@ -271,26 +234,25 @@ exports = async function (payload, response) {
       return responseData;
     }
     case "POST": {
-      const newOfficer = EJSON.parse(payload.body.text());
-      if (newOfficer.birthDate) {
-        newOfficer.birthDate = new Date(newOfficer.birthDate);
-      }
-      if (newOfficer.deathDate) {
-        newOfficer.deathDate = new Date(newOfficer.deathDate);
+      const newSystem = EJSON.parse(payload.body.text());
+      if (newSystem.numOfPlanets) newSystem.numOfPlanets = parseInt(newSystem.numOfPlanets);
+      if (newSystem.starTypes) {
+        const newStarTypes = newSystem.starTypes.map(a => a.value);
+        newSystem.starTypes = newStarTypes;
       }
 
       try {
-        await personnel.insertOne(newOfficer);
-        return { message: "Record Inserted Successfully" };
+        await systems.insertOne(newSystem);
+        return { message: "System Inserted Successfully" };
       } catch (err) {
-        console.error(`Record Insert Failed ${err.message}`);
-        return { message: `Record Insert Failed ${err.message}` };
+        console.error(`System Insert Failed ${err.message}`);
+        return { message: `System Insert Failed ${err.message}` };
       }
       break;
     }
     case "DELETE": {
       try {
-        await personnel.deleteOne({ _id: BSON.ObjectId(id) });
+        await systems.deleteOne({ _id: BSON.ObjectId(id) });
         return { message: "Personnel Record Successfully Deleted" };
       } catch (err) {
         return { message: `Deletion of Record Failed ${err.message}` };
@@ -300,23 +262,15 @@ exports = async function (payload, response) {
 
     case "PUT": {
       const updatedInfo = EJSON.parse(payload.body.text());
-      const officerId = updatedInfo._id;
-      let officerName;
-      // if (updatedInfo.first != null) officerName = updatedInfo.first;
-      // if (updatedInfo.first != null && updatedInfo.surname != null) officerName += " ";
-      if (updatedInfo.surname != null) officerName = updatedInfo.surname;
-      if (updatedInfo.birthDate) {
-        updatedInfo.birthDate = new Date(updatedInfo.birthDate);
-      }
-      if (updatedInfo.deathDate) {
-        updatedInfo.deathDate = new Date(updatedInfo.deathDate);
-      }
+      const systemId = updatedInfo._id;
+      const systemName = updatedInfo.name;
+      if (updatedInfo.numOfPlanets) updatedInfo.numOfPlanets = parseInt(updatedInfo.numOfPlanets);
+
       delete updatedInfo["_id"];
 
       try {
-        await personnel.updateOne({ _id: BSON.ObjectId(officerId) }, { $set: updatedInfo });
-        return { message: "Record of " + officerName + " Updated Successfully" };
-        // return updatedInfo;
+        await systems.updateOne({ _id: BSON.ObjectId(systemId) }, { $set: updatedInfo });
+        return { message: "Record of " + systemName + " Updated Successfully" };
       } catch (err) {
         console.error(`Record Update Failed ${err.message}`);
         return { message: `Record Update Failed ${err.message}` };

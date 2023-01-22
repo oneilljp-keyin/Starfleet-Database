@@ -14,6 +14,8 @@ exports = async function (payload, response) {
         starshipsPerPage = parseInt(starshipsPerPage);
         let nameQuery = {};
         let classQuery = {};
+        let startTimeFrame = 0;
+        let endTimeFrame = 999999;
 
         if (payload.query.name) {
           nameQuery = { name: { $regex: "^" + payload.query.name + ".*", $options: "i" } };
@@ -26,9 +28,23 @@ exports = async function (payload, response) {
         } else {
           classQuery = { class: { $eq: payload.query.class } };
         }
+        
+        if (payload.query.timeframe === "22nd") {
+          endTimeFrame = 400;
+        } else if (payload.query.timeframe === "23rd") {
+          startTimeFrame = 400; 
+          endTimeFrame = 2500;
+        } else if (payload.query.timeframe === "24th") {
+          startTimeFrame = 2500; 
+          endTimeFrame = 110000;
+        } else if (payload.query.timeframe === "32nd") {
+          startTimeFrame = 110000;
+        }
 
-        let query = { $and: [nameQuery, classQuery] };
+        timeQuery = { $and: [ { ship_id: { $gte: startTimeFrame } }, { ship_id: { $lt: endTimeFrame } } ] };
 
+        let query = { $and: [ nameQuery, classQuery, timeQuery ] };
+        
         const pipeline = [
           { $match: query },
           {
@@ -36,7 +52,7 @@ exports = async function (payload, response) {
               from: "photos",
               let: { id: "$_id" },
               pipeline: [
-                { $match: { $and: [{ $expr: { $eq: ["$owner", "$$id"] } }, { primary: true }] } },
+                { $match: { $and: [ { $expr: { $eq: ["$owner", "$$id"] } }, { primary: true } ] } },
                 { $project: { _id: 0, title: 0, description: 0, owner: 0 } },
                 { $sort: { year: -1 } },
                 { $limit: 1 },
@@ -44,7 +60,7 @@ exports = async function (payload, response) {
               as: "starshipPics",
             },
           },
-          { $addFields: { starshipPicUrl: "$starshipPics.url" } },
+          { $addFields: { picUrl: "$starshipPics.url" } },
           { $project: { starshipPics: 0 } },
           { $sort: { ship_id: 1 } },
           { $skip: page * starshipsPerPage },
@@ -75,6 +91,7 @@ exports = async function (payload, response) {
           page: page.toString(),
           entries_per_page: starshipsPerPage.toString(),
           total_results: await starships.count(query).then((num) => num.toString()),
+          search_queries: query,
         };
       } else {
         const pipeline = [

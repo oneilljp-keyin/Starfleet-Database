@@ -2,7 +2,7 @@ exports = async function (payload, response) {
   // payload contains {query, headers, body}
   const events = context.services.get("mongodb-atlas").db("StarfleetDatabase").collection("events");
 
-  let responseData = { message: "Something Went Wrong in the 'events' function" };
+  let responseData = { message: "Something Went Wrong in the 'update' function" };
 
   // const updatedInfo = EJSON.parse(payload.body.text());
 
