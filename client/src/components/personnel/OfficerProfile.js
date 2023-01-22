@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
-import PersonnelDataService from "../../services/personnel";
+import DataService from "../../services/DBAccess";
 import PhotoCarousel from "../hooks/PhotoCarousel";
 
 import UseModal from "../modals/UseModal";
@@ -13,14 +13,14 @@ import { ButtonFormatter, EditCreateMenu, EventAdder } from "../hooks/HooksAndFu
 
 const Officer = (props) => {
   const { id } = useParams();
-  const [imageType, setImageType] = useState("officer");
+  const [imageType, setImageType] = useState();
   const [category, setCategory] = useState(null);
 
   const [officerName, setOfficerName] = useState("");
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
-  useEffect(() => setRefreshOption(false), []);
+  useEffect(() => {setRefreshOption(false); setImageType("personnel")}, []);
 
   function toggleRefresh() {
     setRefreshOption(!refreshOption);
@@ -52,6 +52,7 @@ const Officer = (props) => {
     deathDateNote: null,
     serial: null,
     active: null,
+    status: null,
     memoryAlphaURL: null,
   };
 
@@ -60,8 +61,8 @@ const Officer = (props) => {
   useEffect(() => {
     let isMounted = true;
 
-    const getOfficer = (officerId) => {
-      PersonnelDataService.get(officerId)
+    const getOfficer = (cat, subjectId) => {
+      DataService.getOne(cat, subjectId)
         .then((response) => {
           if (isMounted) {
             setOfficer(response.data);
@@ -79,11 +80,11 @@ const Officer = (props) => {
         });
     };
 
-    getOfficer(id);
+    getOfficer(props.listCategory, id);
     return () => {
       isMounted = false;
     };
-  }, [id, refreshOption]);
+  }, [id, refreshOption, props.listCategory]);
 
   function OpenModal(modalType, eventId = null, type = "officer", category = "") {
     setModal(modalType);

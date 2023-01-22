@@ -14,7 +14,7 @@ import { ButtonFormatter, EditCreateMenu, EventAdder } from "../hooks/HooksAndFu
 
 const Starships = (props) => {
   const { id } = useParams();
-  const type = "starship";
+  const type = "starships";
   const isAuth = props.isAuth;
 
   const [starshipName, setStarshipName] = useState("");

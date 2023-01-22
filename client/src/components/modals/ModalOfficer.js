@@ -3,11 +3,13 @@ import ReactDOM from "react-dom";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
-import PersonnelDataService from "../../services/personnel";
+import DataService from "../../services/DBAccess";
 
-import { StardateConverter, Loading } from "../hooks/HooksAndFunctions";
+import { StardateConverter, Loading, dateOptions, statusTypes } from "../hooks/HooksAndFunctions";
 
 const PopUpOfficer = (props) => {
+  const category = props.category || props.entryType;
+
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,23 +24,24 @@ const PopUpOfficer = (props) => {
   ];
 
   const initialOfficerState = {
-    _id: "",
+    _id: null,
     status: "active",
     active: true,
-    birthDate: "",
-    birthDateNote: "",
-    birthPlace: "",
-    birthStardate: "",
-    deathDate: "",
-    deathDateNote: "",
-    deathPlace: "",
-    deathStardate: "",
-    first: "",
-    memoryAlphaURL: "",
-    middle: "",
-    postNom: "",
-    serial: "",
-    surname: "",
+    status: null,
+    birthDate: null,
+    birthDateNote: null,
+    birthPlace: null,
+    birthStardate: null,
+    deathDate: null,
+    deathDateNote: null,
+    deathPlace: null,
+    deathStardate: null,
+    first: null,
+    memoryAlphaURL: null,
+    middle: null,
+    postNom: null,
+    serial: null,
+    surname: null,
   };
 
   const [officerInfo, setOfficerInfo] = useState(initialOfficerState);
@@ -56,9 +59,9 @@ const PopUpOfficer = (props) => {
   useEffect(() => {
     let isMounted = true;
 
-    const getPersonnel = async (id) => {
+    const getPersonnel = async (cat, id) => {
       try {
-        let response = await PersonnelDataService.get(id);
+        let response = await DataService.getOne(cat, id);
         if (isMounted) {
           setOfficerInfo(response.data);
         }
@@ -68,7 +71,7 @@ const PopUpOfficer = (props) => {
       }
     };
     if (props.officerId) {
-      getPersonnel(props.officerId);
+      getPersonnel(category, props.officerId);
       setEdit(true);
       setSubmitted(false);
       setBtnLabel("Update");
@@ -76,7 +79,7 @@ const PopUpOfficer = (props) => {
     return () => {
       isMounted = false;
     };
-  }, [edit, submitted, props.officerId]);
+  }, [edit, submitted, props.officerId, category]);
 
   const saveOfficerInfo = () => {
     setIsLoading(true);
@@ -116,7 +119,7 @@ const PopUpOfficer = (props) => {
     }
     if (edit) {
       data._id = props.officerId;
-      PersonnelDataService.updateOfficer(data)
+      DataService.update(category, data)
         .then((response) => {
           setSubmitted(true);
           props.setRefresh();
@@ -129,7 +132,7 @@ const PopUpOfficer = (props) => {
         });
     } else {
       delete data["_id"];
-      PersonnelDataService.createOfficer(data)
+      DataService.create(category, data)
         .then((response) => {
           toast.dark(response.data);
           setOfficerInfo(initialOfficerState);
@@ -279,10 +282,11 @@ const PopUpOfficer = (props) => {
                         value={officerInfo.birthDateNote || ""}
                         onChange={(e) => onChangeOfficerInfo(e)}
                       >
-                        <option>Exact Date</option>
-                        <option value="approx">Approximate Date</option>
-                        <option value="before">Before This Date</option>
-                        <option value="after">After This Date</option>
+                        {dateOptions.map(({ label, value }) => (
+                          <option key={uuidv4()} value={value}>
+                            {label}
+                          </option>
+                        ))}
                       </select>
                       <label htmlFor="birthDateNote">Date Note</label>
                     </div>
@@ -329,10 +333,11 @@ const PopUpOfficer = (props) => {
                         value={officerInfo.deathDateNote || ""}
                         onChange={(e) => onChangeOfficerInfo(e)}
                       >
-                        <option>Exact Date</option>
-                        <option value="approx">Approximate Date</option>
-                        <option value="before">Before This Date</option>
-                        <option value="after">After This Date</option>
+                        {dateOptions.map(({ label, value }) => (
+                          <option key={uuidv4()} value={value}>
+                            {label}
+                          </option>
+                        ))}
                       </select>
                       <label htmlFor="deathDateNote">Date Note</label>
                     </div>

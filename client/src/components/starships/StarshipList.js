@@ -282,7 +282,7 @@ function StarshipList(props) {
                     src={starship.picUrl[0] ? starship.picUrl[0] : defaultImage(starship.ship_id)}
                     alt={starship.name}
                   />
-                  <h5 className="card-title" style={{ textTransform: "capitalize" }}>
+                  <h5 className="card-title">
                     {starship.name.replace(/-[A-Z]$/g, "")}
                   </h5>
                   <h6 className="card-title">{starship.registry ? starship.registry : "\u00A0"}</h6>

@@ -10,10 +10,12 @@ import Navbar from "./components/Navbar";
 // import SignIn from "./components/SignIn";
 // import SignUp from "./components/SignUp";
 import Landing from "./components/Landing";
-import PersonnelList from "./components/personnel/PersonnelList";
+// import PersonnelList from "./components/personnel/PersonnelList";
 import Officer from "./components/personnel/OfficerProfile";
-import StarshipList from "./components/starships/StarshipList";
-import Starship from "./components/starships/starship";
+// import StarshipList from "./components/starships/StarshipList";
+import Starship from "./components/starships/Starship";
+import List from "./components/SearchList";
+import Systems from "./components/systems/System";
 
 import SignInUpService from "./services/signInUp";
 import { BackToTopFunction } from "./components/hooks/HooksAndFunctions";
@@ -118,20 +120,28 @@ function App() {
                   />
                 }
               />
-              <Route path="/personnel" element={<PersonnelList isAuth={isAuthenticated} />} />
+              <Route path="/personnel" element={<List isAuth={isAuthenticated} listCategory="personnel" />} />
               <Route
                 path="/personnel/:id"
-                element={<Officer isAuth={isAuthenticated} admin={adminRole} />}
+                element={<Officer isAuth={isAuthenticated} admin={adminRole} listCategory="personnel" />}
               />
               <Route
                 path="/starships"
                 element={
-                  <StarshipList isAuth={isAuthenticated} userId={userId} admin={adminRole} />
+                  <List isAuth={isAuthenticated} userId={userId} admin={adminRole} listCategory="starships" />
                 }
               />
               <Route
                 path="/starships/:id"
-                element={<Starship isAuth={isAuthenticated} admin={adminRole} userId={userId} />}
+                element={<Starship isAuth={isAuthenticated} admin={adminRole} userId={userId} listCategory="starships" />}
+              />
+              <Route
+                path="/systems"
+                element={<List isAuth={isAuthenticated} userId={userId} admin={adminRole} listCategory="systems" />}
+              />
+              <Route
+                path="/systems/:id"
+                element={<Systems isAuth={isAuthenticated} admin={adminRole} userId={userId} listCategory="systems" />}
               />
               {/* <Route
                 path="/signin"
