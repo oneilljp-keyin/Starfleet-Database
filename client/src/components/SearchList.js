@@ -26,12 +26,21 @@ function SearchList(props) {
   const [resultsList, setResultsList] = useState([]);
   const [classes, setClasses] = useState(["All", "Unknown"]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchClass, setSearchClass] = useState(sessionStorage.getItem(listCategory + "Class") || "All");
+  const [searchTimeFrame, setSearchTimeFrame] = useState(sessionStorage.timeFrame || "All");
+
+  const timeFrameOptions = [
+    { label: "2101-2200", value: "22nd" },
+    { label: "2201-2300", value: "23rd" },
+    { label: "2301-3000", value: "24th" },
+    { label: "3001-3200", value: "32nd" },
+  ];
+
   useEffect(() => {
     let isMounted = true;
     if (isMounted) setSearchQuery(sessionStorage.getItem(listCategory + "Query") || "");
     return () => (isMounted = false);
   }, [listCategory])
-  const [searchClass, setSearchClass] = useState(sessionStorage.getItem(listCategory + "Class") || "All");
 
   const [pageNumber, setPageNumber] = useState(0);
   const observer = useRef();
@@ -61,13 +70,18 @@ function SearchList(props) {
     setPageNumber(0);
   };
 
+  const onChangeSearchTimeFrame = (e) => {
+    setSearchTimeFrame(e.target.value);
+    setPageNumber(0);
+  };
+
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
       setResultsList([]);
     }
     return () => (isMounted = false);
-  }, [searchQuery, searchClass, listCategory]);
+  }, [searchQuery, searchClass, listCategory, searchTimeFrame]);
 
   useEffect(() => {
     let isMounted = true;
@@ -111,7 +125,14 @@ function SearchList(props) {
     () =>
       debounce((searchValue, searchClass) => {
         const ourRequest = axios.CancelToken.source();
-        DataService.find(listCategory, searchValue, searchClass, pageNumber, ourRequest.token)
+        DataService.find(
+          listCategory,
+          searchValue,
+          searchClass,
+          searchTimeFrame,
+          pageNumber,
+          ourRequest.token
+        )
           .then((response) => {
             setResultsList((prevResultsList) => {
               return [
@@ -134,7 +155,7 @@ function SearchList(props) {
           });
         return () => ourRequest.cancel();
       }, 1000),
-    [pageNumber, listCategory]
+    [listCategory, searchTimeFrame, pageNumber]
   );
 
   useEffect(() => {
@@ -152,7 +173,7 @@ function SearchList(props) {
     return () => {
       isMounted = false;
     };
-  }, [searchQuery, searchClass, pageNumber, debounceQuery, listCategory, listRefresh]);
+  }, [searchQuery, searchClass, searchTimeFrame, pageNumber, debounceQuery, listCategory, listRefresh]);
 
   const setDefaultImage = useMemo(() => defaultImage(), []);
 
@@ -175,27 +196,48 @@ function SearchList(props) {
               setSearchQuery("");
               setSearchClass("All");
               setSearchCount(0);
+              setSearchTimeFrame("");
             }}
           >
             <i className="fa-solid fa-xmark"></i>
           </button>
           {listCategory === "starships" && (
-            <select
-              name="searchClass"
-              value={searchClass}
-              onChange={onChangeSearchClass}
-              className="col-4 select-center"
-            >
-              {classes.map((shipClass) => {
-                return (
-                  <option value={shipClass} key={uuidv4()}>
-                    {`   `}
-                    {shipClass.substring(0, 20)}
-                    {" Class"}
-                  </option>
-                );
-              })}
-            </select>)}
+            <>
+              <select
+                name="searchClass"
+                value={searchClass}
+                onChange={onChangeSearchClass}
+                className="col-3 select-center"
+              >
+                {classes.map((shipClass) => {
+                  return (
+                    <option value={shipClass} key={uuidv4()}>
+                      {`   `}
+                      {shipClass.substring(0, 20)}
+                      {" Class"}
+                    </option>
+                  );
+                })}
+              </select>
+              <select
+                name="searchTimeFrame"
+                value={searchTimeFrame}
+                onChange={onChangeSearchTimeFrame}
+                className="col-3 select-center"
+              >
+                <option value="all" key={uuidv4()}>
+                  Time Frame
+                </option>
+                {timeFrameOptions.map(({ label, value }) => {
+                  return (
+                    <option value={value} key={uuidv4()}>
+                      {label}
+                    </option>
+                  );
+                })}
+              </select>
+            </>
+          )}
 
         </div>
         {listCategory !== "starships" && (<div className="col-2"></div>)}
@@ -210,9 +252,9 @@ function SearchList(props) {
         )}
       </div>
       <div className="row d-flex p-1">
-      <div className="m-auto text-center">
-        {resultsList.length > 0 && <h2>Search Complete ... {searchCount} Record{resultsList.length !== 1 && "s"} Found</h2>}
-      </div>
+        <div className="m-auto text-center">
+          {resultsList.length > 0 && <h2>Search Complete ... {searchCount} Record{resultsList.length !== 1 && "s"} Found</h2>}
+        </div>
         {resultsList.length === 0 ? (
           <div className="m-auto text-center">
             {searchQuery.length > 0 ? <h2>NO RESULTS</h2> : <h2>STANDBY ... {categoryCount} Records Available</h2>}
@@ -262,11 +304,11 @@ function SearchList(props) {
             );
           })
         )}
-          <div className="w-100 text-center" style={{height: "75px"}}>
+        <div className="w-100 text-center" style={{ height: "75px" }}>
           {loading ? (
             <img src={loadingGIF} className="loading" alt="loading..." />
-            ) : null}
-          </div>
+          ) : null}
+        </div>
 
       </div>
       <ModalLauncher

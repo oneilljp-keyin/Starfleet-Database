@@ -121,7 +121,7 @@ const Officer = (props) => {
               className="col-md-4"
             />
             <div className="m-1 profile-summary col-md-5">
-              <h1 style={{ lineHeight: "0.75" }}>
+              <h1 style={{ lineHeight: "0.65", marginBottom: "0.25em" }}>
                 {officer.surname && <>{officer.surname}</>}
                 {officer.first && officer.first !== " " && (
                   <>

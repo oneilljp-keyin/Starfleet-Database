@@ -8,7 +8,7 @@ import DataService from "../../services/DBAccess";
 import { StardateConverter, Loading, dateOptions, statusTypes } from "../hooks/HooksAndFunctions";
 
 const PopUpOfficer = (props) => {
-  const category = props.category || props.entryType;
+  const category = props.category || props.entryType || props.modal;
 
   const [edit, setEdit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -27,7 +27,6 @@ const PopUpOfficer = (props) => {
     _id: null,
     status: "active",
     active: true,
-    status: null,
     birthDate: null,
     birthDateNote: null,
     birthPlace: null,
@@ -163,7 +162,8 @@ const PopUpOfficer = (props) => {
                     {btnLabel} Profile {props.subjectName ? ` - ${props.subjectName}` : null}
                   </h3>
                   <div className="d-flex row form-group">
-                    <div className="form-floating col-sm-6">
+                    <div className="form-floating col-sm-2"></div>
+                    <div className="form-floating col-sm-4">
                       <input
                         className="form-control form-control-md"
                         type="text"
@@ -175,19 +175,9 @@ const PopUpOfficer = (props) => {
                       />
                       <label htmlFor="serial">Starfleet Serial #</label>
                     </div>
-                    {/* <div className="col-sm-6 form-check align-items-center m-auto"> */}
-                    <div className="form-floating col-sm-6">
-                      {/* <input
-                      className="form-check-input ms-1"
-                      type="checkbox"
-                      id="active"
-                      name="active"
-                      checked={officerInfo.active || ""}
-                      onChange={(e) => handleChangeChk(e)}
-                      style={{ transform: "scale(1.8)" }}
-                    /> */}
+                    <div className="form-floating col-sm-4">
                       <select
-                        className="form-control my-1 text-center"
+                        className="form-control form-control-md text-center"
                         name="status"
                         id="status"
                         value={officerInfo.status || "active"}
@@ -199,9 +189,9 @@ const PopUpOfficer = (props) => {
                           </option>
                         ))}
                       </select>
-                      {/* <label className="form-check-label" htmlFor="status"> */}
                       <label htmlFor="status">Status</label>
                     </div>
+                    <div className="form-floating col-sm-2"></div>
                     <div className="form-floating col-sm-3">
                       <input
                         className="form-control form-control-md"

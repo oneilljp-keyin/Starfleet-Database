@@ -10,9 +10,9 @@ class DataService {
     return http.get(`/${category}?id=${id}`);
   }
 
-  find(category, nameQuery, classQuery="All", pageNumber = "0", cancel) {
+  find(category, nameQuery, classQuery="All", timeFrame = "All", pageNumber = "0", cancel) {
     let query = `/${category}?name=${nameQuery}&page=${pageNumber}`;
-    if (category === "starships") (query += `&class=${classQuery}&starshipsPerPage=50`);
+    if (category === "starships") (query += `&class=${classQuery}&timeframe=${timeFrame}&starshipsPerPage=50`);
     return http.get(query, {
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     });
