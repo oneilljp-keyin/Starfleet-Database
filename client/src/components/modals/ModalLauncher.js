@@ -17,7 +17,7 @@ const ModalLauncher = (props) => {
       return <ModalUploadEazyCrop {...props} />;
     case "personnel":
       return <ModalOfficer {...props} modalClass={modalClass} />;
-    case "starship":
+    case "starships":
       return <ModalStarship {...props} modalClass={modalClass} />;
     case "delete":
       return <ModalDelete {...props} modalClass={modalClass} />;

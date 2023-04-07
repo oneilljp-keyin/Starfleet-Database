@@ -20,6 +20,7 @@ const Officer = (props) => {
   const [eventId, setEventId] = useState(null);
   const [modal, setModal] = useState(null);
   const [refreshOption, setRefreshOption] = useState(false);
+  const [statusCheck, setStatusCheck] = useState(false);
   useEffect(() => {setRefreshOption(false); setImageType("personnel")}, []);
 
   function toggleRefresh() {
@@ -72,6 +73,13 @@ const Officer = (props) => {
               ? response.data.surname + " " + response.data.first
               : response.data.first + " " + response.data.surname;
             setOfficerName(officerName);
+            if((response.data.status && response.data.status.toLowerCase()) === "active") {
+                setStatusCheck(true);
+              } else if (response.data?.active && response.data?.active === true) {
+                setStatusCheck(true);
+              } else {
+                setStatusCheck(false);
+              }
           }
         })
         .catch((err) => {
@@ -121,7 +129,7 @@ const Officer = (props) => {
               className="col-md-4"
             />
             <div className="m-1 profile-summary col-md-5">
-              <h1 style={{ lineHeight: "0.65", marginBottom: "0.25em" }}>
+              <h1 style={{ marginBottom: "0.25em" }}>
                 {officer.surname && <>{officer.surname}</>}
                 {officer.first && officer.first !== " " && (
                   <>
@@ -146,8 +154,7 @@ const Officer = (props) => {
               {officer.rankLabel && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>
-                    {((officer.active && officer.active === false) ||
-                      (officer.status && officer.status !== "active")) && <>Last </>}
+                    {statusCheck !== true && <>Last </>}
                     Rank:{" "}
                   </span>
                   {officer.rankLabel.split("-").map((label, index) => {
@@ -166,8 +173,7 @@ const Officer = (props) => {
               {officer.position && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>
-                    {((officer.active && officer.active === false) ||
-                      (officer.status && officer.status !== "active")) && <>Last </>}
+                    {statusCheck !== true && <>Last </>}
                     Position:{" "}
                   </span>
                   {officer.position}
@@ -176,8 +182,7 @@ const Officer = (props) => {
               {officer.name && (
                 <h3 style={{ textTransform: "capitalize" }}>
                   <span style={{ color: "#FFDD22E6" }}>
-                    {((officer.active && officer.active === false) ||
-                      (officer.status && officer.status !== "active")) && <>Last </>}
+                    {statusCheck !== true && <>Last </>}
                     Vessel:{" "}
                   </span>
                   {!officer.name.includes("NCC-") && (
@@ -247,7 +252,7 @@ const Officer = (props) => {
             )}
           </div>
 
-          <div className="m-4 small-hide"></div>
+          <div className="m-2 small-hide"></div>
 
           <div className="list-container">
             <div className="lcars-end-cap left-round rose-btn"> </div>

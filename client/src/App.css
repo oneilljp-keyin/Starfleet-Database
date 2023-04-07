@@ -2,7 +2,7 @@
 
 html { font-size: 100%; }
 
-body { background-color: #121212; min-width: 360px; font-size: 1rem;}
+body { background-color: #121212; min-width: 360px; font-size: 1rem; }
 
 main { height: 100%; }
 
@@ -15,7 +15,7 @@ button.edit { background-color: none; padding: 0; border: none; background: none
 
 a, a:hover, a:focus { color: #6699ff; }
 
-strong { color: #ffcc33e6}
+strong { color: #ffcc33e6; }
 
 h1, .h1cell { font-size: 1.48em;}
 h2, .h2cell { font-size: 1.38em; color: #ffcc33e6; }
@@ -25,7 +25,7 @@ h5, .h5cell { font-size: 1.18em; color: #ffcc33e6; }
 h6, .h6cell { font-size: 0.75em; color: #ffffffde; }
 .h6cell { text-align: justify; text-justify: inter-word; font-weight: 300; }
 .profile-summary h3, .list-group h3, .list-group h4, .list-group h5,
-.h3cell, .h4cell, .h5cell { font-size: 0.75em; }
+.h3cell, .h4cell, .h5cell { font-size: 1em; margin-bottom: 0.25em;}
 .pre {font-size: small;}
 
 .topbar-title { font-size: 1em; color: #ffcc33e6;
@@ -35,7 +35,7 @@ h6, .h6cell { font-size: 0.75em; color: #ffffffde; }
   
 .form-floating {padding: 0;}
 .form-floating textarea {height: 8em;}
-.form-floating > .form-control {font-size: 1em; height: calc(3.5em + 2px); padding: 1em 0.75em; border-radius: .25em;
+.form-floating > .form-control {font-size: 1em; height: calc(3.5em + 0.125em); padding: 1em 0.75em; border-radius: .25em;
                                 margin: 0.25em 0;}
 label {color: #6d6d6d; }
 
@@ -85,18 +85,18 @@ td {text-align: left; padding: 0.125em 0.25em 0.125em 0.25em !important;}
 .card-radius {border-radius: 1em;}
 .card-title {margin: 0.125em 0;}
 
-.load-img {max-width: 22em;}
-.search-list { height: auto; border-radius: 1em; box-shadow: 2px 2px 10px black; }
+.load-img {max-width: 20em;}
+.search-list { height: auto; border-radius: 1em; box-shadow: 0.125em 0.125em 0.625em black; }
 .personnel-search, .systems-search { width: 75%; max-width: 6em;}
 .starships-search { width: 100%;}
-.service-list { width: calc(100% - 16px); height: auto; margin: 8px; border-radius: 8px; box-shadow: 2px 2px 10px black; }
+.service-list { width: calc(100% - 3em); height: auto; margin: 0.5em; border-radius: 0.5em; box-shadow: 0.125em 0.125em 0.625em black; }
 
 .input-size { max-width: 25em;}
 
 .justify-text { text-align: justify; text-justify: inter-word; }
 
 .container {
-  margin: 0.5em auto 0 auto;
+  margin: 0.125em auto 0 auto;
   height: 100%; width: 100%;
   max-width: 60em;
   display: grid;
@@ -122,12 +122,17 @@ td {text-align: left; padding: 0.125em 0.25em 0.125em 0.25em !important;}
   scrollbar-width: none; /* Firefox */
 }
 
-.topbar { grid-area: clock; text-transform: uppercase; background: #9999ff9e;
-          display: flex; justify-content: flex-end; line-height: 1; }
-
+.topbar { 
+  grid-area: clock; 
+  text-transform: uppercase; 
+  background: #9999ff9e;
+  display: flex; 
+  justify-content: flex-end; 
+  line-height: 1;
+}
 
 .list-container {
-  margin: 0.5em auto;
+  margin: 0.25em auto;
   height: 100%; width: 100%;
   max-width: 30em;
   display: grid;
@@ -172,7 +177,7 @@ td {text-align: left; padding: 0.125em 0.25em 0.125em 0.25em !important;}
 
 .header-inner {
   position: relative; z-index: 2; display: flex; flex-wrap: wrap;
-  background: #121212; width: 91%; min-height: 2.5em;
+  background: #121212; width: 92%; min-height: 2.5em;
   margin-left: auto; border-radius: 0 0 0 1em; justify-content: flex-end;
 }
 
@@ -198,9 +203,9 @@ button.logout { color: #121212; background-color: #9999ffe6;
 /* Generic Button features */
 .lcars-btn { color: #121212; text-align: center; display: inline-block;
              border: none; text-decoration: none; font-weight: 500; 
-             font-size: .75em; padding: 0.25em 1em; box-shadow: 0.125em 0.125em 0.625em black;}
+             font-size: 1em; padding: 0.25em 1em; box-shadow: 0.125em 0.125em 0.625em black;}
 .lcars-btn:hover, .lcars-btn:focus {color: #121212;}
-.lcars-end-cap { padding: 0.25em 1em; min-height: 0.812em;}
+.lcars-end-cap { padding: 0.25em 1em; min-height: 1.5em;}
 .lcars-hidden { display: none; color: #121212e6; font-weight: 500; padding-right: 0.5em;
                 font-size: 0.625em;}
 .lcars-btn-top { text-align: center; font-size: 0.75em; }
@@ -242,10 +247,10 @@ button.logout { color: #121212; background-color: #9999ffe6;
 .events-btn       { border: none;}
 
 /* ----------------------------- Return To Top Button ----------------------------- */
-.go-to-top { display: block; position: fixed; bottom: 24px; right: 8px; z-index: 100; background-color: #ff7700;}
+.go-to-top { display: block; position: fixed; bottom: 1.5em; right: 0.5em; z-index: 100; background-color: #ff7700;}
 
-.go-to-top:active { background-color: #ff7700; box-shadow: 1px 1px #121212;
-                    transform: translateY(4px); }
+.go-to-top:active { background-color: #ff7700; box-shadow: 0.0625em 0.0625em #121212;
+                    transform: translateY(0.25em); }
 /* -------------------------------------------------------------------------------- */
 
 /* Button Shapes */
@@ -265,7 +270,7 @@ button.logout { color: #121212; background-color: #9999ffe6;
 /* Main Content */
 
 .content-wrapper {
-  position: relative; margin: 1em 0 0 0; background-color: #9999ff9e;
+  position: relative; margin: 0.5em 0 0 0; background-color: #9999ff9e;
   border-radius: 2.5em 0 0 0; padding-top: 1em;
 }
 
@@ -286,7 +291,7 @@ button.logout { color: #121212; background-color: #9999ffe6;
 .content-container {
   position: relative; z-index: 1; background-color: #121212; width: 92%; margin: 0 0 0 auto;
   border-radius: 1.5em 0 0 0; padding: 0.5em; box-sizing: border-box; overflow: hidden;
-  min-height: calc(100vh - 9em); 
+  min-height: calc(100vh - 8em); 
 }
 
 .article-content p {
@@ -437,7 +442,7 @@ article footer p {
 .cropper { height: 22em; position: relative; }
 
 .modal-bg { z-index: 100; color: #ffffffde; position: relative; text-align: center;
-            border-radius: 0.75em; padding: 2em; backdrop-filter: blur(80px); 
+            border-radius: 0.75em; padding: 2em; backdrop-filter: blur(5em); 
             box-shadow: 0.5em 0.5em 0.25em 0.25em #12121266, -0.5em -0.5em 0.25em 0.25em #12121266,
                        -0.5em 0.5em 0.25em 0.25em #12121266,  0.5em -0.5em 0.25em 0.25em #12121266; }
 
@@ -473,7 +478,7 @@ article footer p {
 
 .events-modal-container {
   position: relative; z-index: 1; background-color: #121212;
-  width: 103%; border-radius: 2.5em 0 0 2.5em; margin: 0 0 0 auto; padding: 1em;
+  width: 104%; border-radius: 2.5em 0 0 2.5em; margin: 0 0 0 auto; padding: 1em;
    box-sizing: border-box; overflow: hidden;
 }
 
@@ -527,7 +532,7 @@ article footer p {
 
 /* -------- List Modals --------------------------------------------------------------- */
 
-.list-modal {width: 100%; max-width: 60em; height: 90vh; border: 0.5px solid #3D3D3D;}
+.list-modal {width: 100%; max-width: 60em; height: 90vh; border: 0.03125em solid #3D3D3D;}
 
 .list-modal-content-wrapper {
   position: relative; margin: 2em auto; background-color: #121212;
@@ -573,15 +578,18 @@ article footer p {
 /* ------------------------------- Changes for Smaller Screens ----------------------------------------------------- */
 
 @media screen and (max-width: 575px) {
-  /* .row {margin: 0 auto;} */
   .list-cards {width: calc(50% - 0.5em); margin: 0.25em 0; padding: 0.25em; font-size: 1em; border-radius: 1em;}
   .list-cards .h3cell, .list-cards .h5cell, .list-cards .h6cell, h1, h2 {font-size: 1em; text-transform: capitalize;}
   .list-link { text-decoration: none; }
 
   .article-content li { font-size: 1em; }
-  .resize-modal-content-wrapper::before { left: 12.5%; width: 75%; }
+  .resize-modal-content-wrapper::before,
+  .resize-modal-content-wrapper::after  { left: 12.5%; width: 75%; } 
   
-  .resize-modal-content-wrapper::after  { left: 12.5%; width: 75%; }  
+  /* #main-header { margin: 0.25em 0 0 0; } */
+  #main-header::before { height: 0; width: 0;}
+  .cascade-wrapper { display: none; }
+  .header-btn { min-width: 5em; font-size: 1em;}
 }
 /* ------------------------------- Data Cascade from theLCARS.com -------------------------------------------------- */
 

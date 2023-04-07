@@ -127,14 +127,16 @@ const starTypes = [
   { label: "M-Type", value: "M" },
 ]
 
-const statusTypes = [
-  { label: "Unknown", value: null },
-  { label: "Active", value: "active" },
-  { label: "Retired", value: "retired" },
-  { label: "Deceased", value: "deceased" },
-  { label: "Killed-In-Action", value: "kia" },
-  { label: "Mising-In-Action", value: "mia" },
-]
+const statusOptions = [
+  { label: "Active", value: "Active" },
+  { label: "Extended Leave", value: "Extended Leave" },
+  { label: "Active Reserve", value: "Active Reserve" },
+  { label: "Retired", value: "Retired" },
+  { label: "Dishcarged", value: "Discarged" },
+  { label: "Missing-In-Action", value: "Missing-In-Action" },
+  { label: "Killed-In-Action", value: "Killed-In-Action" },
+  { label: "Deceased", value: "Deceased" },
+];
 
 const NumberDropDown = (props) => {
   const dropDown = [];
@@ -286,5 +288,5 @@ export {
   dateOptions,
   quadrants,
   starTypes,
-  statusTypes,
+  statusOptions,
 };

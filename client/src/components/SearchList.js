@@ -123,7 +123,7 @@ function SearchList(props) {
 
   const debounceQuery = useMemo(
     () =>
-      debounce((searchValue, searchClass) => {
+      debounce((searchValue, searchClass, searchTimeFrame) => {
         const ourRequest = axios.CancelToken.source();
         DataService.find(
           listCategory,
@@ -155,15 +155,16 @@ function SearchList(props) {
           });
         return () => ourRequest.cancel();
       }, 1000),
-    [listCategory, searchTimeFrame, pageNumber]
+    [listCategory, pageNumber]
   );
 
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      if (searchQuery.length > 0 || searchClass !== "All") {
+      if (searchQuery.length > 0 || (listCategory === "startships" && (searchClass !== "All" ||
+       searchTimeFrame !== "all"))) {
         setLoading(true);
-        debounceQuery(searchQuery, searchClass);
+        debounceQuery(searchQuery, searchClass, searchTimeFrame);
         sessionStorage.setItem(`${listCategory}Query`, searchQuery);
         if (listCategory === "starships") { sessionStorage.setItem("starshipsClass", searchClass); }
         setLoading(false);

@@ -147,8 +147,8 @@ function Missions({ eventType, officerId, starshipId, category, isAuth, subjectN
                         )}
                         {event.name && currentRank !== undefined && <br />}
                         {currentRank !== undefined && <>{currentRank}</>}
-                        {event.provisional && <> <span style={{ fontSize: "0.75rem", color: "#FFFFFFDE" }}>[Provisional]</span></>}
-                        {event.name && currentRank === undefined && <br />}
+                        {event.provisional && <> <span style={{ fontSize: "0.50em", color: "#FFFFFFDE" }}>[Provisional]</span></>}
+                        {/* {event.name && currentRank === undefined && <br />} */}
                         {currentRank !== undefined && event.position && " - "}
                         {event.position && <>{event.position}</>}
                         {(event.name || currentRank !== undefined || event.position) && <br />}

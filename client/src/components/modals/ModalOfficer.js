@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid"; // then use uuidv4() to insert id
 
 import DataService from "../../services/DBAccess";
 
-import { StardateConverter, Loading, dateOptions, statusTypes } from "../hooks/HooksAndFunctions";
+import { StardateConverter, Loading, dateOptions, statusOptions } from "../hooks/HooksAndFunctions";
 
 const PopUpOfficer = (props) => {
   const category = props.category || props.entryType || props.modal;
@@ -14,18 +14,9 @@ const PopUpOfficer = (props) => {
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const statusOptions = [
-    { label: "Active", value: "Active" },
-    { label: "Retired", value: "Retired" },
-    { label: "Dishcarged", value: "Discarged" },
-    { label: "Missing-In-Action", value: "Missing-In-Action" },
-    { label: "Killed-In-Action", value: "Killed-In-Action" },
-    { label: "Deceased", value: "Deceased" },
-  ];
-
   const initialOfficerState = {
     _id: null,
-    status: "active",
+    status: null,
     active: true,
     birthDate: null,
     birthDateNote: null,
@@ -183,6 +174,7 @@ const PopUpOfficer = (props) => {
                         value={officerInfo.status || "active"}
                         onChange={(e) => onChangeOfficerInfo(e)}
                       >
+                        <option key={uuidv4()}>** Current Status **</option>
                         {statusOptions.map(({ label, value }) => (
                           <option key={uuidv4()} value={value}>
                             {label}
